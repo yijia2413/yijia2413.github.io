@@ -20,26 +20,24 @@ return `5`.
 ###AC代码
 请看：
 		class Solution {
-		public:
-		    bool ischar(char p)
-		    {
-		    	return (p >= 'a' && p <= 'z') || (p >= 'A' && p <= 'Z');
-		    }
-		    int lengthOfLastWord(const char *s)
-		    {
-			// IMPORTANT: Please reset any member data you declared, as
-			// the same Solution instance will be reused for each test case.
-		    	int len = strlen(s);
-		    	if(len < 1)
-		    		return 0;
-		    	int end = len - 1;
-		    	while((end >= 0) && (s[end] == ' '))
-		    		end--;
-		    	int begin = end;
-		    	while((begin >= 0) && ischar(s[begin]))
-		    		begin--;
-		    
-		    	return end - begin;
-
-		    }
-		};
+				public:
+				    bool ischar(char p)
+				    {
+				    	return (p >= 'a' && p <= 'z') || (p >= 'A' && p <= 'Z');
+				    }
+				    int lengthOfLastWord(const char *s)
+				    {
+					// IMPORTANT: Please reset any member data you declared, as
+					// the same Solution instance will be reused for each test case.
+				    	int len = strlen(s);
+				    	if(len < 1)
+				    		return 0;
+				    	int end = len - 1;
+				    	while((end >= 0) && (s[end] == ' '))
+				    		end--;
+				    	int begin = end;
+				    	while((begin >= 0) && ischar(s[begin]))
+				    		begin--;    
+				    	return end - begin;
+				    }
+				};		
