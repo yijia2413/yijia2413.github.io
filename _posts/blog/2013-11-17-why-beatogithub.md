@@ -1,6 +1,6 @@
 ---
 layout:     post
-title:      放弃BAE，转战Github
+title:      选择Github-pages
 category: blog
 description: 想找一个稳定的地方记录自己的一些东西，当然，大家都可以看到。
 ---
