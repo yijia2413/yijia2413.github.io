@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Leetcode-Remove Duplicates from Sorted Array 
+title: Leetcode-Remove Duplicates
 description: http://oj.leetcode.com/problems/remove-duplicates-from-sorted-array/
 category: project
 ---
