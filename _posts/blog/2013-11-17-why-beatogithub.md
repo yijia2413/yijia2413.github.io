@@ -26,7 +26,6 @@ description: 想找一个稳定的地方记录自己的一些东西，当然，�
 
 以下技术，值得学习～
 
-* [GoDaddy][]
 * [DNSPod][]
 * [GitHub][]
 * [Jekyll][]
@@ -35,6 +34,8 @@ description: 想找一个稳定的地方记录自己的一些东西，当然，�
 ## 后记
 
 这个博客的建立要感谢* [Beiyuu][]，基本参照了他的做法。自己修改了一些东西，连第一篇博客的格式都是仿照他的。感谢。
+
+同时推荐一篇文章，[如何高效利用github][]
 
 剩下的，自己以后慢慢去摸索吧～
 
@@ -46,3 +47,4 @@ description: 想找一个稳定的地方记录自己的一些东西，当然，�
 [Jekyll]:   https://github.com/mojombo/jekyll
 [Disqus]: http://disqus.com "Disqus"
 [DNSPod]: http://dnspod.cn "DNSPod"
+[如何高效利用github]: http://www.yangzhiping.com/tech/github.html "Github"
