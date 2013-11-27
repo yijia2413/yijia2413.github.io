@@ -1,7 +1,7 @@
 ---
 layout: post
 title: Leetcode-Valid Palindrome
-description:http://oj.leetcode.com/problems/valid-palindrome/
+description: http://oj.leetcode.com/problems/valid-palindrome/
 category: project
 ---
 ## 题目描述
