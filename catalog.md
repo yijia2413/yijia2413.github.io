@@ -2,7 +2,7 @@
 layout: page
 title: Catalog
 ---
-<div id="content">
+<div id="wiki">
     <h1>Hit Here to See My Blog</h1>
     <ul class="hide">
         <ul class="artical-list">
