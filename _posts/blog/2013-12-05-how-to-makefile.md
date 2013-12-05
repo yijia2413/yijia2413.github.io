@@ -1,7 +1,7 @@
 ---
 layout: post
-title: 置顶！关于！
-description: Hello, I'm Yi. I am a .... 
+title: 简单学习makefile
+description: makefile究竟有多重要，在linux下开发你就知道了。
 category: blog
 ---
 ##什么是makefile
