@@ -1,6 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
+    <loc>http://www.example.com.cn/</loc>
+    <lastmod>2010-11-20</lastmod>
+    <changefreq>always</changefreq>
+    <priority>1.0</priority>
+  </url>
+
+  <url>
     <loc>http://yijia2413.github.io/about/</loc>
     <lastmod>2013-12-12</lastmod>
     <changefreq>daily</changefreq>
