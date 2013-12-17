@@ -1,11 +1,12 @@
-auto: true
-
 markdown: rdiscount
+permalink: /:title/
+url: http://yijia52.github.io
+name: 一小佳
+author: 一小佳
+email: yijia2413@gmail.com 
+duoshuo: yijia2413
+github: yijia52
 pygments: true
-paginate: 8
-permalink: /:title
-
-title: 一小佳
-url: yijia2413.github.io
-feed: /rss.xml
-author_info: <a href="http://yijia2413.github.io/">一小佳</a>
+safe: true
+paginate: 20
+about: {{ site.about }}
