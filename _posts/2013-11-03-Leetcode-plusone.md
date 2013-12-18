@@ -10,7 +10,8 @@ tags: Leetcode
 *   Given a number represented as an array of digits, plus one to the number.
 
 ###AC代码
-
+<pre class="prettyprint">
+    
     #include <iostream>
     #include <cstdio>
     #include <vector>
@@ -66,3 +67,4 @@ tags: Leetcode
         	return 0;
     
     }
+</pre>
