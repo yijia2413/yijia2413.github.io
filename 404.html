@@ -1,26 +1,18 @@
----
-title: '404 培鸡诺特方的'
-layout: page
----
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link href="/assets/themes/twitter/css/404.css" rel="stylesheet" type="text/css" />
+<title>找不到页面</title>
+</head>
+<body>
 
-<script>
-var posts =
-{
-{% for post in site.posts %} {% if post.thread %}
-"{{ post.thread }}" : "{{ post.url }}",{% endif %}{% endfor %}
-};
+<img src="/assets/themes/twitter/bootstrap/img/d80c29801a99db95bd3e1ef1.gif" width="255" height="400" />
+<p>
+发生了点意外，访问的页面找不到...<br />
+&nbsp;<br />
+404 not found...
+</p>
 
-var path = location.pathname;
-if(path.charAt(path.length - 1) == '/') path = path.substring(0, path.length - 1);
-var name = path.substring(path.lastIndexOf('/') + 1);
-var url = posts[name];
-if (url)
-{
-	document.write("您访问的文章已经转移到新网址，正在为您转跳到 <a href=" + url + ">" + url + "</a>");
-	location.href = url;
-}
-else
-{
-	document.write("文章或附件未找到，请转到 <a href='/categories'>分类</a> 或返回 <a href='/'>首页</a>。如有问题请联系 <a href='mailto:{{ site.email }}'>{{ site.email }}</a><iframe scrolling='no' frameborder='0' src='http://yibo.iyiyun.com/js/yibo404/key/7349' width='640' height='462' style='display:block;'></iframe>");
-}
-</script>
+</body>
+</html>
