@@ -19,11 +19,8 @@ Write a function to determine if a given target is in the array.
 
 ## AC代码
 <pre class="prettyprint linenums">
-
-    #include <iostream>
-    
-    using namespace std;
-    
+    #include "iostream"  
+    using namespace std;  
     bool search(int A[], int n, int target)
     {
         	int left = 0;
