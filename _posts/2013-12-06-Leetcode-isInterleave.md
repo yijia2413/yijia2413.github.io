@@ -26,6 +26,7 @@ When `s3 = "aadbbbaccc"`, return `false`.
 [好方法介绍](http://blog.csdn.net/sunbaigui/article/details/8980830)
 
 ## AC代码
+<pre class="prettyprint linenums">
 
     #include <iostream>
     #include <string>
@@ -85,8 +86,10 @@ When `s3 = "aadbbbaccc"`, return `false`.
         
         	return 0;
     }
+</pre>
     
 ## 关于读取包含空格的string
+<pre class="prettyprint linenums">
 可以用`getline`，示例如下：
 
     #include <iostream>
@@ -105,4 +108,4 @@ When `s3 = "aadbbbaccc"`, return `false`.
         	cout<<endl<<s1<<endl<<s2<<endl<<s3<<endl;
         	return 0;
     }
-        
+</pre>

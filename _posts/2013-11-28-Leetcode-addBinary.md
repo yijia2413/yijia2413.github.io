@@ -23,6 +23,7 @@ For example,
 [好方法介绍](http://fisherlei.blogspot.com/2013/01/leetcode-add-binary.html)
 
 ## AC代码
+<pre class="prettyprint linenums">
 
     #include <iostream>
     #include <cstdio>
@@ -84,4 +85,4 @@ For example,
         	return 0;
     
     }
-    
+</pre>

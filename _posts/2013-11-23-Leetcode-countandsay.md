@@ -27,6 +27,8 @@ n=1时输出字符串1；n=2时，数上次字符串中的数值个数，因为�
 6.  Consider the numbers as integers for simplicity. e.g. if previous string is "10 1" then the next will be "1 10 1 1" and the next one will be "1 1 1 10 2 1"
 
 ## AC代码
+<pre class="prettyprint linenums">
+//so,here is the code
 
     #include <iostream>
     #include <cstdio>
@@ -78,3 +80,4 @@ n=1时输出字符串1；n=2时，数上次字符串中的数值个数，因为�
         
         	return 0;
     }
+</code>

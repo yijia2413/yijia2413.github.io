@@ -18,6 +18,7 @@ Would this affect the run-time complexity? How and why?
 Write a function to determine if a given target is in the array.
 
 ## AC代码
+<pre class="prettyprint linenums">
 
     #include <iostream>
     
@@ -66,3 +67,4 @@ Write a function to determine if a given target is in the array.
         
         	return 0;
     }
+</pre>
