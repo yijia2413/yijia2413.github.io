@@ -1,94 +1,56 @@
 ---
-layout: qqq
-
-title: 一小佳 | 该尽便须尽，勿复独多虑
+layout: page
+title: 首页
 ---
-{% include JB/setup %}
 
-{% for post in paginator.posts %}
-<h1><a href="{{ post.url }}">{{ post.title }}</a></h1>
-<div class="indexa">
-    <ul>
-      <li class="iconfill"></li>
-      <li class="indexicon"><i class="icon-time"></i></li>
-      <li>{{ post.date | date: "%Y-%m-%d %H:%M:%S" }}</li>
-    </ul> 
-
-    {% unless page.categories == empty %}  
-    <ul > 
-      <li class="iconfill"></li>
-      <li class="indexicon"><i class="icon-folder-open"></i></li>
-      {% assign categories_list = post.categories %}
-      {% include JB/categories_list %}
-    </ul> 
-    {% endunless %}   
-   
-    {% unless post.tags == empty %}      
-    <ul >
-      <li class="iconfill"></li>
-      <li class="indexicon"><i class="icon-tags"></i></li>
-      {% assign tags_list = post.tags %}
-      {% include JB/tags_list %}
-    </ul>
-    {% endunless %}  
-
-    <ul>
-      <li class="iconfill"></li>
-      <li class="indexicon"><i class="icon-comment"></i></li> 
-    
-
-   <script type="text/javascript">
-/* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
-var disqus_shortname = 'dandelionslife'; // required: replace example with your forum shortname
-
-/* * * DON'T EDIT BELOW THIS LINE * * */
-(function () {
-var s = document.createElement('script'); s.async = true;
-s.type = 'text/javascript';
-s.src = 'http://' + disqus_shortname + '.disqus.com/count.js';
-(document.getElementsByTagName('HEAD')[0] || document.getElementsByTagName('BODY')[0]).appendChild(s);
-}());
-</script>
-
-    <li><a href="{{ post.url }}#disqus_thread">Link</a></li>
-   </ul>
+<div class="row">
+  <div class="col-md-6">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="panel panel-primary">
+          <div class="panel-heading">最新博客文章</div>
+          {% for post in paginator.posts %}
+            {% if post.category == "博客" %}
+              <a  href='{{ post.url }}' class="list-group-item pjaxlink">
+                {{post.title}}
+              </a>
+            {% endif %}
+          {% endfor %}
+        </div>
+      </div>
+      <div class="col-md-12">
+        <div class="panel panel-primary">
+          <div class="panel-heading">Python</div>
+          {% for tag in site.tags %} 
+            {% if tag[0] == 'Python' %}
+              {% for post in tag[1] %}
+                <a  href='{{ post.url }}' class="list-group-item pjaxlink">
+                  {{post.title}}
+                </a>
+              {% endfor %}
+            {% endif %}
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-6">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="panel panel-primary">
+          <div class="panel-heading">OpenStack</div>
+          {% for tag in site.tags %} 
+            {% if tag[0] == 'OpenStack' %}
+              {% for post in tag[1] %}
+                <a  href='{{ post.url }}' class="list-group-item pjaxlink">
+                  {{post.title}}
+                </a>
+              {% endfor %}
+            {% endif %}
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
-
-{{ post.content | split: '<!-- more -->' | first }}<p class="readmore"><a href="{{ post.url }}#more">
-   <i class="icon-readmore"></i>
-阅读全文 →</a></p>
-<hr>
-{% endfor %}
-<br>
-
-<div class="pages">
-  <!--Page: {{ paginator.page }} of {{ paginator.total_pages }}-->
-  {% if paginator.previous_page %}
-  {% if paginator.previous_page == 1 %}
-  <a href="/"><span>上一页</span></a>
-  {% else %}
-  <a href="/page{{ paginator.previous_page }}"><span>上一页</span></a>
-  {% endif %}
-  {% else %}
-  <span>上一页</span>
-  {% endif %}
-  {% if paginator.page == 1 %}
-  <span class="pageload"> 1</span>
-  {% else %}
-  <a href="/"><span >1</span></a>
-  {% endif %}
-  {% for count in (2..paginator.total_pages) %}
-  {% if count == paginator.page %}
-  <span class="pageload">{{ count }}</span>
-  {% else %}
-  <a href="/page{{ count }}"><span>{{ count }}</span></a>
-  {% endif %}
-  {% endfor %}
-  {% if paginator.next_page %}
-  <a href="/page{{ paginator.next_page }}"><span>下一页</span></a>
-  {% else %}
-  <span>下一页</span>
-  {% endif %}
-  <br>
-
-
+ 
