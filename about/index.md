@@ -40,13 +40,13 @@ comments: no
 
 Name：[{{ site.name }}]({{ site.url }})
 
-Email：[点击发送](mailto:{{ site.email }})
+Email：[Click to Send](mailto:{{ site.email }})
 
-GitHub : [访问我的github主页](http://github.com/{{ site.github }})
+GitHub : [Visit My Github](http://github.com/{{ site.github }})
 
 ----
 
-<iframe width="60%" height="120" class="share_self"  frameborder="0" scrolling="no" src="http://widget.weibo.com/weiboshow/index.php?language=&width=0&height=550&fansRow=2&ptype=1&speed=0&skin=1&isTitle=1&noborder=1&isWeibo=0&isFans=0&uid=2112036430&verifier=8b709c27&dpc=1"></iframe>
+<iframe width="70%" height="120" class="share_self"  frameborder="0" scrolling="no" src="http://widget.weibo.com/weiboshow/index.php?language=&width=0&height=550&fansRow=2&ptype=1&speed=0&skin=1&isTitle=1&noborder=1&isWeibo=0&isFans=0&uid=2112036430&verifier=8b709c27&dpc=1"></iframe>
 
 
 
