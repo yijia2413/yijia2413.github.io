@@ -36,7 +36,6 @@ The number of ways decoding `"12"` is `2`.
 
 ## AC代码
 <pre class="prettyprint linenums">
-
     #include <iostream>
     #include <cstdio>
     #include <string>
