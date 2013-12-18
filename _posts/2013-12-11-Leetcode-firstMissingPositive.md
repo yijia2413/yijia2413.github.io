@@ -28,6 +28,7 @@ Your algorithm should run in `O(n)` time and uses constant space.
 这样总能把所有正数in position。
 
 ## AC代码
+<pre class="prettyprint linenums">
 
     #include <iostream>
     #include <cstdio>
@@ -67,4 +68,4 @@ Your algorithm should run in `O(n)` time and uses constant space.
         	cout<<firstMissingPositive(A,n)<<endl;
         	return 0;
     }
-    
+</pre>

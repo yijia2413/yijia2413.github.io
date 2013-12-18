@@ -18,7 +18,8 @@ tags: Leetcode
 *   判断`A[i] == A[num - 1] && A[i] == A[num -2])`就不难了。
 
 ## AC代码
-
+<pre class="prettyprint linenums">
+//so,here is the code.
     #include <iostream>
     #include <cstdio>
     
@@ -50,3 +51,4 @@ tags: Leetcode
         	cout<<removeDuplicates(A,n)<<endl;
         	return 0;
     }
+</pre>

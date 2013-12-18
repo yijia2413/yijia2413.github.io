@@ -6,9 +6,10 @@ thread: 225
 categories: summary
 tags: 读书
 ---
-[源地址](https://github.com/yijia2413/free-programming-books-zh_CN)
+![images](http://media-cache-ak0.pinimg.com/736x/3b/c3/41/3bc34141478fcb0fdd99ba18c8f7cc81.jpg)
+__[源地址](https://github.com/yijia2413/free-programming-books-zh_CN)__
 
-我只是大自然的搬运工～
+__我只是大自然的搬运工～__
 
 免费的编程中文书籍索引
 ============================

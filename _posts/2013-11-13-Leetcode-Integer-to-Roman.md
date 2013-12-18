@@ -12,6 +12,7 @@ Given an integer, convert it to a roman numeral.
 Input is guaranteed to be within the range from 1 to 3999.
 
 ###AC代码
+<pre class="prettyprint linenums">
 		class Solution {
 		public:
 		    int romanToInt(string s) {
@@ -43,3 +44,4 @@ Input is guaranteed to be within the range from 1 to 3999.
 			return result;  
 		    }
 		};
+</pre>

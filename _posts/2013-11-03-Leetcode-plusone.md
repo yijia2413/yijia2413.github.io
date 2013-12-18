@@ -10,8 +10,8 @@ tags: Leetcode
 *   Given a number represented as an array of digits, plus one to the number.
 
 ###AC代码
-<pre class="prettyprint">
-    
+<pre class="prettyprint linenums">
+
     #include <iostream>
     #include <cstdio>
     #include <vector>

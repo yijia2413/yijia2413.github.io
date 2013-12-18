@@ -22,6 +22,7 @@ For the purpose of this problem, we define empty string as valid palindrome.
 双指针，扫描。需要用到一些库函数。
 
 ## AC代码
+<pre class="prettyprint linenums">
 
     #include <iostream>
     #include <cstdio>
@@ -76,4 +77,4 @@ For the purpose of this problem, we define empty string as valid palindrome.
         
         	return 0;
     }
-    
+</pre>

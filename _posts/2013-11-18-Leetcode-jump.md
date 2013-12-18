@@ -19,7 +19,8 @@ tags: Leetcode
 *   The minimum number of jumps to reach the last index is 2. (Jump 1 step from index 0 to 1, then 3 steps to the last index.)
 
 ###AC代码
-
+<pre class="prettyprint linenums">
+//here is the code
     #include <iostream>
     #include <cstdio>
     
@@ -52,3 +53,4 @@ tags: Leetcode
         	return 0;
     }
 
+</pre>

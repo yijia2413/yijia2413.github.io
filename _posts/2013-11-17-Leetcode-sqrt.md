@@ -14,7 +14,7 @@ tags: Leetcode
 </ul>
 
 ##代码
-
+<pre class="prettyprint linenums">
 最早想到的当然是二分法了……直接上代码……
 
 	 #include <iostream>
@@ -82,7 +82,7 @@ tags: Leetcode
 	    return j;
 	 }
 	 
-
+</pre>
  
 ##牛顿迭代法
 
@@ -110,7 +110,7 @@ tags: Leetcode
 
 
 有了迭代公式，程序就好写了。关于牛顿迭代法，可以参考`wikipedia`以及百度百科。
-
+<pre class="prettyprint linenums">
 	int sqrt(int x) {
 	    if (x == 0) return 0;
 	    double last = 0;
@@ -122,7 +122,7 @@ tags: Leetcode
 	    }
 	    return int(res);
 	}
-	 
+</pre>	 
  
 同样，`double`也适用
 

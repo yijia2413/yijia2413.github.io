@@ -12,6 +12,7 @@ tags: Leetcode
 Divide two integers without using multiplication, division and mod operator.
 
 ## AC代码
+<pre class="prettyprint linenums">
 
     #include <iostream>
     #include <cstdio>
@@ -84,4 +85,4 @@ Divide two integers without using multiplication, division and mod operator.
         
         	return 0;
     }
-    
+</pre>

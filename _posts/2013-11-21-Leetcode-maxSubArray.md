@@ -18,7 +18,8 @@ tags: Leetcode
 *   话说，我还真的很想知道后台的判题程序是怎么跑的。研究下哈~
 
 ## AC代码
-
+<pre class="prettyprint linenums">
+//here is the code
     #include <iostream>
     #include <cstdio>
     
@@ -52,3 +53,4 @@ tags: Leetcode
         	return 0;
     }
     
+</pre>

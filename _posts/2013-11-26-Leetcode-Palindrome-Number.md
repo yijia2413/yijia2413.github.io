@@ -24,6 +24,7 @@ There is a more generic way of solving this problem.
 取首位和末位比较，然后去掉。循环即可。
 
 ## AC代码
+<pre class="prettyprint linenums">
 
     #include <iostream>
     #include <cstdio>
@@ -75,3 +76,4 @@ There is a more generic way of solving this problem.
         #endif
     
     }
+</pre>
