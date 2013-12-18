@@ -2,8 +2,8 @@
 date: 2013-11-03 16:54:12+00:00
 layout: post
 title: Leetcode-plusone
-categories: Leetcode
-tags: Leetcode
+categories: mood
+tags: [Leetcode, x]
 ---
 ###题目描述
 *   Given a number represented as an array of digits, plus one to the number.
