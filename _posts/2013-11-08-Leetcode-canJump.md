@@ -20,6 +20,7 @@ For example:
 `A = [3,2,1,0,4]`, return `false`.
 
 ###AC代码
+<pre class="prettyprint linenums">
 		class Solution {
 				public:
 				    bool canJump(int A[], int n) {
@@ -37,3 +38,4 @@ For example:
 				    }
 				};
 
+</pre>

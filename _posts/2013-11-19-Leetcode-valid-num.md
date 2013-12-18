@@ -22,6 +22,7 @@ tags: Leetcode
 >用while(cin>>s)不能遇到空格，用gets会报警。
 
 ### AC代码
+<pre class="prettyprint linenums">
 
     #include <iostream>
     #include <cstdio>
@@ -152,4 +153,4 @@ tags: Leetcode
         
         	return 0;
     }
-    
+</pre>    

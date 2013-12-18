@@ -26,6 +26,7 @@ Did you notice that the reversed integer might overflow? Assume the input is a 3
 Throw an exception? Good, but what if throwing an exception is not an option? You would then have to re-design the function (ie, add an extra parameter).
 
 ###AC代码
+<pre class="prettyprint linenums">
 		class Solution {
 		    public: int reverse(int x) {
 			// Note: The Solution object is instantiated only once and is reused by each test case.
@@ -46,3 +47,4 @@ Throw an exception? Good, but what if throwing an exception is not an option? Yo
 		    }
 		};
 
+</pre>

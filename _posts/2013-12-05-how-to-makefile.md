@@ -6,13 +6,14 @@ thread: 203
 categories: Blog
 tags: linux
 ---
+![images](http://media-cache-ec0.pinimg.com/736x/66/60/70/666070c535e8d196b7166baa0e055bf2.jpg)
 ##什么是makefile
 不拉不啦，这个明白很重要，重要性啥的就不写了，简单记录如何操作～
 
 对了，在 Makefile 中的命令,必须要以Tab键开始
 
 ##makefile自动推导写法
-
+<pre class="prettyprint linenums">
     objects = client.o server.o isk.h
     edit : $(objects)
         cc -o edit $(objects)
@@ -21,6 +22,8 @@ tags: linux
     .PHONY : clean
     clean :
         rm edit $(objects)
+        
+</pre>
 这种方法，也就是make的“隐晦规则”。上面文件内容中，“.PHONY”表示，clean是个伪目标文件。
 
 ##清空目标文件的规则
@@ -50,11 +53,12 @@ tags: linux
 
 ##静态模式
 看一个例子:
-
+<pre class="prettyprint linenums">
     objects = foo.o bar.o
     all: $(objects)
     $(objects): %.o: %.c
         $(CC) -c $(CFLAGS) $< -o $@
+</pre>
 
 上面的例子中,指明了我们的目标从`$object` 中获取,“%.o”表明要所有以“.o”结尾的目标,也就是“foo.o bar.o”,也就是变量$object 集合的模式,而依赖模式“%.c”则取模式“%.o”的“%”,也就是“foo bar”,并为其加下“.c”的后缀,于是,我们的依赖目标就是“foo.c bar.c”。而命令中的“$<”和“$@”则是自动化变量,“$<”表示所有的依赖目标集(也就是“foo.c bar.c”),“$@”表示目标集(也就是“foo.o bar.o”)
 

@@ -31,6 +31,7 @@ __[参考代码](http://blog.csdn.net/pickless/article/details/9191075)__
 
 
 ## AC代码
+<pre class="prettyprint linenums">
 
     #include <iostream>
     
@@ -77,3 +78,5 @@ __[参考代码](http://blog.csdn.net/pickless/article/details/9191075)__
         	cout<<search(A, n, target)<<endl;
         	return 0;
     }
+    
+</pre>

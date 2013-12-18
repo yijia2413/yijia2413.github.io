@@ -22,6 +22,7 @@ Here are few examples.
 [1,3,5,6], 0 → 0
 
 ###AC代码
+<pre class="prettyprint linenums">
 		class Solution {
 		public:
 		    int searchInsert(int A[], int n, int target) {
@@ -35,3 +36,4 @@ Here are few examples.
 		    return n;
 		    }
 		};
+</pre>

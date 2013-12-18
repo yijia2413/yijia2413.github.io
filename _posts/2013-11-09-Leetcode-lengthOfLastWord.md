@@ -21,6 +21,7 @@ return `5`.
 
 ###AC代码
 请看：
+<pre class="prettyprint linenums">
 		class Solution {
 				public:
 				    bool ischar(char p)
@@ -43,3 +44,4 @@ return `5`.
 				    	return end - begin;
 				    }
 				};		
+</pre>
