@@ -2,7 +2,7 @@
 date: 2012-08-20 17:48:10+00:00
 layout: post
 title: mb860入手体验
-category : Phone
+category : blog
 tags : [mb860]
 ---
 

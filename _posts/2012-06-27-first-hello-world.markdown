@@ -2,7 +2,7 @@
 date: 2012-06-27 05:10:27+00:00
 layout: post
 title: 第一个hello world
-category : mood
+category : summary
 tags : [ios, xcode]
 ---
 
