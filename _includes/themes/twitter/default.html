@@ -1,0 +1,118 @@
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <script type="text/javascript" src="{{ ASSET_PATH }}/js/jquery-1.8.2.min.js"></script>
+  <script type="text/javascript" src="{{ ASSET_PATH }}/js/menu_min.js"></script>
+  <script src="{{ ASSET_PATH }}/js/jquery.mCustomScrollbar.concat.min.js"></script>
+  <script type="text/javascript" src="{{ ASSET_PATH }}/js/run_prettify.js"></script>
+  <script type="text/javascript" src="{{ ASSET_PATH }}/js/jquery.mousewheel-3.0.6.pack.js"></script>
+  <script type="text/javascript" src="{{ ASSET_PATH }}/js/jquery.fancybox.js?v=2.1.5"></script>
+  <link href="{{ ASSET_PATH }}/css/jquery.fancybox.css?v=2.1.5" rel="stylesheet" />
+  <link href="{{ ASSET_PATH }}/css/jquery.mCustomScrollbar.css" rel="stylesheet" />
+  <link href="{{ ASSET_PATH }}/css/sons-of-obsidian.css" rel="stylesheet">
+  <link href="{{ ASSET_PATH }}/bootstrap/css/bootstrap.2.2.2.min.css" rel="stylesheet">
+  <link href="{{ ASSET_PATH }}/css/style.css?body=1" rel="stylesheet" type="text/css" media="all">
+  <style>
+    body{margin:0; padding:0; color:#eee; background:#222; font-family:Verdana,Geneva,sans-serif; font-size:13px; line-height:20px;min-width: 1365px;}
+    .he{font-family:Georgia,serif; font-size:23px; font-style:italic; margin:20px 146px 20px 145px; color:#26beff; clear:both;
+     }
+     
+    h4{font-family:Georgia,serif; font-size:15px; font-style:italic; margin:-36px 146px 20px 300px; color:#37c4fc; clear:both;
+    text-shadow: 3px 5px 10px rgba(52, 123, 213, 0.69);}
+    p{margin:0 0 20px 0;
+    }
+    .footl {float:left;
+    }
+    .footr {float:right;
+    }
+    .oo {height:0; border:none; border-bottom:1px solid rgba(255,255,255,0.13); border-top:1px solid rgba(0,0,0,1); margin:2px 144px 2px 144px; clear:both;min-width: 1070px;}
+    .content{margin:40px 24px; width:265px; height:430px; padding:10px 0px 10px 6px; overflow:hidden; float:left; background:#282828; -webkit-border-radius:3px; -moz-border-radius:3px; border-radius:3px;
+       box-shadow: 10px 12px 14px rgb(20, 20, 20);}
+    .content:hover{background:#333;}
+    #qq{width:716px;padding:10px 6px 10px 20px;}
+    .all{margin-left:126px;}
+    .fancybox-custom .fancybox-skin {
+     box-shadow: 0 0 50px #222;
+    }
+    .footer{margin:20px 144px 20px 144px; clear:both;min-width: 1070px;
+      min-height: 10px;}
+ </style>
+ <script type="text/javascript">
+  (function($){
+   $(window).load(function(){
+    $(".content").mCustomScrollbar();
+  });
+ })(jQuery);	
+//分类导航
+$(document).ready(function (){ 
+  $(".menu ul li").menu(); 
+}); 
+//图片缩放
+$(document).ready(function() {
+ $('.fancybox').fancybox();
+});
+</script>
+<title>{{ page.title }}</title>
+</head>
+<body>
+  <h1 class="he"><a href="http://fewspider.github.io/">蒲公英の生活</a></h1>
+  <h4>心若没有栖息的地方，到哪里都是在流浪</h4>
+  <hr class="oo" />
+  <div class="all">
+    <div class="content">
+      <div class="menu">	
+        <ul>
+         <li><a href="#"><span class="www">简介</span></a> 
+           <ul id="aa">
+            <div class="bio">
+              <img src="/assets/themes/twitter/bootstrap/img/bio.jpeg" width="80" height="80" /><br />
+              <br />
+              <div style="margin-top:-14px;">
+              Hi~ o(*￣▽￣*)ブ
+              <br />
+              我是fewspider
+              <br />
+              网名 蒲公英の生活
+              <br />
+              你也可以叫我蒲公英酱^ ^
+              <br />
+              这是我的个人博客 (节操残存
+              <br>
+              </div>
+              <div class="social">
+                 <a target="_blank" href="https://twitter.com/fewspider"><img style="position:absolute;margin:4px 0px 0px -36px;-webkit-box-reflect: below 3px -webkit-gradient(linear, 0 0, 0 100%, from(transparent), color-stop(.7, transparent), to(white));" src="/assets/themes/twitter/bootstrap/img/twitter.png" width="25" height="25" ></a>
+                 <a target="_blank" href="https://www.facebook.com/fewspider"><img style="position:absolute;margin:-22px 0px 0px 0px;-webkit-box-reflect: below 3px -webkit-gradient(linear, 0 0, 0 100%, from(transparent), color-stop(.7, transparent), to(white));" src="/assets/themes/twitter/bootstrap/img/facebook.png" width="25" height="25" ></a>
+                 <a target="_blank" href="http://instagram.com/fewspider"><img style="position:absolute;margin:-50px 0px 0px 36px;-webkit-box-reflect: below 0px -webkit-gradient(linear, 0 0, 0 100%, from(transparent), color-stop(.7, transparent), to(white));" src="/assets/themes/twitter/bootstrap/img/instagram.png" width="28" height="28" ></a>
+                 <a target="_blank" href="http://weibo.com/dandelionslife"><img style="position:absolute;margin:-76px 0px 0px 72px;-webkit-box-reflect: below 3px -webkit-gradient(linear, 0 0, 0 100%, from(transparent), color-stop(.7, transparent), to(white));" src="/assets/themes/twitter/bootstrap/img/weibo.png" width="25" height="25" ></a>
+                 <a target="_blank" href="https://foursquare.com/fewspider"><img style="position:absolute;margin:-102px 0px 0px 108px;-webkit-box-reflect: below 3px -webkit-gradient(linear, 0 0, 0 100%, from(transparent), color-stop(.7, transparent), to(white));" src="/assets/themes/twitter/bootstrap/img/foursquare.png" width="25" height="25" ></a>
+                 <a target="_blank" href="mailto:fewspider@gmail.com"><img style="position:absolute;margin:-130px 0px 0px 144px;-webkit-box-reflect: below -1px -webkit-gradient(linear, 0 0, 0 100%, from(transparent), color-stop(.6, transparent), to(white));" src="/assets/themes/twitter/bootstrap/img/gmail.png" width="27" height="27" ></a>
+              </div>
+            </div>
+          </ul>	</li>
+          {% for category in site.categories %}
+          <li><a href="#"><span class="www">{{ category[0] | join: "/" }}</span></a>
+            <ul style="display: none;">
+              {% assign pages_list = category[1] %}  
+              {% include JB/pages_list %}
+            </ul>				
+          </li>
+          {% endfor %}
+        </ul>
+      </div>
+    </div>
+    <!-- content block -->
+    <div class="content" id="qq">
+      <div class="wenz">
+        {{ content }}
+      </div>
+    </div>
+  </div>
+</div>
+<hr class="oo" />
+<div class="footer">
+  <span class="footl">
+  <a href="/atom.xml" target="_blank" >Rss</a>&nbsp;&nbsp;&nbsp; ¦&nbsp;&nbsp;&nbsp;<a href="/sitemap.txt" target="_blank" >Sitemap</a></span>
+  <span class="footr">Copyright © 2013-2016&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Theme by&nbsp;fewspider  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  Powered by&nbsp; <a href="http://jekyllrb.com/" target="_blank" >Jekyll</a></span>
+</div>
+</body>
+</html>
