@@ -26,6 +26,7 @@ tags: Leetcode
 *   还有一个问题就是`unique triplet`,所以`a=a[i]`要判断是否和`a[i-1]`相等,若相等子问题已经解答。也要判断b和c是否和之前的相同，若相同，就已经判断过了。
 
 ## AC代码
+<pre class="prettyprint linenums">
 
     #include <iostream>
     #include <cstdio>
@@ -115,4 +116,4 @@ tags: Leetcode
         	return 0;
     }
     
-    
+</pre>

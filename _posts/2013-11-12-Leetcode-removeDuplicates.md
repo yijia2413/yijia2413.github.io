@@ -18,6 +18,7 @@ Given input array `A = [1,1,2]`,
 Your function should return `length = 2`, and A is now `[1,2]`.
 
 ###AC代码
+<pre class="prettyprint linenums">
 		class Solution {
 		public:
 		    int removeDuplicates(int A[], int n) {
@@ -38,3 +39,4 @@ Your function should return `length = 2`, and A is now `[1,2]`.
 		    }
 		};
 
+</pre>

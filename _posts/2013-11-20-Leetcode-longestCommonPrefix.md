@@ -13,6 +13,7 @@ tags: Leetcode
 *   求所有串的最长公共前缀,枚举每个位置.danteng的是不知道如何设计输入和输出，之后一定补上。
 
 ## AC代码
+<pre class="prettyprint linenums">
 <code>here</code>
 
     string longestCommonPrefix(vector<string> &strs)
@@ -43,3 +44,4 @@ tags: Leetcode
             }
         return strs[0].substr(0,min_len);
     }
+</pre>

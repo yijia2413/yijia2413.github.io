@@ -15,6 +15,7 @@ Note:
 You may assume that A has enough space to hold additional elements from B. The number of elements initialized in A and B are m and n respectively.
 
 ###代码
+<pre class="prettyprint linenums">
 		class Solution {
 		public:
 		    void merge(int A[], int m, int B[], int n) {
@@ -30,3 +31,4 @@ You may assume that A has enough space to hold additional elements from B. The n
 		    }
 		};
 
+</pre>

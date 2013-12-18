@@ -35,6 +35,7 @@ The number of ways decoding `"12"` is `2`.
 
 
 ## AC代码
+<pre class="prettyprint linenums">
 
     #include <iostream>
     #include <cstdio>
@@ -97,4 +98,4 @@ The number of ways decoding `"12"` is `2`.
         
         	return 0;
     }
-    
+</pre>
