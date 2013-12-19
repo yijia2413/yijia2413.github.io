@@ -2,7 +2,7 @@
 layout: post
 title: Leetcode-Merge Sorted Array 
 description: http://oj.leetcode.com/problems/merge-sorted-array/
-category: Project
+category: 代码
 tags: Leetcode
 ---
 

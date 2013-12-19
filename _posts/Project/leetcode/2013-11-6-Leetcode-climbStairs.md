@@ -2,7 +2,7 @@
 layout: post
 title: Leetcode-Climbing Stairs 
 description: http://oj.leetcode.com/problems/climbing-stairs/
-category: Project
+category: 代码
 tags: Leetcode
 ---
 

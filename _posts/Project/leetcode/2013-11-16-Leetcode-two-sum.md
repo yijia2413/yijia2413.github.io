@@ -2,7 +2,7 @@
 layout: post
 title: Leetcode-Two Sum
 description: http://oj.leetcode.com/problems/two-sum/
-category: Project
+category: 代码
 tags: Leetcode
 ---
 ###题目描述

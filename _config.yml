@@ -6,9 +6,9 @@ author:
   link: http://yijia2413.github.io/
 title: 一小佳
 locals:
-  tags: tags
-  about: about
-active: blog
+  tags: 标签
+  about: 关于
+active: 博客
 subscribe_rss: /pages/atom.xml
 markdown: redcarpet
 

@@ -2,7 +2,7 @@
 layout: post
 title: Leetcode-Valid Number  
 description: http://oj.leetcode.com/problems/valid-number/
-category: Project
+category: 代码
 tags: Leetcode
 ---
 ### 题目描述

@@ -10,7 +10,7 @@ title: 首页
         <div class="panel panel-primary">
           <div class="panel-heading">最新博客文章</div>
           {% for post in paginator.posts %}
-            {% if post.category == "blog" %}
+            {% if post.category == "博客" %}
               <a  href='{{ post.url }}' class="list-group-item pjaxlink">
                 {{post.title}}
               </a>

@@ -2,7 +2,7 @@
 layout: post
 title: Leetcode-Interleaving String
 description: http://oj.leetcode.com/problems/interleaving-string/
-category: Project
+category: 代码
 tags: Leetcode
 ---
 ![images](http://media-cache-ec0.pinimg.com/736x/16/a2/5e/16a25ec12fed836e821f3dbe715507c4.jpg)

@@ -2,7 +2,7 @@
 layout: post
 title: Leetcode-Longest Substring
 description: http://oj.leetcode.com/problems/longest-substring-without-repeating-characters/
-category: Project
+category: 代码
 tags: Leetcode
 ---
 ![images](http://media-cache-cd0.pinimg.com/736x/a9/fe/80/a9fe8055ad1f51763dfac85ed4241b64.jpg)

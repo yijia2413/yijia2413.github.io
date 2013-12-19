@@ -1,7 +1,7 @@
 ---
 layout: post
 title: 简单学习makefile
-category: Blog
+category: 博客
 tags: 语法
 description: makefile究竟有多重要，在linux下开发你就知道了。
 ---

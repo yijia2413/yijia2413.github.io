@@ -2,7 +2,7 @@
 layout: post
 title: Leetcode-Jump Game II 
 description: http://oj.leetcode.com/problems/jump-game-ii/
-category: Project
+category: 代码
 tags: Leetcode
 ---
 ###题目描述
