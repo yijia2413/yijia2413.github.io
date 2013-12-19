@@ -2,7 +2,7 @@
 layout: post
 title: Leetcode-Divide Two Integers
 description: http://oj.leetcode.com/problems/divide-two-integers/
-category: Project
+category: 代码
 tags: Leetcode
 ---
 ![images](http://media-cache-ec0.pinimg.com/736x/ba/2b/80/ba2b8086d38b4eb02b15dca8cfff03ae.jpg)

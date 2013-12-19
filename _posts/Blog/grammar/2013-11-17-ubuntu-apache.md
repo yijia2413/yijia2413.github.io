@@ -1,7 +1,7 @@
 ---
 layout: post
 title: ubuntu下apache的配置
-category: Blog
+category: 博客
 tags: 语法
 description: ubuntu下配置apache，最主要是根目录的修改。
 ---

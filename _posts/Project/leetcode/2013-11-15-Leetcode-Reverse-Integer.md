@@ -2,7 +2,7 @@
 layout: post
 title: Leetcode-Reverse Integer 
 description: http://oj.leetcode.com/problems/reverse-integer/
-category: Project
+category: 代码
 tags: Leetcode
 ---
 ###题目描述

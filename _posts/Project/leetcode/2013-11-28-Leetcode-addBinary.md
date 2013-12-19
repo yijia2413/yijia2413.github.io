@@ -2,7 +2,7 @@
 layout: post
 title: Leetcode-Add Binary 
 description: http://oj.leetcode.com/problems/add-binary/
-category: Project
+category: 代码
 tags: Leetcode
 ---
 ## 题目描述

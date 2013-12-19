@@ -2,7 +2,7 @@
 layout: post
 title: Leetcode-sqrt(x)
 description: 利用二分搜索求解题目，是简单的做法。但是还有更简单的哦～
-category: Project
+category: 代码
 tags: Leetcode
 ---
 

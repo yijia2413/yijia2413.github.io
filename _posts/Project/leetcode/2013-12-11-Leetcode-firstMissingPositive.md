@@ -2,7 +2,7 @@
 layout: post
 title: Leetcode-First Missing Positive
 description: http://oj.leetcode.com/problems/first-missing-positive/
-category: Project
+category: 代码
 tags: Leetcode
 ---
 ![images](http://media-cache-ec0.pinimg.com/736x/fe/f1/52/fef1527eca10c51614588e70d98f79dd.jpg)

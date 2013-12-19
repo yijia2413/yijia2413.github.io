@@ -2,7 +2,7 @@
 layout: post
 title: Leetcode-Search Rotated Array 
 description: http://oj.leetcode.com/problems/search-in-rotated-sorted-array/
-category: Project
+category: 代码
 tags: Leetcode
 ---
 `“生命中最伟大的光辉不在于永不坠落，而是坠落后总能再度升起。”`——曼德拉，《漫漫自由路》

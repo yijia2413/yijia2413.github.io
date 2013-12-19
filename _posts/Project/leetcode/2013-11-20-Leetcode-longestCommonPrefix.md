@@ -2,7 +2,7 @@
 layout: post
 title: Leetcode-Longest Common Prefix 
 description: http://oj.leetcode.com/problems/longest-common-prefix/
-category: Project
+category: 代码
 tags: Leetcode
 ---
 ## 题目描述

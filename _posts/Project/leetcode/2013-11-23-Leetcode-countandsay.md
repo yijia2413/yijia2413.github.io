@@ -2,7 +2,7 @@
 layout: post
 title: Leetcode-Count and Say 
 description: http://oj.leetcode.com/problems/count-and-say/
-category: Project
+category: 代码
 tags: Leetcode
 ---
 ## 题目描述

@@ -2,7 +2,7 @@
 layout: post
 title: Leetcode-Maximum Subarray  
 description: http://oj.leetcode.com/problems/maximum-subarray/
-category: Project
+category: 代码
 tags: Leetcode
 ---
 ## 题目描述

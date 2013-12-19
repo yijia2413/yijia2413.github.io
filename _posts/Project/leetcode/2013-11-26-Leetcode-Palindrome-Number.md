@@ -2,7 +2,7 @@
 layout: post
 title: Leetcode-Palindrome Number 
 description: http://oj.leetcode.com/problems/palindrome-number/
-category: Project
+category: 代码
 tags: Leetcode
 ---
 ## 题目描述

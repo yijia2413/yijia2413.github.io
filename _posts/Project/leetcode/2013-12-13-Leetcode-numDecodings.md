@@ -2,7 +2,7 @@
 layout: post
 title: Leetcode-Decode Ways 
 description: http://oj.leetcode.com/problems/decode-ways/
-category: Project
+category: 代码
 tags: Leetcode
 ---
 恩哼，看完图片记得看正文啊～
