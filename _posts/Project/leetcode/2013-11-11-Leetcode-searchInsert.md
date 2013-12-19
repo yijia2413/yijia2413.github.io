@@ -2,7 +2,7 @@
 layout: post
 title: Leetcode-Search Insert Position 
 description: http://oj.leetcode.com/problems/search-insert-position/
-category: Project
+category: 代码
 tags: Leetcode
 ---
 ###题目描述

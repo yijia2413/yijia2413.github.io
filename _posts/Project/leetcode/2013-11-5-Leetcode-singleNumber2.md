@@ -2,7 +2,7 @@
 layout: post
 title: Leetcode-Single Number II 
 description: http://oj.leetcode.com/problems/single-number-ii/
-category: Project
+category: 代码
 tags: Leetcode
 ---
 

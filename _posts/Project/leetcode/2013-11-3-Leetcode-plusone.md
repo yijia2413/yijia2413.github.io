@@ -1,7 +1,7 @@
 ---
 layout: post
 title: Leetcode-plus One
-category: Project
+category: 代码
 tags: Leetcode
 description: 贪心，http://oj.leetcode.com/problems/plus-one/
 ---

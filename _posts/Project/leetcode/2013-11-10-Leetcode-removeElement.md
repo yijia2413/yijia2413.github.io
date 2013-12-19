@@ -2,7 +2,7 @@
 layout: post
 title: Leetcode-Remove Element
 description: http://oj.leetcode.com/problems/remove-duplicates-from-sorted-array/
-category: Project
+category: 代码
 tags: Leetcode
 ---
 ###题目描述

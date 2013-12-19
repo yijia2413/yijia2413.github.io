@@ -2,7 +2,7 @@
 layout: post
 title: Leetcode-Length of Last Word 
 description: http://oj.leetcode.com/problems/length-of-last-word/
-category: Project
+category: 代码
 tags: Leetcode
 ---
 ###题目描述

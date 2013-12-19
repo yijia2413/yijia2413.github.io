@@ -2,7 +2,7 @@
 layout: post
 title: Leetcode-3Sum
 description: http://oj.leetcode.com/problems/3sum/
-category: Project
+category: 代码
 tags: Leetcode
 ---
 ## 题目描述
