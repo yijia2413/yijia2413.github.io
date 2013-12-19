@@ -2,7 +2,7 @@
 layout: book
 title: 浪潮之巅
 status: reading
-category: 读书
+category: Books
 tags: 
 keywords: 浪潮之巅
 author: 吴军
