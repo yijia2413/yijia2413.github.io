@@ -7,6 +7,7 @@ author:
 title: 一小佳
 locals:
   tags: 标签
+  archive: 归档
   about: 关于
 active: 博客
 subscribe_rss: /pages/atom.xml
