@@ -5,6 +5,7 @@ description: http://oj.leetcode.com/problems/maximum-subarray/
 category: 代码
 tags: Leetcode
 ---
+![img](http://media-cache-ak0.pinimg.com/236x/0a/0f/e7/0a0fe7c211fb1fa2e0c9734682c6f598.jpg)
 ## 题目描述
 *   Find the contiguous subarray within an array (containing at least one number) which has the largest sum.
 *   For example, given the array `[−2,1,−3,4,−1,2,1,−5,4]`,the contiguous subarray `[4,−1,2,1]` has the largest `sum = 6`.

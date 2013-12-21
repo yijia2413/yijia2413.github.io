@@ -5,7 +5,7 @@ description: 利用二分搜索求解题目，是简单的做法。但是还有�
 category: 代码
 tags: Leetcode
 ---
-
+![img](http://media-cache-ak0.pinimg.com/736x/5c/49/37/5c4937dc8b6b615d080b8727990d6555.jpg)
 ##题目描述
 <ul>
 <li>Implement int sqrt(int x).</li>
