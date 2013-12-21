@@ -5,6 +5,7 @@ description: http://oj.leetcode.com/problems/remove-duplicates-from-sorted-array
 category: 代码
 tags: Leetcode
 ---
+![images](http://media-cache-ec0.pinimg.com/236x/4b/b5/64/4bb564854be3ba96a57a9656d558b72a.jpg)
 ###题目描述
 Given a sorted array, remove the duplicates in place such that each element appear only once and return the new length.
 
