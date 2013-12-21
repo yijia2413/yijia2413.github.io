@@ -5,6 +5,7 @@ description: http://oj.leetcode.com/problems/longest-common-prefix/
 category: 代码
 tags: Leetcode
 ---
+![img](http://media-cache-ak0.pinimg.com/236x/82/1c/3d/821c3ddd85d1fe65b36fb3d20f5e295b.jpg)
 ## 题目描述
 *   Write a function to find the longest common prefix string amongst an array of strings.
 

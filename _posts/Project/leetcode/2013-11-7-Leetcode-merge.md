@@ -6,6 +6,7 @@ category: 代码
 tags: Leetcode
 ---
 
+![images](http://media-cache-ec0.pinimg.com/736x/d4/8e/c5/d48ec5081d1abf7c0f3495094b3244c9.jpg)
 ###题目描述
 Given two sorted integer arrays A and B, merge B into A as one sorted array.
 

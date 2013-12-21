@@ -5,6 +5,7 @@ description: http://oj.leetcode.com/problems/two-sum/
 category: 代码
 tags: Leetcode
 ---
+![img](http://media-cache-ak0.pinimg.com/736x/2e/21/d8/2e21d8568529233e902a02398a60a23d.jpg)
 ###题目描述
 Given an array of integers, find two numbers such that they add up to a specific target number.
 

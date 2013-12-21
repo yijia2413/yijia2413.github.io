@@ -5,6 +5,7 @@ description: http://oj.leetcode.com/problems/valid-number/
 category: 代码
 tags: Leetcode
 ---
+![img](http://media-cache-ak0.pinimg.com/736x/e2/74/17/e27417697ede7261aff873706e4c24cd.jpg)
 ### 题目描述
 *   Validate if a given string is numeric.
 *   Some examples:
