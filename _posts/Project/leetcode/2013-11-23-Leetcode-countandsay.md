@@ -5,6 +5,7 @@ description: http://oj.leetcode.com/problems/count-and-say/
 category: 代码
 tags: Leetcode
 ---
+![img](http://media-cache-ak0.pinimg.com/236x/c2/6a/82/c26a827ac95723f5286ac8c346cce79f.jpg)
 ## 题目描述
 *   The count-and-say sequence is the sequence of integers beginning as follows:
 `1, 11, 21, 1211, 111221, ...`

@@ -5,6 +5,7 @@ description: http://oj.leetcode.com/problems/reverse-integer/
 category: 代码
 tags: Leetcode
 ---
+![img](http://media-cache-ec0.pinimg.com/236x/f1/23/d6/f123d66745c311194fe37a6c70cdf85b.jpg)
 ###题目描述
 Reverse digits of an integer.
 
