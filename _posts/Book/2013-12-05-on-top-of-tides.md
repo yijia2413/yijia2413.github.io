@@ -3,7 +3,7 @@ layout: book
 title: 浪潮之巅
 status: read
 category: 读书
-tags: 
+tags: 读书
 keywords: 浪潮之巅
 author: 吴军
 publisher: 电子工业出版社
