@@ -9,6 +9,7 @@ description:
 author: Stephen Prata 
 publisher: 人民邮电出版社
 language: 中文
-link: http://book.douban.com/subject/10789789/
-cover: /public/upload/book/cpp-primer-plus.jpg
+link: http://book.douban.com/subject/3004255/
+cover: /public/upload/book/beautyofprogram.jpg
 ---
+开始阅读啦～
