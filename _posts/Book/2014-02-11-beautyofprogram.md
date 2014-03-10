@@ -6,7 +6,7 @@ category: 读书
 tags: 读书
 keywords: 算法
 description: 
-author: Stephen Prata 
+author: 吴军
 publisher: 人民邮电出版社
 language: 中文
 link: http://book.douban.com/subject/3004255/
