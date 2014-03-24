@@ -14,11 +14,11 @@ description: 如果可以用markdown写写简历，也是很不错的事情哦~�
 
 # 联系方式
 
-*   __E-mail__: 请在Linux的终端输入以下内容查看：
+*   __E-mail__: 请自行提取：
 
     echo eWlqaWEub2tjQGdtYWlsLmNvbQ== | base64 -d
     
-*   __Phone__:  请在linix终端中输入以下内容查看：
+*   __Phone__:  请自行提取：
 
     echo KCs4NikxODY3NDg5Mzk4OQ== | base64 -d
 
@@ -60,10 +60,17 @@ description: 如果可以用markdown写写简历，也是很不错的事情哦~�
 # 获奖经历
 *   武汉大学,社团国际交流营优秀志愿者
 *   武汉大学,优秀学生3次
+*   国家励志奖学金
 *   武汉大学丙等优秀奖学金3次
 *   社会活劢积极分子
 
+#自我评价
+*   善于抓住瞬间的灵感并付诸实践
+*   能快速学习和掌握所需知识和技能
+*   能在交流中凸显自己的思路和闪光点
+*   能迅速深入进行了解喜欢的事物并总结
+
 # 其他
 *   每天必逛[36Kr](http://www.36kr.com/),[虎嗅](http://www.huxiu.com/),[极客公园](http://www.geekpark.net/)等关注`IT`时事的网站。
-*   [泡面吧](http://www.paomianba.com/)团队成员之一。
-*   爱Code，爱产品。
+*   [泡面吧](http://www.paomianba.com/)团队成员之一，负责模块[挑战难题](http://www.paomianba.com/challenge/)。
+*   爱Code，爱产品,关注互联网时事新闻，关注创业。
