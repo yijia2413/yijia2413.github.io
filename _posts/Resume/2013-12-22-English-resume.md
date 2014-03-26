@@ -10,7 +10,7 @@ description: 如果可以用markdown写写简历，也是很不错的事情哦~�
  * August 1992
  * Email: <yijia2413@gmail.com>
  * Blog: [yijia2413.github.com](http://yijia2413.github.io/)
- * Linkedin:[Yijia]()
+ * Linkedin:[yijia](http://www.linkedin.com/pub/yi-jia/88/679/640)
 
 ## Background
 
@@ -20,7 +20,7 @@ I am a software developer with an interest in communication and design. I enjoy 
 
 Computer Science, B.S.  
 Fall 2010 - Summer 2014  
-Wuhan University, Computer School
+[Wuhan University](http://www.whu.edu.cn/), [Computer School](http://cs.whu.edu.cn/)
 
 ## Skills & Expertise
 
@@ -35,7 +35,7 @@ Wuhan University, Computer School
 #### Senior Product Manager Assistant
 *March 2013 - August 2013*
 
-*	Leading a program called [`Baidu_Astar`](http://astar.baidu.com), including “The Test of  Background Environment of Technology Community”, ”The Test of Examination of the Astar and The Management of Database etc.
+*	Leading a program called [Baidu_Astar](http://astar.baidu.com), including “The Test of  Background Environment of Technology Community”, ”The Test of Examination of the Astar and The Management of Database etc.
 *	Configure the `ARM` compile environment on the cloud compile platform，and it works well. Meanwhile, I collaborate with others to resolve more than __10__ bugs in the background environment and __30__ questions in the examinations. Putting forward and then working out __5__ ACM questions.
 *	Early August，Overall responsibility for __Astar__ & __Hackathon__ offline programming contest and product contest, and successfully finished the work.
 
@@ -47,7 +47,7 @@ Wuhan University, Computer School
 *	Writing a planning for activity feedback, and being awarded the __“Outstanding Volunteer”__.
 
 ##Project
-
+wait to be added, just a minute...
 
 ##Students Working
 ###Baidu Elite Club， Chairman 
@@ -71,5 +71,5 @@ Wuhan University, Computer School
 
 ##Others
 *	Concern about the startups and product of CS.
-*	programmer at [Paomianba](http://www.paomianba.com/), and focus on online judge.
+*	programmer at [Paomianba](http://www.paomianba.com/), and focus on [online judge](http://www.paomianba.com/challenge/).
 *	Basketball lovers.
