@@ -23,7 +23,7 @@ description: 如果可以用markdown写写简历，也是很不错的事情哦~�
     echo KCs4NikxODY3NDg5Mzk4OQ== | base64 -d
 
 # 教育经历
-*   2010.09-2014.07, 武汉大学，计算机科学与技术，本科
+*   2010.09-2014.07, [武汉大学](http://www.whu.edu.cn/)，[计算机科学与技术](http://cs.whu.edu.cn/)，本科
 *   保研中科院信息工程研究所
 
 # 实践经历
