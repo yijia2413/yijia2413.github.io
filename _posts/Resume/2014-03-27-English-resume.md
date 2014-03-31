@@ -10,7 +10,7 @@ description: 如果可以用markdown写写简历，也是很不错的事情哦~�
  * August 1992
  * Email: <yijia2413@gmail.com>
  * Blog: [yijia2413.github.com](http://yijia2413.github.io/)
- * Linkedin:[yijia](http://www.linkedin.com/pub/yi-jia/88/679/640)
+ * Linkedin: [@yijia](http://www.linkedin.com/pub/yi-jia/88/679/640)
 
 ## Background
 
@@ -54,7 +54,7 @@ wait to be added, just a minute...
 *May 2012 - May 2013*
 
 *	Participation in __Baidu Club__ since 2011 and being made chairman of Baidu Club in 2012, in charge of all works of Baidu in Wuhan University. Spotting the internal construction of groups and getting excellent grades in the competition of university clubs.
-*	Successfully planning and organizing campus-level competition like [“Searching without Boundary”](http://so.baidu.com/) ，[“Astar”](http://astar.baidu.com/) and so on.
+*	Successfully planning and organizing campus-level competition like [“Searching without Boundary”](http://campus.baidu.com/bbs/bbslist/3) ，[“Astar”](http://astar.baidu.com/) and so on.
 
 ###Association of Students Union,  Vice Minister 
 *May 2011 - May 2012*

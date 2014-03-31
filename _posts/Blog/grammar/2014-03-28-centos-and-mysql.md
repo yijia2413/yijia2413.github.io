@@ -6,6 +6,8 @@ tags: 语法
 description: 
 ---
 ![img](http://media-cache-ec0.pinimg.com/736x/05/e9/62/05e962ac788e7893bcafdbfdbddca80a.jpg)
+
+
 抢购模式下……美好的事情真的那么容易发生吗？
 
 ## 关于ssh的scp复制
