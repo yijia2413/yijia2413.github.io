@@ -8,7 +8,7 @@ keywords: 移动互联网
 description: 
 author: [美]弗雷德·沃格尔斯坦  
 publisher: 中信出版社
-language: 英文|中文
+language: 中文
 link: http://book.douban.com/subject/25800026/
 cover: /public/upload/book/google-apple.jpg
 ---
