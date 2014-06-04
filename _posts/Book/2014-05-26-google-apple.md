@@ -6,7 +6,7 @@ category: 读书
 tags: 读书
 keywords: 移动互联网
 description: 
-author: [美]弗雷德·沃格尔斯坦  
+author: 弗雷德·沃格尔斯坦  
 publisher: 中信出版社
 language: 中文
 link: http://book.douban.com/subject/25800026/
@@ -25,5 +25,7 @@ cover: /public/upload/book/google-apple.jpg
 比较遗憾的是，这本书没有涉及到未来移动互联网的一个预测，哪怕是作者的观点也好哇~ 
 
 呵呵，我一个中午在图书馆，两小时就读完了这本书~
+
+看完，书就送人了。。
 
 >>武汉大学图书馆，2014.05.24
