@@ -1,5 +1,5 @@
----
-layout: book
+﻿---
+layout: post
 title: 数学之美
 status: reading
 category: 读书
