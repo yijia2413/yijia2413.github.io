@@ -1,5 +1,5 @@
----
-layout: book
+﻿---
+layout: post
 title: 移动风暴.苹果与谷歌的科技之战
 status: read
 category: 读书

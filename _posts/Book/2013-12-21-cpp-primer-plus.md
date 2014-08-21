@@ -1,5 +1,5 @@
----
-layout: book
+﻿---
+layout: post
 title: C++ Primer Plus
 status: reading
 category: 读书

@@ -1,5 +1,5 @@
----
-layout: book
+﻿---
+layout: post
 title: 编程之美
 status: reading
 category: 读书
