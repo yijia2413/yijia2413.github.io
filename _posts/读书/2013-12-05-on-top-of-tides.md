@@ -1,5 +1,5 @@
-﻿---
-layout: post
+---
+layout: book
 title: 浪潮之巅
 status: read
 category: 读书
