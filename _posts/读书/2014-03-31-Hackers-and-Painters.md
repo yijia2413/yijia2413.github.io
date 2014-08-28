@@ -1,5 +1,5 @@
-﻿---
-layout: post
+---
+layout: book
 title: 黑客与画家
 status: read
 category: 读书
