@@ -9,7 +9,7 @@ description: 如果可以用markdown写写简历，也是很不错的事情哦~�
 
  * August 1992
  * Email: <yijia2413@gmail.com>
- * Blog: [yijia2413.github.com](http://yijia2413.github.io/)
+ * Blog: [yijia.ws](http://www.yijia.ws/)
  * Linkedin: [@yijia](http://www.linkedin.com/pub/yi-jia/88/679/640)
 
 ## Background
@@ -71,5 +71,5 @@ wait to be added, just a minute...
 
 ##Others
 *	Concern about the startups and product of CS.
-*	programmer at [Paomianba](http://www.paomianba.com/), and focus on [online judge](http://www.paomianba.com/challenge/).
+*	programmer at [Paomianba](http://www.jisuanke.com/), and focus on [online judge](http://ti.jisuanke.com/).
 *	Basketball lovers.

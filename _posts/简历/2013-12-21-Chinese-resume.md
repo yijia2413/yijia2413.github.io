@@ -9,7 +9,7 @@ description: 如果可以用markdown写写简历，也是很不错的事情哦~�
 
 # 基本信息
 * 男，1992年08月
-* 博客主页：[http://yijia2413.github.com/](http://yijia2413.github.io/)
+* 博客主页：[http://www.yijia.ws/](http://www.yijia.ws/)
 * github：[https://github.com/yijia2413/](https://github.com/yijia2413/)
 
 # 联系方式
@@ -72,5 +72,5 @@ description: 如果可以用markdown写写简历，也是很不错的事情哦~�
 
 # 其他
 *   每天必逛[36Kr](http://www.36kr.com/),[虎嗅](http://www.huxiu.com/),[极客公园](http://www.geekpark.net/)等关注`IT`时事的网站。
-*   [泡面吧](http://www.paomianba.com/)团队成员之一，负责模块[挑战难题](http://www.paomianba.com/challenge/)。
+*   [泡面吧](http://www.jisuanke.com/)团队成员之一，负责模块[挑战难题](http://ti.paomianba.com//)。
 *   爱Code，爱产品,关注互联网时事新闻，关注创业。
