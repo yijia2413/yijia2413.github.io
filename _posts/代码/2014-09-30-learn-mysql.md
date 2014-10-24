@@ -1,6 +1,6 @@
 ---
 layout: post
-title: centos chrome
+title: Mysql Tips
 description: 分类
 category: 代码
 tags: 折腾
