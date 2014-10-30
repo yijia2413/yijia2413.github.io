@@ -1,7 +1,7 @@
 ---
 layout:     post
 title:      从12306买票到各路抢票软件
-category: 观点
+category: 扯淡
 tags: 互联网
 description: 春节必备
 ---
