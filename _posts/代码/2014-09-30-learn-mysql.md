@@ -3,7 +3,7 @@ layout: post
 title: Mysql Tips
 description: 分类
 category: 代码
-tags: 折腾
+tags: 语法
 ---
 #合并多个字段
 
