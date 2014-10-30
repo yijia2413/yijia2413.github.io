@@ -76,7 +76,37 @@ title: 首页
             {% endif %}
           {% endfor %}
         </div>
-      </div>  
+      </div>
+
+      <div class="col-md-12">
+        <div class="panel panel-primary">
+          <div class="panel-heading">瞎折腾</div>
+          {% for tag in site.tags %} 
+            {% if tag[0] == '折腾' %}
+              {% for post in tag[1] %}
+                <a  href='{{ post.url }}' class="list-group-item pjaxlink">
+                  {{post.title}}
+                </a>
+              {% endfor %}
+            {% endif %}
+          {% endfor %}
+        </div>
+      </div>
+
+      <div class="col-md-12">
+        <div class="panel panel-primary">
+          <div class="panel-heading">个人瞎想</div>
+          {% for tag in site.tags %} 
+            {% if tag[0] == '其他' %}
+              {% for post in tag[1] %}
+                <a  href='{{ post.url }}' class="list-group-item pjaxlink">
+                  {{post.title}}
+                </a>
+              {% endfor %}
+            {% endif %}
+          {% endfor %}
+        </div>
+      </div>   
 
     </div>
   </div>
@@ -96,7 +126,24 @@ title: 首页
           {% endfor %}
         </div>
       </div>
+
+      <div class="col-md-12">
+        <div class="panel panel-primary">
+          <div class="panel-heading">面试杂谈</div>
+          {% for tag in site.tags %} 
+            {% if tag[0] == '面试' %}
+              {% for post in tag[1] %}
+                <a  href='{{ post.url }}' class="list-group-item pjaxlink">
+                  {{post.title}}
+                </a>
+              {% endfor %}
+            {% endif %}
+          {% endfor %}
+        </div>
+      </div>  
+
     </div>
   </div>
+
 </div>
  
