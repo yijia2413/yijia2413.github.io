@@ -1,7 +1,7 @@
 ---
 layout: post
 title: 准备离去
-category: 观点
+category: 扯淡
 tags: 其他
 description: 
 ---
