@@ -3,7 +3,7 @@ layout: post
 title: centos chrome
 description: 分类
 category: 代码
-tags: 折腾
+tags: 语法
 ---
 #相当痛苦多经历
 Centos由于很多库多问题，很久不更新，安装chrome是一个挺难的事情。
