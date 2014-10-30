@@ -1,7 +1,7 @@
 ---
 layout: post
 title: 健康的生活方式
-category: 观点
+category: 扯淡
 tags: 其他
 description: 我要长胖……
 ---

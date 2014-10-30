@@ -1,7 +1,7 @@
 ---
 layout: post
 title: 我眼中的“锤子”
-category: 观点
+category: 扯淡
 tags: 互联网
 description: 
 ---
