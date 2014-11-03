@@ -16,15 +16,15 @@ description: 如果可以用markdown写写简历，也是很不错的事情哦~�
 
 *   __E-mail__: 请自行提取：
 
-    echo eWlqaWEub2tjQGdtYWlsLmNvbQ== | base64 -d
+    eWlqaWEub2tjQGdtYWlsLmNvbQ==
     
 *   __Phone__:  请自行提取：
 
-    echo KCs4NikxODY3NDg5Mzk4OQ== | base64 -d
+    KCs4NikxODY3NDg5Mzk4OQ==
 
 # 教育经历
 *   2010.09-2014.07, [武汉大学](http://www.whu.edu.cn/)，[计算机科学与技术](http://cs.whu.edu.cn/)，本科
-*   保研中科院信息工程研究所
+*   [中国科学院大学](http://www.ucas.ac.cn/),[信息工程研究所](http://www.iie.ac.cn/),大数据存储与智能处理
 
 # 实践经历
 
@@ -72,5 +72,5 @@ description: 如果可以用markdown写写简历，也是很不错的事情哦~�
 
 # 其他
 *   每天必逛[36Kr](http://www.36kr.com/),[虎嗅](http://www.huxiu.com/),[极客公园](http://www.geekpark.net/)等关注`IT`时事的网站。
-*   [泡面吧](http://www.jisuanke.com/)团队成员之一，负责模块[挑战难题](http://ti.paomianba.com//)。
+*   [计蒜客](http://www.jisuanke.com/)团队成员之一，负责模块[挑战难题](http://ti.jisuanke.com//)。
 *   爱Code，爱产品,关注互联网时事新闻，关注创业。
