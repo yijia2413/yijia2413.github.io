@@ -71,5 +71,5 @@ wait to be added, just a minute...
 
 ##Others
 *	Concern about the startups and product of CS.
-*	programmer at [Paomianba](http://www.jisuanke.com/), and focus on [online judge](http://ti.jisuanke.com/).
+*	programmer at [Jisuanke](http://www.jisuanke.com/), and focus on [online judge](http://ti.jisuanke.com/).
 *	Basketball lovers.
