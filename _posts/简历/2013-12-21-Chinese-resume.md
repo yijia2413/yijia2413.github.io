@@ -24,7 +24,7 @@ description: 如果可以用markdown写写简历，也是很不错的事情哦~�
 
 # 教育经历
 *   2010.09-2014.07, [武汉大学](http://www.whu.edu.cn/)，[计算机科学与技术](http://cs.whu.edu.cn/)，本科
-*   [中国科学院大学](http://www.ucas.ac.cn/),[信息工程研究所](http://www.iie.ac.cn/),大数据存储与智能处理
+*   2014.09-20.7.06, [中国科学院大学](http://www.ucas.ac.cn/),[信息工程研究所](http://www.iie.ac.cn/),大数据存储与智能处理
 
 # 实践经历
 
