@@ -21,16 +21,28 @@
  
   <body>
       <div id="main" role="main">
+        
         <header>
           <div id="header">
             <h1><a title="{{ site.name }}" class="" href="/">{{ site.name }}</a></h1>
           </div>
           <nav>
+            <!--
             {% for nav in site.navigations %}
             <span><a title="{{ nav.title }}" href="{{ nav.href }}"><i class="{{ nav.class }}"></i></a></span>
             {% endfor %}
+          -->
+                    <a href="/archive.html">Blog</a>
+                    <span class="sep">-</span>
+                    <a href="/tags.html">Tag</a>
+                    <span class="sep">-</span>
+                    <a href="/about.html">About</a>
+                    <span class="sep">-</span>
+                    <a href="/atom.xml">Feed</a>
           </nav>
         </header>
+
+
         <div id="content">
         {{ content }}
         </div>
