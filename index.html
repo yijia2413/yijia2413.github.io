@@ -1,149 +1,175 @@
 ---
 layout: page
-title: 首页
+title: 
 ---
+<html>
+    <head>
+        <link href='http://fonts.googleapis.com/css?family=OFL+Sorts+Mill+Goudy+TT:regular,italic' rel='stylesheet' type='text/css' />
+        <link rel="profile" href="http://microformats.org/profile/hcard" />
+        <meta charset="utf-8">
 
-<div class="row">
-  <div class="col-md-6">
-    <div class="row">
-      <div class="col-md-12">
-        <div class="panel panel-primary">
-          <div class="panel-heading">最新博客文章</div>
-          {% for post in paginator.posts %}
-            {% if post.category == "博客" %}
-              <a  href='{{ post.url }}' class="list-group-item pjaxlink">
-                {{post.title}}
-              </a>
-            {% endif %}
-          {% endfor %}
-        </div>
-      </div>
-      <div class="col-md-12">
-        <div class="panel panel-primary">
-          <div class="panel-heading">互联网</div>
-          {% for tag in site.tags %} 
-            {% if tag[0] == '互联网' %}
-              {% for post in tag[1] %}
-                <a  href='{{ post.url }}' class="list-group-item pjaxlink">
-                  {{post.title}}
-                </a>
-              {% endfor %}
-            {% endif %}
-          {% endfor %}
-        </div>
-      </div>
+        <title>一小佳</title>
 
-      <div class="col-md-12">
-        <div class="panel panel-primary">
-          <div class="panel-heading">读书</div>
-          {% for tag in site.tags %} 
-            {% if tag[0] == '读书' %}
-              {% for post in tag[1] %}
-                <a  href='{{ post.url }}' class="list-group-item pjaxlink">
-                  {{post.title}}
-                </a>
-              {% endfor %}
-            {% endif %}
-          {% endfor %}
-        </div>
-      </div>  
+        
+            <link rel="stylesheet" href="/media/css/aal.css"      type="text/css" media="screen" charset="utf-8" />
+            <link rel="stylesheet" href="/media/css/sjl.css"      type="text/css" media="screen" charset="utf-8" />
+            <link rel="stylesheet" href="/media/css/print.css"    type="text/css" media="print" charset="utf-8" />
+            
+        
 
-      <div class="col-md-12">
-        <div class="panel panel-primary">
-          <div class="panel-heading">学习记载</div>
-          {% for tag in site.tags %} 
-            {% if tag[0] == '语法' %}
-              {% for post in tag[1] %}
-                <a  href='{{ post.url }}' class="list-group-item pjaxlink">
-                  {{post.title}}
-                </a>
-              {% endfor %}
-            {% endif %}
-          {% endfor %}
-        </div>
-      </div>  
+        
+            <script data-cfasync="false" src="/media/js/jquery.js" type="text/javascript"></script>
+            <script data-cfasync="false" src="/media/js/jquery.timeago.js" type="text/javascript"></script>
+            <script data-cfasync="false" src="/media/js/sjl.js" type="text/javascript"></script>
+            <script data-cfasync="false" src="/media/js/print.js" type="text/javascript"></script>
 
-      <div class="col-md-12">
-        <div class="panel panel-primary">
-          <div class="panel-heading">重点摘要</div>
-          {% for tag in site.tags %} 
-            {% if tag[0] == '摘要' %}
-              {% for post in tag[1] %}
-                <a  href='{{ post.url }}' class="list-group-item pjaxlink">
-                  {{post.title}}
-                </a>
-              {% endfor %}
-            {% endif %}
-          {% endfor %}
-        </div>
-      </div>
+            <script data-cfasync="false" type="text/javascript">
+                /* <![CDATA[ */
+                (function() {
+                var s = document.createElement('script');
+                var t = document.getElementsByTagName('script')[0];
 
-      <div class="col-md-12">
-        <div class="panel panel-primary">
-          <div class="panel-heading">瞎折腾</div>
-          {% for tag in site.tags %} 
-            {% if tag[0] == '折腾' %}
-              {% for post in tag[1] %}
-                <a  href='{{ post.url }}' class="list-group-item pjaxlink">
-                  {{post.title}}
-                </a>
-              {% endfor %}
-            {% endif %}
-          {% endfor %}
-        </div>
-      </div>
+                s.type = 'text/javascript';
+                s.async = true;
+                s.src = '//api.flattr.com/js/0.6/load.js?mode=auto';
 
-      <div class="col-md-12">
-        <div class="panel panel-primary">
-          <div class="panel-heading">个人瞎想</div>
-          {% for tag in site.tags %} 
-            {% if tag[0] == '其他' %}
-              {% for post in tag[1] %}
-                <a  href='{{ post.url }}' class="list-group-item pjaxlink">
-                  {{post.title}}
-                </a>
-              {% endfor %}
-            {% endif %}
-          {% endfor %}
-        </div>
-      </div>   
+                t.parentNode.insertBefore(s, t);
+                })();
+                /* ]]> */
+            </script>
 
+            
+        
+
+        <link rel="openid.server" href="http://www.myopenid.com/server" />
+        <link rel="openid.delegate" href="http://stevelosh.myopenid.com/" />
+
+        <script type="text/javascript">
+          var _gaq = _gaq || [];
+          _gaq.push(['_setAccount', 'UA-15328874-2']);
+          _gaq.push(['_trackPageview']);
+
+          (function() {
+            var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+            ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+            var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+          })();
+        </script>
+
+    </head>
+
+    <body>
+        <div class="wrap">
+            <div class="top group">
+                <header>
+                    <a href="/">一小佳</a>
+                </header>
+
+                <nav>
+                    <a href="/blog/">Blog</a>
+                    <span class="sep">-</span>
+                    <a href="/projects">Projects</a>
+                    <span class="sep">-</span>
+                    <a href="/about/">About</a>
+                    <span class="sep">-</span>
+                    <a href="http://feeds2.feedburner.com/stevelosh">Feed</a>
+                </nav>
+            </div>
+
+            <div class="hr">&nbsp;</div>
+
+            <div class="content">
+                
+                    
+                        
+    <div class="splash vcard">
+        
+            <p>
+                Hello,
+                I&#8217;m
+                <a href="http://yijia.ws" class="fn url">Jia<span class="last-name"> Yi</span></a>.
+            </p>
+
+            <p>
+                I&#8217;m a
+                <span class="role">programmer, photographer, dancer <span class="amp">&amp;</span> bassist</span>
+                from
+                <span class="adr"><span class="locality">Rochester</span>, <span class="region">New&nbsp;York</span></span>.
+            </p>
+
+            <p>
+                If you want to get in touch with me,
+                <a class="email" href="mailto:yijia2413@gmail.com">email</a>
+                is&nbsp;best.
+            </p>
+        
     </div>
-  </div>
-  <div class="col-md-6">
-    <div class="row">
-      <div class="col-md-12">
-        <div class="panel panel-primary">
-          <div class="panel-heading">Leetcode</div>
-          {% for tag in site.tags %} 
-            {% if tag[0] == 'Leetcode' %}
-              {% for post in tag[1] %}
-                <a  href='{{ post.url }}' class="list-group-item pjaxlink">
-                  {{post.title}}
-                </a>
-              {% endfor %}
-            {% endif %}
-          {% endfor %}
+
+                    
+                
+            </div>
+
+            <div class="hrb">&nbsp;</div>
+
+            <footer>
+                <p>
+                    I'm also on
+                    <a href="https://bitbucket.org/sjl/">Bitbucket</a>,
+                    <a href="https://github.com/sjl/">GitHub</a>,
+                    <a href="https://twitter.com/stevelosh/">Twitter</a>,
+                    and
+                    <a href="http://500px.com/stevelosh/">500px</a>.
+                </p>
+
+                <a class="rochester-made" href="http://rochestermade.com" title="Rochester Made"><img src="http://rochestermade.com/media/images/rochester-made-dark-on-light.png" alt="Rochester Made" title="Rochester Made" /></a>
+            </footer>
         </div>
-      </div>
+    </body>
+</html>
 
-      <div class="col-md-12">
-        <div class="panel panel-primary">
-          <div class="panel-heading">面试杂谈</div>
-          {% for tag in site.tags %} 
-            {% if tag[0] == '面试' %}
-              {% for post in tag[1] %}
-                <a  href='{{ post.url }}' class="list-group-item pjaxlink">
-                  {{post.title}}
-                </a>
-              {% endfor %}
-            {% endif %}
-          {% endfor %}
-        </div>
-      </div>  
 
-    </div>
-  </div>
 
-</div>
- 
+<!--
+
+<hr>
+<center>
+<b>
+<H3>Hello, I'm Yi.<H3>
+</b>
+</center>
+<center>
+<b>
+<H3>In some degree, I’m a programmer, basketball player and a student.<H3>
+</b>
+</center>
+<center>
+<b>
+<H3>I hope you will like my blog.<H3>
+</b>
+</center>
+<center>
+<b>
+<H3>If you want to get in touch with me, <a class="email" href="mailto:yijia2413@gmail.com">email</a> is best.<H3>
+</b>
+</center>
+
+
+<a href="http://weibo.com/u/2112036430" target="_blank">
+  <i class="fa fa-weibo fa-4x"></i>
+</a>
+<a href="http://github.com/yijia2413" target="_blank">
+  <i class="fa fa-github fa-4x"></i>
+</a>
+<a href="/pages/atom.xml" target="_blank">
+  <i class="fa fa-rss fa-4x"></i>
+</a>
+<a href="mailto:yijia2413@gmail.com">
+  <i class="fa fa-envelope-o fa-4x"></i>
+</a>
+<a href="http://cn.linkedin.com/pub/yi-jia/66/b17/b8b" target="_blank">
+  <i class="fa fa-linkedin fa-4x"></i>
+</a>
+<a href="https://www.facebook.com/yi.jia.5249" target="_blank">
+  <i class="fa fa-facebook fa-4x"></i>
+</a>
+-->
