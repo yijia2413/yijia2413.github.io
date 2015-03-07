@@ -1,18 +1,6 @@
 ---
 layout: default
----
-
-  <link rel="stylesheet" href="/public/js/prettify/prettify.css">
-  <script src="/public/js/prettify/prettify.js"></script>
-  <script type="text/javascript">
-      $(function(){
-      $('pre').addClass('prettyprint linenums').attr('style', 'overflow:auto');
-      prettyPrint();
-      });
-  </script>
-
-<div class="content">                
-
+---             
 <article>
   <section class="title">
     <h2>{{ page.title }} </h2>
@@ -99,4 +87,13 @@ layout: default
   END comment -->
   {% endif %}
 </article>
-</div>
+
+
+  <link rel="stylesheet" href="/public/js/prettify/prettify.css">
+  <script src="/public/js/prettify/prettify.js"></script>
+  <script type="text/javascript">
+      $(function(){
+      $('pre').addClass('prettyprint linenums').attr('style', 'overflow:auto');
+      window.prettyPrint && prettyPrint();
+      });
+  </script>
