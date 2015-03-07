@@ -1,24 +1,9 @@
-markdown: redcarpet
-highlighter: pygments
 permalink: /:title
 name: "YiJia"
-markdown: redcarpet
 
 author: "YiJia"
 atom-baseurl: "http://yijia.ws"
 disqus: "yijia2413"
 
-navigations:
-  - title: Archive
-    class: fa fa-list-ul
-    href: /archive.html
-  - title: Tags
-    class: fa fa-tags
-    href: /tags.html
-  - title: About
-    class: fa fa-user
-    href: /about.html
-  - title: Subscribe
-    class: fa fa-rss
-    href: /atom.xml
 
+markdown: redcarpet
