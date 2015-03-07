@@ -1,9 +1,9 @@
 permalink: /:title
+paginate: 10
 name: "YiJia"
 
 author: "YiJia"
 atom-baseurl: "http://yijia.ws"
 disqus: "yijia2413"
-
 
 markdown: redcarpet
