@@ -18,6 +18,7 @@ Input: `numbers={2, 7, 11, 15}`, `target=9`
 Output: `index1=1`, `index2=2`
 
 ###AC代码
+<pre class="prettyprint">
 		class Solution {
 		public:
 		    vector<int> twoSum(vector<int> &numbers, int target)
@@ -40,3 +41,4 @@ Output: `index1=1`, `index2=2`
 		    		return result;
 		    	}
 		};
+</pre>
