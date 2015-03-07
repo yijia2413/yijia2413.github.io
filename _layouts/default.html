@@ -26,12 +26,12 @@
           <div id="header">
             <h1><a title="{{ site.name }}" class="" href="/">{{ site.name }}</a></h1>
           </div>
-          <nav>
-            <!--
+          <!--<nav>
+            
             {% for nav in site.navigations %}
             <span><a title="{{ nav.title }}" href="{{ nav.href }}"><i class="{{ nav.class }}"></i></a></span>
             {% endfor %}
-          -->
+          
                     <a href="/archive.html">Blog</a>
                     <span class="sep">-</span>
                     <a href="/tags.html">Tag</a>
@@ -39,8 +39,23 @@
                     <a href="/about.html">About</a>
                     <span class="sep">-</span>
                     <a href="/atom.xml">Feed</a>
-          </nav>
+          </nav>-->
         </header>
+
+        <nav>
+            <!--
+            {% for nav in site.navigations %}
+            <span><a title="{{ nav.title }}" href="{{ nav.href }}"><i class="{{ nav.class }}"></i></a></span>
+            {% endfor %}
+          -->
+                    <a href="/archive.html">Blog();</a>
+                    <span class="sep">-</span>
+                    <a href="/tags.html">Tag();</a>
+                    <span class="sep">-</span>
+                    <a href="/about.html">About();</a>
+                    <span class="sep">-</span>
+                    <a href="/atom.xml">Feed();</a>
+          </nav>
 
 
         <div id="content">
@@ -56,10 +71,7 @@
                     and
                     <a href="http://www.zhihu.com/people/yi-jia">Zhihu</a>.
             </p>
-<!--
-            {% assign first_post = site.posts | last %}
-            &copy; {{ first_post.date | date: "%Y" }} ~ {{ site.time | date: "%Y" }} {{ site.author }}</a>
--->
+
           </div>
         </footer>
       </div> 

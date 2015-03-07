@@ -1,10 +1,10 @@
 markdown: redcarpet
 highlighter: pygments
 permalink: /:title
-name: "一小佳"
+name: "YiJia"
 markdown: redcarpet
 
-author: "一小佳"
+author: "YiJia"
 atom-baseurl: "http://yijia.ws"
 disqus: "gopherwood"
 
