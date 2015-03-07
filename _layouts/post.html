@@ -92,8 +92,9 @@ layout: default
   <link rel="stylesheet" href="/public/js/prettify/prettify.css">
   <script src="/public/js/prettify/prettify.js"></script>
   <script type="text/javascript">
-      $(function(){
-      $('pre').addClass('prettyprint').attr('style', 'overflow:auto');
-      prettyPrint();
+      $(function() {
+      $('pre').addClass('prettyprint linenums').attr('style', 'overflow:auto');
+      window.prettyPrint && prettyPrint();
       });
+      
   </script>
