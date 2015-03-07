@@ -6,4 +6,4 @@ atom-baseurl: "http://yijia.ws"
 disqus: "yijia2413"
 
 
-markdown: redcarpet
+markdown: rdiscount
