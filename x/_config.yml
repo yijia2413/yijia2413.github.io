@@ -1,9 +1,0 @@
-permalink: /:title
-paginate: 10
-name: "yijia"
-
-author: "yijia"
-atom-baseurl: "http://yijia.ws"
-disqus: "yijia2413"
-
-markdown: redcarpet
