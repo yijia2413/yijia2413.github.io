@@ -4,13 +4,13 @@ locale:           en_US
 logo:             logo.png
 disqus_shortname: hmfaysal
 share:            true
-readtime:     true
-wpm:        200
-dropcap:      true
-theme:        blue
+readtime:		  true
+wpm:			  200
+dropcap:		  true
+theme:			  blue
 nprogress:        true
 header_bg:        IMG-20150221-00060.jpg
-author_bg:      newyork.jpg
+author_bg:		  newyork.jpg
 # Change url to your domain. Leave localhost server or blank when working locally.
 # or use the hint from http://jekyllrb.com/docs/github-pages/ to keep this the same 
 # whether working locally or remotely. Start Jekyll with: jekyll serve --baseurl ''
