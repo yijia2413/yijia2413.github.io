@@ -114,18 +114,18 @@ prose:
           placeholder: "Choose categories"
           value: personal
           options:
-            - name: "Personal"
-              value: personal
-            - name: "Engineering"
-              value: engineering
-            - name: "Mathematics"
-              value: mathematics
-            - name: "Physics"
-              value: physics
-            - name: "Psychology"
-              value: psychology
-            - name: "Photography"
-              value: photography
+            - name: "博客"
+              value: 博客
+            - name: "代码"
+              value: 代码
+            - name: "扯淡"
+              value: 扯淡
+            - name: "摘要"
+              value: 摘要
+            - name: "读书"
+              value: 读书
+            - name: "简历"
+              value: 简历
             - name: "Interesting"
               value: interesting
             - name: "Web-Development"
