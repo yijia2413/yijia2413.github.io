@@ -1,7 +1,7 @@
 ---
 layout: page
 permalink: /status-updates/
-title: "Status Updates Archive"
+title: "Feelings"
 description:
 modified: 2015-03-09 22:26:24 +0600
 ---
