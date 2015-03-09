@@ -3,9 +3,8 @@ layout: page
 permalink: /status-updates/
 title: "Status Updates Archive"
 description:
-modified: 2014-08-12 22:26:24 +0600
+modified: 2015-03-09 22:26:24 +0600
 ---
-<!--
 <ul class="post-list">
 {% for status in site.data.statuses reversed %}
 <li>
@@ -13,4 +12,3 @@ modified: 2014-08-12 22:26:24 +0600
 </li>
 {% endfor %}
 </ul>
--->
