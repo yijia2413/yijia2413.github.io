@@ -19,6 +19,6 @@ jquery: true
 <script>
 $(function() {
 	$('#github-commits').githubInfoWidget(
-		{ user: 'hmfaysal', repo: 'hmfaysal.github.io', branch: 'master', last: 30, limitMessageTo: 30 });
+		{ user: 'yijia2413', repo: 'yijia2413.github.io', branch: 'master', last: 30, limitMessageTo: 30 });
 });
 </script>  
