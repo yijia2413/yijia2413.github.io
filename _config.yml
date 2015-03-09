@@ -25,7 +25,7 @@ owner:
   description:    Hello, I am Yi. I am a programmer, basketball player &amp; a student(ucas &amp; whu). I hope you will like my blog. If you want to get in touch with me, email is best. 
   # Social networking links used in footer. Update and remove as you like.
   twitter:        xixi003
-  facebook:       yijia2413
+  facebook:       yijia.okc
   github:         yijia2413
   instagram:      hmfaysal
   # For Google Authorship https://plus.google.com/authorship
@@ -55,7 +55,7 @@ links:
 timezone:    Asia/Shanghai
 future:      true
 highlighter: pygments
-markdown:    kramdown
+markdown:    redcarpet
 paginate:    5
 paginate_path: "page:num"
 
