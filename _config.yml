@@ -10,7 +10,7 @@ dropcap:		  true
 theme:			  blue
 nprogress:        true
 header_bg:        alleyway.jpg
-author_bg:		  newyork.jpg
+author_bg:		  alleyway.jpg
 # Change url to your domain. Leave localhost server or blank when working locally.
 # or use the hint from http://jekyllrb.com/docs/github-pages/ to keep this the same 
 # whether working locally or remotely. Start Jekyll with: jekyll serve --baseurl ''
@@ -58,7 +58,10 @@ timezone:    Asia/Shanghai
 future:      true
 #highlighter: pygments
 
-markdown:    redcarpet
+markdown: kramdown
+pygments: true
+
+#markdown:    redcarpet
 paginate:    5
 paginate_path: "page:num"
 
