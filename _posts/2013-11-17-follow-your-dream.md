@@ -1,9 +1,16 @@
 ---
 layout: post
-title:      当你失去理想的时候你应该看看！
+title:      当你失去理想的时候你应该看看
 category: 摘录
 tags: 摘要
 description: 我也不记得哪里找到的，但是我觉得很励志。这也不是一般的文艺文章，所以，推荐大伙看一下。当你失去理想的时候，或者当你在追寻理想的时候。
+imagefeature: null
+location: "Beijing"
+mathjax: false
+chart: false
+comments: true
+featured: true
+published: true
 ---
 
 ![caro](http://pic3.bbzhi.com/mingxingbizhi/meganfox/star_stareu_149831_11.jpg)
