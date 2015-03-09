@@ -1,13 +1,12 @@
 ---
 layout: post
-title: Making of hmfaysal.github.io
-description: "The journey of designing & coding this site"
+title: examples
+description: "go"
 modified: "2014-08-29 23:18:46 +0600"
 category: 博客
 tags: 
-  - design
-  - github
-  - jekyll
+  - 其它
+  - 扯淡
 imagefeature: null
 location: "Mirpur 11, Bangladesh"
 locationgps: null
