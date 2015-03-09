@@ -2,20 +2,12 @@
 layout: page
 permalink: /about/
 title: About
-tags: 
-  - Hossain
-  - Mohd
-  - Faysal
-  - hmfaysal
-imagefeature: fourseasons.jpg
+tags: 帅哥
 chart: true
 charttype: pie
 published: true
 ---
 
-<figure>
-  <img src="{{ site.url }}/images/page/whu/bye.jpg" alt="yijia">
-  <figcaption>一小佳</figcaption>
-</figure>
+![img](/images/post/whu/bye.jpg)
 
-我时一小佳
+我是一小佳
