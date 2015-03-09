@@ -3,7 +3,7 @@ layout: post
 title: "Why Jekyll?"
 description: 
 headline: 
-category: webdevelopment
+category: 博客
 tags: [jekyll]
 imagefeature: 
 mathjax: 
