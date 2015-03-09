@@ -58,10 +58,10 @@ timezone:    Asia/Shanghai
 future:      true
 #highlighter: pygments
 
-markdown: kramdown
+#markdown: kramdown
 pygments: true
 
-#markdown:    redcarpet
+markdown:    redcarpet
 paginate:    5
 paginate_path: "page:num"
 
