@@ -44,13 +44,13 @@ links:
 #    url: /
 #    external: false
 #    icon: home
-  - title: Hi~
+  - title: good();
     url: /tags
-  - title: 约
+  - title: good();
     url: /featured
-  - title: 吗
+  - title: study();
     url: /categories
-  - title: ？
+  - title: ^_^();
     url: /about
 
 # http://en.wikipedia.org/wiki/List_of_tz_database_time_zones
