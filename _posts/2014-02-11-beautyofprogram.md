@@ -1,15 +1,21 @@
 ---
-layout: book
+layout: post
 title: 编程之美
-status: reading
 category: 读书
-tags: 读书
-keywords: 算法
-description: 
-author: 吴军
-publisher: 人民邮电出版社
-language: 中文
-link: http://book.douban.com/subject/3004255/
-cover: /public/upload/book/beautyofprogram.jpg
+tags: 
+  - 读书
+imagefeature: null
+mathjax: false
+chart: false
+comments: true
+featured: true
+published: true
 ---
-开始阅读啦～
+![img](/images/post/book/beautyofprogram.jpg)
+##简介
+*	状态：在读
+*	作者：吴军
+*	链接：[http://book.douban.com/subject/3004255/](http://book.douban.com/subject/3004255/)
+
+##惭愧
+很惭愧，都这么久了……状态还是只读的

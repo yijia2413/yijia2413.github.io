@@ -10,5 +10,5 @@ published: true
 ---
 
 ![img](/images/post/whu/bye.jpg)
-这就是一小佳同学~
+飞翔吧……
 ===

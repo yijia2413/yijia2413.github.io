@@ -1,17 +1,24 @@
 ---
-layout: book
+layout: post
 title: 黑客与画家
-status: read
 category: 读书
-tags: 读书
-keywords: 创业
-description: 
-author: Paul Graham 
-publisher: 人民邮电出版社
-language: 英文|中文
-link: http://book.douban.com/subject/6021440/
-cover: /public/upload/book/paint.jpg
+tags: 
+  - 读书
+  - 黑客
+imagefeature: null
+mathjax: false
+chart: false
+comments: true
+featured: true
+published: true
 ---
+![img](/images/post/book/paint.jpg)
+
+##简介
+*	状态：已读
+*	作者：Paul Graham 
+*	链接：[http://book.douban.com/subject/6021440/](http://book.douban.com/subject/6021440/)
+
 ##关于书
 人生中遇到每一本书都不是偶然。很幸运，我在人生的第22个年头遇到了这本书。
 
