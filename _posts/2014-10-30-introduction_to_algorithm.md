@@ -1,6 +1,6 @@
 ---
 layout: post
-title: 黑客与画家
+title: 算法导论
 category: 读书
 tags: 
   - 读书
