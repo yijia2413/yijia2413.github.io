@@ -47,9 +47,9 @@ links:
   - title: Day();
     url: /tags
   - title: Day();
-    url: /featured
-  - title: Up();
     url: /categories
+  - title: Up();
+    url: /featured
   - title: Me();
     url: /about
 
