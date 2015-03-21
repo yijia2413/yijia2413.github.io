@@ -44,11 +44,11 @@ links:
 #    url: /
 #    external: false
 #    icon: home
-  - title: Day(tag);
+  - title: Tags();
     url: /tags
-  - title: Day(catlog);
+  - title: Categories();
     url: /categories
-  - title: Up(featured);
+  - title: Featured();
     url: /featured
   - title: Me();
     url: /about
