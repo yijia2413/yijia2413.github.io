@@ -8,7 +8,7 @@ imagefeature: null
 mathjax: false
 chart: false
 comments: true
-featured: true
+featured: false
 published: true
 ---
 ![img](/images/post/book/math.jpg)
