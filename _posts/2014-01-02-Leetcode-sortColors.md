@@ -5,7 +5,6 @@ description: http://oj.leetcode.com/problems/sort-colors/
 category: 代码
 tags: Leetcode
 ---
-![images](http://media-cache-ak0.pinimg.com/736x/5b/d1/bb/5bd1bb07917bde2632eb3901dec0941f.jpg)
 ## 题目描述
 
 Given an array with n objects colored red, white or blue, sort them so that objects of the same color are adjacent, with the colors in the order red, white and blue.

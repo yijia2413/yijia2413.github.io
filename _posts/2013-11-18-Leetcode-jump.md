@@ -5,8 +5,7 @@ description: http://oj.leetcode.com/problems/jump-game-ii/
 category: 代码
 tags: Leetcode
 ---
-![img](http://media-cache-ec0.pinimg.com/236x/67/99/53/6799536d1546f07436967cdddd6220bf.jpg)
-###题目描述
+##题目描述
 *   Given an array of non-negative integers, you are initially positioned at the first index of the array.
 
 *   Each element in the array represents your maximum jump length at that position.
@@ -18,7 +17,7 @@ tags: Leetcode
 
 *   The minimum number of jumps to reach the last index is 2. (Jump 1 step from index 0 to 1, then 3 steps to the last index.)
 
-###AC代码
+##AC代码
 
     #include <iostream>
     #include <cstdio>

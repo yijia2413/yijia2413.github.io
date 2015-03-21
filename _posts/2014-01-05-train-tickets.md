@@ -5,7 +5,6 @@ category: 扯淡
 tags: 互联网
 description: 春节必备
 ---
-![images](http://media-cache-ak0.pinimg.com/736x/d0/0f/6e/d00f6efa4527dcc29567e02e742903d6.jpg)
 ##背景
 个人由于有事情，需要购买一张北京西站到长沙南站的高铁票。不得不说，这是一个惊心动魄的故事。
 

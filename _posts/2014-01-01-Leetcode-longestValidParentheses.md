@@ -5,7 +5,6 @@ description: http://oj.leetcode.com/problems/longest-valid-parentheses/
 category: 代码
 tags: Leetcode
 ---
-![images](http://media-cache-ak0.pinimg.com/736x/4c/0a/82/4c0a8276660b3d19d6a9792928d56036.jpg)
 ## 题目描述
 
 Given a string containing just the characters '(' and ')', find the length of the longest valid (well-formed) parentheses substring.

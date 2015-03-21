@@ -5,7 +5,6 @@ description: http://oj.leetcode.com/problems/regular-expression-matching/
 category: 代码
 tags: Leetcode
 ---
-![images](http://media-cache-ec0.pinimg.com/736x/41/ce/85/41ce858bbb5481f89e2c0bad1dbad4c3.jpg)
 ## 题目描述
 
 Implement regular expression matching with support for '.' and '*'.

@@ -5,7 +5,6 @@ description: http://oj.leetcode.com/problems/remove-duplicates-from-sorted-array
 category: 代码
 tags: Leetcode
 ---
-![img](http://media-cache-ak0.pinimg.com/236x/cb/33/f2/cb33f21c71d3198990878e9326569d0f.jpg)
 ## 题目描述
 *   Follow up for "Remove Duplicates":
 *   What if duplicates are allowed at most twice?

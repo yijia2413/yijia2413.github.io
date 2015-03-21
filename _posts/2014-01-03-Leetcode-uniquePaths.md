@@ -5,7 +5,6 @@ description: http://oj.leetcode.com/problems/unique-paths/
 category: 代码
 tags: Leetcode
 ---
-![images](http://media-cache-ec0.pinimg.com/736x/48/28/8b/48288b123e08fe4f7969f569131d50b4.jpg)
 ## 题目描述
 A robot is located at the top-left corner of a m x n grid (marked 'Start' in the diagram below).
 

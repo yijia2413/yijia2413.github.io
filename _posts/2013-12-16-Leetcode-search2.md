@@ -5,8 +5,6 @@ description: http://oj.leetcode.com/problems/search-in-rotated-sorted-array-ii/
 category: 代码
 tags: Leetcode
 ---
-嫦娥三号～致敬！
-![images](http://media-cache-ec0.pinimg.com/736x/14/47/8e/14478eb12b05c3938a910023b04dcbfe.jpg)
 ## 题目描述
 
 Follow up for `"Search in Rotated Sorted Array"`:

@@ -4,6 +4,7 @@ title: 记录一些语法
 category: 博客
 tags: 语法
 description: 才开始使用，就暂时记录一下语法吧。以后都懂了，就不必记录了。恩，mark下。
+published: false
 ---
 ##插入视频
 `下面是一个例子：`

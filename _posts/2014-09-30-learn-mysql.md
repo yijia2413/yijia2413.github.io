@@ -5,7 +5,7 @@ description: 分类
 category: 代码
 tags: 语法
 ---
-#合并多个字段
+##合并多个字段
 
     update your_table set name=concat(firstname,'\n',lastname);//以换行作为间隔
 ##增加一个字段

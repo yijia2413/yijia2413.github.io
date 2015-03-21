@@ -5,7 +5,6 @@ description: http://oj.leetcode.com/problems/valid-parentheses/
 category: 代码
 tags: Leetcode
 ---
-![images](http://media-cache-ec0.pinimg.com/736x/a8/9d/57/a89d57dbdc09db246bca21d13b8f5d11.jpg)
 ## 题目描述
 
 Given a string containing just the characters '(', ')', '{', '}', '[' and ']', determine if the input string is valid.

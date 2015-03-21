@@ -5,8 +5,7 @@ description: http://oj.leetcode.com/problems/search-insert-position/
 category: 代码
 tags: Leetcode
 ---
-![images](http://media-cache-ak0.pinimg.com/736x/19/f2/03/19f203bbe4dd3b792e1edffc246970ad.jpg)
-###题目描述
+##题目描述
 Given a sorted array and a target value, return the index if the target is found. If not, return the index where it would be if it were inserted in order.
 
 You may assume no duplicates in the array.
@@ -21,7 +20,7 @@ Here are few examples.
 
 [1,3,5,6], 0 → 0
 
-###AC代码
+##AC代码
 		class Solution {
 		public:
 		    int searchInsert(int A[], int n, int target) {

@@ -5,7 +5,6 @@ description: http://oj.leetcode.com/problems/powx-n/
 category: 代码
 tags: Leetcode
 ---
-![images](http://media-cache-cd0.pinimg.com/736x/56/50/16/5650160a965d88219ad9833eda67dd37.jpg)
 ## 题目描述
 
 Implement pow(x, n).

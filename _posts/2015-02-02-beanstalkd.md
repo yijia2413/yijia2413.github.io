@@ -4,6 +4,7 @@ title:      初学beanstalkd
 category: 博客
 tags: 
 description: beanstalkd
+published: false
 ---
 #基础
 

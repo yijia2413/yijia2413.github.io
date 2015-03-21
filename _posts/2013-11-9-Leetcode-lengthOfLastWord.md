@@ -5,8 +5,7 @@ description: http://oj.leetcode.com/problems/length-of-last-word/
 category: 代码
 tags: Leetcode
 ---
-![images](http://media-cache-ec0.pinimg.com/736x/24/c5/1c/24c51c292d62a8ceda605f43c1020083.jpg)
-###题目描述
+##题目描述
 Given a string s consists of upper/lower-case alphabets and empty space characters ' ', return the length of last word in the string.
 
 If the last word does not exist, return 0.
@@ -19,7 +18,7 @@ Given `s` = `"Hello World"`,
 
 return `5`.
 
-###AC代码
+##AC代码
 请看：
 		class Solution {
 				public:

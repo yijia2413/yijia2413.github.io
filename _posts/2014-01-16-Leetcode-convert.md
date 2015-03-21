@@ -5,7 +5,6 @@ description: http://oj.leetcode.com/problems/zigzag-conversion/
 category: 代码
 tags: Leetcode
 ---
-![images](http://media-cache-ec0.pinimg.com/236x/67/98/6c/67986cc162a48ffa1ab4649ed1c2a994.jpg)
 ## 题目描述
 The string `"PAYPALISHIRING"` is written in a zigzag pattern on a given number of rows like this: (you may want to display this pattern in a fixed font for better legibility)
 

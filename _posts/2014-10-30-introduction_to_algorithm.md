@@ -1,17 +1,24 @@
 ---
-layout: book
-title: 算法导论
-status: reading
+layout: post
+title: 黑客与画家
 category: 读书
-tags: 读书
-keywords: 算法
-description: 
-author: [美] Thomas H.Cormen / Charles E.Leiserson / Ronald L.Rivest / Clifford Stein 
-publisher: 机械工业出版社
-language: 中文
-link: http://book.douban.com/subject/1885170/
-cover: /public/upload/book/algorithm.jpg
+tags: 
+  - 读书
+imagefeature: null
+mathjax: false
+chart: false
+comments: true
+featured: false
+published: true
 ---
+![img](/images/post/book/algorithm.jpg)
+
+##简介
+*	状态：在读，准确地说，刚开始
+*	作者：[美] Thomas H.Cormen / Charles E.Leiserson / Ronald L.Rivest / Clifford Stein 
+*	链接：[http://book.douban.com/subject/1885170/](http://book.douban.com/subject/1885170/)
+
+
 ##购买
 双十一之前京东半价,果断买之~
 

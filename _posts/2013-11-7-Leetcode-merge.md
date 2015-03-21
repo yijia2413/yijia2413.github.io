@@ -5,16 +5,14 @@ description: http://oj.leetcode.com/problems/merge-sorted-array/
 category: 代码
 tags: Leetcode
 ---
-
-![images](http://media-cache-ec0.pinimg.com/736x/d4/8e/c5/d48ec5081d1abf7c0f3495094b3244c9.jpg)
-###题目描述
+##题目描述
 Given two sorted integer arrays A and B, merge B into A as one sorted array.
 
 Note:
 
 You may assume that A has enough space to hold additional elements from B. The number of elements initialized in A and B are m and n respectively.
 
-###代码
+##代码
 		class Solution {
 		public:
 		    void merge(int A[], int m, int B[], int n) {

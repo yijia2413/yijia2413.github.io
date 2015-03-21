@@ -5,8 +5,7 @@ description: http://oj.leetcode.com/problems/valid-number/
 category: 代码
 tags: Leetcode
 ---
-![img](http://media-cache-ak0.pinimg.com/736x/e2/74/17/e27417697ede7261aff873706e4c24cd.jpg)
-### 题目描述
+## 题目描述
 *   Validate if a given string is numeric.
 *   Some examples:
 *   `"0" => true`
@@ -16,12 +15,12 @@ tags: Leetcode
 *   `"2e10" => true`
 *   Note: It is intended for the problem statement to be ambiguous. You should gather all requirements up front before implementing one.
 
-### 思路
+## 思路
 >说实话，这题目不难，很难受的是要考虑的情况太多了……AC的代码我用它的case去跑。感觉还有错的，还有就是引号转义的问题。恩，需要mark一下。
 >读取整行，可以有空格，遇到回车停止。fgets(s,100,fp)当然，case不会超过100个字符，第二个参数随意设定的。
 >用while(cin>>s)不能遇到空格，用gets会报警。
 
-### AC代码
+## AC代码
 
     #include <iostream>
     #include <cstdio>

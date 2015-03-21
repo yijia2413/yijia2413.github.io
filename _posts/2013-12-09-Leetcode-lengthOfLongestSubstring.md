@@ -5,7 +5,6 @@ description: http://oj.leetcode.com/problems/longest-substring-without-repeating
 category: 代码
 tags: Leetcode
 ---
-![images](http://media-cache-cd0.pinimg.com/736x/a9/fe/80/a9fe8055ad1f51763dfac85ed4241b64.jpg)
 ## 题目描述
 
 Given a string, find the length of the longest substring without repeating characters. For example, the longest substring without repeating letters for `"abcabcbb"` is `"abc"`, which the length is `3`. For `"bbbbb"` the longest substring is `"b"`, with the length of `1`.

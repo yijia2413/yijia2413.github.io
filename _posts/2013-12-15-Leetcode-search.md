@@ -5,8 +5,6 @@ description: http://oj.leetcode.com/problems/search-in-rotated-sorted-array/
 category: 代码
 tags: Leetcode
 ---
-`“生命中最伟大的光辉不在于永不坠落，而是坠落后总能再度升起。”`——曼德拉，《漫漫自由路》
-![images](http://media-cache-ec0.pinimg.com/736x/08/66/20/086620c35695e1cf861fcc7582899955.jpg)
 ## 题目描述
 
 Suppose a sorted array is rotated at some pivot unknown to you beforehand.

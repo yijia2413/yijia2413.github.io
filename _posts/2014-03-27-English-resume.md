@@ -3,7 +3,7 @@ layout: post
 title:      英文简历
 category: 简历
 tags: 简历
-description: 如果可以用markdown写写简历，也是很不错的事情哦~尝试一下吧～
+description: 
 ---
 # One Plus
 

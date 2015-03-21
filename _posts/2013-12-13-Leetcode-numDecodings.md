@@ -5,7 +5,6 @@ description: http://oj.leetcode.com/problems/decode-ways/
 category: 代码
 tags: Leetcode
 ---
-恩哼，看完图片记得看正文啊～
 ![images](http://media-cache-ak0.pinimg.com/736x/03/51/f8/0351f885936b7d1b71e36a9b22d24336.jpg)
 ## 题目描述
 

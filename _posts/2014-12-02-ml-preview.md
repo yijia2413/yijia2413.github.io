@@ -1,6 +1,6 @@
 ---
 layout: post
-title: 机器学习预习(一)
+title: 机器学习预习
 description: 概要,学习
 category: 代码
 tags: maching_learning

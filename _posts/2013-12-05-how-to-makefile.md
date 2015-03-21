@@ -3,9 +3,8 @@ layout: post
 title: 简单学习makefile
 category: 博客
 tags: 语法
-description: makefile究竟有多重要，在linux下开发你就知道了。
+description: 
 ---
-![images](http://media-cache-ec0.pinimg.com/736x/c3/98/f8/c398f8fe9fc5613f341ebcb110ec0f53.jpg)
 ##什么是makefile
 不拉不啦，这个明白很重要，重要性啥的就不写了，简单记录如何操作～
 

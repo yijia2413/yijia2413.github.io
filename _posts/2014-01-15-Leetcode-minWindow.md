@@ -5,7 +5,6 @@ description: http://oj.leetcode.com/problems/minimum-window-substring/
 category: 代码
 tags: Leetcode
 ---
-![images](http://media-cache-cd0.pinimg.com/736x/9a/93/98/9a93982113e9d300348f3e97221bcfad.jpg)
 ## 题目描述
 Given a string S and a string T, find the minimum window in S which will contain all the characters in T in complexity `O(n)`.
 

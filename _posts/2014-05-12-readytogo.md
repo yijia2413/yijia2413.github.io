@@ -4,6 +4,7 @@ title: 准备离去
 category: 扯淡
 tags: 其他
 description: 
+published: false
 ---
 ![img](http://media-cache-cd0.pinimg.com/736x/de/19/25/de19254bc60846d7ce5c3666fa396bf2.jpg)
 ##好久没写了

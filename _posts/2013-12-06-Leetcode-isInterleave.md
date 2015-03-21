@@ -5,7 +5,6 @@ description: http://oj.leetcode.com/problems/interleaving-string/
 category: 代码
 tags: Leetcode
 ---
-![images](http://media-cache-ec0.pinimg.com/736x/16/a2/5e/16a25ec12fed836e821f3dbe715507c4.jpg)
 ## 题目描述
 Given s1, s2, s3, find whether s3 is formed by the interleaving of s1 and s2.
 

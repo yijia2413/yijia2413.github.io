@@ -5,8 +5,7 @@ description: http://oj.leetcode.com/problems/reverse-integer/
 category: 代码
 tags: Leetcode
 ---
-![img](http://media-cache-ec0.pinimg.com/236x/f1/23/d6/f123d66745c311194fe37a6c70cdf85b.jpg)
-###题目描述
+##题目描述
 Reverse digits of an integer.
 
 Example1: `x = 123`, `return 321`
@@ -25,7 +24,7 @@ Did you notice that the reversed integer might overflow? Assume the input is a 3
 
 Throw an exception? Good, but what if throwing an exception is not an option? You would then have to re-design the function (ie, add an extra parameter).
 
-###AC代码
+##AC代码
 		class Solution {
 		    public: int reverse(int x) {
 			// Note: The Solution object is instantiated only once and is reused by each test case.

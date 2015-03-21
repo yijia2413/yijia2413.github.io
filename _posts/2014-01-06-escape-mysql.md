@@ -5,7 +5,6 @@ category: 博客
 tags: 语法
 description: 这个问题折腾了我好久啊……
 ---
-![images](http://media-cache-ak0.pinimg.com/736x/96/fc/f1/96fcf1f48e900b568521f2a72f14afbe.jpg)
 ##Mysql为什么需要转义
 程序执行中未对敏感字符进行过滤,使得攻击者传入恶意字符串与结构化数据查询语句合并,并且执行恶意代码.也就是要防注入。
 ##常见转义

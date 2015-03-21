@@ -5,8 +5,7 @@ description: http://oj.leetcode.com/problems/two-sum/
 category: 代码
 tags: Leetcode
 ---
-![img](http://media-cache-ak0.pinimg.com/736x/2e/21/d8/2e21d8568529233e902a02398a60a23d.jpg)
-###题目描述
+##题目描述
 Given an array of integers, find two numbers such that they add up to a specific target number.
 
 The function twoSum should return indices of the two numbers such that they add up to the target, where index1 must be less than index2. Please note that your returned answers (both index1 and index2) are not zero-based.
@@ -17,7 +16,7 @@ Input: `numbers={2, 7, 11, 15}`, `target=9`
 
 Output: `index1=1`, `index2=2`
 
-###AC代码
+##AC代码
 <pre class="prettyprint">
 		class Solution {
 		public:

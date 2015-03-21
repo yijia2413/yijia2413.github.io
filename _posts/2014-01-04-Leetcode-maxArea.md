@@ -5,7 +5,6 @@ description: http://oj.leetcode.com/problems/container-with-most-water/
 category: 代码
 tags: Leetcode
 ---
-![images](http://media-cache-ec0.pinimg.com/736x/c1/17/1b/c1171b108268388435d6315b0d147d12.jpg)
 ## 题目描述
 Given n non-negative integers `a1, a2, ..., an`, where each represents a point at coordinate `(i, ai)`. n vertical lines are drawn such that the two endpoints of line i is at `(i, ai)` and `(i, 0)`. Find two lines, which together with x-axis forms a container, such that the container contains the most water.
 

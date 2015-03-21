@@ -1,17 +1,23 @@
 ---
-layout: book
+layout: post
 title: 移动风暴.苹果与谷歌的科技之战
-status: read
 category: 读书
-tags: 读书
-keywords: 移动互联网
-description: 
-author: 弗雷德·沃格尔斯坦  
-publisher: 中信出版社
-language: 中文
-link: http://book.douban.com/subject/25800026/
-cover: /public/upload/book/google-apple.jpg
+tags: 
+  - 读书
+imagefeature: null
+mathjax: false
+chart: false
+comments: true
+featured: true
+published: true
 ---
+![img](/images/post/book/google-apple.jpg)
+
+##简介：
+*	状态：已读
+*	作者：弗雷德·沃格尔斯坦 
+*	链接：[http://book.douban.com/subject/25800026/](http://book.douban.com/subject/25800026/)
+
 ##期待
 这本书是`不止读书`微信公共账号推荐的一本书，我看到后就马上在手机淘宝下单买了。
 

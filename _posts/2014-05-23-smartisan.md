@@ -6,6 +6,7 @@ tags: 互联网
 description: 
 ---
 ![images](http://static.smartisanos.cn/asset1400843113600/img/product_image/webkit/overview/artisan/01_phone.png)
+
 ##罗永浩
 在此之前，我只知道他曾经是一个英语老师，口才不错，会忽悠。
 

@@ -5,15 +5,14 @@ description: http://oj.leetcode.com/problems/single-number-ii/
 category: 代码
 tags: Leetcode
 ---
-
-###题目描述
+##题目描述
 Given an array of integers, every element appears three times except for one. Find that single one.
 
 Note:
 
 Your algorithm should have a linear runtime complexity. Could you implement it without using extra memory?
 
-###代码
+##代码
 		class Solution {
 				public:
 				    int singleNumber(int A[], int n) {

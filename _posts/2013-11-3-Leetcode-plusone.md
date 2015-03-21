@@ -5,11 +5,10 @@ category: 代码
 tags: Leetcode
 description: 贪心，http://oj.leetcode.com/problems/plus-one/
 ---
-![images](http://media-cache-ak0.pinimg.com/736x/f8/11/64/f811648471368bd8ed5fda5dff993454.jpg)
-###题目描述
+##题目描述
 *   Given a number represented as an array of digits, plus one to the number.
 
-###AC代码
+##AC代码
 
     #include <iostream>
     #include <cstdio>

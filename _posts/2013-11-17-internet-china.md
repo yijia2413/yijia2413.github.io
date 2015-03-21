@@ -4,6 +4,7 @@ title: 中国互联网5大生死逻辑！
 category: 摘录
 tags: 摘要
 description: 中国互联网分三个层面;第一层面是媒体上的互联网，也就是大众容易识别和认识的互联网;第二层面是草根互联网，这是中国互联网巨大的组成部分，却极少在公众面前出现;第三层面是黑暗互联网。黑马哥在此推荐这篇donews(作者：caoz)的文章，解密其中国互联网17个鲜活案例印证的5大生死逻辑.
+published: false
 ---
 ![images](http://media-cache-ak0.pinimg.com/236x/31/31/b4/3131b477f8ddb83924071d7718245950.jpg)
 摘抄自iheima。
