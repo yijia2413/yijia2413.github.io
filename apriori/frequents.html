@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>frequents_finding</title>
+    <script type="text/javascript" src="d3.js"></script>
+    <link type="text/css" rel="stylesheet" href="frequents.css"/>
+</head>
+<body>
+<div id="frequents_form" style="float:right">
+<form onsubmit="return false;">
+<fieldset>
+<legend><b>item_frequents</b></legend>
+
+<p>
+<b>ids number:</b>
+<input type="text" id="id_number" placeholder="betweent 0 and 100" size = "10" AUTOCOMPLETE="off"/>
+
+</p>
+<p>
+<b>dimensions:</b>
+<input type="text" id="dimensions" placeholder="between 0 and 20" size="8" AUTOCOMPLETE="off"/>
+
+</p>
+<p>
+<b>valid bits:</b>
+&nbsp;&nbsp;&nbsp;
+<input type="text" id="valid_bits" placeholder="no more than ids*dimensions" size="17" AUTOCOMPLETE="off"/>
+
+</p>
+<p>
+<b>frequent:</b>
+&nbsp;&nbsp;&nbsp;&nbsp;
+<input type="text" id="frequent_bound" placeholder="no lower than 1" size="6" AUTOCOMPLETE="off"/>
+
+</p>
+<center>
+<p>
+<select name="manipulate" id="targetName" AUTOCOMPLETE="off">
+	<option value="gendata" onclick="generate_items()"  selected >generate</option>
+	<option value="frequents" onclick="form_frequents()">frequents</option>
+</select>
+</p>
+</center>
+</fieldset>
+</form>
+<fieldset id="frequents_results" style="display:none">
+	<legend><b>frequent items</b></legend>
+	<b>frequent length:</b>
+	<select name="frequent_sel"id = "frequent_sel" AUTOCOMPLETE="off">
+	</select>
+</fieldset>
+</div>
+<div id="chord" style="float:left; border-right:20px"></div>
+
+
+<div id="tooltip"  class="hidden">
+
+
+</div>
+
+
+<script type="text/javascript" src="frequents.js"></script>
+</body>
+</html>
