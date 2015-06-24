@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>K-Means Clustering</title>
+  <link href='bootstrap.min.css' rel='stylesheet'>
+  <link rel='stylesheet' href='range-slider.css' type='text/css' />
+  <link rel='stylesheet' href='kmeans.css' type='text/css' />
+  <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
+    });
+    </script>
+  <script type="text/javascript" src="MathJax.js"></script>
+</head>
+<body>
+  <div class='container'>
+    <div class='row col-xs-12'>
+      <center><h1> K-Means Clustering </h1></center>
+      <br/>
+    </div>
+    <div class='row'>
+      <div class='col-xs-7'>
+        <div id='kmeans-vis'></div>
+        <div class='mean-square-error'>随机生成点集，并让点集有一定的规律聚合规律。</div>
+      </div>
+      <div class='col-xs-5'>
+        <div class='row'>
+          K-Means 算法是一种cluster analysis算法，主要通过不断地迭代求取离种子点最近均值的算法。
+          <hr>
+          <div class='algorithm-start'>
+            <font style="color:red">迭代</font>执行以下两步直至<font style="color:red">收敛</font>:
+          </div>
+          <div class='step-title closest active'>
+            <font style="color:red">找到最近的centroid</font>
+          </div>
+          <div class='step-description closest active'>
+            求图中所有点到种子点的距离，
+            如果点Pi离种子点Si最近，那么Pi属于Si点群。
+          </div>
+          <div class='step-title update'>
+            <font style="color:red">更新centroid</font>
+          </div>
+          <div class='step-description update'>
+            移动种子点到属于他的“点群”的中心，也就是平均正中心。
+          </div>
+          <a class='step btn btn-primary find'>找到最近的centroid</a>
+          <hr>
+        </div>
+        <div class='row'>
+          <div class='input'>点集的数量</div>: <input id='num-points' type = 'text' value=1000>
+          </br>
+          </br>
+          <div class='input'>初始数据大致分类</div>: <input id='num-clusters' type='text' value='4'>
+          <br/>
+          <br/>
+          <div class='input'>centroid的个数</div>: <input id='num-centroids' type='text' value='4'>
+          <br/>
+          <br/>
+          待聚类的点集 <div class='range-slider' id='range-slider'></div> 无规律程度递增
+          <br />
+          <br/>
+          <a class='new-points btn btn-danger'>随机设置生成的点集位置</a>
+          <a class='new-centroids btn btn-danger'>随机设置centroids位置</a>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script src='jquery.min.js'></script>
+  <script src='d3.min.js'></script>
+  <script src='range-slider.js'></script>
+  <script src='kmeans.js'></script>
+</body>
+</html>

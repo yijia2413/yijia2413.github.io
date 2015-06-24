@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>link analysis vis</title>
+    <script type="text/javascript" src="d3.js"></script>
+    <link type="text/css" rel="stylesheet" href="nodes.css"/>
+</head>
+<body>
+<div style="float:right">
+<form onsubmit="return false;">
+<fieldset>
+<legend><b>link_analysis</b></legend>
+<p>
+<b>points number:</b>
+<input type="text" id="point" placeholder="betweent 0 and 100" size = "10" AUTOCOMPLETE="off"/>
+
+</p>
+<p>
+<b>edges number:</b>
+<input type="text" id="edge" placeholder="no more than the square of points" AUTOCOMPLETE="off"/>
+
+</p>
+<p>
+<b>alpha:</b>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<input type="text" id="alpha" placeholder="between 0 and 1"  size = "7" AUTOCOMPLETE="off"/>
+
+</p>
+<p>
+<center>
+<input type="button" value="generateGraph" onclick="graph_vis()"/>
+<select name="linkClass" id="targetName" AUTOCOMPLETE="off">
+	<option value="pagerank" onclick="link_vis()"  selected >pagerank</option>
+	<option value="hit-a" onclick="link_vis() ">hit-a</option>
+	<option value="hit-h" onclick="link_vis() ">hit-h</option>
+</select>
+</center>
+</p>
+</fieldset>
+</form>
+</div>
+
+<div id="graph"></div>
+
+
+
+<div id="tooltip" class="hidden">
+
+</div>
+
+
+<script type="text/javascript" src="linkanalysis.js"></script>
+</body>
+</html>
