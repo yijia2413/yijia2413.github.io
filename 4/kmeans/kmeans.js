@@ -139,6 +139,7 @@ $(function() {
   function resetPoints() {
     resetCentroidUpdateText();
     points = [];
+    //alert(points[1])
 
     // Arbitrarily chosen variance and percentageClusteredPoints
     var variance = randomness / 2 + 4;
@@ -158,12 +159,14 @@ $(function() {
         points.push([normalPt(xNorm), normalPt(yNorm)]);
       }
     }
+    
 
     // Scatter the remaining points randomly
     var length = points.length;
     for (var i = 0; i < NUM_POINTS - length; i++) {
       points.push([randomCenter(width), randomCenter(height)]);
     }
+    
 
     uncolorPoints();
     resetCentroidUpdateText();

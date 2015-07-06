@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>frequents_multistage</title>
+    <script type="text/javascript" src="d3.js"></script>
+    <link type="text/css" rel="stylesheet" href="frequents.css"/>
+</head>
+<body>
+<div id="frequents_form" style="float:right">
+<form onsubmit="return false;">
+<fieldset>
+<legend><b>item_frequents</b></legend>
+<p>
+<center>
+<input type="button" value="start multistage" onclick="start()"/>
+</center>
+</p>
+</fieldset>
+</form>
+<fieldset id="frequents_results" style="display:none">
+	<legend><b>frequent items</b></legend>
+	<b>frequent length:</b>
+	<select name="frequent_sel"id = "frequent_sel" AUTOCOMPLETE="off">
+	</select>
+</fieldset>
+</div>
+<div id="chord" style="float:left; border-right:20px"></div>
+
+
+<div id="tooltip"  class="hidden">
+
+
+</div>
+
+
+<script type="text/javascript" src="frequents.js"></script>
+</body>
+</html>
