@@ -10,5 +10,4 @@ published: true
 ---
 
 ![img](/images/post/whu/bye.jpg)
-飞翔吧……
-===
+
