@@ -4,22 +4,50 @@ locale:           zh_CN
 logo:             logo.png
 disqus_shortname: yijia2413
 share:            true
-readtime:		  true
-wpm:			  200
-dropcap:		  true
-theme:			  blue
+search:           true
+readtime:         true
 nprogress:        true
 header_bg:        alleyway.jpg
-author_bg:		  newyork.jpg
+default_bg:       newyork.jpg
+# Turn on or off the fin animations in the header and footer
+triangleheader:   true
+animated_fins:    true
+# Specify the fin color in RGB value
+fin_color:        "255,255,255"
 # Change url to your domain. Leave localhost server or blank when working locally.
 # or use the hint from http://jekyllrb.com/docs/github-pages/ to keep this the same 
 # whether working locally or remotely. Start Jekyll with: jekyll serve --baseurl ''
 url:              http://yijia2413.github.io
 
+# Gems used
+gems:
+  - jekyll-feed
+  - jekyll-archives
+  - jekyll-paginate
+  - jekyll-sitemap
+  - jekyll-gist
+  - jekyll-seo-tag
+
+
+# Archives configuration
+# https://github.com/jekyll/jekyll-archives/blob/master/docs/configuration.md
+jekyll-archives:
+  enabled:
+    - categories
+    - tags
+  layout: 'archive'
+  permalinks:
+    # year: '/:year/'
+    # month: '/:year/:month/'
+    # day: '/:year/:month/:day/'
+    tag: '/archive/tag/:name/'
+    category: '/archive/category/:name/'
+
+
 # Owner/author information
-owner:
+author:
   name:           一小佳
-  avatar:         yijia.jpg
+  picture:         yijia.jpg
   email:          yijia2413@gmail.com
   # Use the coder's toolbox at http://coderstoolbox.net/string/#!encoding=xml&action=encode&charset=us_ascii to encode your description into XML string
   description:    Hello, I am Jia Yi. I am a programmer, basketball player &amp; a student(ucas &amp; whu). I hope you will like my blog. If you want to get in touch with me, email is best. By the way, welcome to my blog, have a nice day!
@@ -40,171 +68,49 @@ bing_verify:
 # Links to include in footer navigation
 # For external links add external: true
 links:
-#  - title: Home
-#    url: /
-#    external: false
-#    icon: home
+- title: Home
+    url: /
+    external: false
+    icon: home
   - title: Tags();
     url: /tags
   - title: Categories();
     url: /categories
-  - title: Featured();
-    url: /featured
   - title: Me();
     url: /about
+
+# Sitemap configuration
+# https://github.com/kinnetica/jekyll-plugins
+sitemap:
+    file: "/sitemap.xml"
+    exclude:
+        - "/atom.xml"
+        - "/feed.xml"
+        - "/feed/index.xml"
+    include_posts:
+        - "/index.html"
 
 # http://en.wikipedia.org/wiki/List_of_tz_database_time_zones
 timezone:    Asia/Shanghai
 future:      true
-#highlighter: pygments
+markdown:    kramdown
+highlighter: rouge
+paginate:    6
+paginate_path: "/blog/:num/"
 
-#markdown: kramdown
-pygments: true
-
-markdown:    redcarpet
-paginate:    5
-paginate_path: "page:num"
 
 # https://github.com/mojombo/jekyll/wiki/Permalinks
-permalink:   /:title
+collections:
+  posts:
+    output: true
+    permalink: /blog/:title
+  pages:
+    output: true
+    permalink: /:title
 
 kramdown:
+  input: GFM
   auto_ids: true
   footnote_nr: 1
   entity_output: as_char
   toc_levels: 1..6
-  use_coderay: false
-
-  coderay:
-    coderay_line_numbers: 
-    coderay_line_numbers_start: 1
-    coderay_tab_width: 4
-    coderay_bold_every: 10
-    coderay_css: class
-
-prose:
-  siteurl: 'http://yijia2413.github.io/'
-  relativeLinks: 'http://yijia2413.github.io/links.jsonp'
-  media: 'images/post'
-  metadata:
-    _posts:
-      - name: "published"
-        field:
-          label: "Published"
-          element: "checkbox"
-          value: "true"
-      - name: "layout"
-        field:
-          element: "hidden"
-          label: "Layout"
-          value: "post"
-      - name: "title"
-        field:
-          label: "Title"
-          element: "text"
-          value: "An Awesome Headline!"
-      - name: "description"
-        field:
-          element: "text"
-          label: "Description"
-          placeholder: "Enter Post Description"
-      - name: "modified"
-        field:
-          element: "text"
-          label: "Has this page been modified?"
-          placeholder: "YYYY-MM-DD"
-      - name: "categories"
-        field:
-          element: "multiselect"
-          label: "Add categories"
-          placeholder: "Choose categories"
-          value: personal
-          options:
-            - name: "博客"
-              value: 博客
-            - name: "代码"
-              value: 代码
-            - name: "扯淡"
-              value: 扯淡
-            - name: "摘要"
-              value: 摘要
-            - name: "读书"
-              value: 读书
-            - name: "简历"
-              value: 简历
-          alterable: true
-      - name: "tags"
-        field:
-          element: "text"
-          label: "Tags"
-          placeholder: "Enter tags, separated by spaces"
-      - name: "imagefeature"
-        field:
-          element: "text"
-          label: "Featured Image"
-          placeholder: "somefile.jpg"
-      - name: "covereffect"
-        field:
-          element: "select"
-          label: "Select Cover Effect"
-          placeholder: "Choose Type"
-          value:
-          options:
-            - name: "None"
-              value: 
-            - name: "slice"
-              value: slice
-            - name: "push"
-              value: push
-      - name: "location"
-        field:
-          element: "text"
-          label: "Location"
-          placeholder: "Some Place"
-      - name: "locationgps"
-        field:
-          element: "text"
-          label: "Location GPS point"
-          placeholder: "long, lat"
-      - name: "mathjax"
-        field:
-          element: "checkbox"
-          label: "MathJax"
-          value: false
-      - name: "featured"
-        field:
-          element: "checkbox"
-          label: "Featured?"
-          value: false
-      - name: "comments"
-        field:
-          element: "checkbox"
-          label: "Comments"
-          value: false
-      - name: "chart"
-        field:
-          element: "checkbox"
-          label: "Chart?"
-          value: false
-      - name: "charttype"
-        field:
-          element: "select"
-          label: "Select Chart Type"
-          placeholder: "Choose Type"
-          value:
-          options:
-            - name: "None"
-              value: 
-            - name: "pie"
-              value: pie
-            - name: "serial"
-              value: serial
-      - name: "jquery"
-        field:
-          element: "checkbox"
-          label: "Require JQuery?"
-          value: false
-
-
-include: [".htaccess"]
-exclude: ["lib", "config.rb", "Gemfile", "Capfile", "Gemfile.lock", "config", "log", "Rakefile", "Rakefile.rb", "tmp", "less", "*.sublime-project", "*.sublime-workspace", "test", "spec", "Gruntfile.js", "package.json", "node_modules", "Thumbs.db"]
