@@ -1,5 +1,5 @@
 title:            一小佳
-description:      "An Engineer's Diary"
+description:      "to be a better man"
 locale:           zh_CN
 logo:             logo.png
 disqus_shortname: yijia2413
@@ -47,7 +47,7 @@ jekyll-archives:
 # Owner/author information
 author:
   name:           一小佳
-  picture:         yijia.jpg
+  picture:        yijia.jpg
   email:          yijia2413@gmail.com
   # Use the coder's toolbox at http://coderstoolbox.net/string/#!encoding=xml&action=encode&charset=us_ascii to encode your description into XML string
   description:    Hello, I am Jia Yi. I am a programmer, basketball player &amp; a student(ucas &amp; whu). I hope you will like my blog. If you want to get in touch with me, email is best. By the way, welcome to my blog, have a nice day!
@@ -92,8 +92,9 @@ sitemap:
 
 # http://en.wikipedia.org/wiki/List_of_tz_database_time_zones
 timezone:    Asia/Shanghai
+pygments: true
 future:      true
-markdown:    kramdown
+markdown:    redcarpet
 highlighter: rouge
 paginate:    6
 paginate_path: "/blog/:num/"
