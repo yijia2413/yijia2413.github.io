@@ -165,6 +165,15 @@
     {% include footer.html %}
 
     {% include scripts.html %}
+
+    <link rel="stylesheet" href="/assets/js/prettify/prettify.css">
+    <script src="/assets/js/prettify/prettify.js"></script>
+    <script type="text/javascript">
+          $(function() {
+          $('pre').addClass('prettyprint').attr('style', 'overflow:auto');
+          prettyPrint();
+          });
+    </script>
         
 </body>
 </html>
