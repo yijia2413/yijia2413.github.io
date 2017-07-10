@@ -96,7 +96,7 @@ sitemap:
 timezone:    Asia/Shanghai
 pygments: true
 future:      true
-markdown:    redcarpet
+markdown:    kramdown
 highlighter: rouge
 paginate:    6
 paginate_path: "/blog/:num/"
