@@ -71,13 +71,10 @@ links:
   - title: Home();
     url: /
     external: false
-    icon: home
   - title: Tags();
     url: /tags
-    icon: tags
   - title: Categories();
     url: /categories
-    icon: categories
   - title: Me();
     url: /about
 
@@ -96,7 +93,7 @@ sitemap:
 timezone:    Asia/Shanghai
 pygments: true
 future:      true
-markdown:    kramdown
+markdown:    redcarpet
 highlighter: rouge
 paginate:    6
 paginate_path: "/blog/:num/"
