@@ -1,8 +1,7 @@
-markdown: rdiscount
+markdown: redcarpet
 highlighter: pygments
 permalink: /:title
 name: "@xixi003"
-markdown: rdiscount
 
 author: "@xixi003"
 atom-baseurl: "http://yijia.ws"
