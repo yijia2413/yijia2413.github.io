@@ -1,6 +1,6 @@
 markdown: rdiscount
 highlighter: pygments
-permalink: title
+permalink: /:title
 name: "@xixi003"
 markdown: rdiscount
 
