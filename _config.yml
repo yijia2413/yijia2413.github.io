@@ -1,8 +1,5 @@
 markdown: kramdown
 highlighter: pygments
-kramdown:
-  input: GFM
-  hard_wrap: false
 
 permalink: /:title
 name: "@xixi003"
@@ -21,6 +18,19 @@ navigations:
   - title: About
     class: fa fa-user
     href: /about.html
+  - title: Github
+    class: fa fa-github
+    href: https://www.github.com/yijia2413
+  - title: Linkedin
+    class: fa fa-linkedin
+    href: https://www.linkedin.com/in/yijia2413
   - title: Subscribe
     class: fa fa-rss
     href: /atom.xml
+
+kramdown:
+  input: GFM
+  auto_ids: true
+  footnote_nr: 1
+  entity_output: as_char
+  toc_levels: 1..6
