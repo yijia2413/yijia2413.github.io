@@ -6,6 +6,7 @@ category: 代码
 tags: Leetcode
 ---
 ## 题目描述
+
 Given a string, determine if it is a palindrome, considering only alphanumeric characters and ignoring cases.
 
 *   For example,
@@ -18,6 +19,7 @@ Have you consider that the string might be empty? This is a good question to ask
 For the purpose of this problem, we define empty string as valid palindrome.
 
 ## 思路
+
 双指针，扫描。需要用到一些库函数。
 
 ## AC代码

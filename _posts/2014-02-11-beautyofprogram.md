@@ -12,10 +12,11 @@ featured: false
 published: true
 ---
 ![img](/images/post/book/beautyofprogram.jpg)
-##简介
+
+## 简介
 *	状态：在读
 *	作者：吴军
 *	链接：[http://book.douban.com/subject/3004255/](http://book.douban.com/subject/3004255/)
 
-##惭愧
+## 惭愧
 很惭愧，都这么久了……状态还是只读的

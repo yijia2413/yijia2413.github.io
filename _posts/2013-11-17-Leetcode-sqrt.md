@@ -5,13 +5,14 @@ description: 利用二分搜索求解题目，是简单的做法。但是还有�
 category: 代码
 tags: Leetcode
 ---
-##题目描述
+## 题目描述
+
 <ul>
 <li>Implement int sqrt(int x).</li>
 <li>Compute and return the square root of x.</li>
 </ul>
 
-##代码
+## 代码
 
 最早想到的当然是二分法了……直接上代码……
 
@@ -65,7 +66,7 @@ tags: Leetcode
  
 好像还有更简单的办法,`end`直接取`x/2+1`即可，因为一个数的平方根不会比一半大……
 
-##代码二 
+## 代码二 
 	 int sqrt(int x) {
 	    long long i = 0;
 	    long long j = x / 2 + 1;
@@ -82,7 +83,7 @@ tags: Leetcode
 	 
 
  
-##牛顿迭代法
+## 牛顿迭代法
 
    为了方便理解，就先以本题为例：
 

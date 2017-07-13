@@ -5,7 +5,8 @@ category: 博客
 tags: 
 description: 毕业了
 ---
-#创建chroot环境
+# 创建chroot环境
+
 首先看一段代码
 
 	#include<iostream>
@@ -43,7 +44,7 @@ description: 毕业了
 
 因为需要拷贝chroot之后的运行环境，如果此处要执行python，则需要找到所有的动态链接库。
 
-#动态链接库
+# 动态链接库
 首先，执行：
 	
 	ldd /usr/bin/python
@@ -60,7 +61,7 @@ description: 毕业了
 
 拷贝之后就可以再chroot环境中执行python了，注意拷贝一定要完整。
 
-#拷贝脚本
+# 拷贝脚本
 
 	#!/bin/bash
 	

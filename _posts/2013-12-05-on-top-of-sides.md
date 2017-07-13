@@ -15,7 +15,8 @@ published: true
 
 ![img](/images/post/book/on-top-of-tides.jpg)
 
-##简介
+## 简介
+
 *	状态：已读
 *	作者：吴军
 *	链接：http://book.douban.com/subject/6709783/

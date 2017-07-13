@@ -12,12 +12,12 @@ featured: false
 published: true
 ---
 
-##情况简介
+## 情况简介
 mac下不想装图形界面虚拟机，所以用`vagrant`+`virtual box`虚拟了ubuntu环境，在ubuntu下配置好`hadoop`环境，然后利用eclipse远程调试
 
 >>简直就是蛋疼……
 
-##准备
+## 准备
 *	vagrant环境
 *	virtual box
 *	hadoop环境，我的是`hadoop 2.5.2` + `hbase 0.98.11`
@@ -26,7 +26,7 @@ mac下不想装图形界面虚拟机，所以用`vagrant`+`virtual box`虚拟了
 
 [https://github.com/yijia2413/vagrant-cascading-hadoop-cluster](https://github.com/yijia2413/vagrant-cascading-hadoop-cluster)
 
-##配置步骤
+## 配置步骤
 *	__step1:__ 假设hadoop + hbase都配置好了，在远程(或者vagrant里面)
 *	__step2:__ 下载安装eclipse，官网解决即可，for os x
 *	__step3:__ 下载[hadoop2x-eclipse-plugin](https://github.com/winghc/hadoop2x-eclipse-plugin),放入ecipse插件下
@@ -73,7 +73,7 @@ IP为远程IP，此处为vagrant的master节点对应的ip(`伪分布式`)
 
 *	__step9:__ 添加log，在eclipse的控制台，在src里面加入log4j.properties即可
 
-##完成
+## 完成
 此时，可以在eclipse里面尽情的远程调试hadoop程序了
 
 

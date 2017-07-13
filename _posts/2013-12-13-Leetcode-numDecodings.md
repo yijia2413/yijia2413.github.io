@@ -6,6 +6,7 @@ category: 代码
 tags: Leetcode
 ---
 ![images](http://media-cache-ak0.pinimg.com/736x/03/51/f8/0351f885936b7d1b71e36a9b22d24336.jpg)
+
 ## 题目描述
 
 A message containing letters from `A-Z` is being encoded to numbers using the following mapping:
@@ -24,7 +25,7 @@ Given encoded message `"12"`, it could be decoded as `"AB"` (1 2) or `"L"` (12).
 The number of ways decoding `"12"` is `2`.
 
 
-##思路
+## 思路
 每次对于当前的字符判断是否属于`1-9`（0肯定不行，因为0不在1-26中），如果属于，那么当前的字符可以被decode，并且和`f[n-1]`组合，`f[n] += f[n-1]`.
 
 然后对于当前字符和前一个字符组成的字符串判断是否属于10-26，如果属于，那么这两个字符可以被decode，并且和`f[n-2]`组合，`f[n] += f[n-2]`

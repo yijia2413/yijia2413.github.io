@@ -6,6 +6,7 @@ category: 代码
 tags: Leetcode
 ---
 ## 题目描述
+
 Determine whether an integer is a palindrome. Do this without extra space.
 
 click to show spoilers.
@@ -20,6 +21,7 @@ You could also try reversing an integer. However, if you have solved the problem
 There is a more generic way of solving this problem.
 
 ## 思路
+
 取首位和末位比较，然后去掉。循环即可。
 
 ## AC代码

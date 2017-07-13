@@ -5,6 +5,7 @@ description: http://oj.leetcode.com/problems/3sum/
 category: 代码
 tags: Leetcode
 ---
+
 ## 题目描述
 *   Given an array S of n integers, are there elements a, b, c in S such that `a + b + c = 0?` Find all unique triplets in the array which gives the sum of zero.
 *   __Note:__
@@ -16,6 +17,7 @@ tags: Leetcode
     `(-1, -1, 2)`
 
 ## 思路
+
 *   将数组排序，
 *   a遍历数组a[0]....a[n-1];         
 *   当 `a=a[i]`时后面的问题就是:`a[i+1]`到`a[n-1]`中`b+c =-a`,记 `b=a[j]=a[i-1]`,`c=a[k]=a[n-1]`.
@@ -25,8 +27,6 @@ tags: Leetcode
 *   还有一个问题就是`unique triplet`,所以`a=a[i]`要判断是否和`a[i-1]`相等,若相等子问题已经解答。也要判断b和c是否和之前的相同，若相同，就已经判断过了。
 
 ## AC代码
-
-
 
     #include <iostream>
     #include <cstdio>

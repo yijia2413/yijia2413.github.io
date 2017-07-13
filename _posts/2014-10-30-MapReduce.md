@@ -13,10 +13,10 @@ published: true
 ---
 ![img](/images/post/book/mapreduce.jpg)
 
-##简介
+## 简介
 *	状态：在读
 *	作者：董西成 
 *	链接：[http://book.douban.com/subject/24375031/](http://book.douban.com/subject/24375031/)
 
-##购买
+## 购买
 专业相关,认真阅读........

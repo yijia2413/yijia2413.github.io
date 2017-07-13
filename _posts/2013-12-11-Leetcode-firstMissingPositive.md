@@ -16,7 +16,8 @@ Given an unsorted integer array, find the first missing positive integer.
 Your algorithm should run in `O(n)` time and uses constant space.
 
 
-##思路
+## 思路
+
 假设数组长度是n。那么第一个missing的正数肯定不会超过n。
 
 如果把所有正数都放在正确的位置上，`数字1（如果有的话）在A[0]`, `数字2（如果有的话）在A[1]`，`数字i + 1在A[i]`，那么我们只要扫描A，遇到第一个A[i]不等于i+1的，就知道这个missing的正数（i+1）了。

@@ -13,12 +13,12 @@ published: true
 ---
 ![img](/images/post/book/math.jpg)
 
-##简介
+## 简介
 *	状态：已读
 *	作者：吴军
 *	链接：[http://book.douban.com/subject/10750155/](http://book.douban.com/subject/10750155/)
 
-##感触
+## 感触
 谷歌各种技术在这里能够接触到有点。
 
 了解平时感觉没有用处的运算竟然能改变世界，比如说bool逻辑等等。

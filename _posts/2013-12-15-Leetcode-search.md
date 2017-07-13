@@ -16,7 +16,7 @@ You are given a target value to search. If found in the array return its `index`
 You may assume `no duplicate exists` in the array.
 
 
-##思路
+## 思路
 在有序数组中查询一个值，`二分法`是一个通用解法。本题虽然在某一个地方，将数组分段了，依旧可以沿用这种方法。
 
 假设现在我们要在A[l] ... A[r]中查询target。

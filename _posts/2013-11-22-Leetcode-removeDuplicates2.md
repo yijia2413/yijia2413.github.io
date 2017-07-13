@@ -6,6 +6,7 @@ category: 代码
 tags: Leetcode
 ---
 ## 题目描述
+
 *   Follow up for "Remove Duplicates":
 *   What if duplicates are allowed at most twice?
 *   For example,
@@ -13,6 +14,7 @@ tags: Leetcode
 *   Your function should return `length = 5`, and `A` is now `[1,1,2,2,3]`.
 
 ## 思路
+
 *   跟这个题目大同小异。[Remove Duplicates from Sorted Array](http://oj.leetcode.com/problems/remove-duplicates-from-sorted-array/)
 *   判断`A[i] == A[num - 1] && A[i] == A[num -2])`就不难了。
 

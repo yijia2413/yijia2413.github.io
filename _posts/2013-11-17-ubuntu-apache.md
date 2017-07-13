@@ -5,6 +5,7 @@ category: 博客
 tags: 语法
 description: ubuntu下配置apache，最主要是根目录的修改。
 ---
+
 为了能够配置好，花费了好大的劲啊，mark一下：
 
 安装啥的就不说了，直接上重点～主要是修改根目录。

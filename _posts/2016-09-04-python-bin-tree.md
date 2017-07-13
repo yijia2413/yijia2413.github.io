@@ -14,7 +14,7 @@ featured: false
 published: true
 ---
 
-## 二叉查找树
+
 ```
 #coding: utf8
 

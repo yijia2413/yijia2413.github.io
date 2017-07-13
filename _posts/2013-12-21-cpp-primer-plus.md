@@ -14,7 +14,8 @@ published: true
 ---
 ![img](/images/post/book/cpp-primer-plus.jpg)
 
-##简介
-*	状态：在读……尼玛，在读一年了
+## 简介
+
+*	状态：在读……尼玛，在读2年了
 *	链接：http://book.douban.com/subject/10789789/
 *	作者：Stephen Prata 

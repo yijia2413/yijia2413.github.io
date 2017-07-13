@@ -5,7 +5,8 @@ description: http://oj.leetcode.com/problems/jump-game/
 category: 代码
 tags: Leetcode
 ---
-##题目描述
+## 题目描述
+
 Given an array of non-negative integers, you are initially positioned at the first index of the array.
 
 Each element in the array represents your maximum jump length at that position.
@@ -18,7 +19,7 @@ For example:
 
 `A = [3,2,1,0,4]`, return `false`.
 
-##AC代码
+## AC代码
 		class Solution {
 				public:
 				    bool canJump(int A[], int n) {

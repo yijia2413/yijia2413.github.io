@@ -6,6 +6,7 @@ category: 代码
 tags: Leetcode
 ---
 ## 题目描述
+
 Given two binary strings, return their sum (also a binary string).
 
 For example,
@@ -15,6 +16,7 @@ For example,
 *   Return `"100".`
 
 ## 思路
+
 将位数补齐，类似于10进制的加法，按位进行加法运算。难点是进行进位的时候处理～
 
 切不可转换成10进制计算，因为当数很大的时候肯定会溢出的。`每次处理输入输出的时候都会遇到引号转义的问题。`
