@@ -5,12 +5,13 @@ description: http://oj.leetcode.com/problems/remove-duplicates-from-sorted-array
 category: 代码
 tags: Leetcode
 ---
-##题目描述
+## 题目描述
+
 Given an array and a value, remove all instances of that value in place and return the new length.
 
 The order of elements can be changed. It doesn't matter what you leave beyond the new length.
 
-##AC代码
+## AC代码
 		class Solution {
 		public:
 		    int removeElement(int A[], int n, int elem) {
