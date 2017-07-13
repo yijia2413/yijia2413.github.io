@@ -3,6 +3,7 @@ layout: default
 ---
 
 <center>
+<h1>
     <p>
         Hello,
         I'm
@@ -23,4 +24,5 @@ layout: default
         <a class="email" href="mailto:yijia2413@gmail.com">email</a>
         is best.
     </p>
+</h1>
 </center>>
