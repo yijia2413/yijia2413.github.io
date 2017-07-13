@@ -1,3 +1,4 @@
-# 一小佳
+My Blog
+=====
 
-我的博客
+Fork from [lhzhang](http://lhzhang.com/)

@@ -1,116 +1,23 @@
-title:            一小佳
-description:      "to be a better man"
-locale:           zh_CN
-logo:             logo.png
-disqus_shortname: yijia2413
-share:            true
-search:           true
-readtime:         true
-nprogress:        true
-header_bg:        alleyway.jpg
-default_bg:       newyork.jpg
-# Turn on or off the fin animations in the header and footer
-triangleheader:   true
-animated_fins:    true
-# Specify the fin color in RGB value
-fin_color:        "255,255,255"
-# Change url to your domain. Leave localhost server or blank when working locally.
-# or use the hint from http://jekyllrb.com/docs/github-pages/ to keep this the same 
-# whether working locally or remotely. Start Jekyll with: jekyll serve --baseurl ''
-url:              http://yijia2413.github.io
+markdown: rdiscount
+highlighter: pygments
+permalink: title
+name: "@xixi003"
+markdown: rdiscount
 
-# Gems used
-gems:
-  - jekyll-feed
-  - jekyll-archives
-  - jekyll-paginate
-  - jekyll-sitemap
-  - jekyll-gist
-  - jekyll-seo-tag
+author: "xixi003"
+atom-baseurl: "http://yijia.ws"
+disqus: "yijia2413"
 
-
-# Archives configuration
-# https://github.com/jekyll/jekyll-archives/blob/master/docs/configuration.md
-jekyll-archives:
-  enabled:
-    - categories
-    - tags
-  layout: 'archive'
-  permalinks:
-    # year: '/:year/'
-    # month: '/:year/:month/'
-    # day: '/:year/:month/:day/'
-    tag: '/archive/tag/:name/'
-    category: '/archive/category/:name/'
-
-
-# Owner/author information
-author:
-  name:           一小佳
-  picture:        yijia.jpg
-  email:          yijia2413@gmail.com
-  # Use the coder's toolbox at http://coderstoolbox.net/string/#!encoding=xml&action=encode&charset=us_ascii to encode your description into XML string
-  description:    Hello, I am Jia Yi. I am a programmer, basketball player &amp; a student(ucas &amp; whu). I hope you will like my blog. If you want to get in touch with me, email is best.
-  # Social networking links used in footer. Update and remove as you like.
-  twitter:        xixi003
-  facebook:       yijia.okc
-  github:         yijia2413
-  linkedin:       yijia2413
-  # For Google Authorship https://plus.google.com/authorship
-  google_plus:    117187790392501061036
-
-# Analytics and webmaster tools stuff goes here
-google_analytics:   UA-45820355-1
-google_verify:      1oh55StBm-EjdVgFomDCM4Dt1iSrJhB5a776bHEXojU
-# https://ssl.bing.com/webmaster/configure/verify/ownership Option 2 content= goes here
-bing_verify:         
-
-# Links to include in footer navigation
-# For external links add external: true
-links:
-  - title: Home();
-    url: /
-    external: false
-  - title: Tags();
-    url: /tags
-  - title: Categories();
-    url: /categories
-  - title: Me();
-    url: /about
-
-# Sitemap configuration
-# https://github.com/kinnetica/jekyll-plugins
-sitemap:
-    file: "/sitemap.xml"
-    exclude:
-        - "/atom.xml"
-        - "/feed.xml"
-        - "/feed/index.xml"
-    include_posts:
-        - "/index.html"
-
-# http://en.wikipedia.org/wiki/List_of_tz_database_time_zones
-timezone:    Asia/Shanghai
-pygments: true
-future:      true
-markdown:    redcarpet
-highlighter: rouge
-paginate:    6
-paginate_path: "/blog/:num/"
-
-
-# https://github.com/mojombo/jekyll/wiki/Permalinks
-collections:
-  posts:
-    output: true
-    permalink: /blog/:title
-  pages:
-    output: true
-    permalink: /:title
-
-kramdown:
-  input: GFM
-  auto_ids: true
-  footnote_nr: 1
-  entity_output: as_char
-  toc_levels: 1..6
+navigations:
+  - title: Archive
+    class: fa fa-list-ul
+    href: /archive.html
+  - title: Tags
+    class: fa fa-tags
+    href: /tags.html
+  - title: About
+    class: fa fa-user
+    href: /about.html
+  - title: Subscribe
+    class: fa fa-rss
+    href: /atom.xml
