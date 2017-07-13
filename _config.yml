@@ -4,7 +4,7 @@ permalink: /:title
 name: "@xixi003"
 markdown: rdiscount
 
-author: "xixi003"
+author: "@xixi003"
 atom-baseurl: "http://yijia.ws"
 disqus: "yijia2413"
 
