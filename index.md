@@ -11,11 +11,11 @@ layout: default
 
     <p>
         I'm a
-        <span class="role">programmer, basketball player &amp; a student</span>
+        <span class="role">programmer, basketball player &amp; a student, </span>
     </p>
 
     <p>
-    currently studying in <a href="http://www.ucas.ac.cn/">UCAS</a>
+    currently studying in <a href="http://www.ucas.ac.cn/">UCAS</a>.
     </p>
 
     <p>

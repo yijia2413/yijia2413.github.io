@@ -1,5 +1,10 @@
-markdown: redcarpet
+markdown: kramdown
 highlighter: pygments
+kramdown:
+  input: GFM
+  hard_wrap: false
+ 
+ +highlighter: rouge
 permalink: /:title
 name: "@xixi003"
 
