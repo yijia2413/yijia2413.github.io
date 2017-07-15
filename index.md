@@ -3,7 +3,7 @@ layout: default
 ---
 
 <center>
-<h1>
+<h2>
     <p>
         Hello,
         I'm
@@ -29,5 +29,5 @@ layout: default
         is best.
     </p>
     <p></p>
-</h1>
+</h2>
 </center>>

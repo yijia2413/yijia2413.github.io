@@ -18,6 +18,9 @@ navigations:
   - title: About
     class: fa fa-user
     href: /about.html
+  - title: Books
+    class: fa fa-book
+    href: https://book.douban.com/people/yijia2413/
   - title: Github
     class: fa fa-github
     href: https://www.github.com/yijia2413
