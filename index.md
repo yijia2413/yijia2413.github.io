@@ -5,7 +5,7 @@ layout: default
 <center>
 <h2>
     <p>
-        Hello,
+        Hello, welcome to my <a href="http://yijia.ws/archive.html">Blog</a>,
         I'm
         <a href="http://yijia.ws/me" class="fn url">Jia Yi</a>.
     </p>
