@@ -34,3 +34,5 @@ navigations:
 kramdown:
   input: GFM
   hard_wrap: false
+
+theme: jekyll-theme-leap-day
