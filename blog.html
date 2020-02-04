@@ -1,0 +1,25 @@
+---
+layout: page
+title : Blog
+header : Blogposts
+group : blog
+order : 100
+---
+{% include JB/setup %}
+
+<h1> Blog</h1>
+
+<ul class="bloglist">
+{% for post in site.posts %}
+<li>
+  <span>
+    <!-- {{ post.date | date: "%Y-%m-%d" }} -->
+    <a class="post-link" href="{{ post.url | prepend: site.baseurl }}.html">{{ post.title }} </a>
+  </span>
+  </br>
+  <span>
+    {{ post.date | date: "%b %-d, %Y" }}
+  </span>
+</li>
+{% endfor %}
+</ul>

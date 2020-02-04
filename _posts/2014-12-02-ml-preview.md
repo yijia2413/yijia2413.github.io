@@ -3,7 +3,7 @@ layout: post
 title: 机器学习预习
 description: 概要,学习
 category: 代码
-tags: maching_learning
+tags: 机器学习
 ---
 ## 三要素
 机器学习三要素-模型(model)、策略(strategy)、算法(algorithm)；

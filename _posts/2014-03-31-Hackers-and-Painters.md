@@ -4,7 +4,6 @@ title: 黑客与画家
 category: 读书
 tags: 
   - 读书
-  - 黑客
 imagefeature: null
 mathjax: false
 chart: false

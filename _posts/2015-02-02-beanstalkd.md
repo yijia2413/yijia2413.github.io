@@ -36,6 +36,3 @@ published: false
 [需要的库文件](https://github.com/kr/beanstalkd/wiki/client-libraries)
 
 [C++](https://github.com/deepfryed/beanstalk-client)
-
-
-

@@ -1,4 +1,1 @@
-My Blog
-=====
-
-Fork from [lhzhang](http://lhzhang.com/)
+# My Blog

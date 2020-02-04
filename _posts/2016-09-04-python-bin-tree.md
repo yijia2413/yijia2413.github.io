@@ -15,7 +15,7 @@ published: true
 ---
 
 
-```
+```python
 #coding: utf8
 
 class TreeNode:

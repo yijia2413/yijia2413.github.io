@@ -1,38 +1,32 @@
-markdown: kramdown
-highlighter: rouge
-
+# This is the default format.
+# For more see: http://jekyllrb.com/docs/permalinks/
 permalink: /:title
-name: "@xixi003"
 
-author: "@xixi003"
-atom-baseurl: "http://yijia.ws"
-disqus: "yijia2413"
+exclude: [".rvmrc", ".rbenv-version", "README.md", "Rakefile", "changelog.md"]
 
-navigations:
-  - title: Archive
-    class: fa fa-list-ul
-    href: /archive.html
-  - title: Tags
-    class: fa fa-tags
-    href: /tags.html
-  - title: About
-    class: fa fa-user
-    href: /about.html
-  - title: Books
-    class: fa fa-book
-    href: https://book.douban.com/people/yijia2413/
-  - title: Github
-    class: fa fa-github
-    href: https://www.github.com/yijia2413
-  - title: Linkedin
-    class: fa fa-linkedin
-    href: https://www.linkedin.com/in/yijia2413
-  - title: Subscribe
-    class: fa fa-rss
-    href: /atom.xml
+highlighter: rouge
+markdown: kramdown
 
-kramdown:
-  input: GFM
-  hard_wrap: false
 
-theme: jekyll-theme-leap-day
+# Themes are encouraged to use these universal variables
+# so be sure to set them if your theme uses them.
+#
+title :  "@xixi003"
+tagline:
+author :
+  name :
+
+#
+production_url : http://yijia.ws
+
+
+# All Jekyll-Bootstrap specific configurations are namespaced into this hash
+#
+JB :
+  version : 0.3.0
+
+  BASE_PATH : http://yijia.ws
+  BLOG_PATH : http://yijia.ws
+
+  sharing :
+    provider : false

@@ -22,17 +22,18 @@ Here are few examples.
 [1,3,5,6], 0 → 0
 
 ## AC代码
-
-		class Solution {
-		public:
-		    int searchInsert(int A[], int n, int target) {
-			// IMPORTANT: Please reset any member data you declared, as
-			// the same Solution instance will be reused for each test case.
-		     for(int i = 0; i < n; i++)
-		     {
-			  if(target <= A[i])
-			    return i;
-		     }
-		    return n;
-		    }
-		};
+```cpp
+class Solution {
+public:
+	int searchInsert(int A[], int n, int target) {
+	// IMPORTANT: Please reset any member data you declared, as
+	// the same Solution instance will be reused for each test case.
+		for(int i = 0; i < n; i++)
+		{
+		if(target <= A[i])
+		return i;
+		}
+	return n;
+	}
+};
+```

@@ -18,28 +18,27 @@ Input: `numbers={2, 7, 11, 15}`, `target=9`
 Output: `index1=1`, `index2=2`
 
 ## AC代码
-
-<pre class="prettyprint">
-		class Solution {
-		public:
-		    vector<int> twoSum(vector<int> &numbers, int target)
-		    	{
-		    		int index1 = 0, index2 = 0;
-		    		int len = numbers.size();
-		    		vector<int> result(2, 0);
-		    		for(int i = 0; i < len; i++)
-		    		{
-		    			for(int j = i + 1; j < len; j++)
-		    			{
-		    				if(numbers[i] + numbers[j] == target)
-		    				{
-		    					result[0] = i + 1;
-		    					result[1] = j + 1;
-		    				}
-		    			}
-		    		}
-		    
-		    		return result;
-		    	}
-		};
-</pre>
+```cpp
+class Solution {
+public:
+	vector<int> twoSum(vector<int> &numbers, int target)
+		{
+			int index1 = 0, index2 = 0;
+			int len = numbers.size();
+			vector<int> result(2, 0);
+			for(int i = 0; i < len; i++)
+			{
+				for(int j = i + 1; j < len; j++)
+				{
+					if(numbers[i] + numbers[j] == target)
+					{
+						result[0] = i + 1;
+						result[1] = j + 1;
+					}
+				}
+			}
+	
+			return result;
+		}
+};
+```

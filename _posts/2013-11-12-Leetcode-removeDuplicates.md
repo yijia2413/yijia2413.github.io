@@ -18,24 +18,24 @@ Given input array `A = [1,1,2]`,
 Your function should return `length = 2`, and A is now `[1,2]`.
 
 ## AC代码
-
-		class Solution {
-		public:
-		    int removeDuplicates(int A[], int n) {
-			// IMPORTANT: Please reset any member data you declared, as
-			// the same Solution instance will be reused for each test case.
-			if(n == 0)
-			    return 0;
-			int num = 1;
-			for(int i = 1; i < n; i++)
-			{
-			    if(A[i] != A[i-1])
-			    {
-				A[num] = A[i];
-				num++;
-			    }
-			}
-			return num;
-		    }
-		};
-
+```cpp
+class Solution {
+public:
+	int removeDuplicates(int A[], int n) {
+	// IMPORTANT: Please reset any member data you declared, as
+	// the same Solution instance will be reused for each test case.
+	if(n == 0)
+		return 0;
+	int num = 1;
+	for(int i = 1; i < n; i++)
+	{
+		if(A[i] != A[i-1])
+		{
+		A[num] = A[i];
+		num++;
+		}
+	}
+	return num;
+	}
+};
+```

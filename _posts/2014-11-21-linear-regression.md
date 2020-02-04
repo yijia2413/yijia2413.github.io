@@ -3,7 +3,7 @@ layout: post
 title: Linear Regression
 description: 回归,正则
 category: 代码
-tags: maching_learning
+tags: 机器学习
 ---
 ## Data Comes From
 Download the data here : [ex5Data.zip](http://openclassroom.stanford.edu/MainFolder/DocumentPage.php?course=MachineLearning&doc=exercises/ex5/ex5.html)
