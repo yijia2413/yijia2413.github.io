@@ -9,15 +9,11 @@ description: ""
 {% include JB/setup %}
 
 <br>
-> update 2020.02.05
+> update 2021.10.27
 
 ## 关于博客
 
-2013年开始写，也一直坚持，希望能记录一些成长过程
-
-期间换过好多模板，xgboost这个模板很不赖
-
-<a href="http://yijia.ws/blog.html" class="link-btn">My Blog</a>
+* 2013年开始写博客，也一直坚持，希望能记录一些成长过程。
 
 <br>
 
@@ -35,17 +31,17 @@ description: ""
 <br>
 
 
-## 关于职业
+## 关于工作
+* 读书期间兼职创业项目[计蒜客](www.jisuanke.com)，在线编程教育方向
 * 毕业后在[腾讯](www.tencent.com)上班，后台+机器学习算法方向
 * 现在在[深信服](www.sangfor.com.cn)工作，大数据方向
 
 <br>
 
 ## 兴趣爱好
-* 关注移动互联网的发展
+* 打篮球
+* 关注移动互联网
 * 努力在坚持每个月看一本书
-* 没事喜欢逛逛[知乎](www.zhihu.com)
-* 一直以来，看好[Docker](www.docker.com)和[Spark](spark.apache.org)
 * 也会收集一些有意思的代码片段
 
 <a href="https://gist.github.com/yijia2413" class="link-btn">Gist</a>
