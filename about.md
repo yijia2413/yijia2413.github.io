@@ -13,7 +13,7 @@ description: ""
 
 ## 关于博客
 
-* 2013年开始写博客，也一直坚持，希望能记录一些成长过程。
+* 2013年开始写博客，博客能记录一个人的成长历程
 
 <br>
 
@@ -27,6 +27,7 @@ description: ""
 
 <a href="https://github.com/yijia2413" class="link-btn">Github</a>
 <a href="http://yijia.ws/me" class="link-btn">Curriculum Vitae</a>
+<a href="mailto:1024.foobar@gmail.com" class="link-btn">Contact Me</a>
 
 <br>
 
