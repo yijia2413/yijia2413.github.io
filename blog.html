@@ -10,7 +10,8 @@ order : 100
 <h1> Blog</h1>
 
 <ul class="bloglist">
-{% for post in site.posts %}
+{% assign blog_posts = site.posts | where_exp: "post", "post.category != 'papers'" %}
+{% for post in blog_posts %}
 <li>
   <span>
     <!-- {{ post.date | date: "%Y-%m-%d" }} -->

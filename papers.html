@@ -1,0 +1,29 @@
+---
+layout: page
+title : Papers
+header : Daily Papers
+group : navigation
+order : 200
+---
+{% include JB/setup %}
+
+<h1> Daily Papers</h1>
+
+<p>
+  Daily paper digests generated from the Hugging Face papers feed.
+</p>
+
+<ul class="bloglist">
+{% assign paper_posts = site.posts | where_exp: "post", "post.category == 'papers'" %}
+{% for post in paper_posts %}
+<li>
+  <span>
+    <a class="post-link" href="{{ post.url | prepend: site.baseurl }}.html">{{ post.title }} </a>
+  </span>
+  </br>
+  <span>
+    {{ post.date | date: "%b %-d, %Y" }}
+  </span>
+</li>
+{% endfor %}
+</ul>
