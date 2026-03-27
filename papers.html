@@ -17,13 +17,7 @@ order : 200
 {% assign paper_posts = site.posts | where_exp: "post", "post.category == 'papers'" %}
 {% for post in paper_posts %}
 <li>
-  <span>
-    <a class="post-link" href="{{ post.url | prepend: site.baseurl }}.html">{{ post.title }} </a>
-  </span>
-  </br>
-  <span>
-    {{ post.date | date: "%b %-d, %Y" }}
-  </span>
+  <a class="post-link" href="{{ post.url | prepend: site.baseurl }}.html">{{ post.date | date: "%Y-%m-%d" }} {{ post.title }}</a>
 </li>
 {% endfor %}
 </ul>
