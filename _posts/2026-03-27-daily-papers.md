@@ -1,6 +1,7 @@
 ---
 layout: post
 title: "Daily Papers - 2026-03-27"
+permalink: /daily-papers-2026-03-27
 category: papers
 tags: [papers, ai]
 paper_source: huggingface
