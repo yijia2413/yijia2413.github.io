@@ -10,7 +10,7 @@ order : 100
 <h1> Blog</h1>
 
 <ul class="bloglist">
-{% assign blog_posts = site.posts | where_exp: "post", "post.category != 'papers'" %}
+{% assign blog_posts = site.posts | where_exp: "post", "post.category != 'papers' and post.category != 'llm'" %}
 {% for post in blog_posts %}
 <li>
   <a class="post-link" href="{{ post.url | prepend: site.baseurl }}.html">{{ post.date | date: "%Y-%m-%d" }} {{ post.title }}</a>
