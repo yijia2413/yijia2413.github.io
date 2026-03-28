@@ -1,21 +1,42 @@
 ---
 layout: page
 title : LLM
-header : LLM Daily Knowledge
+header : LLM Knowledge Base
 group : navigation
 order : 150
 ---
 {% include JB/setup %}
 
-<h1>LLM</h1>
+<h1>LLM Knowledge Base</h1>
 
 <p>
-  Daily LLM knowledge topics - key concepts, techniques, and best practices for large language models.
+  Large Language Model knowledge: papers, interview questions, and core topics.
 </p>
 
+<h2>Interview Questions</h2>
+<ul class="bloglist">
+{% assign interview_posts = site.posts | where_exp: "post", "post.category == 'interviews'" %}
+{% for post in interview_posts %}
+<li>
+  <a class="post-link" href="{{ post.url | prepend: site.baseurl }}.html">{{ post.date | date: "%Y-%m-%d" }} {{ post.title }}</a>
+</li>
+{% endfor %}
+</ul>
+
+<h2>Topics</h2>
 <ul class="bloglist">
 {% assign llm_posts = site.posts | where_exp: "post", "post.category == 'llm'" %}
 {% for post in llm_posts %}
+<li>
+  <a class="post-link" href="{{ post.url | prepend: site.baseurl }}.html">{{ post.date | date: "%Y-%m-%d" }} {{ post.title }}</a>
+</li>
+{% endfor %}
+</ul>
+
+<h2>Papers</h2>
+<ul class="bloglist">
+{% assign paper_posts = site.posts | where_exp: "post", "post.category == 'papers'" %}
+{% for post in paper_posts %}
 <li>
   <a class="post-link" href="{{ post.url | prepend: site.baseurl }}.html">{{ post.date | date: "%Y-%m-%d" }} {{ post.title }}</a>
 </li>
