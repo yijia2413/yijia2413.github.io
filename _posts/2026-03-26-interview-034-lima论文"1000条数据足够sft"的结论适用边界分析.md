@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "Interview: LIMA论文"1000条数据足够SFT"的结论适用边界分析"
+title: 'Interview: LIMA论文"1000条数据足够SFT"的结论适用边界分析'
 category: interviews
 tags: [LIMA, 数据效率, SFT, 数据质量]
 difficulty: "高级"
