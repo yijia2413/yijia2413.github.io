@@ -33,3 +33,13 @@ order : 150
 {% endfor %}
 </ul>
 
+<h2>Papers</h2>
+<ul class="bloglist">
+{% assign paper_posts = site.posts | where_exp: "post", "post.category == 'papers'" | where_exp: "post", "post.paper_source != 'huggingface'" %}
+{% for post in paper_posts %}
+<li>
+  <a class="post-link" href="{{ post.url | prepend: site.baseurl }}.html">{{ post.date | date: "%Y-%m-%d" }} {{ post.title }}</a>
+</li>
+{% endfor %}
+</ul>
+

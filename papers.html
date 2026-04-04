@@ -14,7 +14,7 @@ order : 200
 </p>
 
 <ul class="bloglist">
-{% assign paper_posts = site.posts | where_exp: "post", "post.category == 'papers'" %}
+{% assign paper_posts = site.posts | where: "paper_source", "huggingface" %}
 {% for post in paper_posts %}
 <li>
   <a class="post-link" href="{{ post.url | prepend: site.baseurl }}.html">{{ post.date | date: "%Y-%m-%d" }} {{ post.title }}</a>
