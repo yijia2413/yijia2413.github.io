@@ -1,5 +1,9 @@
 # 前沿技术栏目：独立 HTML 洞察索引。
 # 新增一篇：把 HTML 放到 /frontier/<slug>.html，再在这里加一条。
+- title: 递归自改进前世今生：从 Gödel 机到 LLM Agent
+  date: "2026-09-26"
+  url: /frontier/rsi-llm-agent-self-evolution.html
+  summary: 从证明改代码到经验改代码。有界自精炼和开放 RSI 的分界，STaR / SEAL / AZR / AlphaEvolve / DGM，以及能跑起来的冻结评估配方。
 - title: 知识蒸馏前世今生：从 Hinton 软标签到 On-Policy Distillation
   date: "2026-09-26"
   url: /frontier/knowledge-distillation-to-opd.html
