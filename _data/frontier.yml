@@ -1,5 +1,9 @@
 # 前沿技术栏目：独立 HTML 洞察索引。
 # 新增一篇：把 HTML 放到 /frontier/<slug>.html，再在这里加一条。
+- title: 知识蒸馏前世今生：从 Hinton 软标签到 On-Policy Distillation
+  date: "2026-09-26"
+  url: /frontier/knowledge-distillation-to-opd.html
+  summary: 从 2006 模型压缩到 2026 年 OPD 产线标配。软标签、前向/反向 KL、曝光偏差，以及 MiniLLM / GKD / DistiLLM 和能跑起来的训练配方。
 - title: 从零训练类似 TypeSafe JEV 的 System One 决策模型
   date: "2026-09-26"
   url: /frontier/typesafe-jev-training-guide.html
