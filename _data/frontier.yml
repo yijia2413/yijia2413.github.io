@@ -1,0 +1,6 @@
+# 前沿技术栏目：独立 HTML 洞察索引。
+# 新增一篇：把 HTML 放到 /frontier/<slug>.html，再在这里加一条。
+- title: 从零训练类似 TypeSafe JEV 的 System One 决策模型
+  date: "2026-09-26"
+  url: /frontier/typesafe-jev-training-guide.html
+  summary: 非自回归结构化评估、RLCD 决策校准、OptionMarker 多头并行，以及开源对照与工业落地选型。

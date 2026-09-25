@@ -1,0 +1,24 @@
+---
+layout: page
+title : 前沿技术
+header : 前沿技术
+group : navigation
+order : 175
+permalink: /frontier/
+---
+{% include JB/setup %}
+
+<h1>前沿技术</h1>
+
+<p>
+  独立 HTML 技术洞察。训练、推理、系统与工程实操，不走常规 Markdown 博文。
+</p>
+
+<ul class="bloglist">
+{% for item in site.data.frontier %}
+<li>
+  <a class="post-link" href="{{ item.url }}">{{ item.date }} {{ item.title }}</a>
+  {% if item.summary %}<div>{{ item.summary }}</div>{% endif %}
+</li>
+{% endfor %}
+</ul>

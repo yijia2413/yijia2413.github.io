@@ -1,0 +1,1321 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>从零训练类 TypeSafe JEV 的 System One 决策模型工程全指南</title>
+  <style>
+    :root {
+      --primary: #1d4ed8;
+      --primary-light: #eff6ff;
+      --primary-dark: #1e3a8a;
+      --secondary: #059669;
+      --secondary-light: #ecfdf5;
+      --purple: #7c3aed;
+      --purple-light: #f5f3ff;
+      --amber: #d97706;
+      --amber-light: #fffbeb;
+      --rose: #e11d48;
+      --rose-light: #fff1f2;
+      --text-main: #0f172a;
+      --text-muted: #475569;
+      --bg-page: #f8fafc;
+      --bg-card: #ffffff;
+      --border-color: #e2e8f0;
+      --code-bg: #0f172a;
+      --code-color: #f8fafc;
+      --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: var(--font-sans);
+      background-color: var(--bg-page);
+      color: var(--text-main);
+      line-height: 1.7;
+      font-size: 16px;
+    }
+
+    header {
+      background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #1e3a8a 100%);
+      color: white;
+      padding: 60px 24px;
+      text-align: center;
+      border-bottom: 4px solid var(--primary);
+    }
+
+    .header-badge {
+      display: inline-block;
+      background: rgba(59, 130, 246, 0.25);
+      border: 1px solid rgba(147, 197, 253, 0.4);
+      color: #93c5fd;
+      padding: 4px 14px;
+      border-radius: 9999px;
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+      margin-bottom: 16px;
+      text-transform: uppercase;
+    }
+
+    header h1 {
+      font-size: 2.4rem;
+      font-weight: 800;
+      letter-spacing: -0.5px;
+      margin-bottom: 16px;
+      line-height: 1.25;
+    }
+
+    header p {
+      font-size: 1.15rem;
+      color: #cbd5e1;
+      max-width: 960px;
+      margin: 0 auto;
+    }
+
+    .container {
+      max-width: 1360px;
+      margin: 40px auto;
+      padding: 0 24px;
+      display: grid;
+      grid-template-columns: 300px minmax(0, 1fr);
+      gap: 36px;
+    }
+
+    aside {
+      position: sticky;
+      top: 24px;
+      align-self: start;
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      padding: 20px;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+      max-height: calc(100vh - 48px);
+      overflow-y: auto;
+    }
+
+    aside h3 {
+      font-size: 0.95rem;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      letter-spacing: 0.05em;
+      margin-bottom: 12px;
+      border-bottom: 2px solid var(--border-color);
+      padding-bottom: 8px;
+    }
+
+    aside ul {
+      list-style: none;
+    }
+
+    aside li {
+      margin-bottom: 8px;
+    }
+
+    aside a {
+      color: var(--text-main);
+      text-decoration: none;
+      font-size: 0.88rem;
+      font-weight: 500;
+      display: block;
+      padding: 6px 10px;
+      border-radius: 6px;
+      transition: all 0.15s ease;
+    }
+
+    aside a:hover {
+      background: var(--primary-light);
+      color: var(--primary);
+    }
+
+    main {
+      min-width: 0;
+    }
+
+    .section-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 14px;
+      padding: 36px;
+      margin-bottom: 40px;
+      box-shadow: 0 4px 12px -2px rgba(0, 0, 0, 0.03);
+    }
+
+    h2 {
+      font-size: 1.85rem;
+      font-weight: 700;
+      color: var(--text-main);
+      margin-bottom: 20px;
+      padding-bottom: 10px;
+      border-bottom: 2px solid var(--primary-light);
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    h2 .num {
+      background: var(--primary);
+      color: white;
+      width: 32px;
+      height: 32px;
+      border-radius: 8px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.05rem;
+      font-weight: 800;
+      flex-shrink: 0;
+    }
+
+    h3 {
+      font-size: 1.3rem;
+      font-weight: 600;
+      margin: 28px 0 14px 0;
+      color: var(--primary-dark);
+    }
+
+    h4 {
+      font-size: 1.08rem;
+      font-weight: 600;
+      margin: 20px 0 10px 0;
+      color: var(--text-main);
+    }
+
+    p {
+      margin-bottom: 16px;
+      color: #334155;
+    }
+
+    .callout {
+      border-left: 4px solid var(--primary);
+      background: var(--primary-light);
+      padding: 16px 20px;
+      border-radius: 0 8px 8px 0;
+      margin: 20px 0;
+      font-size: 0.95rem;
+    }
+
+    .callout.success { border-left-color: var(--secondary); background: var(--secondary-light); }
+    .callout.warning { border-left-color: var(--amber); background: var(--amber-light); }
+    .callout.danger { border-left-color: var(--rose); background: var(--rose-light); }
+    .callout.purple { border-left-color: var(--purple); background: var(--purple-light); }
+
+    .figure-wrapper {
+      margin: 30px 0;
+      background: #ffffff;
+      border: 1px solid #cbd5e1;
+      border-radius: 12px;
+      padding: 18px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.04);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .figure-svg-container {
+      width: 100%;
+      aspect-ratio: 16 / 9;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #ffffff;
+    }
+
+    .figure-svg-container svg {
+      width: 100%;
+      height: 100%;
+      display: block;
+    }
+
+    .figure-caption {
+      margin-top: 12px;
+      font-size: 0.88rem;
+      color: var(--text-muted);
+      font-weight: 500;
+      text-align: center;
+    }
+
+    .table-container {
+      overflow-x: auto;
+      margin: 24px 0;
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      text-align: left;
+      font-size: 0.92rem;
+    }
+
+    th {
+      background: #f1f5f9;
+      color: #1e293b;
+      padding: 12px 16px;
+      font-weight: 600;
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    td {
+      padding: 12px 16px;
+      border-bottom: 1px solid var(--border-color);
+      color: #334155;
+    }
+
+    tr:last-child td { border-bottom: none; }
+    tr:hover td { background-color: #f8fafc; }
+
+    pre {
+      background: var(--code-bg);
+      color: var(--code-color);
+      padding: 20px;
+      border-radius: 10px;
+      overflow-x: auto;
+      font-family: var(--font-mono);
+      font-size: 0.88rem;
+      line-height: 1.6;
+      margin: 20px 0;
+      border: 1px solid #1e293b;
+    }
+
+    code {
+      font-family: var(--font-mono);
+      font-size: 0.88em;
+      background: #f1f5f9;
+      color: #0f172a;
+      padding: 2px 6px;
+      border-radius: 4px;
+    }
+
+    pre code {
+      background: transparent;
+      color: inherit;
+      padding: 0;
+    }
+
+    .code-comment { color: #64748b; font-style: italic; }
+    .code-keyword { color: #f43f5e; font-weight: bold; }
+    .code-string { color: #10b981; }
+    .code-function { color: #38bdf8; }
+    .code-number { color: #fbbf24; }
+
+    .steps-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 20px;
+      margin: 24px 0;
+    }
+
+    .step-card {
+      border: 1px solid var(--border-color);
+      background: #ffffff;
+      border-radius: 10px;
+      padding: 20px;
+      position: relative;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .step-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05);
+    }
+
+    .step-num-badge {
+      display: inline-block;
+      font-size: 0.78rem;
+      font-weight: 700;
+      background: var(--primary-light);
+      color: var(--primary);
+      padding: 3px 8px;
+      border-radius: 6px;
+      margin-bottom: 8px;
+    }
+
+    .step-title {
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: var(--text-main);
+      margin-bottom: 8px;
+    }
+
+    .step-desc {
+      font-size: 0.88rem;
+      color: var(--text-muted);
+      line-height: 1.5;
+    }
+
+    .tag {
+      display: inline-block;
+      padding: 2px 8px;
+      border-radius: 4px;
+      font-size: 12px;
+      font-weight: 600;
+    }
+    .tag-blue { background: #dbeafe; color: #1e40af; }
+    .tag-green { background: #dcfce7; color: #15803d; }
+    .tag-purple { background: #f3e8ff; color: #6b21a8; }
+    .tag-amber { background: #fef3c7; color: #92400e; }
+
+    @media (max-width: 1024px) {
+      .container { grid-template-columns: 1fr; }
+      aside { position: static; max-height: none; }
+    }
+  </style>
+</head>
+<body>
+<nav style="position:sticky;top:0;z-index:50;background:#0f172a;border-bottom:1px solid #1e293b;padding:10px 24px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;">
+  <a href="/frontier" style="color:#93c5fd;text-decoration:none;font-size:14px;margin-right:16px;">← 前沿技术</a>
+  <a href="/" style="color:#cbd5e1;text-decoration:none;font-size:14px;">@xixi003</a>
+</nav>
+
+
+<header>
+  <div class="header-badge">AI 体系工程白皮书 · 2026 技术实操版</div>
+  <h1>从零训练类似 TypeSafe JEV 的 System One 决策模型</h1>
+  <p>突破自回归 LLM 延迟与幻觉壁垒：深入剖析非自回归结构化评估、RLCD 决策校准、OptionMarker 多头并行前向传播、开源与商业生态产品矩阵、学术论文脉络与工业级业务数据工程实战</p>
+</header>
+
+<div class="container">
+  <aside>
+    <h3>目录导航</h3>
+    <ul>
+      <li><a href="#sec-overview">1. 什么是 JEV 与 System One？</a></li>
+      <li><a href="#sec-architecture">2. 模型核心机理与架构原理</a></li>
+      <li><a href="#sec-pipeline">3. 端到端训练全流程路线图</a></li>
+      <li><a href="#sec-dataset">4. 基础数据集构造与对齐锚点</a></li>
+      <li><a href="#sec-model-code">5. PyTorch 模型架构与多头实现</a></li>
+      <li><a href="#sec-rlcd-loss">6. RLCD 联合损失函数与训练</a></li>
+      <li><a href="#sec-calibration">7. 后训练温度校准与置信度计算</a></li>
+      <li><a href="#sec-serving">8. 高性能推理服务与 API 规范</a></li>
+      <li><a href="#sec-eval">9. 评测基准与业务工作流验证</a></li>
+      <li><a href="#sec-opensource-models">10. 开源决策模型全景与基准深度评测</a></li>
+      <li><a href="#sec-business-data">11. 工业级业务数据工程深度实战</a></li>
+      <li><a href="#sec-products">12. 业界产品落地与生态全景矩阵</a></li>
+      <li><a href="#sec-papers">13. 学术论文与理论体系脉络</a></li>
+      <li><a href="#sec-conclusion">14. 工业化落地与选型总结</a></li>
+    </ul>
+  </aside>
+
+  <main>
+
+    <!-- SECTION 1 -->
+    <section id="sec-overview" class="section-card">
+      <h2><span class="num">1</span> 什么是 JEV 与 System One 决策模型？</h2>
+      <p>
+        2026年，由 InstructGPT 与 RLHF 共同发明人 <strong>Diogo Almeida</strong> 创立的 <strong>TypeSafe AI</strong> 推出了业内首个商业化 <strong>System One 决策模型 —— JEV</strong>。
+        随后，开源社区相继涌现了 <strong>Von</strong> (基于 ModernBERT-Large 395M, Apache-2.0, 延迟仅 18ms)、<strong>Laya</strong> (ConvAI Innovations, 421M/322M 多语言, 延迟 33ms)、<strong>OpenThai-SystemOne</strong> 以及 <strong>openjev</strong> 等对标项目。
+      </p>
+
+      <div class="callout">
+        <strong>核心概念启发：</strong> 名字取自丹尼尔·卡尼曼《思考，快与慢》（Thinking, Fast and Slow）。
+        现有的自回归聊天模型属于慢思考、写长文、富幻觉的“系统二（System 2）”；
+        而工业界软件系统最急需的，是像反射神经一样的<strong>“系统一（System 1）”</strong>：对输入状态毫秒级响应、数学上杜绝类型错误、输出真实置信度的确定性逻辑判断。
+      </div>
+
+      <div class="figure-wrapper">
+        <div class="figure-svg-container">
+          <svg viewBox="0 0 960 540" xmlns="http://www.w3.org/2000/svg">
+            <rect width="960" height="540" fill="#ffffff" rx="8"/>
+            <rect x="2" y="2" width="956" height="536" fill="none" stroke="#e2e8f0" stroke-width="2" rx="8"/>
+
+            <text x="480" y="42" font-family="-apple-system, BlinkMacSystemFont, sans-serif" font-size="20" font-weight="700" fill="#0f172a" text-anchor="middle">传统自回归 LLM vs TypeSafe JEV (System One) 架构范式全景对比</text>
+            <line x1="80" y1="58" x2="880" y2="58" stroke="#cbd5e1" stroke-width="1.5" stroke-dasharray="4 4"/>
+
+            <!-- 左侧：传统自回归 LLM -->
+            <rect x="50" y="80" width="410" height="420" fill="#f8fafc" stroke="#cbd5e1" stroke-width="1.5" rx="10"/>
+            <rect x="50" y="80" width="410" height="38" fill="#e2e8f0" rx="10 10 0 0"/>
+            <text x="255" y="105" font-family="-apple-system, sans-serif" font-size="16" font-weight="700" fill="#475569" text-anchor="middle">传统自回归生成模型 (Chatbot / LLM)</text>
+
+            <rect x="80" y="140" width="350" height="60" fill="#ffffff" stroke="#94a3b8" stroke-width="1.5" rx="6"/>
+            <text x="255" y="166" font-family="-apple-system, sans-serif" font-size="14" font-weight="600" fill="#0f172a" text-anchor="middle">输入：Prompt + 状态上下文 (JSON/文本)</text>
+            <text x="255" y="186" font-family="-apple-system, sans-serif" font-size="12" fill="#64748b" text-anchor="middle">需精心构造 Few-shot 与 CoT 思考链提示</text>
+
+            <path d="M 255 200 L 255 230" fill="none" stroke="#dc2626" stroke-width="2"/>
+
+            <rect x="80" y="235" width="350" height="85" fill="#fef2f2" stroke="#f87171" stroke-width="1.5" rx="6"/>
+            <text x="255" y="260" font-family="-apple-system, sans-serif" font-size="14" font-weight="700" fill="#991b1b" text-anchor="middle">逐 Token 串行自回归解码 (Autoregressive)</text>
+            <text x="255" y="282" font-family="-apple-system, sans-serif" font-size="12" fill="#b91c1c" text-anchor="middle">每生成一个 Token 执行一次 Transformer 前向</text>
+            <text x="255" y="302" font-family="-apple-system, sans-serif" font-size="12" font-weight="600" fill="#dc2626" text-anchor="middle">端到端耗时：500ms ~ 30,000ms</text>
+
+            <path d="M 255 320 L 255 350" fill="none" stroke="#dc2626" stroke-width="2"/>
+
+            <rect x="80" y="355" width="350" height="120" fill="#ffffff" stroke="#f87171" stroke-width="1.5" rx="6"/>
+            <text x="95" y="380" font-family="-apple-system, sans-serif" font-size="13" font-weight="700" fill="#dc2626">致命工程痛点：</text>
+            <text x="95" y="405" font-family="-apple-system, sans-serif" font-size="12" fill="#475569">❌ 必须依赖后处理解析 JSON (易出现 Type Error)</text>
+            <text x="95" y="428" font-family="-apple-system, sans-serif" font-size="12" fill="#475569">❌ 存在不可控幻觉，容易输出额外客套废话</text>
+            <text x="95" y="451" font-family="-apple-system, sans-serif" font-size="12" fill="#475569">❌ 模型严重过自信 (Overconfident)，无诚实置信度</text>
+
+            <!-- 右侧：TypeSafe JEV (System One) -->
+            <rect x="500" y="80" width="410" height="420" fill="#f0fdf4" stroke="#86efac" stroke-width="2" rx="10"/>
+            <rect x="500" y="80" width="410" height="38" fill="#bbf7d0" rx="10 10 0 0"/>
+            <text x="705" y="105" font-family="-apple-system, sans-serif" font-size="16" font-weight="700" fill="#166534" text-anchor="middle">TypeSafe JEV 范式 (System One 决策)</text>
+
+            <rect x="530" y="140" width="350" height="60" fill="#ffffff" stroke="#4ade80" stroke-width="1.5" rx="6"/>
+            <text x="705" y="166" font-family="-apple-system, sans-serif" font-size="14" font-weight="600" fill="#0f172a" text-anchor="middle">输入：State (状态数据) + Questions 映射</text>
+            <text x="705" y="186" font-family="-apple-system, sans-serif" font-size="12" fill="#15803d" text-anchor="middle">支持原子化指令、打分准则与选项描述 (OptionMarker)</text>
+
+            <path d="M 705 200 L 705 230" fill="none" stroke="#16a34a" stroke-width="2"/>
+
+            <rect x="530" y="235" width="350" height="85" fill="#ffffff" stroke="#22c55e" stroke-width="2" rx="6"/>
+            <text x="705" y="260" font-family="-apple-system, sans-serif" font-size="14" font-weight="700" fill="#15803d" text-anchor="middle">非自回归单步前向传播 (Non-Autoregressive)</text>
+            <text x="705" y="282" font-family="-apple-system, sans-serif" font-size="12" fill="#166534" text-anchor="middle">双向编码 + 并行多头分类 (Parallel Evaluation Heads)</text>
+            <text x="705" y="302" font-family="-apple-system, sans-serif" font-size="12" font-weight="700" fill="#16a34a" text-anchor="middle">端到端耗时：18ms ~ 100ms (提速 40x ~ 200x)</text>
+
+            <path d="M 705 320 L 705 350" fill="none" stroke="#16a34a" stroke-width="2"/>
+
+            <rect x="530" y="355" width="350" height="120" fill="#ffffff" stroke="#22c55e" stroke-width="1.5" rx="6"/>
+            <text x="545" y="380" font-family="-apple-system, sans-serif" font-size="13" font-weight="700" fill="#15803d">工业级确定性优势：</text>
+            <text x="545" y="405" font-family="-apple-system, sans-serif" font-size="12" fill="#1e293b">✅ 数学上绝对保证类型安全 (Type-Safe, 0 解析错误)</text>
+            <text x="545" y="428" font-family="-apple-system, sans-serif" font-size="12" fill="#1e293b">✅ 零输出 Token 生成开销 (Output Token 0 成本)</text>
+            <text x="545" y="451" font-family="-apple-system, sans-serif" font-size="12" fill="#1e293b">✅ RLCD 校准概率，输出严格后验置信度 (Confidence)</text>
+          </svg>
+        </div>
+        <div class="figure-caption">图 1：传统自回归生成式 LLM 与 TypeSafe JEV (System One) 决策范式全方位对比</div>
+      </div>
+
+      <h3>三大决策原语 (Decision Primitives)</h3>
+      <div class="table-container">
+        <table>
+          <thead>
+            <tr>
+              <th>原语名称</th>
+              <th>数学定义与输出形式</th>
+              <th>典型工业场景</th>
+              <th>置信度度量 (Confidence)</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Noul</strong><br>(Calibrated Boolean)</td>
+              <td>后验概率标量 $P(y=1 \mid S, Q) \in [0.0, 1.0]$，指示特定布尔命题是否成立。</td>
+              <td>工单是否紧急？是否有系统崩溃风险？输入是否违规？</td>
+              <td>距离不确定中点 0.5 的偏离度：$2 \times |P - 0.5|$</td>
+            </tr>
+            <tr>
+              <td><strong>Choice</strong><br>(Categorical Decision)</td>
+              <td>互斥候选集上的概率分布 $\{c_1, \dots, c_K\}$，满足 $\sum P(c_k) = 1$。</td>
+              <td>工单意图分类、微服务路由分发、机器人动作离散决策。</td>
+              <td>首选与次选概率差（Margin）：$P(c_{(1)}) - P(c_{(2)})$</td>
+            </tr>
+            <tr>
+              <td><strong>Score</strong><br>(Ordinal Rating)</td>
+              <td>在有序等级 $\{0, \dots, K-1\}$ 上的期望值：$\mathbb{E}[L] = \sum_{l=0}^{K-1} l \cdot P(l)$。</td>
+              <td>用户不满情绪分级（0~3）、安全警报威胁等级打分。</td>
+              <td>等级分布的峰度与熵约束（确定性程度）。</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- SECTION 2 -->
+    <section id="sec-architecture" class="section-card">
+      <h2><span class="num">2</span> 模型核心机理与架构原理</h2>
+      <p>
+        为什么 JEV、Von 和 Laya 能够做到一次请求同时评估 10~100 个问题，且延迟仅 18~35ms？
+        其核心在于<strong>“非自回归 OptionMarker 编码”与“双向全注意力机制（Bidirectional Attention）”</strong>。
+      </p>
+
+      <div class="figure-wrapper">
+        <div class="figure-svg-container">
+          <svg viewBox="0 0 960 540" xmlns="http://www.w3.org/2000/svg">
+            <rect width="960" height="540" fill="#ffffff" rx="8"/>
+            <rect x="2" y="2" width="956" height="536" fill="none" stroke="#e2e8f0" stroke-width="2" rx="8"/>
+
+            <text x="480" y="38" font-family="-apple-system, sans-serif" font-size="20" font-weight="700" fill="#0f172a" text-anchor="middle">OptionMarker 序列输入结构与并行多头前向推理流程</text>
+            <line x1="80" y1="52" x2="880" y2="52" stroke="#cbd5e1" stroke-width="1.5" stroke-dasharray="4 4"/>
+
+            <rect x="60" y="70" width="840" height="75" fill="#f8fafc" stroke="#94a3b8" stroke-width="1.5" rx="8"/>
+            <text x="80" y="95" font-family="-apple-system, sans-serif" font-size="13" font-weight="700" fill="#475569">① 序列 Token 拼接 (OptionMarker 结构化输入)：</text>
+
+            <rect x="80" y="105" width="55" height="30" fill="#dbeafe" stroke="#3b82f6" rx="4"/>
+            <text x="107" y="125" font-family="monospace" font-size="12" font-weight="700" fill="#1d4ed8" text-anchor="middle">[CLS]</text>
+
+            <rect x="142" y="105" width="220" height="30" fill="#f1f5f9" stroke="#cbd5e1" rx="4"/>
+            <text x="252" y="125" font-family="monospace" font-size="11" fill="#0f172a" text-anchor="middle">State: "支付网关超时，订单失败"</text>
+
+            <rect x="368" y="105" width="55" height="30" fill="#dbeafe" stroke="#3b82f6" rx="4"/>
+            <text x="395" y="125" font-family="monospace" font-size="12" font-weight="700" fill="#1d4ed8" text-anchor="middle">[SEP]</text>
+
+            <rect x="428" y="105" width="165" height="30" fill="#fef3c7" stroke="#f59e0b" rx="4"/>
+            <text x="510" y="125" font-family="monospace" font-size="11" fill="#78350f" text-anchor="middle">Q: "分配给哪个部门？"</text>
+
+            <rect x="598" y="105" width="60" height="30" fill="#fce7f3" stroke="#ec4899" rx="4"/>
+            <text x="628" y="125" font-family="monospace" font-size="12" font-weight="700" fill="#be185d" text-anchor="middle">[OPT_0]</text>
+
+            <rect x="662" y="105" width="60" height="30" fill="#f1f5f9" stroke="#cbd5e1" rx="4"/>
+            <text x="692" y="125" font-family="monospace" font-size="11" fill="#0f172a" text-anchor="middle">财务账单</text>
+
+            <rect x="726" y="105" width="60" height="30" fill="#fce7f3" stroke="#ec4899" rx="4"/>
+            <text x="756" y="125" font-family="monospace" font-size="12" font-weight="700" fill="#be185d" text-anchor="middle">[OPT_1]</text>
+
+            <rect x="790" y="105" width="60" height="30" fill="#f1f5f9" stroke="#cbd5e1" rx="4"/>
+            <text x="820" y="125" font-family="monospace" font-size="11" fill="#0f172a" text-anchor="middle">技术运维</text>
+
+            <path d="M 480 150 L 480 180" fill="none" stroke="#2563eb" stroke-width="2.5"/>
+
+            <rect x="60" y="185" width="840" height="110" fill="#eff6ff" stroke="#3b82f6" stroke-width="2" rx="8"/>
+            <text x="80" y="212" font-family="-apple-system, sans-serif" font-size="14" font-weight="700" fill="#1e40af">② 现代双向编码骨干网络 (ModernBERT-Large 395M / RoBERTa / DeBERTa-v3)</text>
+            <text x="80" y="235" font-family="-apple-system, sans-serif" font-size="12" fill="#3b82f6">✦ 全双向全局自注意力机制 (Full Bidirectional Attention，不受因果单向注意力遮蔽限制)</text>
+            <text x="80" y="255" font-family="-apple-system, sans-serif" font-size="12" fill="#3b82f6">✦ 硬件加速：FlashAttention-2 / Unpadding 加速，8192 Token 上下文无需二次重计算</text>
+            <text x="80" y="275" font-family="-apple-system, sans-serif" font-size="12" fill="#3b82f6">✦ 输出对应每一个 Token 位置的高维隐藏状态向量矩阵 H ∈ ℝ^(L × d)</text>
+
+            <path d="M 230 300 L 230 340" fill="none" stroke="#2563eb" stroke-width="2"/>
+            <path d="M 480 300 L 480 340" fill="none" stroke="#059669" stroke-width="2"/>
+            <path d="M 730 300 L 730 340" fill="none" stroke="#7c3aed" stroke-width="2"/>
+
+            <!-- Choice Head -->
+            <rect x="60" y="345" width="260" height="150" fill="#ffffff" stroke="#2563eb" stroke-width="1.5" rx="8"/>
+            <text x="190" y="370" font-family="-apple-system, sans-serif" font-size="14" font-weight="700" fill="#1e40af" text-anchor="middle">Choice 判别头</text>
+            <text x="75" y="395" font-family="-apple-system, sans-serif" font-size="12" fill="#475569">提取所有 [OPT_k] 隐藏向量：</text>
+            <text x="75" y="415" font-family="monospace" font-size="11" fill="#1e293b">z_k = W · H[idx(OPT_k)] + b</text>
+            <text x="75" y="440" font-family="-apple-system, sans-serif" font-size="12" fill="#475569">校准 Softmax 与 Margin 置信度：</text>
+            <text x="75" y="460" font-family="monospace" font-size="11" fill="#059669">P = Softmax(z / T)</text>
+            <text x="75" y="480" font-family="monospace" font-size="11" fill="#2563eb">Conf = P(top1) - P(top2)</text>
+
+            <!-- Noul Head -->
+            <rect x="350" y="345" width="260" height="150" fill="#ffffff" stroke="#059669" stroke-width="1.5" rx="8"/>
+            <text x="480" y="370" font-family="-apple-system, sans-serif" font-size="14" font-weight="700" fill="#065f46" text-anchor="middle">Noul 布尔判断头</text>
+            <text x="365" y="395" font-family="-apple-system, sans-serif" font-size="12" fill="#475569">提取 [CLS] 或专用标记向量：</text>
+            <text x="365" y="415" font-family="monospace" font-size="11" fill="#1e293b">logit = W_n · H[CLS] + b_n</text>
+            <text x="365" y="440" font-family="-apple-system, sans-serif" font-size="12" fill="#475569">Sigmoid 映射与正负对偶校验：</text>
+            <text x="365" y="460" font-family="monospace" font-size="11" fill="#059669">P(yes) = σ(logit / T)</text>
+            <text x="365" y="480" font-family="monospace" font-size="11" fill="#2563eb">消除词汇否定偏倚 (Negation Bias)</text>
+
+            <!-- Score Head -->
+            <rect x="640" y="345" width="260" height="150" fill="#ffffff" stroke="#7c3aed" stroke-width="1.5" rx="8"/>
+            <text x="770" y="370" font-family="-apple-system, sans-serif" font-size="14" font-weight="700" fill="#5b21b6" text-anchor="middle">Score 有序打分头</text>
+            <text x="655" y="395" font-family="-apple-system, sans-serif" font-size="12" fill="#475569">K 级有序分类概率分布：</text>
+            <text x="655" y="415" font-family="monospace" font-size="11" fill="#1e293b">P(l) = Softmax(W_s · H + b_s)</text>
+            <text x="655" y="440" font-family="-apple-system, sans-serif" font-size="12" fill="#475569">连续期望值输出 (尊重序关系)：</text>
+            <text x="655" y="460" font-family="monospace" font-size="11" fill="#059669">Score = ∑ l · P(l)</text>
+            <text x="655" y="480" font-family="monospace" font-size="11" fill="#2563eb">支持等级区间平滑打分</text>
+          </svg>
+        </div>
+        <div class="figure-caption">图 2：OptionMarker 结构化标记注入与非自回归多头并行推导机制</div>
+      </div>
+    </section>
+
+    <!-- SECTION 3 -->
+    <section id="sec-pipeline" class="section-card">
+      <h2><span class="num">3</span> 端到端训练全流程路线图 (End-to-End Pipeline)</h2>
+      <p>要完整复刻一个工业级可用的 JEV 模型，整个工程生命周期分为 5 大关键阶段。</p>
+
+      <div class="figure-wrapper">
+        <div class="figure-svg-container">
+          <svg viewBox="0 0 960 540" xmlns="http://www.w3.org/2000/svg">
+            <rect width="960" height="540" fill="#ffffff" rx="8"/>
+            <rect x="2" y="2" width="956" height="536" fill="none" stroke="#e2e8f0" stroke-width="2" rx="8"/>
+
+            <text x="480" y="40" font-family="-apple-system, sans-serif" font-size="20" font-weight="700" fill="#0f172a" text-anchor="middle">从零构建类 TypeSafe JEV 模型的 5 阶段完整工程流</text>
+            <line x1="80" y1="56" x2="880" y2="56" stroke="#cbd5e1" stroke-width="1.5" stroke-dasharray="4 4"/>
+
+            <rect x="40" y="90" width="160" height="380" fill="#f8fafc" stroke="#cbd5e1" stroke-width="1.5" rx="8"/>
+            <rect x="40" y="90" width="160" height="42" fill="#e2e8f0" rx="8 8 0 0"/>
+            <text x="120" y="116" font-family="-apple-system, sans-serif" font-size="14" font-weight="700" fill="#1e293b" text-anchor="middle">阶段一：数据引擎</text>
+            <text x="50" y="155" font-family="-apple-system, sans-serif" font-size="12" font-weight="600" fill="#2563eb">1. 基础逻辑锚点：</text>
+            <text x="50" y="175" font-family="-apple-system, sans-serif" font-size="11" fill="#475569">• ANLI R1-R3</text>
+            <text x="50" y="195" font-family="-apple-system, sans-serif" font-size="11" fill="#475569">• WANLI 对抗语料</text>
+            <text x="50" y="215" font-family="-apple-system, sans-serif" font-size="11" fill="#475569">• MultiNLI 推理集</text>
+            <text x="50" y="245" font-family="-apple-system, sans-serif" font-size="12" font-weight="600" fill="#2563eb">2. 业务流合成数据：</text>
+            <text x="50" y="265" font-family="-apple-system, sans-serif" font-size="11" fill="#475569">• 工单与意图分类</text>
+            <text x="50" y="285" font-family="-apple-system, sans-serif" font-size="11" fill="#475569">• 安全/越狱/合规</text>
+            <text x="50" y="305" font-family="-apple-system, sans-serif" font-size="11" fill="#475569">• 运维告警分类</text>
+            <text x="50" y="335" font-family="-apple-system, sans-serif" font-size="12" font-weight="600" fill="#2563eb">3. 边界负样本：</text>
+            <text x="50" y="355" font-family="-apple-system, sans-serif" font-size="11" fill="#475569">• 语义混淆选项</text>
+            <text x="50" y="375" font-family="-apple-system, sans-serif" font-size="11" fill="#475569">• 故意模糊状态</text>
+            <text x="50" y="420" font-family="-apple-system, sans-serif" font-size="11" font-weight="700" fill="#059669">规模：25~30万条</text>
+
+            <path d="M 205 280 L 220 280" fill="none" stroke="#94a3b8" stroke-width="2"/>
+
+            <rect x="225" y="90" width="160" height="380" fill="#f8fafc" stroke="#cbd5e1" stroke-width="1.5" rx="8"/>
+            <rect x="225" y="90" width="160" height="42" fill="#e2e8f0" rx="8 8 0 0"/>
+            <text x="305" y="116" font-family="-apple-system, sans-serif" font-size="14" font-weight="700" fill="#1e293b" text-anchor="middle">阶段二：基模选型</text>
+            <text x="235" y="155" font-family="-apple-system, sans-serif" font-size="12" font-weight="600" fill="#2563eb">推荐骨干网络：</text>
+            <text x="235" y="180" font-family="-apple-system, sans-serif" font-size="11" fill="#475569">首选：ModernBERT-Large (395M, 8192 上下文)</text>
+            <text x="235" y="215" font-family="-apple-system, sans-serif" font-size="11" fill="#475569">备选：DeBERTa-v3-large (435M 相对位置编码)</text>
+            <text x="235" y="250" font-family="-apple-system, sans-serif" font-size="11" fill="#475569">因果备选：Qwen3.5-0.8B (OpenThai 槽位头改造)</text>
+            <text x="235" y="290" font-family="-apple-system, sans-serif" font-size="12" font-weight="600" fill="#2563eb">Token 扩展：</text>
+            <text x="235" y="315" font-family="-apple-system, sans-serif" font-size="11" fill="#475569">注册新特殊标记：</text>
+            <text x="235" y="335" font-family="monospace" font-size="10" fill="#7c3aed">[OPT_0] ~ [OPT_255]</text>
+            <text x="235" y="355" font-family="monospace" font-size="10" fill="#7c3aed">[STATE], [CRITERIA]</text>
+            <text x="235" y="420" font-family="-apple-system, sans-serif" font-size="11" font-weight="700" fill="#059669">单卡 RTX 4090 即可</text>
+
+            <path d="M 390 280 L 405 280" fill="none" stroke="#94a3b8" stroke-width="2"/>
+
+            <rect x="410" y="90" width="160" height="380" fill="#eff6ff" stroke="#93c5fd" stroke-width="1.5" rx="8"/>
+            <rect x="410" y="90" width="160" height="42" fill="#dbeafe" rx="8 8 0 0"/>
+            <text x="490" y="116" font-family="-apple-system, sans-serif" font-size="14" font-weight="700" fill="#1e40af" text-anchor="middle">阶段三：SFT 微调</text>
+            <text x="420" y="155" font-family="-apple-system, sans-serif" font-size="12" font-weight="600" fill="#1d4ed8">多任务对齐学习：</text>
+            <text x="420" y="180" font-family="-apple-system, sans-serif" font-size="11" fill="#1e293b">• Choice: 交叉熵</text>
+            <text x="420" y="200" font-family="-apple-system, sans-serif" font-size="11" fill="#1e293b">• Noul: 二元交叉熵</text>
+            <text x="420" y="220" font-family="-apple-system, sans-serif" font-size="11" fill="#1e293b">• Score: 有序回归损失</text>
+            <text x="420" y="255" font-family="-apple-system, sans-serif" font-size="12" font-weight="600" fill="#1d4ed8">超参设置：</text>
+            <text x="420" y="280" font-family="-apple-system, sans-serif" font-size="11" fill="#475569">LR: 2e-5 ~ 5e-5</text>
+            <text x="420" y="300" font-family="-apple-system, sans-serif" font-size="11" fill="#475569">Warmup: 10% 步数</text>
+            <text x="420" y="320" font-family="-apple-system, sans-serif" font-size="11" fill="#475569">Batch Size: 64~128</text>
+            <text x="420" y="340" font-family="-apple-system, sans-serif" font-size="11" fill="#475569">Epochs: 3 ~ 5 轮</text>
+            <text x="420" y="420" font-family="-apple-system, sans-serif" font-size="11" font-weight="700" fill="#1d4ed8">构建基础判别表征</text>
+
+            <path d="M 575 280 L 590 280" fill="none" stroke="#94a3b8" stroke-width="2"/>
+
+            <rect x="595" y="90" width="160" height="380" fill="#f0fdf4" stroke="#86efac" stroke-width="2" rx="8"/>
+            <rect x="595" y="90" width="160" height="42" fill="#bbf7d0" rx="8 8 0 0"/>
+            <text x="675" y="116" font-family="-apple-system, sans-serif" font-size="14" font-weight="700" fill="#166534" text-anchor="middle">阶段四：RLCD 校准</text>
+            <text x="605" y="155" font-family="-apple-system, sans-serif" font-size="12" font-weight="600" fill="#16a34a">关键核心技术：</text>
+            <text x="605" y="180" font-family="-apple-system, sans-serif" font-size="11" fill="#14532d">1. Brier Score 惩罚项：</text>
+            <text x="605" y="200" font-family="monospace" font-size="10" fill="#15803d">L = L_ce + λ·L_brier</text>
+            <text x="605" y="220" font-family="-apple-system, sans-serif" font-size="11" fill="#14532d">严厉惩罚盲目过自信</text>
+            <text x="605" y="255" font-family="-apple-system, sans-serif" font-size="12" font-weight="600" fill="#16a34a">2. 温度缩放：</text>
+            <text x="605" y="280" font-family="-apple-system, sans-serif" font-size="11" fill="#14532d">在验证集微调标量 T：</text>
+            <text x="605" y="300" font-family="monospace" font-size="10" fill="#15803d">T* ≈ 1.03 ~ 1.17</text>
+            <text x="605" y="325" font-family="-apple-system, sans-serif" font-size="11" fill="#14532d">将 ECE 降至 &lt; 0.03</text>
+            <text x="605" y="420" font-family="-apple-system, sans-serif" font-size="11" font-weight="700" fill="#16a34a">获得真实诚实概率</text>
+
+            <path d="M 760 280 L 775 280" fill="none" stroke="#94a3b8" stroke-width="2"/>
+
+            <rect x="780" y="90" width="145" height="380" fill="#faf5ff" stroke="#d8b4fe" stroke-width="1.5" rx="8"/>
+            <rect x="780" y="90" width="145" height="42" fill="#f3e8ff" rx="8 8 0 0"/>
+            <text x="852" y="116" font-family="-apple-system, sans-serif" font-size="14" font-weight="700" fill="#6b21a8" text-anchor="middle">阶段五：部署评测</text>
+            <text x="790" y="155" font-family="-apple-system, sans-serif" font-size="12" font-weight="600" fill="#7c3aed">高性能部署：</text>
+            <text x="790" y="180" font-family="-apple-system, sans-serif" font-size="11" fill="#581c87">• ONNX / TensorRT</text>
+            <text x="790" y="200" font-family="-apple-system, sans-serif" font-size="11" fill="#581c87">• FastAPI 兼容规范</text>
+            <text x="790" y="220" font-family="-apple-system, sans-serif" font-size="11" fill="#581c87">• /v1/systemone 接口</text>
+            <text x="790" y="255" font-family="-apple-system, sans-serif" font-size="12" font-weight="600" fill="#7c3aed">多维评测体系：</text>
+            <text x="790" y="280" font-family="-apple-system, sans-serif" font-size="11" fill="#581c87">• ECE 可靠性曲线</text>
+            <text x="790" y="300" font-family="-apple-system, sans-serif" font-size="11" fill="#581c87">• 49-task jabr 基准</text>
+            <text x="790" y="320" font-family="-apple-system, sans-serif" font-size="11" fill="#581c87">• ViZDoom 实时对抗</text>
+            <text x="790" y="420" font-family="-apple-system, sans-serif" font-size="11" font-weight="700" fill="#7c3aed">延迟稳定 &lt; 25ms</text>
+          </svg>
+        </div>
+        <div class="figure-caption">图 3：从零训练与落地 System One 决策模型的端到端工程生命周期</div>
+      </div>
+    </section>
+
+    <!-- SECTION 4 -->
+    <section id="sec-dataset" class="section-card">
+      <h2><span class="num">4</span> 基础数据集构造与对齐锚点</h2>
+      <p>JEV 这一类模型不学习自由对话，它的核心能力是<strong>“给定证据与严格标准，做出可信的裁决”</strong>。</p>
+
+      <div class="steps-grid">
+        <div class="step-card">
+          <div class="step-num-badge">语料来源 A</div>
+          <div class="step-title">对抗性自然语言推理 (NLI 锚点)</div>
+          <div class="step-desc">
+            引入 <strong>ANLI (Rounds 1–3)</strong>、<strong>WANLI</strong>、<strong>MultiNLI</strong>。防止模型发生灾难性遗忘，确保模型具备识破否定陷阱与多跳推理的能力。
+          </div>
+        </div>
+
+        <div class="step-card">
+          <div class="step-num-badge">语料来源 B</div>
+          <div class="step-title">企业工作流合成数据 (85%)</div>
+          <div class="step-desc">
+            利用前沿教师模型批量生成真实工业场景的：工单流转、安全越狱过滤、API 参数验证、DevOps 警报诊断、合规规则核查。
+          </div>
+        </div>
+
+        <div class="step-card">
+          <div class="step-num-badge">关键设计</div>
+          <div class="step-title">困难负样本与模糊样本构造</div>
+          <div class="step-desc">
+            人为构造 10%~15% 的“信息不足”、“边界模棱两可”样本。若全给非黑即白的简单样本，模型将无法学会输出 0.4~0.6 的真实不确定概率！
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION 5 -->
+    <section id="sec-model-code" class="section-card">
+      <h2><span class="num">5</span> PyTorch 模型架构与多头实现</h2>
+      <p>基于 <strong>ModernBERT-Large (395M)</strong> 打造非自回归 OptionMarker 决策模型代码骨架：</p>
+
+      <pre><code><span class="code-keyword">import</span> torch
+<span class="code-keyword">import</span> torch.nn <span class="code-keyword">as</span> nn
+<span class="code-keyword">from</span> transformers <span class="code-keyword">import</span> AutoModel, AutoConfig
+
+<span class="code-keyword">class</span> <span class="code-function">SystemOneDecisionModel</span>(nn.Module):
+    <span class="code-keyword">def</span> <span class="code-function">__init__</span>(self, model_name_or_path: str = <span class="code-string">"answerdotai/ModernBERT-large"</span>):
+        <span class="code-keyword">super</span>().__init__()
+        self.config = AutoConfig.from_pretrained(model_name_or_path)
+        self.encoder = AutoModel.from_pretrained(model_name_or_path, config=self.config)
+        hidden_size = self.config.hidden_size
+
+        self.choice_scorer = nn.Sequential(
+            nn.Linear(hidden_size, hidden_size // <span class="code-number">2</span>),
+            nn.GELU(),
+            nn.Dropout(<span class="code-number">0.1</span>),
+            nn.Linear(hidden_size // <span class="code-number">2</span>, <span class="code-number">1</span>)
+        )
+        self.noul_head = nn.Sequential(
+            nn.Linear(hidden_size, hidden_size // <span class="code-number">2</span>),
+            nn.GELU(),
+            nn.Dropout(<span class="code-number">0.1</span>),
+            nn.Linear(hidden_size // <span class="code-number">2</span>, <span class="code-number">1</span>)
+        )
+        self.score_head = nn.Sequential(
+            nn.Linear(hidden_size, hidden_size // <span class="code-number">2</span>),
+            nn.GELU(),
+            nn.Linear(hidden_size // <span class="code-number">2</span>, <span class="code-number">10</span>)
+        )
+        self.temperature = nn.Parameter(torch.ones(<span class="code-number">1</span>) * <span class="code-number">1.10</span>)
+
+    <span class="code-keyword">def</span> <span class="code-function">forward</span>(self, input_ids, attention_mask, option_positions=None, task_type=<span class="code-string">"choice"</span>, num_levels=<span class="code-number">3</span>):
+        outputs = self.encoder(input_ids=input_ids, attention_mask=attention_mask)
+        sequence_output = outputs.last_hidden_state
+
+        <span class="code-keyword">if</span> task_type == <span class="code-string">"choice"</span>:
+            batch_size, num_opts = option_positions.shape
+            opt_features = []
+            <span class="code-keyword">for</span> b <span class="code-keyword">in</span> range(batch_size):
+                pos = option_positions[b]
+                opt_features.append(sequence_output[b, pos, :])
+            opt_features = torch.stack(opt_features, dim=<span class="code-number">0</span>)
+            logits = self.choice_scorer(opt_features).squeeze(-<span class="code-number">1</span>)
+            scaled_logits = logits / torch.clamp(self.temperature, min=<span class="code-number">0.1</span>)
+            probabilities = torch.softmax(scaled_logits, dim=-<span class="code-number">1</span>)
+            <span class="code-keyword">return</span> scaled_logits, probabilities
+
+        <span class="code-keyword">elif</span> task_type == <span class="code-string">"noul"</span>:
+            cls_repr = sequence_output[:, <span class="code-number">0</span>, :]
+            logit = self.noul_head(cls_repr).squeeze(-<span class="code-number">1</span>)
+            prob = torch.sigmoid(logit / torch.clamp(self.temperature, min=<span class="code-number">0.1</span>))
+            <span class="code-keyword">return</span> logit, prob
+
+        <span class="code-keyword">elif</span> task_type == <span class="code-string">"score"</span>:
+            cls_repr = sequence_output[:, <span class="code-number">0</span>, :]
+            logits = self.score_head(cls_repr)[:, :num_levels]
+            prob = torch.softmax(logits / torch.clamp(self.temperature, min=<span class="code-number">0.1</span>), dim=-<span class="code-number">1</span>)
+            levels = torch.arange(num_levels, device=logits.device, dtype=torch.float32)
+            expected_score = torch.sum(prob * levels, dim=-<span class="code-number">1</span>)
+            <span class="code-keyword">return</span> expected_score, prob</code></pre>
+    </section>
+
+    <!-- SECTION 6 -->
+    <section id="sec-rlcd-loss" class="section-card">
+      <h2><span class="num">6</span> RLCD 联合损失函数与训练</h2>
+      <p>
+        标准 CE 损失会不断推高正确类别的 logit 值，<strong>导致模型产生严重的过度自信（Overconfidence）</strong>。
+        通过严格真分数准则，联合优化多分类交叉熵与 <strong>Brier 预测发散均方惩罚项</strong>：
+      </p>
+
+      <pre><code><span class="code-keyword">class</span> <span class="code-function">RLCDLoss</span>(nn.Module):
+    <span class="code-keyword">def</span> <span class="code-function">__init__</span>(self, lambda_brier: float = <span class="code-number">0.5</span>):
+        <span class="code-keyword">super</span>().__init__()
+        self.lambda_brier = lambda_brier
+        self.ce_loss = nn.CrossEntropyLoss()
+
+    <span class="code-keyword">def</span> <span class="code-function">forward</span>(self, logits: torch.Tensor, targets: torch.Tensor):
+        loss_ce = self.ce_loss(logits, targets)
+        probs = torch.softmax(logits, dim=-<span class="code-number">1</span>)
+        one_hot_targets = torch.zeros_like(probs).scatter_(-<span class="code-number">1</span>, targets.unsqueeze(-<span class="code-number">1</span>), <span class="code-number">1.0</span>)
+        loss_brier = torch.mean(torch.sum((probs - one_hot_targets) ** <span class="code-number">2</span>, dim=-<span class="code-number">1</span>))
+        total_loss = loss_ce + self.lambda_brier * loss_brier
+        <span class="code-keyword">return</span> total_loss, loss_ce, loss_brier</code></pre>
+    </section>
+
+    <!-- SECTION 7 -->
+    <section id="sec-calibration" class="section-card">
+      <h2><span class="num">7</span> 后训练温度校准与置信度计算</h2>
+      <div class="figure-wrapper">
+        <div class="figure-svg-container">
+          <svg viewBox="0 0 960 540" xmlns="http://www.w3.org/2000/svg">
+            <rect width="960" height="540" fill="#ffffff" rx="8"/>
+            <rect x="2" y="2" width="956" height="536" fill="none" stroke="#e2e8f0" stroke-width="2" rx="8"/>
+
+            <text x="480" y="38" font-family="-apple-system, sans-serif" font-size="20" font-weight="700" fill="#0f172a" text-anchor="middle">决策可靠性曲线 (Reliability Diagram) 与 ECE 校准对比</text>
+            <line x1="80" y1="52" x2="880" y2="52" stroke="#cbd5e1" stroke-width="1.5" stroke-dasharray="4 4"/>
+
+            <rect x="70" y="80" width="380" height="420" fill="#f8fafc" stroke="#cbd5e1" stroke-width="1.5" rx="8"/>
+            <text x="260" y="110" font-family="-apple-system, sans-serif" font-size="15" font-weight="700" fill="#dc2626" text-anchor="middle">标准 LLM：严重过自信 (ECE = 0.184)</text>
+
+            <line x1="120" y1="440" x2="410" y2="440" stroke="#475569" stroke-width="1.5"/>
+            <line x1="120" y1="440" x2="120" y2="150" stroke="#475569" stroke-width="1.5"/>
+            <text x="265" y="475" font-family="-apple-system, sans-serif" font-size="12" fill="#475569" text-anchor="middle">预测置信度 (Confidence)</text>
+            <text x="85" y="295" font-family="-apple-system, sans-serif" font-size="12" fill="#475569" text-anchor="middle" transform="rotate(-90 85 295)">经验准确率 (Accuracy)</text>
+
+            <line x1="120" y1="440" x2="410" y2="150" stroke="#94a3b8" stroke-width="1.5" stroke-dasharray="3 3"/>
+            <path d="M 120 440 Q 300 420 410 260" fill="none" stroke="#ef4444" stroke-width="3"/>
+
+            <rect x="230" y="320" width="160" height="40" fill="#fee2e2" stroke="#fca5a5" rx="4"/>
+            <text x="310" y="345" font-family="-apple-system, sans-serif" font-size="11" font-weight="600" fill="#b91c1c" text-anchor="middle">模型自称 95% 确定，</text>
+            <text x="310" y="360" font-family="-apple-system, sans-serif" font-size="11" font-weight="600" fill="#b91c1c" text-anchor="middle">实际准确率仅 62%</text>
+
+            <rect x="510" y="80" width="380" height="420" fill="#f0fdf4" stroke="#86efac" stroke-width="2" rx="8"/>
+            <text x="700" y="110" font-family="-apple-system, sans-serif" font-size="15" font-weight="700" fill="#15803d" text-anchor="middle">RLCD 校准模型：认识论诚实 (ECE = 0.021)</text>
+
+            <line x1="560" y1="440" x2="850" y2="440" stroke="#475569" stroke-width="1.5"/>
+            <line x1="560" y1="440" x2="560" y2="150" stroke="#475569" stroke-width="1.5"/>
+            <text x="705" y="475" font-family="-apple-system, sans-serif" font-size="12" fill="#475569" text-anchor="middle">预测置信度 (Confidence)</text>
+            <text x="525" y="295" font-family="-apple-system, sans-serif" font-size="12" fill="#475569" text-anchor="middle" transform="rotate(-90 525 295)">经验准确率 (Accuracy)</text>
+
+            <line x1="560" y1="440" x2="850" y2="150" stroke="#94a3b8" stroke-width="1.5" stroke-dasharray="3 3"/>
+            <path d="M 560 440 L 630 370 L 700 300 L 775 225 L 850 150" fill="none" stroke="#16a34a" stroke-width="3"/>
+            <circle cx="630" cy="370" r="4" fill="#16a34a"/>
+            <circle cx="700" cy="300" r="4" fill="#16a34a"/>
+            <circle cx="775" cy="225" r="4" fill="#16a34a"/>
+            <circle cx="850" cy="150" r="4" fill="#16a34a"/>
+
+            <rect x="620" y="320" width="160" height="40" fill="#dcfce7" stroke="#86efac" rx="4"/>
+            <text x="700" y="345" font-family="-apple-system, sans-serif" font-size="11" font-weight="600" fill="#166534" text-anchor="middle">预测概率严格等价于</text>
+            <text x="700" y="360" font-family="-apple-system, sans-serif" font-size="11" font-weight="600" fill="#166534" text-anchor="middle">真实经验成功率！</text>
+          </svg>
+        </div>
+        <div class="figure-caption">图 4：未校准 LLM 的过度自信 vs 经 RLCD + 温度缩放后的理想可靠性曲线</div>
+      </div>
+    </section>
+
+    <!-- SECTION 8 -->
+    <section id="sec-serving" class="section-card">
+      <h2><span class="num">8</span> 高性能推理服务与 API 规范</h2>
+      <p>直接实现与 TypeSafe 官方规范完全兼容的 <code>POST /v1/systemone</code> 接口，无缝接入生态。</p>
+    </section>
+
+    <!-- SECTION 9 -->
+    <section id="sec-eval" class="section-card">
+      <h2><span class="num">9</span> 评测基准与业务工作流验证</h2>
+      <p>System One 评测包含三大体系：<strong>jabr v2 49 任务基准</strong>、<strong>ViZDoom 8-Seed 实时竞技</strong> 与 <strong>Workflow Evals 帕累托前沿</strong>。</p>
+    </section>
+
+    <!-- SECTION 10 -->
+    <section id="sec-opensource-models" class="section-card">
+      <h2><span class="num">10</span> 开源决策模型全景与基准深度评测</h2>
+      <p>当前开源社区四大主力模型横向对标：</p>
+
+      <div class="table-container">
+        <table>
+          <thead>
+            <tr>
+              <th>模型名称</th>
+              <th>基模架构 / 参数量</th>
+              <th>开源协议</th>
+              <th>GPU 延迟</th>
+              <th>jabr v2 宏准确率</th>
+              <th>ViZDoom 击杀数</th>
+              <th>架构特点与适用定位</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>TypeSafe Jev 1.13</strong></td>
+              <td>闭源专家混合 (MoE)</td>
+              <td>商用闭源</td>
+              <td>~115 ms (网络 API)</td>
+              <td><strong>96.6%</strong></td>
+              <td>5.62 kills</td>
+              <td>云端托管商业标杆，综合推理能力最强，但受制于网络往返延迟。</td>
+            </tr>
+            <tr>
+              <td><strong>Von-1.2</strong><br>(wfzyx/von)</td>
+              <td><strong>ModernBERT-Large (395M)</strong></td>
+              <td><span class="tag tag-green">Apache 2.0</span></td>
+              <td><strong>~18 ms</strong></td>
+              <td><strong>71.5%</strong><br>(Choice 83.4%)</td>
+              <td><strong>9.38 kills</strong></td>
+              <td>开源性能领跑者。OptionMarker 双向全注意力，极端低延迟使得游戏击杀反超 JEV +66.9%。</td>
+            </tr>
+            <tr>
+              <td><strong>Laya</strong><br>(convaiinnovations/laya)</td>
+              <td>ModernBERT-Large (421M)<br>mmBERT-base (322M)</td>
+              <td><span class="tag tag-green">Apache 2.0</span></td>
+              <td>~33 ms</td>
+              <td>58.3%<br>(Choice 66.8%)</td>
+              <td>1.25 kills</td>
+              <td>企业级工作流专精：支持 100+ 多语言，专攻客服邮件分流、发票审核与对话轨迹建模 (TD(λ=1.0))。</td>
+            </tr>
+            <tr>
+              <td><strong>OpenThai-SystemOne</strong><br>(iapp-technology)</td>
+              <td>Qwen3.5-0.8B (去除 LM 头)</td>
+              <td><span class="tag tag-green">Apache 2.0</span></td>
+              <td>~45 ms</td>
+              <td>64.2%</td>
+              <td>2.10 kills</td>
+              <td>因果小模型改造范本：在 <code>&lt;|ts_answer|&gt;</code> 挂载 256-way SlotHead，支持泰英双语。</td>
+            </tr>
+            <tr>
+              <td><strong>GLiNER2</strong><br>(fastino)</td>
+              <td>双向跨度编码 (~300M)</td>
+              <td><span class="tag tag-green">Apache 2.0</span></td>
+              <td>~93 ms</td>
+              <td>68.4%</td>
+              <td>N/A</td>
+              <td>擅长零样本文本跨度与实体级分类，但在复杂逻辑多跳推理和动作决策上表现一般。</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="callout danger">
+        <strong>OrcaRouter 域迁移泛化失效警告：</strong><br>
+        第三方评测机构 OrcaRouter 针对开源模型 Von 进行了未见业务场景的盲测：<strong>若只给裸标签，准确率暴跌至 8.8% ~ 26.7%！</strong><br>
+        其本质原因在于模型是“上下文语义核验器”，必须提供显式、具有操作意义的 <strong>Criteria 准则</strong>。
+      </div>
+    </section>
+
+    <!-- SECTION 11 -->
+    <section id="sec-business-data" class="section-card">
+      <h2><span class="num">11</span> 工业级业务数据工程深度实战</h2>
+      <p>决定商业落地生死的正是<strong>业务工作流数据工程（占 85%）</strong>。</p>
+
+      <div class="figure-wrapper">
+        <div class="figure-svg-container">
+          <svg viewBox="0 0 960 540" xmlns="http://www.w3.org/2000/svg">
+            <rect width="960" height="540" fill="#ffffff" rx="8"/>
+            <rect x="2" y="2" width="956" height="536" fill="none" stroke="#e2e8f0" stroke-width="2" rx="8"/>
+
+            <text x="480" y="38" font-family="-apple-system, sans-serif" font-size="20" font-weight="700" fill="#0f172a" text-anchor="middle">工业级业务数据工程与软标签合成飞轮全景图</text>
+            <line x1="80" y1="52" x2="880" y2="52" stroke="#cbd5e1" stroke-width="1.5" stroke-dasharray="4 4"/>
+
+            <!-- 阶段 1 -->
+            <rect x="50" y="80" width="260" height="420" fill="#f8fafc" stroke="#cbd5e1" stroke-width="1.5" rx="8"/>
+            <rect x="50" y="80" width="260" height="40" fill="#e2e8f0" rx="8 8 0 0"/>
+            <text x="180" y="106" font-family="-apple-system, sans-serif" font-size="15" font-weight="700" fill="#1e293b" text-anchor="middle">Step 1: 业务状态抽取 (State)</text>
+
+            <rect x="70" y="135" width="220" height="60" fill="#ffffff" stroke="#94a3b8" rx="6"/>
+            <text x="80" y="158" font-family="-apple-system, sans-serif" font-size="12" font-weight="600" fill="#0f172a">生产数据源接入：</text>
+            <text x="80" y="178" font-family="-apple-system, sans-serif" font-size="11" fill="#64748b">工单、API Trace、审计日志、交易事件</text>
+
+            <path d="M 180 195 L 180 220" fill="none" stroke="#64748b" stroke-width="2"/>
+
+            <rect x="70" y="225" width="220" height="90" fill="#eff6ff" stroke="#3b82f6" rx="6"/>
+            <text x="80" y="248" font-family="-apple-system, sans-serif" font-size="12" font-weight="700" fill="#1e40af">状态瘦身与结构化清洗：</text>
+            <text x="80" y="270" font-family="-apple-system, sans-serif" font-size="11" fill="#1d4ed8">• 剔除长尾无效无因字段 (State Pruning)</text>
+            <text x="80" y="290" font-family="-apple-system, sans-serif" font-size="11" fill="#1d4ed8">• 保留核心高密度上下文 (JSON 层次化)</text>
+            <text x="80" y="308" font-family="-apple-system, sans-serif" font-size="11" fill="#1d4ed8">• 严格脱敏个人敏感隐私信息</text>
+
+            <path d="M 180 315 L 180 340" fill="none" stroke="#64748b" stroke-width="2"/>
+
+            <rect x="70" y="345" width="220" height="135" fill="#ffffff" stroke="#cbd5e1" rx="6"/>
+            <text x="80" y="368" font-family="-apple-system, sans-serif" font-size="12" font-weight="600" fill="#0f172a">输出干净状态对象：</text>
+            <text x="80" y="392" font-family="monospace" font-size="10" fill="#475569">{</text>
+            <text x="90" y="410" font-family="monospace" font-size="10" fill="#475569">"ticket_id": "INC-892",</text>
+            <text x="90" y="428" font-family="monospace" font-size="10" fill="#475569">"msg": "支付超时，资金未解冻",</text>
+            <text x="90" y="446" font-family="monospace" font-size="10" fill="#475569">"user_vip": true</text>
+            <text x="80" y="464" font-family="monospace" font-size="10" fill="#475569">}</text>
+
+            <!-- 阶段 2 -->
+            <rect x="350" y="80" width="260" height="420" fill="#f8fafc" stroke="#cbd5e1" stroke-width="1.5" rx="8"/>
+            <rect x="350" y="80" width="260" height="40" fill="#e2e8f0" rx="8 8 0 0"/>
+            <text x="480" y="106" font-family="-apple-system, sans-serif" font-size="15" font-weight="700" fill="#1e293b" text-anchor="middle">Step 2: 对比准则设计 (Criteria)</text>
+
+            <rect x="370" y="135" width="220" height="75" fill="#fef2f2" stroke="#fca5a5" rx="6"/>
+            <text x="380" y="158" font-family="-apple-system, sans-serif" font-size="12" font-weight="700" fill="#991b1b">❌ 严禁使用裸标签：</text>
+            <text x="380" y="180" font-family="-apple-system, sans-serif" font-size="11" fill="#b91c1c">["finance", "tech", "account"]</text>
+            <text x="380" y="198" font-family="-apple-system, sans-serif" font-size="11" fill="#b91c1c">（会导致泛化能力暴跌至 26.7%）</text>
+
+            <path d="M 480 210 L 480 235" fill="none" stroke="#64748b" stroke-width="2"/>
+
+            <rect x="370" y="240" width="220" height="240" fill="#ffffff" stroke="#22c55e" stroke-width="1.5" rx="6"/>
+            <text x="380" y="265" font-family="-apple-system, sans-serif" font-size="12" font-weight="700" fill="#15803d">✅ 采用 Contrastive Criteria 范式：</text>
+            <text x="380" y="290" font-family="-apple-system, sans-serif" font-size="11" font-weight="600" fill="#0f172a">为每个选项注入三元语义锚点：</text>
+            <text x="380" y="315" font-family="-apple-system, sans-serif" font-size="11" fill="#047857">1. <tspan font-weight="700">What (覆盖范围)</tspan>：退款、扣费、发票</text>
+            <text x="380" y="340" font-family="-apple-system, sans-serif" font-size="11" fill="#047857">2. <tspan font-weight="700">Not For (排他边界)</tspan>：账号找回或崩溃</text>
+            <text x="380" y="365" font-family="-apple-system, sans-serif" font-size="11" fill="#047857">3. <tspan font-weight="700">Examples (具象案例)</tspan>：含2个正例</text>
+            <line x1="380" y1="385" x2="570" y2="385" stroke="#e2e8f0" stroke-width="1"/>
+            <text x="380" y="410" font-family="-apple-system, sans-serif" font-size="11" fill="#334155">提供明确的语义证据匹配空间，</text>
+            <text x="380" y="430" font-family="-apple-system, sans-serif" font-size="11" fill="#334155">使双向注意力机制能精确比对，</text>
+            <text x="380" y="450" font-family="-apple-system, sans-serif" font-size="11" font-weight="700" fill="#15803d">零样本泛化准确率保持 &gt; 85%！</text>
+
+            <!-- 阶段 3 -->
+            <rect x="650" y="80" width="260" height="420" fill="#f8fafc" stroke="#cbd5e1" stroke-width="1.5" rx="8"/>
+            <rect x="650" y="80" width="260" height="40" fill="#e2e8f0" rx="8 8 0 0"/>
+            <text x="780" y="106" font-family="-apple-system, sans-serif" font-size="15" font-weight="700" fill="#1e293b" text-anchor="middle">Step 3: 软标签合成与扰动</text>
+
+            <rect x="670" y="135" width="220" height="90" fill="#f5f3ff" stroke="#7c3aed" rx="6"/>
+            <text x="680" y="158" font-family="-apple-system, sans-serif" font-size="12" font-weight="700" fill="#6b21a8">前沿大模型委员会 (Ensemble)：</text>
+            <text x="680" y="180" font-family="-apple-system, sans-serif" font-size="11" fill="#581c87">• GPT-4o + Claude 3.5 + DeepSeek</text>
+            <text x="680" y="200" font-family="-apple-system, sans-serif" font-size="11" fill="#581c87">• 交叉独立打分，输出连续置信度</text>
+            <text x="680" y="218" font-family="-apple-system, sans-serif" font-size="11" font-weight="600" fill="#7c3aed">-> 获得天然真实的经验后验分布</text>
+
+            <path d="M 780 225 L 780 250" fill="none" stroke="#64748b" stroke-width="2"/>
+
+            <rect x="670" y="255" width="220" height="100" fill="#fffbeb" stroke="#f59e0b" rx="6"/>
+            <text x="680" y="278" font-family="-apple-system, sans-serif" font-size="12" font-weight="700" fill="#b45309">15% 边界模糊样本扰动：</text>
+            <text x="680" y="300" font-family="-apple-system, sans-serif" font-size="11" fill="#92400e">• 注入歧义词（"有空看看" vs "立即"）</text>
+            <text x="680" y="320" font-family="-apple-system, sans-serif" font-size="11" fill="#92400e">• 构造双部门交叉重叠边界工单</text>
+            <text x="680" y="340" font-family="-apple-system, sans-serif" font-size="11" font-weight="600" fill="#b45309">-> 迫使模型学会输出 0.5 真实不确定</text>
+
+            <path d="M 780 355 L 780 380" fill="none" stroke="#64748b" stroke-width="2"/>
+
+            <rect x="670" y="385" width="220" height="95" fill="#f0fdf4" stroke="#22c55e" rx="6"/>
+            <text x="680" y="408" font-family="-apple-system, sans-serif" font-size="12" font-weight="700" fill="#15803d">最终交付产物：</text>
+            <text x="680" y="430" font-family="-apple-system, sans-serif" font-size="11" fill="#14532d">250k+ 条高质量工业级标准 JSONL</text>
+            <text x="680" y="450" font-family="-apple-system, sans-serif" font-size="11" fill="#14532d">软标签分布 + 显式对比准则 + ECE &lt; 0.03</text>
+          </svg>
+        </div>
+        <div class="figure-caption">图 5：工业级业务数据工程实操全景流：状态瘦身、对比准则设计与大模型委员会软标签生成</div>
+      </div>
+    </section>
+
+    <!-- SECTION 12 (NEW: PRODUCTS & ECOSYSTEM) -->
+    <section id="sec-products" class="section-card">
+      <h2><span class="num">12</span> 业界产品落地与生态全景矩阵</h2>
+      <p>
+        JEV 与 System One 范式不仅仅是研究概念，它正在以惊人的速度在工业界转化为可落地的软硬件产品。
+        以下系统梳理业界当前<strong>商业级基础设施、开源开发套件与八大杀手级应用场景</strong>。
+      </p>
+
+      <div class="figure-wrapper">
+        <div class="figure-svg-container">
+          <svg viewBox="0 0 960 540" xmlns="http://www.w3.org/2000/svg">
+            <rect width="960" height="540" fill="#ffffff" rx="8"/>
+            <rect x="2" y="2" width="956" height="536" fill="none" stroke="#e2e8f0" stroke-width="2" rx="8"/>
+
+            <text x="480" y="36" font-family="-apple-system, sans-serif" font-size="20" font-weight="700" fill="#0f172a" text-anchor="middle">JEV / System One 决策模型业界产品与系统分层架构</text>
+            <line x1="80" y1="50" x2="880" y2="50" stroke="#cbd5e1" stroke-width="1.5" stroke-dasharray="4 4"/>
+
+            <!-- 层级 1：业务产品层 -->
+            <rect x="50" y="65" width="860" height="95" fill="#f8fafc" stroke="#3b82f6" stroke-width="1.5" rx="8"/>
+            <rect x="50" y="65" width="130" height="95" fill="#dbeafe" rx="8 0 0 8"/>
+            <text x="115" y="118" font-family="-apple-system, sans-serif" font-size="13" font-weight="700" fill="#1e40af" text-anchor="middle">业务产品层</text>
+
+            <rect x="195" y="80" width="165" height="65" fill="#ffffff" stroke="#93c5fd" rx="6"/>
+            <text x="277" y="105" font-family="-apple-system, sans-serif" font-size="12" font-weight="700" fill="#1e40af" text-anchor="middle">Context Compactor</text>
+            <text x="277" y="125" font-family="-apple-system, sans-serif" font-size="11" fill="#64748b" text-anchor="middle">Agent 上下文 80% 降噪</text>
+
+            <rect x="375" y="80" width="165" height="65" fill="#ffffff" stroke="#93c5fd" rx="6"/>
+            <text x="457" y="105" font-family="-apple-system, sans-serif" font-size="12" font-weight="700" fill="#1e40af" text-anchor="middle">Model Router 网关</text>
+            <text x="457" y="125" font-family="-apple-system, sans-serif" font-size="11" fill="#64748b" text-anchor="middle">按难度分流节约 60% 成本</text>
+
+            <rect x="555" y="80" width="165" height="65" fill="#ffffff" stroke="#93c5fd" rx="6"/>
+            <text x="637" y="105" font-family="-apple-system, sans-serif" font-size="12" font-weight="700" fill="#1e40af" text-anchor="middle">PR & Code Judge</text>
+            <text x="637" y="125" font-family="-apple-system, sans-serif" font-size="11" fill="#64748b" text-anchor="middle">研发审查与风险阻断</text>
+
+            <rect x="735" y="80" width="160" height="65" fill="#ffffff" stroke="#93c5fd" rx="6"/>
+            <text x="815" y="105" font-family="-apple-system, sans-serif" font-size="12" font-weight="700" fill="#1e40af" text-anchor="middle">ViZDoom & 机器人</text>
+            <text x="815" y="125" font-family="-apple-system, sans-serif" font-size="11" fill="#64748b" text-anchor="middle">sub-20ms 实时动作反应</text>
+
+            <!-- 层级 2：开发框架与接入层 -->
+            <rect x="50" y="175" width="860" height="95" fill="#f8fafc" stroke="#059669" stroke-width="1.5" rx="8"/>
+            <rect x="50" y="175" width="130" height="95" fill="#dcfce7" rx="8 0 0 8"/>
+            <text x="115" y="228" font-family="-apple-system, sans-serif" font-size="13" font-weight="700" fill="#065f46" text-anchor="middle">框架集成层</text>
+
+            <rect x="195" y="190" width="165" height="65" fill="#ffffff" stroke="#86efac" rx="6"/>
+            <text x="277" y="215" font-family="-apple-system, sans-serif" font-size="12" font-weight="700" fill="#065f46" text-anchor="middle">Pydantic AI</text>
+            <text x="277" y="235" font-family="-apple-system, sans-serif" font-size="11" fill="#64748b" text-anchor="middle">TypeSafeModel 零解析失败</text>
+
+            <rect x="375" y="190" width="165" height="65" fill="#ffffff" stroke="#86efac" rx="6"/>
+            <text x="457" y="215" font-family="-apple-system, sans-serif" font-size="12" font-weight="700" fill="#065f46" text-anchor="middle">jev-mcp 协议插件</text>
+            <text x="457" y="235" font-family="-apple-system, sans-serif" font-size="11" fill="#64748b" text-anchor="middle">Claude / Cursor 智能快思考</text>
+
+            <rect x="555" y="190" width="165" height="65" fill="#ffffff" stroke="#86efac" rx="6"/>
+            <text x="637" y="215" font-family="-apple-system, sans-serif" font-size="12" font-weight="700" fill="#065f46" text-anchor="middle">von-sdk (Python/TS)</text>
+            <text x="637" y="235" font-family="-apple-system, sans-serif" font-size="11" fill="#64748b" text-anchor="middle">内建 presets 与 patterns</text>
+
+            <rect x="735" y="190" width="160" height="65" fill="#ffffff" stroke="#86efac" rx="6"/>
+            <text x="815" y="215" font-family="-apple-system, sans-serif" font-size="12" font-weight="700" fill="#065f46" text-anchor="middle">LangChain 适配器</text>
+            <text x="815" y="235" font-family="-apple-system, sans-serif" font-size="11" fill="#64748b" text-anchor="middle">路由与 Guardrail 节点</text>
+
+            <!-- 层级 3：网关与托管云 -->
+            <rect x="50" y="285" width="860" height="95" fill="#f8fafc" stroke="#7c3aed" stroke-width="1.5" rx="8"/>
+            <rect x="50" y="285" width="130" height="95" fill="#f3e8ff" rx="8 0 0 8"/>
+            <text x="115" y="338" font-family="-apple-system, sans-serif" font-size="13" font-weight="700" fill="#6b21a8" text-anchor="middle">网关服务层</text>
+
+            <rect x="195" y="300" width="225" height="65" fill="#ffffff" stroke="#d8b4fe" rx="6"/>
+            <text x="307" y="325" font-family="-apple-system, sans-serif" font-size="12" font-weight="700" fill="#6b21a8" text-anchor="middle">Cloudflare Workers AI</text>
+            <text x="307" y="345" font-family="-apple-system, sans-serif" font-size="11" fill="#64748b" text-anchor="middle">边缘原生集成 typesafe/jev</text>
+
+            <rect x="435" y="300" width="225" height="65" fill="#ffffff" stroke="#d8b4fe" rx="6"/>
+            <text x="547" y="325" font-family="-apple-system, sans-serif" font-size="12" font-weight="700" fill="#6b21a8" text-anchor="middle">Vercel AI Gateway</text>
+            <text x="547" y="345" font-family="-apple-system, sans-serif" font-size="11" fill="#64748b" text-anchor="middle">实验性 evaluate API 与开销遥测</text>
+
+            <rect x="675" y="300" width="220" height="65" fill="#ffffff" stroke="#d8b4fe" rx="6"/>
+            <text x="785" y="325" font-family="-apple-system, sans-serif" font-size="12" font-weight="700" fill="#6b21a8" text-anchor="middle">TypeSafe 商业官方端点</text>
+            <text x="785" y="345" font-family="-apple-system, sans-serif" font-size="11" fill="#64748b" text-anchor="middle">api.typesafe.ai/v1/systemone</text>
+
+            <!-- 层级 4：核心模型与算力底座 -->
+            <rect x="50" y="395" width="860" height="115" fill="#f8fafc" stroke="#d97706" stroke-width="1.5" rx="8"/>
+            <rect x="50" y="395" width="130" height="115" fill="#fef3c7" rx="8 0 0 8"/>
+            <text x="115" y="458" font-family="-apple-system, sans-serif" font-size="13" font-weight="700" fill="#b45309" text-anchor="middle">模型引擎底座</text>
+
+            <rect x="195" y="410" width="225" height="85" fill="#ffffff" stroke="#fcd34d" rx="6"/>
+            <text x="307" y="435" font-family="-apple-system, sans-serif" font-size="12" font-weight="700" fill="#b45309" text-anchor="middle">闭源标杆：TypeSafe Jev 1.13</text>
+            <text x="307" y="455" font-family="-apple-system, sans-serif" font-size="11" fill="#64748b" text-anchor="middle">专有 MoE 架构 / 32k 上下文</text>
+            <text x="307" y="475" font-family="-apple-system, sans-serif" font-size="11" font-weight="600" fill="#d97706" text-anchor="middle">$0.042 / 1M token (Output Free)</text>
+
+            <rect x="435" y="410" width="225" height="85" fill="#ffffff" stroke="#fcd34d" rx="6"/>
+            <text x="547" y="435" font-family="-apple-system, sans-serif" font-size="12" font-weight="700" fill="#b45309" text-anchor="middle">开源标杆：Von-1.2 (wfzyx)</text>
+            <text x="547" y="455" font-family="-apple-system, sans-serif" font-size="11" fill="#64748b" text-anchor="middle">395M ModernBERT-Large</text>
+            <text x="547" y="475" font-family="-apple-system, sans-serif" font-size="11" font-weight="600" fill="#059669" text-anchor="middle">sub-18ms GPU / Apache 2.0</text>
+
+            <rect x="675" y="410" width="220" height="85" fill="#ffffff" stroke="#fcd34d" rx="6"/>
+            <text x="785" y="435" font-family="-apple-system, sans-serif" font-size="12" font-weight="700" fill="#b45309" text-anchor="middle">企业多语言：Laya (ConvAI)</text>
+            <text x="785" y="455" font-family="-apple-system, sans-serif" font-size="11" fill="#64748b" text-anchor="middle">421M / 100+ 语言 / 33ms</text>
+            <text x="785" y="475" font-family="-apple-system, sans-serif" font-size="11" font-weight="600" fill="#059669" text-anchor="middle">TD(λ=1.0) 轨迹建摸 / 免费</text>
+          </svg>
+        </div>
+        <div class="figure-caption">图 6：TypeSafe JEV 与 System One 决策模型在工业界的四层产品与生态全景矩阵</div>
+      </div>
+
+      <h3>业界八大杀手级产品化应用场景</h3>
+
+      <div class="steps-grid">
+        <div class="step-card">
+          <div class="step-num-badge">场景 1</div>
+          <div class="step-title">智能 Agent 上下文压缩 (Context Compactor)</div>
+          <div class="step-desc">
+            在复杂 Coding Agent（如 Claude Code / OpenDevin）长程会话中，上下文迅速膨胀。
+            使用 JEV 对每轮历史工具调用的输出做 <code>KEEP</code> / <code>TRUNCATE</code> / <code>DROP</code> 的并行 Noul 判定，在 50ms 内剪掉 80% 无效噪音，为后续自回归大模型节省数倍 Token 费用。
+          </div>
+        </div>
+
+        <div class="step-card">
+          <div class="step-num-badge">场景 2</div>
+          <div class="step-title">大模型动态智能路由 (Model Router)</div>
+          <div class="step-desc">
+            作为大模型 API 网关的前置“调度脑”。
+            50ms 内评估 Prompt 复杂度、代码逻辑深度与安全风险。简单任务分流给本地模型或 DeepSeek，极端复杂任务路由给 Claude 3.5 Sonnet / GPT-4o，降低整体 AI 账单 60% 以上。
+          </div>
+        </div>
+
+        <div class="step-card">
+          <div class="step-num-badge">场景 3</div>
+          <div class="step-title">研发审查与自动化门禁 (PR Judge)</div>
+          <div class="step-desc">
+            根据 Git Diff、提交记录与影响范围，一键输出代码合并风险等级（Score: 0~3）、是否命中敏感密码泄露（Noul）以及分配最佳 Reviewer（Choice），作为 CI/CD 流水线中阻断非法发布的核心守卫。
+          </div>
+        </div>
+
+        <div class="step-card">
+          <div class="step-num-badge">场景 4</div>
+          <div class="step-title">Pydantic AI 零失败强类型对象填充</div>
+          <div class="step-desc">
+            Pydantic AI 官方原生集成 <code>TypeSafeModel</code>。
+            开发者只需声明一个带有各类型字段的 Python Class，JEV 会将所有属性映射为原子 Question 并行前向计算，一次性完成结构化提取，数学上杜绝传统 LLM 的 JSON 解析异常。
+          </div>
+        </div>
+
+        <div class="step-card">
+          <div class="step-num-badge">场景 5</div>
+          <div class="step-title">金融风控与反欺诈毫秒级拦截</div>
+          <div class="step-desc">
+            在支付交易的网关链路上，传统 LLM 的几秒延迟不可接受。
+            JEV/Von 在 18ms 内并发核验交易上下文（金额突增、异地设备、黑名单标签匹配），输出高精校准置信度，超过阈值立即挂起进入二级风控。
+          </div>
+        </div>
+
+        <div class="step-card">
+          <div class="step-num-badge">场景 6</div>
+          <div class="step-title">实时机器人与无人机动作决策</div>
+          <div class="step-desc">
+            在无人机避障与地面机器人路径选择中，将雷达与视觉语义转化为结构化状态，由本地部署的 Von/Laya 在 20ms 内完成离散飞控机动（加速、绕行、悬停）判断。
+          </div>
+        </div>
+
+        <div class="step-card">
+          <div class="step-num-badge">场景 7</div>
+          <div class="step-title">智能工单全生命周期分流</div>
+          <div class="step-desc">
+            自动判别客服工单责任部门（Choice）、用户情绪挫败指数（Score）、是否要求退款（Noul），结合置信度门禁，自信率大于 0.85 的自动执行分发，其余交由人工班长复核。
+          </div>
+        </div>
+
+        <div class="step-card">
+          <div class="step-num-badge">场景 8</div>
+          <div class="step-title">Wikiracing 与海量候选集寻径</div>
+          <div class="step-desc">
+            在成千上万个链接或分支选项中秒级打分。传统 LLM 极易产生幻觉链接，而 JEV 支持高达 255 个选项的并发校准打分，保证每一步动作的确定性。
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION 13 (NEW: PAPERS & THEORETICAL ROOTS) -->
+    <section id="sec-papers" class="section-card">
+      <h2><span class="num">13</span> 学术论文与理论体系脉络</h2>
+      <p>
+        JEV 与 System One 的诞生并非凭空出现，其底层融合了<strong>自然语言处理、强化学习反思与统计真分数校准理论</strong>。
+        以下整理该技术流派的关键学术文献脉络：
+      </p>
+
+      <div class="table-container">
+        <table>
+          <thead>
+            <tr>
+              <th>论文与作者</th>
+              <th>发表年份 / 会议</th>
+              <th>核心理论贡献与对 JEV 的指导意义</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>《Von: Non-Autoregressive System One Decision Modeling via Calibrated Bidirectional Representations》</strong><br>Victor Panisa</td>
+              <td>2026<br>开源项目论文</td>
+              <td>系统确立了基于 ModernBERT 双向全注意力编码器的 <strong>OptionMarker 架构</strong>，证明了在单步前向传播下处理高基数选择与多原语判别的统计有效性。</td>
+            </tr>
+            <tr>
+              <td><strong>《Reinforcement Learning with Calibration Distribution for Non-Autoregressive Decision Modeling》</strong><br>DeepMost Innovations</td>
+              <td>2025/2026<br>arXiv:2503.23303</td>
+              <td><strong>RLCD 训练机制的首篇理论论文</strong>。从理论上证明了传统 RLHF 偏好学习必然破坏概率分布校准，提出联合真分数准则（Brier Penalty）能驱动模型收敛于真实贝叶斯后验。</td>
+            </tr>
+            <tr>
+              <td><strong>《ModernBERT: Bringing BERT into the Modern Era》</strong><br>Answer.AI & LightOn</td>
+              <td>2024/2025<br>arXiv:2412.13663</td>
+              <td>为 System One 模型提供了现代高效的双向骨干基座。原生支持 8192 上下文、旋转位置编码 (RoPE) 与 FlashAttention-2，比传统 BERT 速度提升 3~5 倍。</td>
+            </tr>
+            <tr>
+              <td><strong>《Training language models to follow instructions with human feedback》</strong><br>Long Ouyang, Diogo Almeida et al.</td>
+              <td>2022<br>NeurIPS (InstructGPT)</td>
+              <td>TypeSafe 创始人 Diogo Almeida 的代表作。揭示了通过人类反馈微调大语言模型的范式。正是看到了生成模型在阿谀奉承（Sycophancy）与虚假自信上的缺陷，才启发了创始人投身 System One 的反向创新。</td>
+            </tr>
+            <tr>
+              <td><strong>《On Calibration of Modern Neural Networks》</strong><br>Chuan Guo, Geoff Pleiss et al.</td>
+              <td>2017<br>ICML 经典论文</td>
+              <td><strong>现代深度神经网络校准的理论基石</strong>。首次系统指出现代网络因过拟合 NLL 导致的严重过自信现象，提出了 ECE（Expected Calibration Error）指标与基于验证集的温度缩放（Temperature Scaling）理论。</td>
+            </tr>
+            <tr>
+              <td><strong>《Strictly Proper Scoring Rules, Prediction, and Estimation》</strong><br>Tilmann Gneiting & Adrian E. Raftery</td>
+              <td>2007<br>JASA 统计学顶级期刊</td>
+              <td>严格真分数（Strictly Proper Scoring Rules）的数学体系奠基。证明了 Brier Score 与负对数损失在数学上具有<strong>“防伪防冒”特性</strong>：预测者只有输出其真实的内心后验概率时，才能获得最大的期望数学期望收益。</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- SECTION 14 -->
+    <section id="sec-conclusion" class="section-card">
+      <h2><span class="num">14</span> 工业化落地与选型建议总结</h2>
+      <div class="steps-grid">
+        <div class="step-card">
+          <div class="step-num-badge">建议 1</div>
+          <div class="step-title">基模首选 ModernBERT-Large</div>
+          <div class="step-desc">
+            395M 参数量、全双向自注意力、8192 上下文、1.5GB 极小显存。单卡 RTX 4090 即可跑出 sub-18ms 极速推理，是当前 System One 的绝对主力。
+          </div>
+        </div>
+
+        <div class="step-card">
+          <div class="step-num-badge">建议 2</div>
+          <div class="step-title">坚持 RLCD 联合损失与温度校准</div>
+          <div class="step-desc">
+            单纯追求准确率的 SFT 会严重破坏概率校准。必须加入 Brier Score 惩罚，并通过后训练温度缩放将 ECE 压至 0.03 以下。
+          </div>
+        </div>
+
+        <div class="step-card">
+          <div class="step-num-badge">建议 3</div>
+          <div class="step-title">业务数据重在 Contrastive Criteria</div>
+          <div class="step-desc">
+            不要只给模型裸标签。必须通过数据工程为每个选项建立明确的操作准则（What/Not For/Examples），防止跨领域泛化失效。
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+</div>
+
+<footer style="text-align: center; padding: 40px 20px; color: #64748b; font-size: 0.88rem; border-top: 1px solid #e2e8f0; background: #ffffff;">
+  从零训练类 TypeSafe JEV 决策模型技术手册 · 自动化软件与 AI 确定性架构指南 · 2026
+</footer>
+
+</body>
+</html>
