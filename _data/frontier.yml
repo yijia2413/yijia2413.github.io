@@ -1,5 +1,9 @@
 # 前沿技术栏目：独立 HTML 洞察索引。
 # 新增一篇：把 HTML 放到 /frontier/<slug>.html，再在这里加一条。
+- title: 冻底座、改脚手架：2026 年 Agent 和 LLM 公开增量在哪一层
+  date: "2026-09-27"
+  url: /frontier/llm-agent-tech-landscape.html
+  summary: 2025H2–2026 公开增量在冻底座改 harness 和记忆、折叠工作窗、harness 蒸馏；开放 RSI 还没跨过评估器。
 - title: 递归自改进前世今生：从 Gödel 机到 LLM Agent
   date: "2026-09-26"
   url: /frontier/rsi-llm-agent-self-evolution.html

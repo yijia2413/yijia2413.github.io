@@ -1,0 +1,354 @@
+﻿<!doctype html>
+<html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>冻底座、改脚手架：2026 年 Agent 和 LLM 公开增量在哪一层｜2026-09-27</title>
+<style>/* deep-report 基础样式：白底、中文字体栈、目录、卡片、指标块、图表容器（手机端图表可横向滚动）。整段内联进 <style>。 */
+:root{--ink:#1b1b1a;--ink2:#52514e;--muted:#8a8984;--line:#e6e5e1;--bg:#ffffff;--soft:#f6f6f3;
+--blue:#2a78d6;--orange:#eb6834;--aqua:#1baf7a;--yellow:#eda100;--red:#d03b3b;--good:#0ca30c}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:"Noto Sans CJK SC","Noto Sans SC","PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;line-height:1.75;font-size:16px}
+.wrap{max-width:1080px;margin:0 auto;padding:0 28px 80px}
+header.hero{background:linear-gradient(180deg,#f3f7fd 0%,#fff 100%);border-bottom:1px solid var(--line);margin-bottom:8px}
+header.hero .wrap{padding-top:48px;padding-bottom:36px}
+.kicker{color:var(--blue);font-weight:700;letter-spacing:.08em;font-size:13px}
+h1{font-size:34px;line-height:1.3;margin:10px 0 12px}
+.sub{color:var(--ink2);font-size:15px}
+nav.toc{position:sticky;top:42px;z-index:5;background:rgba(255,255,255,.96);border-bottom:1px solid var(--line);backdrop-filter:blur(4px)}
+nav.backbar{position:sticky;top:0;z-index:20;background:#0f172a;border-bottom:1px solid #1e293b;padding:10px 24px}
+nav.backbar a{color:#93c5fd;text-decoration:none;font-size:14px;margin-right:16px;font-family:"Noto Sans CJK SC","Noto Sans SC","PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif}
+nav.toc{top:42px}
+h2,.tiles,.layers,figure{scroll-margin-top:96px}
+
+nav.toc .wrap{display:flex;gap:18px;overflow-x:auto;padding:10px 28px;font-size:14px;white-space:nowrap}
+nav.toc a{color:var(--ink2);text-decoration:none}
+nav.toc a:hover{color:var(--blue)}
+h2{font-size:25px;margin:56px 0 14px;padding-top:8px;border-top:3px solid var(--ink);display:flex;gap:12px;align-items:baseline}
+h2 .no{color:var(--blue);font-size:15px;font-weight:700}
+h3{font-size:19px;margin:30px 0 10px}
+p{margin:10px 0}
+.lead{font-size:18px;line-height:1.8;border-left:4px solid var(--blue);padding:4px 0 4px 16px;margin:18px 0}
+.tiles{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin:18px 0}
+.tile{border:1px solid var(--line);border-radius:12px;padding:16px 18px;background:#fff}
+.tile .v{font-size:30px;font-weight:800;line-height:1.2}
+.tile .l{font-size:14px;color:var(--ink2);margin-top:6px}
+.tile .s{font-size:12px;color:var(--muted);margin-top:6px}
+.tile.warn{border-top:4px solid var(--red)} .tile.info{border-top:4px solid var(--blue)} .tile.amber{border-top:4px solid var(--orange)}
+.twocol{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+.box{border:1px solid var(--line);border-radius:12px;padding:16px 20px;background:#fff}
+.box h4{margin:0 0 8px;font-size:16px}
+.box ol,.box ul{margin:6px 0;padding-left:22px}
+.box li{margin:4px 0}
+figure{margin:22px 0;border:1px solid var(--line);border-radius:12px;padding:16px 18px 10px;background:#fff}
+figcaption{font-size:15px;font-weight:700;margin-bottom:8px}
+figure .note{font-size:13px;color:var(--ink2);margin:8px 0 4px}
+.chart{width:100%;height:auto;display:block}
+figure{overflow-x:auto}
+.chart .mark{transition:opacity .15s}
+.chart:hover .mark{opacity:.55}.chart .mark:hover{opacity:1}
+.legend{display:flex;gap:16px;flex-wrap:wrap;font-size:13px;color:var(--ink2);margin:0 0 6px}
+.legend i{display:inline-block;width:12px;height:12px;border-radius:3px;margin-right:6px;vertical-align:-1px}
+details.datatable{margin:6px 0 4px;font-size:13px;overflow-x:auto}
+details.datatable summary{cursor:pointer;color:var(--blue)}
+table{border-collapse:collapse;width:100%;font-size:14px;margin:10px 0}
+th,td{border-bottom:1px solid var(--line);padding:8px 10px;text-align:left;vertical-align:top}
+th{background:var(--soft);font-weight:700;color:var(--ink)}
+td.num{white-space:nowrap;font-weight:700}
+.src{font-size:12px;color:var(--muted)}
+.card{border:1px solid var(--line);border-radius:14px;margin:22px 0;overflow:hidden;background:#fff}
+.card .hd{display:flex;gap:14px;align-items:flex-start;padding:18px 22px;background:var(--soft);border-bottom:1px solid var(--line)}
+.card .rank{flex:none;width:44px;height:44px;border-radius:10px;background:var(--ink);color:#fff;font-weight:800;font-size:20px;display:flex;align-items:center;justify-content:center}
+.card.t3 .rank{background:var(--blue)}
+.card .hd h3{margin:0;font-size:20px;line-height:1.45}
+.card .hd .one{color:var(--ink2);font-size:15px;margin-top:4px}
+.card .bd{padding:6px 22px 18px}
+.card .grid{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+.lab{display:inline-block;font-size:12px;font-weight:700;letter-spacing:.05em;padding:2px 8px;border-radius:6px;margin:12px 0 4px}
+.lab.ev{background:#eef4fc;color:#1c5cab}.lab.rc{background:#fdf0ea;color:#a4441a}.lab.fx{background:#e9f7f0;color:#11774f}.lab.no{background:#fbeaea;color:#a12a2a}.lab.ac{background:#fff6df;color:#8a5a00}
+.card ul{margin:4px 0;padding-left:20px}.card li{margin:5px 0}
+q{quotes:"“" "”";color:#1c5cab}
+.quote{border-left:3px solid var(--line);padding:2px 0 2px 12px;color:var(--ink2);font-size:14.5px;margin:6px 0}
+.pill{display:inline-block;font-size:12px;border-radius:999px;padding:1px 9px;margin-left:6px;vertical-align:2px;border:1px solid}
+.pill.old{color:#8a5a00;border-color:#eda100;background:#fff9ea}
+.pill.new{color:#11774f;border-color:#1baf7a;background:#eefaf4}
+.st{font-weight:700;white-space:nowrap}
+.st.ok{color:#11774f}.st.part{color:#8a5a00}.st.no{color:#a12a2a}.st.na{color:var(--muted)}
+.timeline{display:grid;grid-template-columns:120px 1fr;gap:0;margin:14px 0;font-size:14.5px}
+.timeline div{padding:7px 10px;border-bottom:1px solid var(--line)}
+.timeline div:nth-child(odd){font-weight:700;color:var(--ink2)}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin:10px 0}
+.chip{font-size:13px;border:1px solid var(--line);border-radius:8px;padding:4px 10px;background:#fff}
+.chip b{color:var(--muted);font-weight:600;margin-right:6px}
+.chip.tool{border-color:#eb6834;background:#fff5f0}
+.chip.learn{border-color:#eda100;background:#fffaeb}
+.chip.work{border-color:#2a78d6;background:#f3f7fd}
+.chip.co{border-color:#b9b8b3;background:#f4f4f2}
+.shift{display:grid;grid-template-columns:1fr 28px 1fr;gap:10px;align-items:center;border:1px solid var(--line);border-radius:12px;padding:14px 16px;margin:12px 0}
+.shift .from{color:var(--ink2)} .shift .arrow{text-align:center;color:var(--blue);font-weight:800;font-size:20px}
+.shift .to{font-weight:700}
+.shift .why{grid-column:1/4;font-size:14px;color:var(--ink2);border-top:1px dashed var(--line);padding-top:8px}
+.plan{width:100%}
+.plan td:first-child{white-space:nowrap;font-weight:700;color:var(--blue)}
+.callout{border:1px solid #f1c6c6;background:#fdf5f5;border-radius:12px;padding:14px 18px;margin:18px 0}
+.callout.blue{border-color:#cde2fb;background:#f5f9fe}
+footer{color:var(--muted);font-size:13px;border-top:1px solid var(--line);margin-top:60px;padding-top:16px}
+@media (max-width:760px){nav.toc{position:static;top:auto}.tiles{grid-template-columns:1fr 1fr}.twocol,.card .grid{grid-template-columns:1fr}h1{font-size:26px}.chart{min-width:720px}td.num{white-space:normal}.wrap{padding:0 14px 60px}}
+@media print{nav.toc{display:none}.card,figure{break-inside:avoid}}
+
+
+.layers{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin:16px 0}
+.layer{border:2px solid;border-radius:12px;padding:14px 14px 10px;background:#fff;min-height:168px}
+.layer h4{margin:0 0 6px;font-size:15px}
+.layer p{margin:0;font-size:13px;color:var(--ink2);line-height:1.55}
+.layer .tag{display:block;font-size:11px;font-weight:700;letter-spacing:.04em;margin-bottom:6px}
+.l0{border-color:#2a78d6}.l1{border-color:#1baf7a}.l2{border-color:#eda100}.l3{border-color:#eb6834}
+.tblwrap{overflow-x:auto;margin:10px 0}
+svg.chart text{font-size:13px}
+@media (max-width:760px){.layers{grid-template-columns:1fr}.layer{min-height:0}.chart.diagram{min-width:660px}}
+</style></head><body>
+<nav class="backbar"><a href="/frontier">← Frontier</a><a href="/" style="color:#cbd5e1">@xixi003</a></nav>
+
+
+<header class="hero"><div class="wrap">
+<div class="kicker">公开技术全景 · 2026-09-27</div>
+<h1>冻底座、改脚手架：2026 年 Agent 和 LLM 公开增量在哪一层</h1>
+<div class="sub">材料：2025 年 10 月到 2026 年 9 月的公开论文、厂商技术报告和开源仓库。此前 RSI / 蒸馏综述只作对照，本篇不重写。<br>
+读者：技术判断用。可外发。只收公开论文和厂商材料。</div>
+</div></header>
+
+<nav class="toc"><div class="wrap">
+<a href="#s0">一页结论</a>
+<a href="#s1">地图</a>
+<a href="#s2">LLM</a>
+<a href="#s3">Agent</a>
+<a href="#s4">训练</a>
+<a href="#s5">和 RSI 的关系</a>
+<a href="#s6">观察清单</a>
+<a href="#s7">出处</a>
+</div></nav>
+
+<main class="wrap">
+<h2 id="s0"><span class="no">00</span>一页结论</h2>
+<p class="lead">过去一年公开文献里，仓库能找到、数字能回原文的增量，集中在三件事：把超长提示当外部环境（Recursive Language Models）、把工作记忆主动折叠（Context-Folding / AgentFold）、在冻模型上进化 harness 和技能包（Recuris / RRSI / Harness-Zero）。开放递归自改进还没来：评估器几乎都冻在圈外。OPD 被一篇 2026-08 预印本质疑「到底有没有在蒸馏」；同时另一条线把优化过的 harness 蒸进权重，部署时拆掉专用脚手架。</p>
+
+<div class="tiles">
+<div class="tile info"><div class="v">35 / 37</div><div class="l">Recuris 让任务成功率上涨的模型–榜单对</div><div class="s">10 个模型 × 4 个长程榜，完成了 37 对。底座冻结。arXiv:2608.24876</div></div>
+<div class="tile amber"><div class="v">+6.0 / +1.8</div><div class="l">RRSI 进化集 vs 分布外</div><div class="s">冻 Claude Opus 4.8：Terminal-Bench 2.1 74.2→80.2；从未打分的 SWE-Verified 82.0→83.8。摘要上界是进化集 +14.1、分布外 +4.7。arXiv:2609.24972</div></div>
+<div class="tile info"><div class="v">23.3→44.3</div><div class="l">Harness-Zero 三域宏平均成功率</div><div class="s">Qwen3.5-9B，部署时拆掉专用 harness；带着 harness 只有 41.7%。分母是 SpreadsheetBench / AppWorld / USPTO 三个测试集的宏平均。arXiv:2609.24974</div></div>
+<div class="tile info"><div class="v">62.0%</div><div class="l">FoldGRPO 在 BrowseComp-Plus</div><div class="s">Seed-OSS-36B，32K 工作窗，N=150。同模型 327K ReAct+GRPO 是 54.0%。不是 BrowseComp 原榜。arXiv:2510.11967</div></div>
+<div class="tile warn"><div class="v">+263%</div><div class="l">OPSA 相对 Qwen3-1.7B 底座的 AIME24 Avg@32</div><div class="s">绝对分 +35.41；比带教师的 OPD 高 16.77。预印本，1.7B，数学推理。不要外推到生产 Agent。arXiv:2608.31046</div></div>
+<div class="tile info"><div class="v">60–85%</div><div class="l">DSpark（V4-Flash）相对 MTP-1 的每用户生成速度</div><div class="s">DeepSeek-V4 线上、匹配吞吐；论文写的是 Flash 区间。不是 Inferact 卡上的 464 tok/s。arXiv:2607.05147</div></div>
+</div>
+
+<div class="twocol">
+<div class="box"><h4>现在就能跟的</h4><ol>
+<li><b>冻模型，改记忆和控制流。</b>Recuris / RRSI 都明确写了底座不动。复现成本是一次进化再搬包（Recuris 在 Doubao 上长包），或一次正则化搜索（RRSI 的提案端也是 Opus 4.8），不是每个模型重跑开放 RSI。</li>
+<li><b>32K 工作窗 + 折叠，比把 327K 全塞进去更划算。</b>Context-Folding 的对照表写得很清楚。</li>
+<li><b>投机解码是 1M 窗能卖出去的前提。</b>DSpark 是服务优化，不是新底座。</li>
+<li><b>进化过的 harness 有的能蒸进权重。</b>Harness-Zero 学生是 Qwen3.5-9B，harnessing agent 是 GPT-5.6 Sol。三域宏平均 23.3%→44.3%，超过带着专用 harness 的 41.7%；USPTO 蒸馏后 30.0，仍低于带着它的 38.0，这个域卸不掉。</li>
+</ol></div>
+<div class="box"><h4>现在不要当成已经发生的</h4><ol>
+<li>开放 RSI：改进器和评估标准一起进搜索空间。公开系统几乎都没跨过这条线。</li>
+<li>把 Recuris 的 +17.8 和 RRSI 的 +14.1 放在一张图上当同一件事。分母、模型、榜单都不同。</li>
+<li>把 OPSA 的 263% 相对增益读成「OPD 作废」。它只在 Qwen3-1.7B 数学推理上拆过教师。</li>
+<li>把 Kimi K3 的 2.5× 缩放效率读成推理速度。那是相对 K2 的训练缩放律，不是 tok/s。</li>
+</ol></div>
+</div>
+
+<div class="callout blue"><b>边界。</b>有界自精炼 vs 开放 RSI、L0–L4 更新层、OPD 配方此前写过。本报告只补 2025 年 10 月之后公开出来的新系统，不重写那两篇。</div>
+
+<h2 id="s1"><span class="no">01</span>地图：钱和论文实际花在哪一层</h2>
+<p>把 2026 年公开工作按「改了什么」切开，四层就够用。新词第一次出现时在括号里写一句人话。</p>
+
+<div class="layers">
+<div class="layer l0"><div class="tag" style="color:#2a78d6">L0 推理侧</div><h4>不改权重，改怎么读上下文</h4><p>Recursive Language Models 把超长提示当外部环境，模型写代码去切、查、递归调用自己。DSpark 用小草稿模型猜下几个 token，大模型并行验证。</p></div>
+<div class="layer l1"><div class="tag" style="color:#1baf7a">L1 脚手架</div><h4>冻底座，改 harness</h4><p>harness 就是提示、控制流、工具、记忆、上下文管理这一圈。Recuris 进化技能记忆；RRSI 正则化自我改 harness；Context-Folding 主动折叠子轨迹。</p></div>
+<div class="layer l2"><div class="tag" style="color:#eda100">L2 权重，但评估仍冻</div><h4>把脚手架里的习惯写进模型</h4><p>Harness-Zero 用优化过的 harness 当训练时的老师，部署时拆掉。OPSA 走另一条：不要教师，压低概率 token。</p></div>
+<div class="layer l3"><div class="tag" style="color:#eb6834">L3 开放 RSI</div><h4>改进器和标准也进搜索空间</h4><p>公开文献里几乎没有。DGM / STOP / Gödel Agent 能改改进器，评估仍是人类设的测试。不要把 DGM 读成已经在训新底座。</p></div>
+</div>
+
+<figure>
+<figcaption>图 1　有界脚手架自改进的闭环。评估必须留在圈外，否则就是把测试题写进提示（记榜）。</figcaption>
+<svg viewBox="0 0 660 650" role="img" class="chart diagram" style="font-family:inherit;max-width:660px;margin:0 auto"><defs><marker id="cya42cf5r" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#d03b3b"/></marker><marker id="cya42cf5b" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#2a78d6"/></marker><marker id="cya42cf50" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#2a78d6"/></marker></defs><path d="M433.2,72.1 A225,225 0 0 1 525.8,161.2" fill="none" stroke="#2a78d6" stroke-width="2.2" marker-end="url(#cya42cf50)"/><path d="M553.2,243.8 A225,225 0 0 1 505.4,413.0" fill="none" stroke="#2a78d6" stroke-width="2.2" marker-end="url(#cya42cf50)"/><path d="M359.4,495.1 A225,225 0 0 1 300.6,495.1" fill="none" stroke="#2a78d6" stroke-width="2.2" marker-end="url(#cya42cf50)"/><path d="M154.6,413.0 A225,225 0 0 1 106.8,243.8" fill="none" stroke="#d03b3b" stroke-width="2.2" stroke-dasharray="7 5" marker-end="url(#cya42cf5r)"/><text x="97.0" y="353.7" text-anchor="middle" font-size="18" font-weight="700" fill="#d03b3b">✂</text><path d="M134.2,161.2 A225,225 0 0 1 226.8,72.1" fill="none" stroke="#2a78d6" stroke-width="2.2" marker-end="url(#cya42cf50)"/><rect x="235.0" y="14.0" width="190" height="66" rx="10" fill="#fff" stroke="#2a78d6" stroke-width="2"/><text x="330.0" y="53.0" text-anchor="middle" font-size="16.5" fill="#1b1b1a">冻模型跑任务</text><rect x="449.0" y="169.5" width="190" height="66" rx="10" fill="#fff" stroke="#2a78d6" stroke-width="2"/><text x="544.0" y="208.5" text-anchor="middle" font-size="16.5" fill="#1b1b1a">失败轨迹结构化</text><rect x="367.3" y="421.0" width="190" height="66" rx="10" fill="#fff" stroke="#2a78d6" stroke-width="2"/><text x="462.3" y="460.0" text-anchor="middle" font-size="16.5" fill="#1b1b1a">改记忆或控制流</text><rect x="102.7" y="421.0" width="190" height="66" rx="10" fill="#fff" stroke="#2a78d6" stroke-width="2"/><text x="197.7" y="460.0" text-anchor="middle" font-size="16.5" fill="#1b1b1a">用冻结评估验收</text><rect x="21.0" y="169.5" width="190" height="66" rx="10" fill="#fff" stroke="#2a78d6" stroke-width="2"/><text x="116.0" y="208.5" text-anchor="middle" font-size="16.5" fill="#1b1b1a">把评估标准也改掉</text><text x="330.0" y="268" text-anchor="middle" font-size="20" font-weight="700" fill="#2a78d6">有界脚手架自改进</text><text x="330.0" y="292" text-anchor="middle" font-size="14" fill="#52514e">权重不动。Recuris / RRSI / DGM 都停在验收这一层</text><text x="330.0" y="561" text-anchor="middle" font-size="17" font-weight="700" fill="#d03b3b">✂ 评估标准不准进搜索空间</text><g font-size="15" fill="#52514e"><line x1="140.0" y1="632" x2="180.0" y2="632" stroke="#2a78d6" stroke-width="2.2" marker-end="url(#cya42cf5b)"/><text x="188.0" y="637">因果（导致）</text><line x1="330.0" y1="632" x2="370.0" y2="632" stroke="#d03b3b" stroke-width="2.2" stroke-dasharray="7 5" marker-end="url(#cya42cf5r)"/><text x="378.0" y="637">建议断开的那一环</text></g></svg>
+<p class="note">顺时针到「用冻结评估验收」是有界自精炼；下一跳「把评估标准也改掉」才是开放 RSI，公开系统几乎都没走。<span class="src">对照：arXiv:2608.24876、2609.24972；DGM ICLR 2026</span></p>
+</figure>
+
+<h2 id="s2"><span class="no">02</span>LLM：1M 窗能用，是因为没把 1M 都塞进注意力</h2>
+<p>底座这边 2026 年公开的硬东西，集中在两处：超长上下文怎么处理，以及每用户解码怎么加速。Kimi K3 和 DeepSeek-V4 把 1M 写成默认；让 1M 窗跑得动的，是混合注意力 / 压缩注意力，加上投机解码。</p>
+
+<h3>超长提示放进外部环境</h3>
+<p>Recursive Language Models（RLM，arXiv:2512.24601，2025-12，v3 在 2026-05）把长提示放进外部 REPL，模型用程序去切片段、再递归调用自己。摘要写：能处理比模型上下文窗口高一个数量级以上的输入；在四个长上下文任务上，相对 GPT-5 中位，比 compaction 高 26%，比带子调用的 CodeAct 高 130%，比 Claude Code 高 13%，成本相当。他们还训了第一个围绕 RLM 的小模型 RLM-Qwen3-8B，四任务中位比底座 Qwen3-8B 高 28.3%，三个任务上接近原样 GPT-5。这是推理范式，不是新预训练。</p>
+
+<h3>Context-Folding：32K 工作窗打过 327K ReAct</h3>
+<p>Context-Folding（arXiv:2510.11967，项目页写 ICML 2026）让模型先 branch 出子轨迹做局部子任务，完成后再 return，中间步折叠成摘要。配套的 FoldGRPO 用 token 级过程奖励训这个动作。项目页表格（BrowseComp-Plus N=150，SWE-Bench Verified N=500）：</p>
+<figure>
+<figcaption>图 2　BrowseComp-Plus Pass@1。FoldGRPO 用 32K 工作窗超过同模型 327K + GRPO。</figcaption>
+<svg viewBox="0 0 1000 218" role="img" class="chart" style="font-family:inherit"><text x="270" y="24.0" text-anchor="end" font-size="14" fill="#1b1b1a">GPT-5 ReAct · 327K</text><path class="mark" d="M280,4.0 L857.5,4.0 Q861.5,4.0 861.5,8.0 L861.5,30.0 Q861.5,34.0 857.5,34.0 L280,34.0 Z" fill="#2a78d6"><title>GPT-5 ReAct · 327K：79.3%</title></path><text x="867.5" y="24.0" font-size="13.5" font-weight="600" fill="#1b1b1a">79.3%</text><text x="270" y="66.0" text-anchor="end" font-size="14" fill="#1b1b1a">DeepSeek-V3.1 ReAct · 327K</text><path class="mark" d="M280,46.0 L725.5,46.0 Q729.5,46.0 729.5,50.0 L729.5,72.0 Q729.5,76.0 725.5,76.0 L280,76.0 Z" fill="#2a78d6"><title>DeepSeek-V3.1 ReAct · 327K：61.3%</title></path><text x="735.5" y="66.0" font-size="13.5" font-weight="600" fill="#1b1b1a">61.3%</text><text x="270" y="108.0" text-anchor="end" font-size="14" fill="#1b1b1a">Seed-OSS-36B ReAct · 32K</text><path class="mark" d="M280,88.0 L485.7,88.0 Q489.7,88.0 489.7,92.0 L489.7,114.0 Q489.7,118.0 485.7,118.0 L280,118.0 Z" fill="#b9b8b3"><title>Seed-OSS-36B ReAct · 32K：28.6%</title></path><text x="495.7" y="108.0" font-size="13.5" font-weight="600" fill="#1b1b1a">28.6%</text><text x="270" y="150.0" text-anchor="end" font-size="14" fill="#1b1b1a">同模型 327K + GRPO</text><path class="mark" d="M280,130.0 L672.0,130.0 Q676.0,130.0 676.0,134.0 L676.0,156.0 Q676.0,160.0 672.0,160.0 L280,160.0 Z" fill="#eda100"><title>同模型 327K + GRPO：54.0%</title></path><text x="682.0" y="150.0" font-size="13.5" font-weight="600" fill="#1b1b1a">54.0%</text><text x="270" y="192.0" text-anchor="end" font-size="14" fill="#1b1b1a">同模型 FoldGRPO · 32K</text><path class="mark" d="M280,172.0 L730.7,172.0 Q734.7,172.0 734.7,176.0 L734.7,198.0 Q734.7,202.0 730.7,202.0 L280,202.0 Z" fill="#eb6834"><title>同模型 FoldGRPO · 32K：62.0%</title></path><text x="740.7" y="192.0" font-size="13.5" font-weight="600" fill="#1b1b1a">62.0%</text></svg>
+<p class="note">口径：BrowseComp-Plus，不是 BrowseComp 原榜。Folding Agent 的 Max Length 写成 32K × 10，意思是主线程 32K、允许折叠出最多 10 段。GPT-5 的 79.3% 是 327K ReAct，模型不是同一档，不能说「36B 超过 GPT-5」。 <span class="src">出处：https://context-folding.github.io/</span></p>
+</figure>
+<p>同系列的 AgentFold（arXiv:2510.24699）走多尺度主动折叠：细粒度压缩保细节，深层合并抹掉整段子任务。AgentFold-30B-A3B 只做 SFT（摘要强调没有继续预训练、没有 RL），BrowseComp 36.2%、BrowseComp-ZH 47.3%，BrowseComp 36.2% 超过 DeepSeek-V3.1-671B-A37B 的 30.0%；BrowseComp-ZH 47.3% 低于它的 49.2%。两边都超过 o4-mini。BrowseComp 和 BrowseComp-Plus 不要混用。</p>
+
+<h3>开源 1M 底座：K3 和 V4</h3>
+<p><b>Kimi K3</b>（arXiv:2607.24653）：2.8T 总参数、104B 激活、原生视觉、1M 窗。每块 3 层 Kimi Delta Attention + 1 层 Gated MLA；Attention Residuals 让当前层选择性看前面所有块；Stable LatentMoE 每 token 激活 16 / 896 个路由专家。摘要和正文都写相对 Kimi K2 大约 2.5× 的总体缩放效率——这是缩放律曲线上的训练效率，不是推理 tok/s。MoonViT-V2 从零用 next-token 训，不用 SigLIP 初始化。权重公开。</p>
+<p><b>DeepSeek-V4 Preview</b>（HF 模型卡 / arXiv:2606.19348）：Pro 1.6T / 49B 激活，Flash 284B / 13B，1M 是官方服务默认。混合注意力 CSA + HCA：1M 下 Pro 相对 V3.2 只要 27% 的单 token 推理 FLOPs、10% 的 KV cache。预训练超过 32T token；后训练是分域专家（SFT + GRPO）再 on-policy distillation 合成。厂商自报：Pro-Max 在 LiveCodeBench Pass@1 93.5、Codeforces 评分 3206；SWE Verified 80.6，和表格里的 Opus-4.6 Max 80.8、Gemini-3.1-Pro High 80.6 同一档。这些是厂商表，标 B。</p>
+<p><b>Qwen3.5-Omni</b>（arXiv:2604.15804）：Thinker 和 Talker 都用 Hybrid Attention MoE，256k；Plus 自称在 215 个音频 / 音视子任务 SOTA，部分音频任务超过 Gemini-3.1 Pro。ARIA 用来对齐文本和语音单元，压流式合成的不稳。能吃 10 小时以上音频、400 秒 720P@1fps。和 Agent 运行时关系弱，列在这里只因为 2026 开源多模态底座里它把语音交互做成了产品形态。</p>
+
+<h3>DSpark：加在现有权重上的投机解码</h3>
+<p>DSpark 论文（arXiv:2607.05147）摘要写得很干净：并行草稿缺 token 间依赖，无差别验证会在高并发时浪费 batch。它用半自回归（并行骨干 + 轻量顺序模块）补块内依赖，再用置信度调度验证长度。关键句：部署在 DeepSeek-V4 线上、真实用户流量下，相对生产基线 MTP-1，在匹配吞吐时把每用户生成速度提高 60% 到 85%（摘要部署在 V4 线上；二手转述把 Flash 写成 60–85%、Pro 写成 57–78%，正文只取摘要原句）。HF 上的 <code>DeepSeek-V4-Pro-DSpark</code> 模型卡第一句就是「不是新模型，是同一份权重加了一块投机解码模块」。</p>
+<p>另一组常被转发的数字来自 Inferact 的 Kimi-K3-DSpark 卡：4 × GB300、<code>bs=1</code>、<code>tensor-parallel-size=16</code>、低熵推理峰值 464 tok/s/user；14 个基准、每次猜 7 个 token，temperature=0 时平均接受长度 3.85。这是第三方草稿模型 + vLLM，硬件和流量都不是 DeepSeek 论文里的线上。两套数不要并成「开源模型 464、闭源 60–85%」。</p>
+
+<h2 id="s3"><span class="no">03</span>Agent：长程失败主要出在记忆和控制流</h2>
+<p>2026 年 8–9 月连着三篇把同一句话写清楚了：长程 Agent 的增益可以发生在冻住的底座外面。Recuris 改技能记忆，RRSI 改整个 harness 还加正则，Harness-Zero 再把改出来的习惯蒸回权重。</p>
+
+<div class="twocol">
+<figure>
+<figcaption>图 3a　Recuris：τ²-Retail 任务成功率，k=4</figcaption>
+<svg viewBox="0 0 640 80" role="img" class="chart" style="font-family:inherit"><text x="210" y="21.0" text-anchor="end" font-size="12.5" fill="#1b1b1a">Opus 5 · τ²-Retail</text><path class="mark" d="M220,4.0 L450.0,4.0 Q454.0,4.0 454.0,8.0 L454.0,24.0 Q454.0,28.0 450.0,28.0 L220,28.0 Z" fill="#2a78d6"><title>Opus 5 · τ²-Retail：15.6 分</title></path><text x="460.0" y="21.0" font-size="12" font-weight="600" fill="#1b1b1a">+15.6 分</text><text x="210" y="57.0" text-anchor="end" font-size="12.5" fill="#1b1b1a">GPT-5.6 Sol · τ²-Retail</text><path class="mark" d="M220,40.0 L483.0,40.0 Q487.0,40.0 487.0,44.0 L487.0,60.0 Q487.0,64.0 483.0,64.0 L220,64.0 Z" fill="#2a78d6"><title>GPT-5.6 Sol · τ²-Retail：17.8 分</title></path><text x="493.0" y="57.0" font-size="12" font-weight="600" fill="#1b1b1a">+17.8 分</text></svg>
+<p class="note">同一套技能包从 Doubao 进化后搬到部署模型。不要和 3b、3c 比长短。<span class="src">arXiv:2608.24876</span></p>
+</figure>
+<figure>
+<figcaption>图 3b　RRSI：进化集 vs 分布外</figcaption>
+<svg viewBox="0 0 640 116" role="img" class="chart" style="font-family:inherit"><text x="240" y="21.0" text-anchor="end" font-size="12.5" fill="#1b1b1a">Gemini Flash · TB 2.1 进化集</text><path class="mark" d="M250,4.0 L536.8,4.0 Q540.8,4.0 540.8,8.0 L540.8,24.0 Q540.8,28.0 536.8,28.0 L250,28.0 Z" fill="#1baf7a"><title>Gemini Flash · TB 2.1 进化集：14.1 分</title></path><text x="546.8" y="21.0" font-size="12" font-weight="600" fill="#1b1b1a">+14.1 分</text><text x="240" y="57.0" text-anchor="end" font-size="12.5" fill="#1b1b1a">Opus 4.8 · TB 2.1 进化集</text><path class="mark" d="M250,40.0 L369.8,40.0 Q373.8,40.0 373.8,44.0 L373.8,60.0 Q373.8,64.0 369.8,64.0 L250,64.0 Z" fill="#1baf7a"><title>Opus 4.8 · TB 2.1 进化集：6.0 分</title></path><text x="379.8" y="57.0" font-size="12" font-weight="600" fill="#1b1b1a">+6.0 分</text><text x="240" y="93.0" text-anchor="end" font-size="12.5" fill="#1b1b1a">Opus 4.8 · SWE-V 分布外</text><path class="mark" d="M250,76.0 L283.1,76.0 Q287.1,76.0 287.1,80.0 L287.1,96.0 Q287.1,100.0 283.1,100.0 L250,100.0 Z" fill="#1baf7a"><title>Opus 4.8 · SWE-V 分布外：1.8 分</title></path><text x="293.1" y="93.0" font-size="12" font-weight="600" fill="#1b1b1a">+1.8 分</text></svg>
+<p class="note">+14.1 只属于 Gemini Flash 的 Terminal-Bench 2.1 进化集。Opus 4.8 同方法 +6.0，SWE-Verified 分布外 +1.8。<span class="src">arXiv:2609.24972</span></p>
+</figure>
+</div>
+<figure>
+<figcaption>图 3c　Harness-Zero：蒸馏后相对无 harness 基线。USPTO 卸不掉脚手架</figcaption>
+<svg viewBox="0 0 640 116" role="img" class="chart" style="font-family:inherit"><text x="240" y="21.0" text-anchor="end" font-size="12.5" fill="#1b1b1a">宏平均 23.3→44.3</text><path class="mark" d="M250,4.0 L438.5,4.0 Q442.5,4.0 442.5,8.0 L442.5,24.0 Q442.5,28.0 438.5,28.0 L250,28.0 Z" fill="#eb6834"><title>宏平均 23.3→44.3：21.0 分</title></path><text x="448.5" y="21.0" font-size="12" font-weight="600" fill="#1b1b1a">+21.0 分</text><text x="240" y="57.0" text-anchor="end" font-size="12.5" fill="#1b1b1a">Spreadsheet 31.0→44.0</text><path class="mark" d="M250,40.0 L365.2,40.0 Q369.2,40.0 369.2,44.0 L369.2,60.0 Q369.2,64.0 365.2,64.0 L250,64.0 Z" fill="#eb6834"><title>Spreadsheet 31.0→44.0：13.0 分</title></path><text x="375.2" y="57.0" font-size="12" font-weight="600" fill="#1b1b1a">+13.0 分</text><text x="240" y="93.0" text-anchor="end" font-size="12.5" fill="#1b1b1a">AppWorld 26.8→58.9</text><path class="mark" d="M250,76.0 L540.2,76.0 Q544.2,76.0 544.2,80.0 L544.2,96.0 Q544.2,100.0 540.2,100.0 L250,100.0 Z" fill="#eb6834"><title>AppWorld 26.8→58.9：32.1 分</title></path><text x="550.2" y="93.0" font-size="12" font-weight="600" fill="#1b1b1a">+32.1 分</text></svg>
+<p class="note">三条都是相对无 harness 基线。宏平均 44.3 超过带着进化 harness 的 41.7。USPTO 不在图里：蒸馏后 30.0，仍低于带着它的 38.0，这个域卸不掉脚手架。<span class="src">arXiv:2609.24974</span></p>
+</figure>
+
+<h3>Recuris：经验记忆和工作记忆绑在一起改</h3>
+<p>Recuris（arXiv:2608.24876）把 Agent 的记忆拆成技能记忆（跨任务留下的程序）和工作记忆（当次调用里被验证过才改）。失败轨迹被写成结构化证据，固定的 Meta-Agent（他们用 Claude Code 搭）把失败归因到具体记忆组件，验证门过了才写入。底层 LLM 和外层改进程序都冻着，递归只发生在记忆控制层。</p>
+<p>四个长程榜：τ²-Retail、τ²-Airline、SkillFlow、Terminal-Bench 2.1。十个模型，从 Granite-4.1-3B 到 Claude Opus 5。完成的 37 对模型–榜单里，35 对任务成功率上升。</p>
+<ul>
+<li>τ²-Retail：GPT-5.6 Sol 58.3→76.1（+17.8，bootstrap 95% CI 不含 0）；Claude Opus 5 72.4→87.9（+15.6）。部署模型 Doubao-2.0-Pro 58.1→81.4（+23.3）。</li>
+<li>SkillFlow：Qwen3.6-27B 42.2→58.7（+16.6）；Qwen3.6-35B 35.3→48.8（+13.5）。SkillFlow 没有留出任务划分，测的是「在部署模型上长出的包，换到没参与进化的模型上还管不管用」，不是「没见过的任务」。</li>
+<li>最长任务上优势到 +32.2 分；常见长程失败最多降 80%。把已知故障注入工作包、三分类定位：结构化轨迹 64.8%，只看任务成败 13.0%（低于恒猜地板 33.3%）。这是合成注入，不是自然失败轨迹上的定位率。</li>
+<li>Terminal-Bench 2.1 没有跨任务共享结构，跨任务进化十三轮一个补丁都没过门。那里能用的是任务内重试。</li>
+</ul>
+<p>固定一份技能记忆、不让它改，增益的置信区间含 0。需要会改自己的记忆；多贴一段静态技能不够。</p>
+
+<h3>RRSI：自我改进会记榜，要正则</h3>
+<p>Google Research 的 RRSI（arXiv:2609.24972，2026-09-21；代码在 google-research/rrsi）：harness 的提示、控制流、工具、记忆、上下文管理都可以改，但提案端用退火预算限制一次捆多少编辑，并鼓励没走过的轨迹；选择端加 critic 挡榜单特化提案，pruner 丢掉太小、太贵、已经没用的改动。政策模型全程冻 Claude Opus 4.8；提案、轨迹分析和泄漏 critic 也是 Opus 4.8。</p>
+<p>三个进化域，五个分布外榜：</p>
+<div class="tblwrap"><table>
+<thead><tr><th>域</th><th>进化榜</th><th>冻 Opus 4.8 的进化集涨幅</th><th>拿去跑、进化时没打分的榜</th></tr></thead>
+<tbody>
+<tr><td>编程</td><td>Terminal-Bench 2.1</td><td>74.2→80.2（+6.0）</td><td>SWE-bench Verified 82.0→83.8（+1.8）</td></tr>
+<tr><td>工作区</td><td>Harvey LAB</td><td>+1.1</td><td>Harvey 留出 +2.3；JobBench / GDPval / APEX-Agents 分布外 +3.5 到 +4.7</td></tr>
+<tr><td>工程设计</td><td>EngDesign</td><td>+4.9</td><td>Frontier-Eng +4.3 Medal 分（相对 +24.3%）</td></tr>
+</tbody>
+</table></div>
+<p>摘要里的「最高 +14.1」对应 Gemini 3.5 Flash 在 Terminal-Bench 2.1：64.6→78.7。同一套正则，换更强策略模型，进化集涨幅变小、分布外仍为正。论文点名 AHE、TTHE 等先验进化在分布外会掉到初始 harness 以下。相对未正则进化，RRSI 的 harness 少用 30% 策略 token。代码：<a href="https://github.com/google-research/rrsi">github.com/google-research/rrsi</a>。</p>
+
+<h3>Harness-Zero：脚手架可以卸掉</h3>
+<p>Harness-Zero（arXiv:2609.24974）问的是下一问：优化过的 harness 绑在部署上，域一变就要维护一堆专用脚手架。他们用 agent-as-harness——旁边一个「harnessing agent」在学生动作执行前改学生回复，改完的轨迹拿去 SFT。部署时专用 harness、参考 harness、harnessing agent 全部拆掉，只留一个最小 mini-SWE-agent（一个 Bash 工具）。</p>
+<p>训练学生是 Qwen3.5-9B，harnessing agent 是 GPT-5.6 Sol，harness 进化用 Kimi K3。三个测试集：</p>
+<div class="tblwrap"><table>
+<thead><tr><th>设置</th><th>SpreadsheetBench</th><th>AppWorld</th><th>USPTO</th><th>宏平均</th></tr></thead>
+<tbody>
+<tr><td>底座 + 最小 harness</td><td>31.0</td><td>26.8</td><td>12.0</td><td>23.3</td></tr>
+<tr><td>底座 + 进化 harness</td><td>39.0</td><td>48.2</td><td>38.0</td><td>41.7</td></tr>
+<tr><td>蒸馏后 + 最小 harness</td><td>44.0</td><td>58.9</td><td>30.0</td><td>44.3</td></tr>
+</tbody>
+</table></div>
+<p>宏平均 23.3→44.3，分母是三个测试集等权。USPTO 上蒸馏后 30.0，仍低于带着进化 harness 的 38.0，所以不是每个域都能卸脚手架还涨。另外，无训练、同一份进化 harness 时，agent-as-harness 六项平均 81.1%，code-as-harness 78.1%（相对最小 harness 的 68.6%）。28 种 harness 诱导、底座没有的行为，平均收回 82.3%。</p>
+
+<h2 id="s4"><span class="no">04</span>训练侧：OPD 被拆，harness 蒸馏补上另一头</h2>
+<p>OPD 的配方是学生采样、教师在同一前缀上给 token 级优势。2026-08 的 OPSA 论文（arXiv:2608.31046）直接问：这还算蒸馏吗？</p>
+<p>他们把「噪声」定义成：对可验证的最终答案 token，教师优势符号和正误不一致。Qwen3-1.7B 学生，教师从 4B 到 235B-A22B，噪声率 30.6% → 34.7% → 50.6%。最大教师几乎一律给负优势（正确 97.8% 为负，错误 96.6% 为负）。只拿噪声轨迹训、去掉噪声训、标准 OPD，最后精度差不多。再拆：51.7% 的 token 优势绝对值低于 10⁻⁴；只训学生 logp 最低的 20%，就能追上全 token OPD；把优势换成固定 −0.5，也能追上；换成固定正优势，策略崩溃。</p>
+<p>他们的结论是：OPD 的增益主要来自压低学生自己采样到的低概率 token，不需要教师。OPSA 按熵调节负优势，高熵位置压得更狠。相对 Qwen3-1.7B 底座，AIME24 Avg@32 +35.41（相对 +263%），三个数学榜 Pass@32 都翻倍以上；比 OPD 在 AIME24 Avg@32 高 16.77。这是 1.7B、数学推理、预印本。它动摇的是「OPD 等于把教师知识搬过来」这句话，不是生产里带教师蒸馏的工程账本——TML 那套步数 / 算力对照不在这篇里。</p>
+<p>Harness-Zero 走相反方向：承认 harness 里有可迁移的行为，把它写成权重。和 OPSA 不要合成「以后都不要教师」；一个在数学 token 级 RL 上拆教师，一个在工具 Agent 上把外部规则内化。</p>
+
+<h2 id="s5"><span class="no">05</span>和 RSI / OPD 的关系：增量还是开放</h2>
+<p>沿用 RSI 长文的切法。有界自精炼：改进发生在冻住的评估器外面。开放 RSI：改进器和 / 或评估标准也进搜索空间。</p>
+<div class="shift">
+<div class="from">2025 上半年公开系统<br>STaR / SEAL / AZR 改权重<br>STOP / DGM 改改进器，测试仍是人类写的</div>
+<div class="arrow">→</div>
+<div class="to">2026 年 8–9 月<br>Recuris / RRSI 把递归关在记忆和 harness 里<br>Harness-Zero 再把结果蒸回权重</div>
+<div class="why">评估器仍然在圈外。RRSI 的 leakage critic 就是为了挡住「把测试题写进提示」。Recuris 的验证门、DGM 的沙箱，做的是同一件事。</div>
+</div>
+<p>DGM（Sakana，<a href="https://arxiv.org/abs/2505.22954">arXiv:2505.22954</a>，ICLR 2026）还是这条线上的会议版本：SWE-bench 20.0%→50.0%，Polyglot 14.2%→30.7%，底座冻结，工具能跨模型搬。摘要写的是改编码 Agent 的工具和上下文管理，并在编码榜上做经验验证；没有写在训新底座。</p>
+<p>OPD 这条线 2026 年同时出现两股力：一边还在出 OPD+ / OPRD / AOPD 变体（蒸馏长文已列），一边 OPSA 说增益可能根本不来自教师。工程上能做的，是把「教师优势符号和 verifier 不一致」当成必看指标；这条日志高，再考虑对照实验，先别停 OPD。</p>
+
+<h2 id="s6"><span class="no">06</span>一到两个季度观察清单</h2>
+<p>下面每条都写了「看见什么算发生了」。没有内部排期，也没有要谁去执行——这是观察，不是立项。</p>
+
+<div class="card t3"><div class="hd"><div class="rank">1</div><div><h3>harness 进化有没有跨榜还涨<span class="pill new">新</span></h3><div class="one">RRSI 把问题从「进化集涨了」改成「分布外掉不掉」</div></div></div>
+<div class="bd"><table class="plan"><tbody>
+<tr><td>看什么</td><td>编码 Agent 产品是不是开始对进化过的提示 / 工具策略做留出榜。Terminal-Bench 上涨、SWE-Verified 下跌，就是记榜。</td></tr>
+<tr><td>验收</td><td>至少两个不同仓库级榜、同一份 harness、分布外不掉。RRSI 的 Opus 4.8 数字是 +1.8，空间很小，单次波动不够当证据。</td></tr>
+<tr><td>不做</td><td>不要把进化集 +6.0 或 Gemini 的 +14.1 单独当成功标准。</td></tr>
+</tbody></table></div></div>
+
+<div class="card t3"><div class="hd"><div class="rank">2</div><div><h3>默认工作窗是不是从「能塞多少塞多少」改成折叠<span class="pill new">新</span></h3><div class="one">Context-Folding 的对照表已经显示 32K 工作窗可以打过同模型 327K</div></div></div>
+<div class="bd"><table class="plan"><tbody>
+<tr><td>看什么</td><td>开源编码 / 深研 Agent 的默认策略：线性堆积 ReAct 轨迹，还是 branch–fold–return。</td></tr>
+<tr><td>验收</td><td>同一底座、同一工具集，工作窗 ≤32K 的折叠策略在长程榜上不低于 10× 上下文的 ReAct。</td></tr>
+<tr><td>不做</td><td>不要把 GPT-5 327K 的 79.3% 拿来证明 36B 折叠已经赢了前沿模型。</td></tr>
+</tbody></table></div></div>
+
+<div class="card t3"><div class="hd"><div class="rank">3</div><div><h3>技能包能不能当制品搬模型<span class="pill new">新</span></h3><div class="one">Recuris 的零售纪律包能把没参与进化的 Opus 5 送到 87.9%</div></div></div>
+<div class="bd"><table class="plan"><tbody>
+<tr><td>看什么</td><td>技能 / 记忆包是跟模型绑死，还是一份包换模型还涨。Recuris 写过：SkillFlow 包搬的是程序，τ² 包搬的是纪律，值不值取决于目标模型自己还会犯什么错。</td></tr>
+<tr><td>验收</td><td>同一包、两个以上模型家族、留出任务上 CI 不含 0。SkillFlow 没有任务留出，不能单独当这条的证据。</td></tr>
+<tr><td>不做</td><td>不要在没有跨任务结构的 Terminal-Bench 类环境上做跨任务记忆进化——Recuris 十三轮零补丁。</td></tr>
+</tbody></table></div></div>
+
+<div class="card t3"><div class="hd"><div class="rank">4</div><div><h3>1M 窗的产品形态靠不靠投机解码<span class="pill old">底座侧</span></h3><div class="one">V4 把 1M 设成默认，DSpark 论文把 60–85% 写在线上</div></div></div>
+<div class="bd"><table class="plan"><tbody>
+<tr><td>看什么</td><td>开源 1M 模型的默认 serving 是 MTP-1 还是 DSpark / 同类置信度调度。</td></tr>
+<tr><td>验收</td><td>匹配吞吐下每用户解码相对 MTP-1 有稳定加速；高并发时吞吐不先塌。不要用单请求 464 tok/s 峰值代替这条。</td></tr>
+<tr><td>不做</td><td>不要把 DSpark 仓库当成新底座选型。</td></tr>
+</tbody></table></div></div>
+
+<div class="card t3"><div class="hd"><div class="rank">5</div><div><h3>OPD 训练日志里看优势符号<span class="pill old">训练侧</span></h3><div class="one">OPSA 把教师噪声写成可测指标</div></div></div>
+<div class="bd"><table class="plan"><tbody>
+<tr><td>看什么</td><td>可验证答案 token 上，教师优势符号和 verifier 不一致的比例，是否随教师变大而升高。</td></tr>
+<tr><td>验收</td><td>有日志。比例低就继续用教师；比例高就拿固定负优势 / 熵调节做对照，看还能不能涨。</td></tr>
+<tr><td>不做</td><td>不要因为 1.7B AIME 上 OPSA 赢了 OPD，就停掉带教师的生产蒸馏。</td></tr>
+</tbody></table></div></div>
+
+<div class="callout"><b>待拍板（观察优先级，不是立项）</b>
+<ol>
+<li>下一季主跟踪哪条：A 推荐 RRSI 式「分布外还在不在」——现在公开数字最完整，也最容易自我欺骗／B 折叠工作窗——和 1M 营销叙事对着干，产品上更好讲。</li>
+<li>OPD 还要不要跟：A 继续跟，但加上优势符号和 verifier 的一致性日志／B 先在小模型数学上复现 OPSA，再决定生产配方。推荐 2A，因为 OPSA 还没有 Agent 轨迹上的证据。</li>
+</ol>
+</div>
+
+<h2 id="s7"><span class="no">07</span>出处与未核实</h2>
+<details class="datatable"><summary>查看数据表</summary><table><thead><tr><th>技术</th><th>改哪一层</th><th>关键数字（带分母）</th><th>出处</th><th>等级</th></tr></thead><tbody><tr><td>Recursive Language Models</td><td>推理：把超长提示当外部环境</td><td>相对 compaction 中位 +26%；微调 8B 四任务中位 +28.3%</td><td>arXiv:2512.24601</td><td>预印本</td></tr><tr><td>Context-Folding / FoldGRPO</td><td>脚手架：分支后折叠中间步</td><td>Seed-OSS-36B，32K 工作窗：BrowseComp-Plus 62.0%（N=150），SWE-Verified 58.0%（N=500）</td><td>arXiv:2510.11967 / ICML 26</td><td>预印本/会议</td></tr><tr><td>AgentFold</td><td>脚手架：多尺度主动折叠</td><td>30B-A3B，仅 SFT：BrowseComp 36.2%，BrowseComp-ZH 47.3%</td><td>arXiv:2510.24699</td><td>预印本</td></tr><tr><td>Recuris</td><td>脚手架：经验记忆与工作记忆共进化</td><td>10 模型 × 4 榜，完成的 37 对里 35 对上涨；Opus 5 在 τ²-Retail 72.4→87.9</td><td>arXiv:2608.24876</td><td>预印本</td></tr><tr><td>RRSI（Google）</td><td>脚手架：正则化自我改进</td><td>冻 Claude Opus 4.8：Terminal-Bench 2.1 74.2→80.2；SWE-Verified 分布外 82.0→83.8；Gemini Flash 进化集 +14.1</td><td>arXiv:2609.24972</td><td>预印本</td></tr><tr><td>Harness-Zero</td><td>训练：把优化过的 harness 蒸进权重</td><td>Qwen3.5-9B 三域宏平均 23.3%→44.3%（部署时拆掉专用 harness）；28 种习惯收回 82.3%</td><td>arXiv:2609.24974</td><td>预印本</td></tr><tr><td>OPSA（质疑 OPD）</td><td>训练：无教师 on-policy</td><td>Qwen3-1.7B 相对底座 AIME24 Avg@32 +35.41（相对 +263%）；比 OPD 高 16.77</td><td>arXiv:2608.31046</td><td>预印本</td></tr><tr><td>Kimi K3</td><td>架构：KDA + AttnRes + LatentMoE</td><td>2.8T 总 / 104B 激活，16/896 专家，1M 窗，相对 K2 约 2.5× 缩放效率</td><td>arXiv:2607.24653</td><td>B 厂商</td></tr><tr><td>DeepSeek-V4</td><td>架构：压缩注意力 + 1M 默认</td><td>Pro 1.6T/49B，Flash 284B/13B；1M 下相对 V3.2 单 token FLOPs 27%、KV 10%</td><td>HF / arXiv:2606.19348</td><td>B 厂商</td></tr><tr><td>DSpark</td><td>推理：草稿+验证的投机解码</td><td>论文 arXiv:2607.05147；Inferact 卡：K3 在 4×GB300 TP16、低熵推理峰值 464 tok/s/user</td><td>DeepSpec / Inferact HF</td><td>B/预印本</td></tr><tr><td>DGM</td><td>脚手架：改改进器，冻评估</td><td>SWE-bench 20.0%→50.0%，Polyglot 14.2%→30.7%，底座冻结</td><td>arXiv:2505.22954（ICLR 2026）</td><td>A</td></tr><tr><td>Qwen3.5-Omni</td><td>架构：Hybrid Attention MoE + ARIA</td><td>256k；Plus 在 215 个音频/音视子任务自称 SOTA；&gt;10 小时音频、400 秒 720P@1fps</td><td>arXiv:2604.15804</td><td>B 厂商</td></tr></tbody></table></details>
+
+<div class="tblwrap"><table>
+<thead><tr><th>出处</th><th>用于</th><th>等级</th></tr></thead>
+<tbody>
+<tr><td><a href="https://arxiv.org/abs/2512.24601">arXiv:2512.24601</a> RLM</td><td>compaction +26% / CodeAct +130% / Claude Code +13%；RLM-Qwen3-8B 中位 +28.3%</td><td>预印本</td></tr>
+<tr><td><a href="https://arxiv.org/abs/2510.11967">arXiv:2510.11967</a> 与 <a href="https://context-folding.github.io/">项目页表格</a></td><td>BrowseComp-Plus 62.0%（N=150）、SWE-Verified 58.0%（N=500）</td><td>预印本；项目页写 ICML 26，OpenReview 未在本报告里打开确认</td></tr>
+<tr><td><a href="https://arxiv.org/abs/2510.24699">arXiv:2510.24699</a> AgentFold</td><td>30B-A3B BrowseComp 36.2% / ZH 47.3%</td><td>预印本</td></tr>
+<tr><td><a href="https://arxiv.org/abs/2608.24876">arXiv:2608.24876</a> Recuris</td><td>35/37；τ²-Retail 各模型分；SkillFlow 无任务留出</td><td>预印本</td></tr>
+<tr><td><a href="https://arxiv.org/abs/2609.24972">arXiv:2609.24972</a> RRSI PDF 表</td><td>74.2→80.2；82.0→83.8；64.6→78.7；token −30%</td><td>预印本</td></tr>
+<tr><td><a href="https://arxiv.org/abs/2609.24974">arXiv:2609.24974</a> Harness-Zero HTML</td><td>23.3→44.3；41.7；81.1 vs 78.1；82.3%</td><td>预印本</td></tr>
+<tr><td><a href="https://arxiv.org/abs/2608.31046">arXiv:2608.31046</a> OPSA</td><td>噪声率、+35.41、+16.77、相对 +263%</td><td>预印本</td></tr>
+<tr><td><a href="https://arxiv.org/abs/2607.24653">arXiv:2607.24653</a> Kimi K3</td><td>2.8T / 104B / 16 of 896 / 2.5×</td><td>B 厂商技术报告</td></tr>
+<tr><td><a href="https://huggingface.co/deepseek-ai/DeepSeek-V4-Pro-DSpark">DeepSeek-V4-Pro-DSpark 模型卡</a>、<a href="https://arxiv.org/abs/2606.19348">2606.19348</a></td><td>1.6T/49B、284B/13B、27% FLOPs、10% KV、厂商评测表</td><td>B 厂商</td></tr>
+<tr><td><a href="https://arxiv.org/abs/2607.05147">arXiv:2607.05147</a> DSpark</td><td>线上相对 MTP-1 每用户 60–85%</td><td>预印本（DeepSeek 作者）</td></tr>
+<tr><td><a href="https://huggingface.co/Inferact/Kimi-K3-DSpark">Inferact/Kimi-K3-DSpark</a></td><td>464 tok/s 峰值；接受长度均值 3.85</td><td>B 第三方卡</td></tr>
+<tr><td><a href="https://arxiv.org/abs/2604.15804">arXiv:2604.15804</a> Qwen3.5-Omni</td><td>256k、215 子任务、ARIA</td><td>B 厂商</td></tr>
+<tr><td><a href="https://arxiv.org/abs/2505.22954">arXiv:2505.22954</a> DGM（ICLR 2026）</td><td>SWE-bench 20.0%→50.0%；Polyglot 14.2%→30.7%</td><td>A 会议；摘要数字与 09-26 RSI 长文一致</td></tr>
+</tbody>
+</table></div>
+
+<div class="callout">
+<b>未核实 / 故意不用</b>
+<ul>
+<li>vLLM 博客里 K3 无投机 118 tok/s、有 DSpark 370 tok/s：二手转述，和 Inferact 卡的 464 峰值不是同一口径，正文不用。</li>
+<li>MarkTechPost 把 60–85% 写成新闻标题：数字来自 DSpark 论文摘要，以论文为准。</li>
+<li>Anthropic「closing the loop」调查：直链 404，本报告不编 URL，也不当 2026 新系统引用。</li>
+<li>MemSkill、OPD-Evolver（2606.17628）：检索里见过标题，正文数字未回原文，不写进结论。</li>
+<li>Exa 免费额度 429，部分网页 Jina 403；RRSI 具体分从本机下载的 PDF 抽出，HTML 摘要只有上界。</li>
+<li>未公开的内部实验：按开工约定不收录。</li>
+</ul>
+</div>
+
+<footer>生成于 2026-09-27 · 可外发 · 公开文献全景</footer>
+</main></body></html>
