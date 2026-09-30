@@ -1,5 +1,9 @@
 # 前沿技术栏目：独立 HTML 洞察索引。
 # 新增一篇：把 HTML 放到 /frontier/<slug>.html，再在这里加一条。
+- title: 我们 vibe coding 出来的网站，为什么看起来像设计师做的
+  date: "2026-10-01"
+  url: /frontier/vibe-coded-website.html
+  summary: 译文。Yakko Majuri 把过山车种子做成整座乐园：光谱试稿、单文件分叉、实时调色。原文图和视频保留。
 - title: 冻底座、改脚手架：2026 年 Agent 和 LLM 公开增量在哪一层
   date: "2026-09-27"
   url: /frontier/llm-agent-tech-landscape.html
