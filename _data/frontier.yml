@@ -2,7 +2,7 @@
 # 新增一篇：把 HTML 放到 /frontier/<slug>.html，再在这里加一条。
 - title: "测过的优化，为什么还在跑"
   date: "2026-10-05"
-  url: /frontier/2026-10-05-daily.html
+  url: /frontier/2026-10-05-tested-opt-still-running.html
   summary: "授权规则变了之后，归档里的通过记录仍会留下旧优化。48 份框架历史里 22 份如此，尽管每一份都有正确替代。"
 - title: 我们 vibe coding 出来的网站，为什么看起来像设计师做的
   date: "2026-10-01"

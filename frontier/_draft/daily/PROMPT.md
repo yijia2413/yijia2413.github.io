@@ -6,7 +6,7 @@
 
 写作：
 
-- 单文件 HTML，放到 frontier/YYYY-MM-DD-daily.html。无 Jekyll front matter，不要出现双花括号。样式自包含，不引 CDN。左侧目录，正文分节。至少两张内联 SVG：白底、中文、彩色边框、字号不小于 14。
+- 单文件 HTML。文件名是 frontier/YYYY-MM-DD-短英文主题.html，用标题里的判断起 slug，全小写、连字符、不超过四个词。不要用 -daily。无 Jekyll front matter，不要出现双花括号。样式自包含，不引 CDN。左侧目录，正文分节。至少两张内联 SVG：白底、中文、彩色边框、字号不小于 14。
 - 篇幅写到这个判断说完为止。对照 frontier/rsi-llm-agent-self-evolution.html 的密度，不要写成论文卡片、当日新闻汇编，也不要为了变长把谱系再讲一遍。
 - 中文，直述。禁止这些壳：「不是 A 而是 B」「本质上」「更重要的是」「这说明」「真正的」「关键在于」。
 - 率写明分母。不同打分基准不要放进同一个倍数比较。

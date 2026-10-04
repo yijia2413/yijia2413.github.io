@@ -1,6 +1,6 @@
 #!/bin/bash
 # Frontier 每日技术博客。cron 在 UTC 13:00 触发，即北京时间 21:00。
-# 当天 HTML 已存在则退出，避免重跑覆盖人工改过的稿。
+# 当天已经有按标题命名的 HTML 则不再跑 pi，避免覆盖人工改过的稿。旧的 -daily.html 只当跳转，不算当天稿。
 # 推送只走 gh 的 HTTPS 凭证，不改仓库 remote，不打印 token。
 # 远端 master 必须是本地祖先，且本次相对远端只动 frontier/ 与 _data/frontier.yml，才允许快进推送。
 set -u
@@ -12,7 +12,10 @@ mkdir -p "$LOGDIR"
 export TZ=Asia/Shanghai
 DAY=$(date +%F)
 LOG="$LOGDIR/$DAY.log"
-HTML="$REPO/frontier/${DAY}-daily.html"
+find_html() {
+  ls -1 "$REPO/frontier/${DAY}"-*.html 2>/dev/null | grep -v -- "-daily.html" | head -n 1 || true
+}
+HTML=$(find_html)
 
 push_if_safe() {
   local remote_sha
@@ -41,7 +44,7 @@ push_if_safe() {
 
 {
   echo "=== $(date '+%F %T %Z') start ==="
-  if [ -f "$HTML" ]; then
+  if [ -n "$HTML" ] && [ -f "$HTML" ]; then
     echo "skip pi: $HTML already exists, try push only"
     cd "$REPO" || exit 1
     push_if_safe
@@ -56,9 +59,10 @@ push_if_safe() {
   cd "$REPO" || exit 1
   pi --print --name "frontier-daily-$DAY" --thinking high \
     "$(cat "$PROMPT")" \
-    "今天的日期是 $DAY（北京时间）。文件名必须是 frontier/${DAY}-daily.html。只本地提交这一篇和 _data/frontier.yml 的对应一条。不要 push，不要 git add -A，不要改 remote。Reddit 和 X 没有登录态时写明今日未覆盖，不要用二手转述填。"
+    "今天的日期是 $DAY（北京时间）。文件名必须是 frontier/${DAY}-短英文主题.html，用标题起 slug，不要用 -daily。只本地提交这一篇和 _data/frontier.yml 的对应一条。不要 push，不要 git add -A，不要改 remote。Reddit 和 X 没有登录态时写明今日未覆盖，不要用二手转述填。"
   echo "=== $(date '+%F %T %Z') pi exit $? ==="
-  if [ ! -f "$HTML" ]; then
+  HTML=$(find_html)
+  if [ -z "$HTML" ] || [ ! -f "$HTML" ]; then
     echo "no html, skip push"
     exit 1
   fi
