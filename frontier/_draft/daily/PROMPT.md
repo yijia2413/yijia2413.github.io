@@ -18,6 +18,11 @@
 - 如果材料撑不起一个能用例子讲完的判断，不要创建 HTML，不要改 frontier.yml。
 - 在回复里写「今日不发」，列出查过的源和缺的是哪一种证据。然后退出。
 
+磁盘：
+
+- 抓取的论文 HTML、接口 JSON、长文原文只放 /tmp/frontier-daily/。写完 HTML 就删掉这个目录。不要把原文抄进 Drive、仓库或 aigen。
+- 磁盘上只留要上传的 frontier/*.html 和 _data/frontier.yml 那一条。过程日志只留一句判断和原文链接。
+
 Git：
 
 - 只 git add 当天 html 和 _data/frontier.yml。不要 git add -A，不要 amend，不要 force push，不要 push，不要改 remote，不要打印 token。

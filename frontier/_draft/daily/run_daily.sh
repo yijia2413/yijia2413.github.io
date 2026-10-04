@@ -66,6 +66,9 @@ push_if_safe() {
     echo "no html, skip push"
     exit 1
   fi
+  # 抓取缓存不留。要上传的只有 frontier HTML 和索引。
+  rm -rf /tmp/frontier-daily
+  rm -rf /config/workspace/drive/ai-tmp/frontier-daily/sources
   push_if_safe
   echo "=== $(date '+%F %T %Z') push exit $? ==="
 } >>"$LOG" 2>&1
