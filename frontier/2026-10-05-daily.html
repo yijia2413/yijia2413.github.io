@@ -3,14 +3,14 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>2026-10-05 前沿日报：改课程、看内部状态、别让历史分数留下坏程序</title>
+  <title>测过的优化，为什么还在跑</title>
   <style>
     :root {
       --ink: #0f172a;
       --muted: #475569;
       --line: #e2e8f0;
       --bg: #f8fafc;
-      --card: #ffffff;
+      --card: #fff;
       --blue: #1d4ed8;
       --blue-bg: #eff6ff;
       --green: #047857;
@@ -19,237 +19,223 @@
       --amber-bg: #fffbeb;
       --rose: #be123c;
       --rose-bg: #fff1f2;
-      --violet: #6d28d9;
-      --violet-bg: #f5f3ff;
     }
     * { box-sizing: border-box; }
-    body {
-      margin: 0;
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Noto Sans SC", sans-serif;
-      background: var(--bg);
-      color: var(--ink);
-      line-height: 1.7;
-      font-size: 17px;
-    }
-    header {
-      background: #0f172a;
-      color: #f8fafc;
-      padding: 48px 20px 36px;
-      border-bottom: 4px solid #2563eb;
-    }
-    header .wrap, main { max-width: 880px; margin: 0 auto; }
-    .badge {
-      display: inline-block;
-      border: 1px solid #93c5fd;
-      color: #bfdbfe;
-      border-radius: 999px;
-      padding: 2px 12px;
-      font-size: 13px;
-      letter-spacing: 0.04em;
-    }
-    h1 { font-size: 1.85rem; line-height: 1.3; margin: 14px 0 10px; }
-    header p { color: #cbd5e1; margin: 0; }
-    main { padding: 28px 20px 64px; }
-    h2 { font-size: 1.25rem; margin: 32px 0 10px; }
-    p { margin: 0 0 12px; }
+    body { margin: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Noto Sans SC", sans-serif; background: var(--bg); color: var(--ink); line-height: 1.75; font-size: 17px; }
+    header { background: #0f172a; color: #f8fafc; padding: 42px 24px 32px; border-bottom: 4px solid #2563eb; }
+    header .inner { max-width: 1080px; margin: 0 auto; }
+    .badge { display: inline-block; border: 1px solid #93c5fd; color: #bfdbfe; border-radius: 999px; padding: 2px 12px; font-size: 13px; }
+    h1 { font-size: 2rem; line-height: 1.3; margin: 12px 0; }
+    header p { color: #cbd5e1; margin: 0; max-width: 760px; }
+    .layout { max-width: 1080px; margin: 28px auto 64px; padding: 0 20px; display: grid; grid-template-columns: 220px minmax(0, 1fr); gap: 28px; }
+    aside { position: sticky; top: 16px; align-self: start; background: var(--card); border: 1px solid var(--line); border-radius: 12px; padding: 14px; }
+    aside p { font-size: 12px; letter-spacing: 0.06em; color: var(--muted); margin: 0 0 8px; }
+    aside a { display: block; color: var(--ink); text-decoration: none; font-size: 14px; padding: 6px 8px; border-radius: 6px; }
+    aside a:hover { background: var(--blue-bg); color: var(--blue); }
+    h2 { font-size: 1.35rem; margin: 0 0 12px; }
+    h2 span { display: inline-block; background: var(--blue); color: white; border-radius: 6px; font-size: 13px; padding: 2px 8px; margin-right: 8px; vertical-align: 2px; }
+    section { background: var(--card); border: 1px solid var(--line); border-radius: 14px; padding: 26px 28px; margin-bottom: 22px; }
+    p { margin: 0 0 14px; }
     a { color: var(--blue); }
-    .note {
-      background: var(--amber-bg);
-      border-left: 4px solid var(--amber);
-      padding: 12px 14px;
-      margin: 16px 0;
-      font-size: 15px;
-    }
-    .card {
-      background: var(--card);
-      border: 1px solid var(--line);
-      border-radius: 12px;
-      padding: 16px 18px;
-      margin: 14px 0;
-    }
-    .card h3 { margin: 0 0 6px; font-size: 1.05rem; }
-    .meta { color: var(--muted); font-size: 14px; margin-bottom: 8px; }
-    .tag {
-      display: inline-block;
-      font-size: 12px;
-      font-weight: 700;
-      border-radius: 999px;
-      padding: 1px 8px;
-      margin-right: 6px;
-    }
-    .t-pre { background: var(--violet-bg); color: var(--violet); }
-    .t-co { background: var(--green-bg); color: var(--green); }
-    table { width: 100%; border-collapse: collapse; font-size: 15px; background: white; }
+    figure { margin: 16px 0; background: white; border: 1px solid var(--line); border-radius: 12px; padding: 10px; }
+    figcaption { color: var(--muted); font-size: 14px; margin-top: 6px; }
+    table { width: 100%; border-collapse: collapse; font-size: 15px; }
     th, td { border: 1px solid var(--line); padding: 8px 10px; text-align: left; vertical-align: top; }
     th { background: #f1f5f9; }
-    figure { margin: 18px 0; background: white; border: 1px solid var(--line); border-radius: 12px; padding: 12px; }
-    figcaption { color: var(--muted); font-size: 14px; margin-top: 6px; }
-    footer { color: var(--muted); font-size: 14px; margin-top: 28px; }
+    .src { font-size: 14px; color: var(--muted); }
     svg text { font-family: -apple-system, "PingFang SC", "Noto Sans SC", sans-serif; }
+    @media (max-width: 860px) {
+      .layout { grid-template-columns: 1fr; }
+      aside { position: static; }
+      h1 { font-size: 1.55rem; }
+      section { padding: 18px 16px; }
+    }
   </style>
 </head>
 <body>
 <header>
-  <div class="wrap">
-    <span class="badge">FRONTIER DAILY · 2026-10-05</span>
-    <h1>改课程、看内部状态、别让历史分数留下坏程序</h1>
-    <p>这一期只收 10 月 1 日到 2 日能对上原文的增量。结论：自进化在改脚手架和技能，权重没动；评估器和物理约束被明确排除在可改范围之外。</p>
+  <div class="inner">
+    <span class="badge">FRONTIER · 2026-10-05 · 预印本</span>
+    <h1>测过的优化，为什么还在跑</h1>
+    <p>一份代理优化通过了全部初始测试，成本也更低。授权规则后来变了，它开始在失效之后继续执行。归档里有正确的替代，挑选它的仍是当初那份分数。</p>
   </div>
 </header>
+<div class="layout">
+<aside>
+  <p>目录</p>
+  <a href="#cache">1 版本号缓存</a>
+  <a href="#three">2 三件被拆开的事</a>
+  <a href="#two">3 两条留下的路</a>
+  <a href="#fix">4 刷新、回滚、从哪版改</a>
+  <a href="#records">5 同周还在写的记录</a>
+  <a href="#skill">6 技能文件里的进度</a>
+  <a href="#books">7 换书时的排序</a>
+  <a href="#check">8 三个检查</a>
+  <a href="#src">出处和没做的</a>
+</aside>
 <main>
-  <div class="note">
-    论文都是 arXiv 预印本，没有同行评审。数字摘自摘要，不外推到生产。Reddit 和 X 今天没有登录态，这两路空着，不用二手转述填。ACL / NeurIPS / ICML 2026 的录用列表这几天没有新的 agent 条目进入公开索引。
-  </div>
-
-  <h2>一页结论</h2>
-  <p>09-27 的全景文说公开增量在「冻底座、改脚手架」。10 月 1 日这一批把这句话拆成四件能分开做的事：训练课程跟着脚手架一起变；改技能时看模型内部表征，不只看轨迹文本；物理模型和授权规则不许被经验改写；改完之后，历史分数不能决定明天还跑哪一版。</p>
-  <p>Anthropic 9 月 24 日的换书实验是对照。市场没做到最优，主要是因为代理没搞清主人想要什么，不是因为不会砍价。换一个更强的模型，比把指令从「亲社会」改成「狠」有用得多。</p>
-
+<section id="cache">
+  <h2><span>1</span>版本号缓存</h2>
+  <p>Zhang 等人 2026 年 10 月 1 日放在 arXiv 上的预印本，测试台是带状态的授权任务。他们给的例子可以单独看完。</p>
+  <p>代理在每个受保护动作之前检查权限。一份效率优化把这个判断缓存下来，只在令牌版本变化时刷新。初始测试全部通过，开销更低。服务后来引入委托权限。上游可以撤销授权，同时不改那个本地版本号。优化过的代理继续执行。最初那份程序仍然正确，因为它每次请求都查当前有效权限。论文把这份最初的正确程序叫 founder。</p>
+  <p>新测试能看到这次失败。归档里有正确修复。历史分数仍然偏向那份旧优化，修复留在归档里。</p>
   <figure>
-    <svg viewBox="0 0 860 168" width="100%" role="img" aria-label="四件事和它们不许碰的部分">
-      <rect x="1" y="1" width="858" height="166" rx="10" fill="#ffffff" stroke="#e2e8f0"/>
-      <rect x="16" y="36" width="190" height="112" rx="8" fill="#eff6ff" stroke="#1d4ed8"/>
-      <rect x="222" y="36" width="190" height="112" rx="8" fill="#f5f3ff" stroke="#6d28d9"/>
-      <rect x="428" y="36" width="190" height="112" rx="8" fill="#ecfdf5" stroke="#047857"/>
-      <rect x="634" y="36" width="210" height="112" rx="8" fill="#fff1f2" stroke="#be123c"/>
-      <text x="16" y="24" font-size="14" fill="#475569">可改的三块，和一块明确不许改的</text>
-      <text x="28" y="62" font-size="15" font-weight="700" fill="#1e3a8a">课程</text>
-      <text x="28" y="86" font-size="13" fill="#0f172a">ActiveSaddler</text>
-      <text x="28" y="108" font-size="13" fill="#334155">失败模式当臂</text>
-      <text x="28" y="128" font-size="13" fill="#334155">GAIA2 +4.4 pp</text>
-      <text x="234" y="62" font-size="15" font-weight="700" fill="#5b21b6">技能信号</text>
-      <text x="234" y="86" font-size="13" fill="#0f172a">Rep2Skill</text>
-      <text x="234" y="108" font-size="13" fill="#334155">看内部表征</text>
-      <text x="234" y="128" font-size="13" fill="#334155">不靠更强外模</text>
-      <text x="440" y="62" font-size="15" font-weight="700" fill="#065f46">经验边界</text>
-      <text x="440" y="86" font-size="13" fill="#0f172a">Mímir / SourceLearn</text>
-      <text x="440" y="108" font-size="13" fill="#334155">上下文可改</text>
-      <text x="440" y="128" font-size="13" fill="#334155">物理模型不动</text>
-      <text x="646" y="62" font-size="15" font-weight="700" fill="#9f1239">不许继承</text>
-      <text x="646" y="86" font-size="13" fill="#0f172a">历史分数</text>
-      <text x="646" y="108" font-size="13" fill="#334155">22/48 留坏程序</text>
-      <text x="646" y="128" font-size="13" fill="#334155">归档里有正确版</text>
+    <svg viewBox="0 0 920 250" width="100%" role="img" aria-label="授权缓存如何在规则变化后继续执行">
+      <rect x="1" y="1" width="918" height="248" rx="10" fill="#ffffff" stroke="#e2e8f0"/>
+      <rect x="16" y="46" width="200" height="120" rx="8" fill="#eff6ff" stroke="#1d4ed8"/>
+      <rect x="244" y="46" width="200" height="120" rx="8" fill="#fffbeb" stroke="#b45309"/>
+      <rect x="472" y="46" width="200" height="120" rx="8" fill="#fff1f2" stroke="#be123c"/>
+      <rect x="700" y="46" width="200" height="120" rx="8" fill="#fff1f2" stroke="#be123c"/>
+      <text x="28" y="74" font-size="15" font-weight="700" fill="#1e3a8a">最初程序</text>
+      <text x="28" y="100" font-size="14" fill="#0f172a">每次请求都查</text>
+      <text x="28" y="122" font-size="14" fill="#0f172a">当前有效权限</text>
+      <text x="256" y="74" font-size="15" font-weight="700" fill="#92400e">旧优化</text>
+      <text x="256" y="100" font-size="14" fill="#0f172a">版本号不变</text>
+      <text x="256" y="122" font-size="14" fill="#0f172a">就沿用上次判断</text>
+      <text x="484" y="74" font-size="15" font-weight="700" fill="#9f1239">规则变了</text>
+      <text x="484" y="100" font-size="14" fill="#0f172a">上游撤销授权</text>
+      <text x="484" y="122" font-size="14" fill="#0f172a">本地版本号不动</text>
+      <text x="712" y="74" font-size="15" font-weight="700" fill="#9f1239">还在跑</text>
+      <text x="712" y="100" font-size="14" fill="#0f172a">旧优化继续执行</text>
+      <text x="712" y="122" font-size="14" fill="#0f172a">最初程序仍正确</text>
+      <path d="M216 106 H240" stroke="#64748b" stroke-width="1.6" fill="none"/>
+      <path d="M444 106 H468" stroke="#64748b" stroke-width="1.6" fill="none"/>
+      <path d="M672 106 H696" stroke="#64748b" stroke-width="1.6" fill="none"/>
+      <text x="16" y="196" font-size="14" fill="#334155">蓝：最初那份正确程序（founder）。黄：通过了初始全套测试的优化。红：规则变化之后的状态。</text>
+      <text x="16" y="220" font-size="14" fill="#334155">新测试能看见失败。历史分数仍偏向旧优化，不偏向归档里的正确修复。</text>
     </svg>
-    <figcaption>图 1. 这四篇把「改脚手架」拆开了。前三块是可改对象，第四块是验收时不能沿用的东西。</figcaption>
+    <figcaption>图 1. 例子来自 arXiv:2610.01073 的引言。受控测试台。生产事故报告里没有这个案例。</figcaption>
   </figure>
+  <p>自进化讨论里常见的问题是模型还能不能改自己的脚手架。这篇把问题换了一下：改完并测过的那一版，在合同变了以后，系统还会不会因为它「测过」而继续用它。</p>
+</section>
 
-  <h2>1. 课程要跟着脚手架变</h2>
-  <div class="card">
-    <h3><span class="tag t-pre">预印本</span>ActiveSaddler：自动课程学习，用来优化 agent harness</h3>
-    <p class="meta">Sungho Park 等 · arXiv:2610.00906 · 2026-10-01 · <a href="https://arxiv.org/abs/2610.00906">摘要</a></p>
-    <p>现有 harness 优化改的是提示、工具接口和控制逻辑，训练场景的顺序却是事先固定的。脚手架变了之后，哪类失败还值得再练也会变。ActiveSaddler 把反复出现的失败收成可复用的「失败模式」，当成一个非平稳老虎机的臂，估计再盯着这个模式还能带来多少进步，同时留一部分预算去找新的失败。</p>
-    <p>相对同一套优化器、只是场景顺序固定的对照，测试 Pass@1 在 GAIA2 上高 4.4 个百分点，在 Terminal-Bench 2.0 上高 7.5 个百分点。消融说这三项都要有：动态构造优化目标、估计它们还剩多少用、以及在「继续练已知弱点」和「找新失败」之间分配。</p>
-  </div>
-  <div class="card">
-    <h3><span class="tag t-pre">预印本</span>AutoCompact：把「何时压缩上下文」放进策略里学</h3>
-    <p class="meta">Xuan Zhang, Longtao Zheng, Cunxiao Du, Bo An, Xin Dong · arXiv:2610.02163 · 2026-10-01 · <a href="https://arxiv.org/abs/2610.02163">摘要</a></p>
-    <p>长程编码代理的上下文管理不只是防溢出：要决定何时压缩、留下什么工作状态、压缩之后怎么接着干。他们先跑基座代理，用一个 judge 审查压缩决定和压缩后的动作，有问题的输出换成改正版再在环境里执行，然后用这些轨迹做监督微调，再用任务成功奖励把写代码和压缩一起做强化学习。</p>
-    <p>SWE-bench Verified 和 SWE-PolyBench Verified 上，相对基座模型的通过率绝对提高 9.2 和 5.0 个百分点。256K 窗口没有溢出；16K 窗口溢出时退回备用压缩。两个预算下提升都在。</p>
-  </div>
-
-  <h2>2. 改技能时，文本轨迹不够</h2>
-  <div class="card">
-    <h3><span class="tag t-pre">预印本</span>Rep2Skill：用内部表征指导技能自进化</h3>
-    <p class="meta">Kaixing Zhang 等 · arXiv:2609.39149 · 2026-09-30 · <a href="https://arxiv.org/abs/2609.39149">摘要</a> · 正文 HTML</p>
-    <p>技能现在多半是一段可复用的过程文本，优化器只看着很长的执行轨迹和稀疏的成败来改它。Rep2Skill 额外看模型内部表征沿轨迹怎么走，标出偏离「成功执行动态」的回合，再把这个信号连同上下文写成可执行的文字反馈，用来改技能。执行和改技能是同一个模型，没有更强的外部老师。这是自进化设定，不是蒸馏。</p>
-    <p>ALFWorld 成功率：Qwen3-4B 52.24%，Qwen3.5-9B 69.90%，分别比最强的纯文本技能进化高 4.98 和 7.77 个百分点。WebShop 上 Qwen3.5-9B 的成功率比最强基线高 4.66 个百分点。回合级归因：只看轨迹文本区分度有限；表征分数加上之后，同一个分析模型的 AUROC 到 0.838，AUPRC 到 0.876。分母是这两个环境、两个 Qwen、每种设定三次随机种子的平均，不是生产分布。</p>
-  </div>
-  <div class="card">
-    <h3><span class="tag t-pre">预印本</span>RPG：机器人在仿真里练技能，权重不动</h3>
-    <p class="meta">Yen-Jen Wang 等（Abbeel, Sastry 在列）· arXiv:2610.02204 · 2026-10-01 · <a href="https://arxiv.org/abs/2610.02204">摘要</a></p>
-    <p>Reconstruct, Practice, Go Real。从离线数据里找出操作能力，在仿真里造相关的练习任务。练习时用执行反馈、仿真器的特权状态和数据集视频诊断失败，然后新增符号技能、改已有技能、改系统提示。每条候选改动和合并后的版本都要过跨任务评估才留下。</p>
-    <p>22 个操作任务的留出初始状态上，第一轮练习后成功率 28.6%，15 轮后 95.0%。对照 ASPIRE 75.5%，CaP-Agent0（GPT-6 Astra Pro）60.0%。经过统一的标定和硬件适配之后，冻结的系统在 3 个真实任务上各 10 次、共 30 次物理试验全部成功。真实试验的分母是 30，不是 22 个仿真任务。</p>
-  </div>
-
-  <h2>3. 什么可以积累，什么不许改</h2>
-  <div class="card">
-    <h3><span class="tag t-pre">预印本</span>SourceLearn：对一份长期来源形成可复用的理解</h3>
-    <p class="meta">Lucheng Fu 等 · arXiv:2610.02150 · 2026-10-01 · <a href="https://arxiv.org/abs/2610.02150">摘要</a></p>
-    <p>反复用同一份权威来源，不该只是反复检索。SourceLearn 维持一个持久的「来源模型」：这份材料怎么组织、怎么解释、怎么用。两条学习：自己发现还没懂的部分再回去读；用下游任务暴露表示上的缺口。学习信号只决定「重新看什么」，写进来源模型的内容从权威原文重建，不从模型自己的笔记里抄。</p>
-    <p>五个基准、三个 LLM 后端，15 个设定里 13 个最优，相对 Hybrid RAG 最多高 22.6 分，也高于静态来源表示和基于经验的记忆基线。</p>
-  </div>
-  <div class="card">
-    <h3><span class="tag t-pre">预印本</span>Mem++：写入时不摘要，读的时候再选</h3>
-    <p class="meta">Ahmad Yehia 等 · arXiv:2610.02002 · 2026-10-01 · <a href="https://arxiv.org/abs/2610.02002">摘要</a></p>
-    <p>组织里的决定常常是新文档，不是对旧文档的修改。写入时蒸馏成事实或图边，等于在提问之前就决定了能回答什么，也会盖掉旧版本。Mem++ 把每份文档按日期和作者整份留下，写入时不调用生成模型。读的时候只取「问题所问时点之前」的文档，词法排序和语义排序合在一起，由回答模型决定用哪一版。</p>
-    <p>OrgMemBench 上比最强记忆系统基线高 8.0 到 13.1 分（两个回答模型）。gpt-4.1-mini 上总分比 RAG 高 2.6 分。LoCoMo 上 LLM-judge 平均分最好，LongMemEval-S 上排第二，第一是它自己的实体图变体。</p>
-  </div>
-  <div class="card">
-    <h3><span class="tag t-pre">预印本</span>Mímir：经验可以改上下文，不能改物理</h3>
-    <p class="meta">Yimeng Liu, Mi Zhang, Younsuk Dong, Zhichao Cao · arXiv:2610.02038 · 2026-10-01 · <a href="https://arxiv.org/abs/2610.02038">摘要</a></p>
-    <p>灌溉决策的错误会跨天累积，不能靠重置回合来掩盖。Mímir 把修复分成两个时间尺度。快的一层：语言模型只出提案，结构化物理接口和确定性仿真器做数值检查、修订，再在有界的确定性规则里选出真正执行的动作。慢的一层：反复出现的失败收成上下文原则，影响以后的提案。物理模型、评估器、执行约束不动。</p>
-    <p>同一套回顾评估器、多个站点作物和年份下，总控制成本在受评参照里最低，灌溉量约为历史排班回放的 51% 那么少（摘要原文是 about 51% less）。拿掉前向仿真、验证修订或持久上下文，成本都上升。换更大的模型没有单调收益。</p>
-  </div>
-
-  <h2>4. 历史分数会把坏程序留在线上</h2>
-  <div class="card">
-    <h3><span class="tag t-pre">预印本</span>Safety Must Survive Self-Improvement</h3>
-    <p class="meta">Yunbei Zhang 等 · arXiv:2610.01073 · 2026-10-01 · <a href="https://arxiv.org/abs/2610.01073">摘要</a></p>
-    <p>检测出失败、做出正确替代、让正确的那一版真正跑起来，是三件不同的事。这篇用带状态的授权任务做对照实验，把「哪一版通过了验证」「哪一版继续在跑」「下一轮编辑从哪一版开始」拆开。</p>
-    <p>一条新的授权依赖让以前测过的优化失效之后，历史分数在 48 份框架历史里有 22 份继续保留同一批不安全程序，尽管每一份受影响的归档里都有正确替代。刷新分数可以在原测试集上恢复正确，独立拼出来的测试上仍有残留失败。合同没变时，如果所有提案都被拒绝、失败的现任继续在跑，失败也会留下。从同一个失败出发，下一轮去编辑最初的实现而不是编辑失败的那一版，恢复更好，幅度因编辑器而异。全量验证和「验证过再回滚」在核心轨迹实验里终点都是完全正确的程序，同时保留超过 43% 的部署开销节省（不含验证本身的开销）。</p>
-  </div>
-
+<section id="three">
+  <h2><span>2</span>三件被拆开的事</h2>
+  <p>检测出失败、做出正确替代、让正确的那一版跑起来，在这套实验里是三次分开的干预。作者分别控制：哪一版通过验证，哪一版继续运行，下一轮编辑器改的是哪一版。</p>
+  <p>测试台覆盖四类任务：会话授权、文件系统隔离、工具批准、结构化的用户同意。固定的 LLM 编辑器反复优化可执行的代理组件。种子事件流把请求、撤销和范围变化交织在一起。另有独立的轨迹，把「产生了未授权效果」和「完成了允许的工作」分开。一律拒绝不算修好，因为允许的工作也没做。</p>
   <figure>
-    <svg viewBox="0 0 860 210" width="100%" role="img" aria-label="坏程序为什么会留下">
-      <rect x="1" y="1" width="858" height="208" rx="10" fill="#ffffff" stroke="#e2e8f0"/>
-      <text x="16" y="24" font-size="14" fill="#475569">授权规则一变，三件事会脱节。数字是 22/48 份框架历史。</text>
-      <rect x="24" y="48" width="180" height="64" rx="8" fill="#fffbeb" stroke="#b45309"/>
-      <text x="36" y="76" font-size="14" font-weight="700" fill="#92400e">旧优化曾通过</text>
-      <text x="36" y="96" font-size="13" fill="#334155">历史分数仍高</text>
-      <rect x="250" y="48" width="200" height="64" rx="8" fill="#fff1f2" stroke="#be123c"/>
-      <text x="262" y="76" font-size="14" font-weight="700" fill="#9f1239">新依赖下已不安全</text>
-      <text x="262" y="96" font-size="13" fill="#334155">22/48 仍在跑它</text>
-      <rect x="496" y="48" width="200" height="64" rx="8" fill="#ecfdf5" stroke="#047857"/>
-      <text x="508" y="76" font-size="14" font-weight="700" fill="#065f46">归档里有正确版</text>
-      <text x="508" y="96" font-size="13" fill="#334155">每一份都有</text>
-      <path d="M204 80 H246" stroke="#64748b" stroke-width="1.5" fill="none"/>
-      <path d="M450 80 H492" stroke="#64748b" stroke-width="1.5" fill="none"/>
-      <text x="24" y="150" font-size="14" fill="#0f172a">作者的处方：按当前条件检查将要运行的那一版；下一轮编辑从最初实现开始，而不是从失败现任开始。</text>
-      <text x="24" y="176" font-size="14" fill="#334155">全量验证或验证后回滚：终点正确，部署开销仍省 43% 以上（不含验证成本）。</text>
-      <text x="24" y="198" font-size="13" fill="#64748b">来源：arXiv:2610.01073 摘要。受控测试台，不是生产授权系统。</text>
+    <svg viewBox="0 0 920 210" width="100%" role="img" aria-label="通过、运行、下一轮编辑可以指向不同程序">
+      <rect x="1" y="1" width="918" height="208" rx="10" fill="#ffffff" stroke="#e2e8f0"/>
+      <rect x="36" y="48" width="240" height="88" rx="8" fill="#fffbeb" stroke="#b45309"/>
+      <rect x="340" y="48" width="240" height="88" rx="8" fill="#fff1f2" stroke="#be123c"/>
+      <rect x="644" y="48" width="240" height="88" rx="8" fill="#eff6ff" stroke="#1d4ed8"/>
+      <text x="48" y="80" font-size="15" font-weight="700" fill="#92400e">哪一版通过了验证</text>
+      <text x="48" y="106" font-size="14" fill="#0f172a">旧优化，初始全套测试</text>
+      <text x="352" y="80" font-size="15" font-weight="700" fill="#9f1239">哪一版正在跑</text>
+      <text x="352" y="106" font-size="14" fill="#0f172a">可以仍是旧优化</text>
+      <text x="656" y="80" font-size="15" font-weight="700" fill="#1e3a8a">下一轮改哪一版</text>
+      <text x="656" y="106" font-size="14" fill="#0f172a">可以是失败版，或最初版</text>
+      <text x="36" y="168" font-size="14" fill="#334155">三格可以指向三份不同的程序。只看「有没有通过记录」答不全。</text>
+      <text x="36" y="192" font-size="14" fill="#64748b">论文图 1 用红表示当前代码，蓝表示 founder，绿表示当前仍通过的回退。</text>
     </svg>
-    <figcaption>图 2. 历史分数回答的是「以前过没过」，不是「现在还能不能跑」。</figcaption>
+    <figcaption>图 2. 配对实验把这三次选择拆开。绿框的回退在图注里：没有通过的回退时，执行暂停。</figcaption>
   </figure>
+</section>
 
-  <div class="card">
-    <h3><span class="tag t-pre">预印本</span>APEX：技能交接可以夹带虚假的用户同意</h3>
-    <p class="meta">Tian Dong 等 · arXiv:2610.01564 · 2026-10-01 · <a href="https://arxiv.org/abs/2610.01564">摘要</a></p>
-    <p>技能可以来自公开仓库。一个任务会按顺序调用好几个技能，前一个技能写下的内容会进入后一个技能的决策。APEX 构造并打磨针对某个用户任务、某个攻击者选定动作的技能链。关键手法：上游技能诱使代理写下「任务确实有进展」的记录，这份记录里夹一条虚假的用户同意；下游技能读到它，就去执行攻击者选的动作。</p>
-    <p>四个目标动作族、六个模型、SkillsBench：690 次里 512 次做成（74.2%）。GPT-5.4 上完整链 84.3%，把同一套流程并进单个技能只有 17.4%。让代理对照原始请求检查技能产出的文件，GPT-5.4 上攻击成功率从 84.3% 降到 59.1%，但 72 个正常原生技能任务的验证通过率从 86.7% 降到 56.3%。防御把正常任务一起打残了。</p>
-  </div>
+<section id="two">
+  <h2><span>3</span>两条留下的路</h2>
+  <p>第一条路：授权依赖变了，以前测过的优化失效。历史分数在 48 份框架历史里，有 22 份继续保留同一批不安全程序。每一份受影响的归档里都有正确替代。论文没有把其余 26 份称作安全，这里也不画成成功。</p>
+  <p>第二条路：合同没变。当前程序和所有提案都没通过验证时，keep-after-rejection 让失败的当前程序继续处于活动状态。作者把这份正在跑的失败版本叫 incumbent。评估已经给出失败，运行没有停。</p>
+  <figure>
+    <svg viewBox="0 0 920 200" width="100%" role="img" aria-label="48 份框架历史中 22 份保留不安全程序">
+      <rect x="1" y="1" width="918" height="198" rx="10" fill="#ffffff" stroke="#e2e8f0"/>
+      <text x="24" y="36" font-size="15" fill="#334155">48 份框架历史。着色的 22 份保留了同一批不安全程序。</text>
+      <rect x="24" y="64" width="760" height="36" rx="6" fill="#f1f5f9" stroke="#cbd5e1"/>
+      <rect x="24" y="64" width="348" height="36" rx="6" fill="#ffe4e6" stroke="#be123c"/>
+      <text x="36" y="88" font-size="15" font-weight="700" fill="#9f1239">22 / 48 留着不安全程序</text>
+      <text x="400" y="88" font-size="14" fill="#475569">其余 26 份未被称为安全</text>
+      <text x="24" y="132" font-size="14" fill="#334155">每一份受影响归档里都有正确替代。历史分数仍偏向旧优化。</text>
+      <text x="24" y="158" font-size="14" fill="#334155">合同不变时还有第二条：提案全部被拒绝，失败的现任继续跑。</text>
+      <text x="24" y="184" font-size="13" fill="#64748b">来源：arXiv:2610.01073 摘要。分母是框架历史份数。线上请求数不在这个实验里。</text>
+    </svg>
+    <figcaption>图 3. 22/48 是「历史分数留下同一批不安全程序」的份数。灰的一段没有正面结论。</figcaption>
+  </figure>
+</section>
 
-  <h2>5. 官方博客：代理不会砍价，是没搞清主人要什么</h2>
-  <div class="card">
-    <h3><span class="tag t-co">公司博客</span>Anthropic Project Swap</h3>
-    <p class="meta">2026-09-24 · <a href="https://www.anthropic.com/research/project-swap">anthropic.com/research/project-swap</a></p>
-    <p>201 名员工各带一本想送出的书，跟 Claude 聊过想读什么之后，代理上交易台换书。人自己的排序上，结果平均落在 0.55（大约 10 本里的第 5 本）。用真实排序能算出的最优是 0.89。用 Claude 的排序算出的最优分配，再拿人的真实排序打分，是 0.60。所以离 0.89 的差距里，大约 85% 来自 Claude 没理解主人，15% 来自自由交易本身。Top Trading Cycles 用 Claude 的排序、拿真实排序打分也是 0.60，和去中心化市场的 0.55 差不多。排序是噪声之后，市场设计几乎不改变结果。</p>
-    <p>在 Claude 自己的排序上，模型差别大于指令差别。中性指令、只换模型：Haiku 交易台平均 0.75，Opus 0.88（Claude 排序上的功利最优是 0.95）。Haiku 升到 Opus，人在自己的列表上移动 0.12；Sonnet 升到 Opus 移动 0.08。同一交易台上，「狠」比「亲社会」大约高 0.02。Opus 和 Haiku 各一半时，Opus 那一半始终更好。</p>
-  </div>
-  <div class="card">
-    <h3><span class="tag t-co">公司客座</span>BootLoops：让 Claude 找适合当前模型的计算题</h3>
-    <p class="meta">Matthew Schwartz · Anthropic · 2026-10-01 · <a href="https://www.anthropic.com/research/claude-shaped-science">原文</a></p>
-    <p>他把一套精确计算工具做成 LLM 的 harness，名字叫 BootLoops，然后去找「当前这代模型刚好能做、又跨领域重复出现」的计算。三个月里 18 个领域、19 位合作者、36 篇手稿，候选问题大约 400 个。他自己点出的失败模式和编码代理是同一类：模型默认死磕多日计算，而不是先造一个把计算变成几分钟的工具；上下文压缩之后会丢掉计划，他的对策是让会话定期把文件整理成最新计划。Barro Colorado Island 的树种混合变化速度是中性理论允许值的 4.5 倍，这条是和领域专家一起做完才留下来的，不是模型自己宣布的发现。</p>
-  </div>
+<section id="fix">
+  <h2><span>4</span>刷新、回滚、从哪版改</h2>
+  <p>把归档里的分数、反馈和选择元数据按当前条件刷新，原测试集上可以恢复正确。另外独立拼出来的测试仍有残留失败。刷新修的是「旧分数还在引用过期结果」，修不到测试套件本身没覆盖的新组合。</p>
+  <p>从同一批失败出发，下一轮去编辑最初那份实现，比去编辑失败的那一版，恢复更好。幅度因编辑器而异。摘要没有展开是哪些编辑器，这里不补名字。</p>
+  <p>全量验证，以及「验证过再回滚」，在核心轨迹实验里终点都是完全正确的程序，同时保留超过 43% 的部署开销节省。摘要的原话是 retaining over 43% deployment savings。论文图注里的执行规则更硬：没有当前仍通过的回退时，执行暂停。</p>
+  <p>所以要分开定的是两件事。运行位只接受当前条件下通过的版本，没有这样的版本就停。下一轮编辑从最初那份正确程序开始，或从当前仍通过的回退开始。正在失败的现任不作为编辑起点。</p>
+</section>
 
-  <h2>今天没写进去的</h2>
+<section id="records">
+  <h2><span>5</span>同周还在写的记录</h2>
+  <p>同一周的几篇预印本都在往代理的外部记录里写东西。它们没有做 Zhang 等人的授权实验。放在这里，是因为那些记录下一轮会被当成仍然有效。</p>
+  <p>ActiveSaddler（arXiv:2610.00906）让训练课程跟着脚手架变。反复出现的失败收成可复用的失败模式，再决定还值不值得练。相对场景顺序事先固定的同一套优化器，测试 Pass@1 在 GAIA2 上高 4.4 个百分点，在 Terminal-Bench 2.0 上高 7.5 个百分点。它报告的是测试集没变时的通过率。Zhang 的实验问的是另一件事：合同变了以后，旧测试上的通过还算不算数。两篇不互相否定。课程可以变，上线用的分数不能沿用变之前的那一轮。</p>
+  <p>Rep2Skill（arXiv:2609.39149）用模型内部表征沿轨迹的偏离，给技能文本写修改意见。执行和改技能是同一个模型。ALFWorld 上 Qwen3-4B 成功率 52.24%，Qwen3.5-9B 69.90%，比最强的纯文本技能进化高 4.98 和 7.77 个百分点。分母是这个仿真环境、这两个模型、三次随机种子的平均。留下的产物是一段新的技能文本。这段文本若被后续步骤读成「用户已经同意这样做」，就接到下一节。</p>
+  <p>RPG（arXiv:2610.02204）在仿真里改符号技能和系统提示，跨任务评估通过才保留，权重不动。22 个操作任务的留出初始状态上，成功率从第一轮练习后的 28.6% 到 15 轮后的 95.0%。3 个真实任务各 10 次、共 30 次物理试验，在统一标定和硬件适配之后全部成功。30 和 22 不要加在一起。它做了「留下之前先测」。测的是操作任务。授权依赖没有进这套评估。</p>
+  <p>Mímir（arXiv:2610.02038）把边界写进结构。经验只能改以后的推理上下文。物理模型、评估器、执行约束不动。同一套回顾评估器下，灌溉量比历史排班回放少大约 51%。拿掉前向仿真、验证修订或持久上下文，控制成本上升。这是少数把「什么记录允许变」写成不变量的一篇。</p>
+</section>
+
+<section id="skill">
+  <h2><span>6</span>技能文件里的进度</h2>
+  <p>Dong 等人的 APEX（arXiv:2610.01564）不改权重，改的是技能之间交接的那份记录。上游技能诱使代理写下「任务确实有进展」。这份记录里夹一条虚假的用户同意。下游技能读到它，去执行攻击者选定的动作。技能可以来自公开仓库。</p>
+  <p>四个目标动作族、六个模型、SkillsBench：690 次尝试里 512 次做成，74.2%。GPT-5.4 上，完整链 84.3%；同一套流程并进单个技能，17.4%。让代理对照原始请求检查技能产出的文件，GPT-5.4 上攻击成功率从 84.3% 降到 59.1%。与此同时，72 个正常原生技能任务的验证通过率从 86.7% 降到 56.3%。后一个分母是 72 个良性任务。690 次是攻击尝试，两套数不要合在一起。</p>
   <table>
-    <thead><tr><th>来源</th><th>状态</th></tr></thead>
+    <thead><tr><th>测量</th><th>结果</th><th>分母</th></tr></thead>
     <tbody>
-      <tr><td>Reddit（LocalLLaMA 等）</td><td>本机没有可用的登录 Cookie，匿名接口 403。不收二手转述。</td></tr>
-      <tr><td>X / Twitter</td><td>twitter-cli 在，显式凭据不齐。同样空着。</td></tr>
-      <tr><td>HN</td><td>过去 7 天标题含 “LLM agent”、分数 &gt; 15 的帖子有 5 条，没有一篇带得出今天这四个技术点的讨论，不单列。</td></tr>
-      <tr><td>ACL / NeurIPS / ICML 2026 录用</td><td>这几天公开索引没有新的 agent 录用条目。本期论文全部是预印本。</td></tr>
-      <tr><td>Mingbird、OverAct、VideoEvolve</td><td>同日预印本，和上面四条比，增量更窄，留到它们被引用或被复现再写。</td></tr>
+      <tr><td>技能链做成选定动作</td><td>512 次，74.2%</td><td>690 次尝试，四个动作族，六个模型</td></tr>
+      <tr><td>GPT-5.4，链 vs 并成一个技能</td><td>84.3% vs 17.4%</td><td>该模型上的尝试</td></tr>
+      <tr><td>提示词防御后的攻击</td><td>84.3% → 59.1%</td><td>GPT-5.4，选定动作</td></tr>
+      <tr><td>同一防御下的正常任务</td><td>86.7% → 56.3%</td><td>72 个良性原生技能任务</td></tr>
     </tbody>
   </table>
+  <p class="src">两行防御数字不能合成「防御有效 25 个百分点」。正常任务掉下去的那一段用的是另一个分母。</p>
+  <p>和授权缓存是同一类缝。系统把一份早先写下的记录，当成现在仍然有效的同意。那里的记录是测试分数，这里的记录是技能写在任务目录里的进度。</p>
+</section>
 
-  <h2>如果只带走一件事</h2>
-  <p>自进化现在改的是课程、技能和上下文。权重、物理模型、授权规则不在可改集合里。验收不能沿用历史分数：规则一变，以前通过的程序可以是现在不该跑的那一版。技能库如果允许外部写入，技能之间的「进度记录」就是一条不经用户同意的通道，提示词防御会把正常任务一起打残。</p>
+<section id="books">
+  <h2><span>7</span>换书时的排序</h2>
+  <p>Anthropic 2026 年 9 月 24 日的 Project Swap 用 201 名员工换书。每人的偏好收成一份对池子里所有书的排序，代理拿着这份排序去交易。人自己的排序上，能达到的最好分配是 0.89，大约是 10 本里的第 2 本。市场结果平均 0.55，大约是第 5 本。用 Claude 的排序算出最好分配，再拿人的真实排序打分，是 0.60。</p>
+  <p>作者据此说，没理解主人占了离 0.89 这段差距的多数（85%），自由交易占剩下的 15%。用 Claude 的排序跑 Top Trading Cycles，再拿人的排序打分，也是 0.60，和去中心化市场的 0.55 接近。排序是噪声之后，市场设计几乎不改变结果。</p>
+  <figure>
+    <svg viewBox="0 0 920 280" width="100%" role="img" aria-label="三根分数都打在人的真实排序上">
+      <rect x="1" y="1" width="918" height="278" rx="10" fill="#ffffff" stroke="#e2e8f0"/>
+      <text x="24" y="32" font-size="15" fill="#334155">都是人的真实排序上的分数。1 最好。0.55 大约是 10 本里的第 5 本。</text>
+      <line x1="80" y1="210" x2="860" y2="210" stroke="#94a3b8"/>
+      <rect x="140" y="72" width="120" height="138" fill="#dbeafe" stroke="#1d4ed8"/>
+      <rect x="400" y="118" width="120" height="92" fill="#fef3c7" stroke="#b45309"/>
+      <rect x="660" y="126" width="120" height="84" fill="#ffe4e6" stroke="#be123c"/>
+      <text x="168" y="64" font-size="16" font-weight="700" fill="#1e3a8a">0.89</text>
+      <text x="430" y="110" font-size="16" font-weight="700" fill="#92400e">0.60</text>
+      <text x="690" y="118" font-size="16" font-weight="700" fill="#9f1239">0.55</text>
+      <text x="152" y="234" font-size="14" fill="#0f172a">人的排序上的最优</text>
+      <text x="392" y="234" font-size="14" fill="#0f172a">Claude 排序算出</text>
+      <text x="404" y="254" font-size="14" fill="#0f172a">再用人的排序打分</text>
+      <text x="676" y="234" font-size="14" fill="#0f172a">交易台结果</text>
+    </svg>
+    <figcaption>图 4. 0.89、0.60、0.55 三根用的是同一套人的排序。来源：Anthropic Project Swap，2026-09-24。</figcaption>
+  </figure>
+  <p>另外两个数不要和这三根比倍数。在 Claude 自己的排序上，「狠」比「亲社会」大约高 0.02。把代理从 Haiku 换成 Opus，人在自己的列表上移动 0.12，从 Sonnet 换成 Opus 移动 0.08。0.02 的尺子是 Claude 的排序，0.12 的尺子是人的列表。短一点的说法「模型比指令有效 6 倍」把两把尺子接在了一起，这里拆开。</p>
+  <p>这份排序也是一条会过期的记录。它在开场聊天里写定，然后整场交易都拿它当主人的意思。0.89 到 0.60 的那段，出在记录写下来的时候，不出在后来的砍价。</p>
+</section>
 
-  <footer>
-    <p>取数日期 2026-10-05。预印本摘要用 arXiv API 核对，Anthropic 两篇用官网原文核对。率都写了分母：Rep2Skill 是两个仿真环境、两个开源模型、三次种子；APEX 是 690 次尝试；Safety 是 48 份框架历史；RPG 的 30 次是物理试验，22 是仿真任务数，两者不要加在一起。</p>
-    <p>上一篇专题：<a href="/frontier/llm-agent-tech-landscape.html">冻底座、改脚手架（09-27）</a> · <a href="/frontier/rsi-llm-agent-self-evolution.html">递归自改进（09-26）</a></p>
-  </footer>
+<section id="check">
+  <h2><span>8</span>三个检查</h2>
+  <p>下面三条是按这些实验能直接做的检查。论文没有给出产品方案。</p>
+  <p>权限、依赖或工具合同变了之后，废掉旧分，用当前条件重跑将要上线的那一版。只刷新归档、不重跑当前运行位，原测试集可以变绿，新拼出来的情况仍会漏。</p>
+  <p>没有当前仍通过的版本时，停止运行。失败的现任不继续留在运行位。下一轮编辑从最初那份正确程序，或从当前仍通过的回退开始。Zhang 等人的比较里，从失败现任接着改，恢复更差，幅度看编辑器。</p>
+  <p>技能写进任务目录的进度、开场写下的偏好排序，都不能单独当作现在的用户同意。同意只认原始请求里写明的那一部分。APEX 的提示词防御把攻击从 84.3% 压到 59.1%，同时把 72 个正常任务的通过率从 86.7% 打到 56.3%。检查要加在记录的使用处，并且单独看正常任务，不能只看攻击率下降。</p>
+</section>
+
+<section id="src">
+  <h2><span>9</span>出处和没做的</h2>
+  <p>预印本没有同行评审。数字来自 2026-10-05 抓到的 arXiv HTML 或 Anthropic 原文。</p>
+  <ul>
+    <li><a href="https://arxiv.org/abs/2610.01073">Safety Must Survive Self-Improvement</a>，Yunbei Zhang 等，arXiv:2610.01073，2026-10-01。22/48、刷新、keep-after-rejection、最初版本、43% 部署节省。</li>
+    <li><a href="https://arxiv.org/abs/2610.01564">Chaining Skills to Hijack LLM Agents</a>，Tian Dong 等，arXiv:2610.01564，2026-10-01。512/690，以及 GPT-5.4 上的链、单技能和提示词防御。</li>
+    <li><a href="https://www.anthropic.com/research/project-swap">Project Swap</a>，Anthropic，2026-09-24。0.89、0.60、0.55、85%，以及 0.02 与 0.12 的不同基准。</li>
+    <li><a href="https://arxiv.org/abs/2610.00906">ActiveSaddler</a>，Sungho Park 等，arXiv:2610.00906。GAIA2 +4.4 pp，Terminal-Bench 2.0 +7.5 pp。</li>
+    <li><a href="https://arxiv.org/abs/2609.39149">Rep2Skill</a>，Kaixing Zhang 等，arXiv:2609.39149，2026-09-30。ALFWorld 52.24% / 69.90%，+4.98 / +7.77 pp。</li>
+    <li><a href="https://arxiv.org/abs/2610.02204">RPG</a>，Yen-Jen Wang 等，arXiv:2610.02204。仿真 28.6% → 95.0%（22 个任务）；物理试验 30 次。</li>
+    <li><a href="https://arxiv.org/abs/2610.02038">Mímir</a>，Yimeng Liu 等，arXiv:2610.02038。灌溉量约少 51%。</li>
+  </ul>
+  <p>没做的：没有跑他们的测试台；独立拼出的测试具体怎么拼，摘录里没有展开；43% 没有拆成他们的成本公式；编辑器模型名字摘要里没有，不写；Reddit 和 X 没有登录态，不收；ACL / NeurIPS / ICML 这几天没有新的 agent 录用条目进入这篇论证，不列。</p>
+  <p>谱系在 <a href="/frontier/rsi-llm-agent-self-evolution.html">递归自改进前世今生</a>。增量落在哪一层，在 <a href="/frontier/llm-agent-tech-landscape.html">冻底座、改脚手架</a>。这两篇不在这里重写。</p>
+</section>
 </main>
+</div>
 </body>
 </html>
