@@ -613,7 +613,7 @@
   <div class="eq">L = T² · KL( p_T(· ; T)  ∥  p_S(· ; T) )  +  λ · CE(y, p_S(· ; 1))</div>
   <p>前面那项是蒸馏，后面那项是真实标签。T² 是因为温度会把梯度压扁，乘回去才能让软标签这项的量级正常。Hinton 原文强调：软标签带来的梯度比硬标签小，不乘 T²，这项会被真实标签盖掉。</p>
   <div class="callout purple">
-    创新点其实就两句。第一，用教师的整张分布当监督，不只用 argmax。第二，用温度把那张分布「加热」，让错误类之间的相对大小变得可学。后面 10 年的变体，大多是在「还对齐哪些内部量」上加戏。
+    创新点就两句。第一，用教师的整张分布当监督，不只用 argmax。第二，用温度把那张分布「加热」，让错误类之间的相对大小变得可学。后面 10 年的变体，大多是在「还对齐哪些内部量」上加戏。
   </div>
   <h3>同时期旁边的两根枝</h3>
   <div class="two-col">
@@ -667,7 +667,7 @@
     <li><strong>注意力</strong>：谁在看谁。MiniLM 发现，不必层层对齐，蒸好关键一层的关系矩阵就够。</li>
   </ul>
   <div class="callout">
-    这个阶段的默认设定：教师冻结、数据离线、学生在教师见过的输入上模仿。序列还短，曝光偏差不致命。真正把蒸馏从「压缩编码器」变成「教生成模型怎么写」，是下一站。
+    这个阶段的默认设定：教师冻结、数据离线、学生在教师见过的输入上模仿。序列还短，曝光偏差不致命。蒸馏从「压缩编码器」变成「教生成模型怎么写」，是下一站。
   </div>
 </section>
 
@@ -677,7 +677,7 @@
   <h3>词级蒸馏 vs 序列级蒸馏</h3>
   <p><strong>Word-KD</strong>：每个位置上，学生去拟合教师的下一个词分布。还是 Hinton，只是每步做一次。</p>
   <p><strong>Seq-KD</strong>：教师对训练集做 beam search，得到完整译文，学生在这些译文上做普通交叉熵。实现上就是「用教师造一份新语料，再 SFT」。Kim &amp; Rush 发现，序列级往往比词级更有效，学生分布更尖，贪心解码就能接近教师的 beam 搜索。</p>
-  <p>2023 年 Alpaca、Vicuna 那一波，其实就是 Seq-KD 的黑盒版：GPT-4 / ChatGPT 写出回答，开源小模型在这些回答上做 SFT。教师内部 logits 拿不到，只能抄文本。Xu 等人 2024 的 LLM 蒸馏综述把这叫 black-box KD，把能拿到分布或隐状态的叫 white-box KD。</p>
+  <p>2023 年 Alpaca、Vicuna 那一波是 Seq-KD 的黑盒版：GPT-4 / ChatGPT 写出回答，开源小模型在这些回答上做 SFT。教师内部 logits 拿不到，只能抄文本。Xu 等人 2024 的 LLM 蒸馏综述把这叫 black-box KD，把能拿到分布或隐状态的叫 white-box KD。</p>
   <div class="callout warning">
     SFT 抄教师文本很有效，也有硬伤。学生训练时看到的前缀几乎都是教师写对的。推理时它自己写，前缀一旦偏了，后面的状态训练时没见过。错误会顺着序列往下滚。这就是曝光偏差，Bengio 2015 的 scheduled sampling 和 Ross 2011 的 DAgger 早就在说。序列越长，问题越大。推理模型的思维链动辄几千 token，离线蒸馏开始吃力。
   </div>
@@ -818,7 +818,7 @@
   <text x="1190" y="712" text-anchor="middle" font-size="14" fill="#475569">比 RL 的最终对错奖励信息量大一个数量级</text>
 
   <rect x="40" y="810" width="1520" height="60" rx="10" fill="#fffbeb" stroke="#fbbf24" stroke-width="2"/>
-  <text x="800" y="848" text-anchor="middle" font-size="17" font-weight="600" fill="#92400e">记住：OPD 改的不是「匹配什么」，而是「在谁踩过的状态上匹配」。</text>
+  <text x="800" y="848" text-anchor="middle" font-size="17" font-weight="600" fill="#92400e">OPD 改的是「在谁踩过的状态上匹配」。匹配目标没变。</text>
 </svg>
 </div>
   <div class="figure-caption">图 4　离线蒸馏训练在教师的完美前缀上；OPD 训练在学生自己会走到的前缀上。改的是状态分布，不是教师本身。</div>
@@ -827,7 +827,7 @@
   <p>所以 OPD 的定义可以写成一句很窄的话：</p>
   <div class="callout purple">
     <strong>学生用当前策略采样轨迹，教师在这些学生状态上给出 token 级监督（通常是 logprob 或 logits），学生据此更新。</strong>
-    不是 DPO，不是「在线偏好蒸馏」。LLM 语境里 OPD = On-Policy Distillation。
+    这里的 OPD 是 On-Policy Distillation，全称是在策略蒸馏。DPO 和在线偏好蒸馏是另外的名字。
   </div>
 </section>
 
@@ -988,7 +988,7 @@ training.forward_backward(traj, loss_fn=<span class="code-string">"importance_sa
 
 <section id="sec-variants" class="section-card">
   <h2><span class="num">10</span> OPD 变种地图</h2>
-  <p>2025–2026 年的论文大多不是再发明一遍 OPD，而是在四个旋钮上打补丁。Song &amp; Zheng 2026 的综述把领域收成「优化什么、信号从哪来、怎么稳住」。下面按工程更有用的切法画。</p>
+  <p>2025–2026 年的论文大多在四个旋钮上给 OPD 打补丁。Song &amp; Zheng 2026 的综述把领域收成「优化什么、信号从哪来、怎么稳住」。下面按工程更有用的切法画。</p>
   <div class="figure-wrapper">
   <div class="figure-svg-container"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 900" width="100%" height="auto" preserveAspectRatio="xMidYMid meet">
   <style>
@@ -1088,7 +1088,7 @@ training.forward_backward(traj, loss_fn=<span class="code-string">"importance_sa
   <ul>
     <li><strong>Skew KL</strong>（DistiLLM）：数值稳定。</li>
     <li><strong>OPD+</strong>（2026）：很多实现为了稳，对 log 比 stop-grad。作者证明这对一般 f-散度是有偏的；改回忠实梯度之后，前向 KL 和 JSD 不再崩，甚至在部分工具使用任务上超过反向 KL。</li>
-    <li><strong>解耦前缀 × KL 方向</strong>（2026）：序列级 KL 看起来只能「教师前缀+前向」或「学生前缀+反向」。token 级其实可以叉开，得到四种目标，分别对应离线 SFT、DAgger 式在策略 SFT、离线 RL 式蒸馏、标准 OPD。长序列蒸馏需要给前向 KL 足够权重，否则熵塌、回复变长。</li>
+    <li><strong>解耦前缀 × KL 方向</strong>（2026）：序列级 KL 看起来只能「教师前缀+前向」或「学生前缀+反向」。token 级可以叉开，得到四种目标，分别对应离线 SFT、DAgger 式在策略 SFT、离线 RL 式蒸馏、标准 OPD。长序列蒸馏需要给前向 KL 足够权重，否则熵塌、回复变长。</li>
   </ul>
 
   <h3>10.3 奖励：要不要冲过教师</h3>

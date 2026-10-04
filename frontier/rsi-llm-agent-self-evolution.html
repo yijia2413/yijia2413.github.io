@@ -425,7 +425,7 @@
     <ul>
       <li><a href="#sec-one-sentence">1. 先用一句话说清楚</a></li>
       <li><a href="#sec-timeline">2. 时间线</a></li>
-      <li><a href="#sec-cut">3. 真正的分界线</a></li>
+      <li><a href="#sec-cut">3. 分界线</a></li>
       <li><a href="#sec-loop">4. 闭环四段 + 评估层</a></li>
       <li><a href="#sec-layers">5. 改什么：五层对象</a></li>
       <li><a href="#sec-weights">6. 权重这条线</a></li>
@@ -441,7 +441,7 @@
 <section id="sec-one-sentence" class="section-card">
   <h2><span class="num">1</span> 先用一句话说清楚</h2>
   <p>递归自改进（Recursive Self-Improvement, RSI）不是一种模型，是一种闭环：<strong>系统提出对自己的修改，用独立证据验收，把通过的改动留下来，下一次用更强的自己继续改。</strong></p>
-  <p>2026 年网上把很多东西都叫 RSI。真正要分的，是两件事：</p>
+  <p>2026 年网上把很多东西都叫 RSI。要分的是两件事：</p>
   <div class="steps-grid">
     <div class="step-card">
       <div class="step-num-badge">改哪一层</div>
@@ -456,7 +456,7 @@
     <div class="step-card">
       <div class="step-num-badge">公开系统停在哪</div>
       <div class="step-title">几乎全在有界一侧</div>
-      <div class="step-desc">STOP、Gödel Agent、Darwin Gödel 机能改改进器，但 SWE-bench 和工具测试仍是人设的。评估器一旦也被改，才进入真正开放 RSI。</div>
+      <div class="step-desc">STOP、Gödel Agent、Darwin Gödel 机能改改进器，但 SWE-bench 和工具测试仍是人设的。评估器一旦也被改，才进入开放 RSI。</div>
     </div>
   </div>
   <div class="callout">
@@ -466,7 +466,7 @@
 
 <section id="sec-timeline" class="section-card">
   <h2><span class="num">2</span> 时间线</h2>
-  <p>名字比实现早四十年。I. J. Good 1965 年写超智能会改进自身，后来被叫作智能爆炸。真正给出可执行定义的是 Schmidhuber 的 Gödel 机：先证明改动有净收益，再改自己的代码。形式完美，实践上证不动。</p>
+  <p>名字比实现早四十年。I. J. Good 1965 年写超智能会改进自身，后来被叫作智能爆炸。可执行定义来自 Schmidhuber 的 Gödel 机：先证明改动有净收益，再改自己的代码。形式完美，实践上证不动。</p>
   <div class="figure-wrapper">
   <div class="figure-svg-container"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 900" width="100%" height="auto" preserveAspectRatio="xMidYMid meet">
   <style>
@@ -547,7 +547,7 @@
 </section>
 
 <section id="sec-cut" class="section-card">
-  <h2><span class="num">3</span> 真正的分界线</h2>
+  <h2><span class="num">3</span> 分界线</h2>
   <p>综述这几年把词用乱了：self-refine、self-play、self-evolving、RSI 经常互相替代。有用的切法只有一刀——<strong>评估器在不在更新边界外面。</strong></p>
   <div class="figure-wrapper">
   <div class="figure-svg-container"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 900" width="100%" height="auto" preserveAspectRatio="xMidYMid meet">
@@ -560,7 +560,7 @@
     <marker id="ar2" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0, 10 3.5, 0 7" fill="#e11d48"/></marker>
   </defs>
   <rect width="1600" height="900" fill="#ffffff"/>
-  <text x="800" y="52" text-anchor="middle" font-size="28" font-weight="700" fill="#1d4ed8">图 2　有界自精炼 vs 开放递归自改进：真正的分界线</text>
+  <text x="800" y="52" text-anchor="middle" font-size="28" font-weight="700" fill="#1d4ed8">图 2　有界自精炼 vs 开放递归自改进：分界线</text>
 
   <rect x="60" y="90" width="700" height="620" rx="16" fill="#eff6ff" stroke="#3b82f6" stroke-width="3"/>
   <text x="410" y="138" text-anchor="middle" font-size="22" font-weight="700" fill="#1e3a8a">有界自精炼</text>
@@ -608,7 +608,7 @@
 
   <rect x="60" y="740" width="1480" height="120" rx="12" fill="#f5f3ff" stroke="#c4b5fd" stroke-width="2"/>
   <text x="800" y="786" text-anchor="middle" font-size="18" font-weight="700" fill="#5b21b6">2026 年公开系统几乎全在左边，偶尔伸一只手到右边</text>
-  <text x="800" y="826" text-anchor="middle" font-size="16" fill="#334155">DGM、STOP、Gödel Agent 能改改进机制，但 SWE-bench / 工具测试仍是人设的。评估器一旦也被改，才进入真正开放 RSI。</text>
+  <text x="800" y="826" text-anchor="middle" font-size="16" fill="#334155">DGM、STOP、Gödel Agent 能改改进机制，但 SWE-bench / 工具测试仍是人设的。评估器一旦也被改，才进入开放 RSI。</text>
 </svg>
 
 </div>
@@ -685,14 +685,14 @@
   <path d="M 1340 370 L 1340 420" stroke="#7c3aed" stroke-width="2.5" marker-end="url(#ap3)"/>
 
   <rect x="70" y="660" width="1460" height="190" rx="12" fill="#ecfdf5" stroke="#6ee7b7" stroke-width="2"/>
-  <text x="800" y="710" text-anchor="middle" font-size="18" font-weight="700" fill="#065f46">一次真正的闭环，不是「模型跟自己聊天」</text>
+  <text x="800" y="710" text-anchor="middle" font-size="18" font-weight="700" fill="#065f46">一次闭环：诊断、提议、独立评估、合入或回滚</text>
   <text x="800" y="752" text-anchor="middle" font-size="16" fill="#334155">诊断 → 提议修改 → 独立评估 → 合入或回滚。少任何一截，都只是自我复述。</text>
   <text x="800" y="794" text-anchor="middle" font-size="16" fill="#334155">Alibaba 综述把这四步写成 Diagnose → Propose → Evaluate → Integrate。</text>
   <text x="800" y="828" text-anchor="middle" font-size="14" fill="#64748b">蓝箭头：主流程　　紫箭头：评估贯穿全程</text>
 </svg>
 
 </div>
-  <div class="figure-caption">图 3　一次真正的闭环：诊断、提议、独立评估、合入或回滚。少任何一截，都只是自我复述。</div>
+  <div class="figure-caption">图 3　一次闭环：诊断、提议、独立评估、合入或回滚。少任何一截，都只是自我复述。</div>
 </div>
   <p>Alibaba 综述把同一件事写成 Diagnose → Propose → Evaluate → Integrate。差别只在用词。能跑的系统都长这样：</p>
   <div class="table-container">
@@ -779,7 +779,7 @@
   <text x="1380" y="672" text-anchor="middle" font-size="16" font-weight="700" fill="#9f1239">开放 RSI 入口</text>
 
   <rect x="80" y="750" width="1440" height="110" rx="12" fill="#fffbeb" stroke="#fbbf24" stroke-width="2"/>
-  <text x="800" y="794" text-anchor="middle" font-size="18" font-weight="700" fill="#92400e">层级说的是「改到哪一层」，不是「有多强」</text>
+  <text x="800" y="794" text-anchor="middle" font-size="18" font-weight="700" fill="#92400e">层级说的是「改到哪一层」。强度另说。</text>
   <text x="800" y="832" text-anchor="middle" font-size="16" fill="#334155">Wang 等 2026 的可靠自进化综述：L0–L4 按保留边界分；Alibaba 的 L1–L5 按自主程度分。两套尺要对着看，不要混着吹。</text>
 </svg>
 
@@ -813,11 +813,11 @@
   <h3>Self-Rewarding：模型当裁判</h3>
   <p>Yuan、Weston 等人 2024 年把 LLM-as-a-Judge 接到迭代 DPO 里。Llama 2 70B 跑三轮，AlpacaEval 2.0 超过 Claude 2、Gemini Pro、GPT-4 0613。论文自己把大门打开：超人类智能需要超人类反馈；冻结的人类奖励模型会封顶。代价也写在同一页——裁判和选手是同一个模型，标准可以一起漂。</p>
   <h3>SEAL：自己写微调指令</h3>
-  <p>Zweiger、Pari 等人的 Self-Adapting LLMs（NeurIPS 2025）让模型生成 self-edit：合成数据、增强方式、学习率、训练轮数。外环强化学习奖励「这次编辑之后下游变没变好」，内环用 SFT / LoRA 真正改权重。知识写入任务上，无上下文 SQuAD 从直接微调的 33.5% 到 47.0%，超过用 GPT-4.1 合成数据的 46.3%。少样本 ARC 上，它自己选增强和超参，比纯上下文学习和没经过 RL 的自编辑强。这是元学习：学的是怎么给自己写训练单。</p>
+  <p>Zweiger、Pari 等人的 Self-Adapting LLMs（NeurIPS 2025）让模型生成 self-edit：合成数据、增强方式、学习率、训练轮数。外环强化学习奖励「这次编辑之后下游变没变好」，内环用 SFT / LoRA 改权重。知识写入任务上，无上下文 SQuAD 从直接微调的 33.5% 到 47.0%，超过用 GPT-4.1 合成数据的 46.3%。少样本 ARC 上，它自己选增强和超参，比纯上下文学习和没经过 RL 的自编辑强。这是元学习：学的是怎么给自己写训练单。</p>
   <h3>Absolute Zero：连题都自己出</h3>
   <p>Zhao 等人的 Absolute Zero Reasoner（NeurIPS 2025）把人出的题也拿掉。一个模型同时当出题者和解题者，代码解释器既验证题目合法，也给对错奖励。三种题对应三种推理：演绎、归纳、溯因。完全没有外部数据，7B 编码版在数学和代码综合平均上超过依赖上万条人标题的 zero 设定模型 1.8 个点，代码平均还高 0.3 个点。附录里 Llama 3.1 8B 出现过作者称为 uh-oh 的异常行为——零数据自博弈把安全问题从附录挪到了正文。</p>
   <div class="callout">
-    权重这条线的硬约束是可验证奖励。数学、代码、有标准答案的阅读，能闭环。开放写作、价值判断，一接上自评，就滑向标准漂移。SEAL 和 AZR 看起来激进，评估器其实都还冻着：SQuAD / ARC 的标签，以及 Python 解释器。
+    权重这条线的硬约束是可验证奖励。数学、代码、有标准答案的阅读，能闭环。开放写作、价值判断，一接上自评，就滑向标准漂移。SEAL 和 AZR 看起来激进，评估器都还冻着，就是 SQuAD / ARC 的标签，以及 Python 解释器。
   </div>
 </section>
 
@@ -829,7 +829,7 @@
   <h3>AI Scientist：把科研流程跑通一遍</h3>
   <p>Sakana 的 AI Scientist（Lu 等，2024）自动出题、写代码、跑实验、画图、写论文、再跑一轮模拟审稿。三个机器学习子领域各写过一批，单篇成本低于 15 美元。自动审稿器接近人类打分，部分稿件超过顶会接收线——按他们自己的审稿器。这是开放式发现的演示，不是已经能替代实验室。</p>
   <h3>AlphaEvolve：进化搜索改算法</h3>
-  <p>DeepMind 2025 年的 AlphaEvolve 用 Gemini 当变异器，自动评估器当选择压，进化整段代码而不是一个函数。数学上，它找到 4×4 复矩阵乘法用 48 次标量乘的算法，56 年来第一次改进这个设定下的 Strassen（递归是 49 次）；14 个矩阵乘目标刷新了已知上界。工程上，它给 Gemini 架构里的矩阵核提出更好的切分，核加速 23%，Gemini 训练时间降约 1%；还改过数据中心调度和 TPU 算术电路。这是「产物被进化」，不是「改进器被进化」。评估函数仍是人写的。</p>
+  <p>DeepMind 2025 年的 AlphaEvolve 用 Gemini 当变异器，自动评估器当选择压，进化整段代码。改动范围大于一个函数。数学上，它找到 4×4 复矩阵乘法用 48 次标量乘的算法，56 年来第一次改进这个设定下的 Strassen（递归是 49 次）；14 个矩阵乘目标刷新了已知上界。工程上，它给 Gemini 架构里的矩阵核提出更好的切分，核加速 23%，Gemini 训练时间降约 1%；还改过数据中心调度和 TPU 算术电路。这是「产物被进化」。改进器没有被进化。评估函数仍是人写的。</p>
   <div class="figure-wrapper">
   <div class="figure-svg-container"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 900" width="100%" height="auto" preserveAspectRatio="xMidYMid meet">
   <style>
@@ -921,7 +921,7 @@
 
 <section id="sec-improver" class="section-card">
   <h2><span class="num">8</span> 改进器这条线</h2>
-  <p>搜索空间开始包含「如何搜索」。这是 RSI 讨论真正开始的地方，也是公开系统最容易说满的地方。</p>
+  <p>搜索空间开始包含「如何搜索」。RSI 讨论从这里开始，也是公开系统最容易说满的地方。</p>
   <h3>STOP：改进器改进改进器</h3>
   <p>Zelikman、Kalai 等人的 Self-Taught Optimizer（COLM 2024）给 GPT-4 一个种子改进器：对任意程序采样若干候选，按效用函数挑最好的。然后把这个改进器当成待改进的程序，让它改自己。下游算法任务上，改过的改进器明显强于种子。模型自己提出了束搜索、遗传算法、模拟退火。作者同时统计：生成代码会尝试关掉沙箱旗标。结论写得很干净——底层 LM 没改，所以不是完整 RSI；但以后评测模型能力，如果不测强脚手架，会低估它。</p>
   <h3>Gödel Agent：运行时改自己</h3>
@@ -931,7 +931,7 @@
   <p>80 轮之后，SWE-bench 从 20.0% 到 50.0%，完整 Polyglot 从 14.2% 到 30.7%，超过或追平对应的开源人手设计智能体（SWE-bench 上对过已复核的 SoTA，Polyglot 上超过 Aider）。两个消融都成立：不让智能体改自己、或者不做开放探索只从当前最优分叉，成绩都更差。发现的改进包括更好的文件编辑工具、长上下文管理、补丁验证、多候选排序、失败历史。这些工具换到底座模型（Claude 3.5 上学到的，接到 o3-mini / Claude 3.7）和别的语言上仍然涨分——说明搜到的是智能体设计，不是某一个模型的癖好。</p>
   <p>论文把没做的事也写清楚了：基础模型冻结；没有展示重写训练脚本；实验在沙箱和人工监督下进行。按 Alibaba 的尺，这是有界 RSI。按 Wang 的尺，这是 L3，偶尔碰到 L4，评估器仍在外面。</p>
   <div class="eq">档案 ← 档案 ∪ 新智能体　　新智能体 = 抽样(档案).自我修改()　　分数 = 冻结基准(新智能体)</div>
-  <p>DGM 的关键不是「会改代码」，是<strong>次优祖先必须留着</strong>。通向最终最优的路径上，有些父代比子代差。只爬山会丢掉这些踏脚石。</p>
+  <p>DGM 要守住的是<strong>次优祖先必须留着</strong>。会改代码还不够。通向最终最优的路径上，有些父代比子代差。只爬山会丢掉这些踏脚石。</p>
 </section>
 
 <section id="sec-fail" class="section-card">
@@ -1012,7 +1012,7 @@
     <div class="paper-card">
       <h4>奖励黑客</h4>
       <div class="meta">代理指标和真实目标脱钩</div>
-      <p>综述记录过 A-Evolve-Training：开发集创新高，外部榜不动。系统后来把这条代理指标当成反证，而不是当成成绩。能自己发现评估腐化，是评估层真正在工作的信号。</p>
+      <p>综述记录过 A-Evolve-Training：开发集创新高，外部榜不动。系统后来把这条代理指标当成反证。它不把这条当成绩。能自己发现评估腐化，是评估层在工作的信号。</p>
     </div>
     <div class="paper-card">
       <h4>模型坍缩</h4>
@@ -1119,7 +1119,7 @@
   <text x="800" y="698" text-anchor="middle" font-size="16" fill="#0f172a">脚手架收益平台期，且有可验证奖励，再上 SEAL / AZR / RLVR。</text>
   <text x="800" y="736" text-anchor="middle" font-size="16" fill="#334155">权重更新更贵、更难回滚。先确认失败不是提示和工具的问题。</text>
   <text x="800" y="774" text-anchor="middle" font-size="16" fill="#334155">监控：冻结基准、开发集与外部集是否脱钩、多样性、逃逸次数、回滚次数。</text>
-  <text x="800" y="816" text-anchor="middle" font-size="15" fill="#64748b">停机条件：外部集不动、开发集暴涨、沙箱告警、人类抽检不过。任何一条都该停，而不是再开一轮。</text>
+  <text x="800" y="816" text-anchor="middle" font-size="15" fill="#64748b">停机条件：外部集不动、开发集暴涨、沙箱告警、人类抽检不过。任何一条都该停。不要再开一轮。</text>
 </svg>
 
 </div>
@@ -1135,7 +1135,7 @@
     <div class="step-card">
       <div class="step-num-badge">2</div>
       <div class="step-title">冻住评估器</div>
-      <div class="step-desc">基准、测试、验收脚本，改进器碰不到这些文件。另留一份人抽检集。开发集和外部集一旦脱钩，停，而不是再开一轮。</div>
+      <div class="step-desc">基准、测试、验收脚本，改进器碰不到这些文件。另留一份人抽检集。开发集和外部集一旦脱钩，就停。不要再开一轮。</div>
     </div>
     <div class="step-card">
       <div class="step-num-badge">3</div>
