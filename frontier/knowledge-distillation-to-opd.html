@@ -423,7 +423,7 @@
   <aside>
     <h3>目录导航</h3>
     <ul>
-      <li><a href="#sec-one-sentence">1. 先用一句话说清楚</a></li>
+      <li><a href="#sec-one-sentence">1. 先说清一件事</a></li>
       <li><a href="#sec-timeline">2. 时间线</a></li>
       <li><a href="#sec-hinton">3. Hinton：软标签里的暗知识</a></li>
       <li><a href="#sec-bert">4. Transformer 压缩年代</a></li>
@@ -441,8 +441,8 @@
   <main>
 
 <section id="sec-one-sentence" class="section-card">
-  <h2><span class="num">1</span> 先用一句话说清楚</h2>
-  <p>蒸馏不是一种模型，是一种训练方式：<strong>教师已经会了，学生容量更小或更便宜，让学生去对齐教师的行为。</strong></p>
+  <h2><span class="num">1</span> 先说清一件事</h2>
+  <p>蒸馏是一种训练方式：<strong>教师已经会了，学生容量更小或更便宜，让学生去对齐教师的行为。</strong></p>
   <p>对齐的对象可以很不一样：</p>
   <div class="steps-grid">
     <div class="step-card">
@@ -632,7 +632,7 @@
 
 <section id="sec-bert" class="section-card">
   <h2><span class="num">4</span> Transformer 压缩年代</h2>
-  <p>2018 年底 BERT 出来之后，蒸馏的主战场从 CNN 分类转到「把 12 层 BERT 变成能上线的小编码器」。三篇必须点名。</p>
+  <p>2018 年底 BERT 出来之后，蒸馏的主战场从 CNN 分类转到「把 12 层 BERT 变成能上线的小编码器」。三篇要点名。</p>
   <div class="table-container">
     <table>
       <thead>
@@ -732,7 +732,7 @@
   <text x="1180" y="726" text-anchor="middle" font-size="15" fill="#64748b">MiniLLM / 多数 OPD 默认走这条</text>
 
   <rect x="50" y="800" width="1500" height="70" rx="10" fill="#ecfdf5" stroke="#6ee7b7" stroke-width="2"/>
-  <text x="800" y="844" text-anchor="middle" font-size="18" font-weight="600" fill="#065f46">一句话：分类要覆盖，生成要找对。LLM 蒸馏从「把教师全学会」变成「在自己会走的路上学教师」。</text>
+  <text x="800" y="844" text-anchor="middle" font-size="18" font-weight="600" fill="#065f46">分类要覆盖，生成要找对。LLM 蒸馏从「把教师全学会」变成「在自己会走的路上学教师」。</text>
 </svg>
 </div>
   <div class="figure-caption">图 3　前向 KL 逼学生覆盖教师所有峰；反向 KL 允许学生只锁主峰。MiniLLM 把这件事写成生成蒸馏的默认选择。</div>
