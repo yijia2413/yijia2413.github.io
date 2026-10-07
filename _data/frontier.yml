@@ -1,5 +1,9 @@
 # 前沿技术栏目：独立 HTML 洞察索引。
 # 新增一篇：把 HTML 放到 /frontier/<slug>.html，再在这里加一条。
+- title: "扫到的 MCP 工具，默认先关着"
+  date: "2026-10-06"
+  url: /frontier/2026-10-06-mcp-tools-start-off.html
+  summary: "Uber 的 MCP 网关把内部 API 扫进注册表。每个工具一开始是关闭的，所属团队审查后才打开。当时托管超过 800 个 server、超过 5000 个工具。"
 - title: "测过的优化，为什么还在跑"
   date: "2026-10-05"
   url: /frontier/2026-10-05-tested-opt-still-running.html
