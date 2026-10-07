@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>从零训练类 TypeSafe JEV 的 System One 决策模型工程全指南</title>
+  <title>从零训练类似 TypeSafe JEV 的 System One 决策模型</title>
   <style>
     :root {
       --primary: #1d4ed8;
@@ -380,7 +380,7 @@
 <header>
   <div class="header-badge">AI 体系工程白皮书 · 2026 技术实操版</div>
   <h1>从零训练类似 TypeSafe JEV 的 System One 决策模型</h1>
-  <p>突破自回归 LLM 延迟与幻觉壁垒：深入剖析非自回归结构化评估、RLCD 决策校准、OptionMarker 多头并行前向传播、开源与商业生态产品矩阵、学术论文脉络与工业级业务数据工程实战</p>
+  <p>非自回归结构化评估、RLCD 决策校准、OptionMarker 多头并行前向，以及开源、商业产品和业务数据工程</p>
 </header>
 
 <div class="container">
@@ -396,11 +396,11 @@
       <li><a href="#sec-calibration">7. 后训练温度校准与置信度计算</a></li>
       <li><a href="#sec-serving">8. 高性能推理服务与 API 规范</a></li>
       <li><a href="#sec-eval">9. 评测基准与业务工作流验证</a></li>
-      <li><a href="#sec-opensource-models">10. 开源决策模型全景与基准深度评测</a></li>
-      <li><a href="#sec-business-data">11. 工业级业务数据工程深度实战</a></li>
-      <li><a href="#sec-products">12. 业界产品落地与生态全景矩阵</a></li>
-      <li><a href="#sec-papers">13. 学术论文与理论体系脉络</a></li>
-      <li><a href="#sec-conclusion">14. 工业化落地与选型总结</a></li>
+      <li><a href="#sec-opensource-models">10. 开源决策模型与基准评测</a></li>
+      <li><a href="#sec-business-data">11. 工业级业务数据工程</a></li>
+      <li><a href="#sec-products">12. 业界产品与生态</a></li>
+      <li><a href="#sec-papers">13. 学术论文脉络</a></li>
+      <li><a href="#sec-conclusion">14. 工业化落地与选型</a></li>
     </ul>
   </aside>
 
@@ -875,7 +875,7 @@
     <!-- SECTION 8 -->
     <section id="sec-serving" class="section-card">
       <h2><span class="num">8</span> 高性能推理服务与 API 规范</h2>
-      <p>直接实现与 TypeSafe 官方规范完全兼容的 <code>POST /v1/systemone</code> 接口，无缝接入生态。</p>
+      <p>直接实现与 TypeSafe 官方规范兼容的 <code>POST /v1/systemone</code> 接口，接到现有生态。</p>
     </section>
 
     <!-- SECTION 9 -->
@@ -886,7 +886,7 @@
 
     <!-- SECTION 10 -->
     <section id="sec-opensource-models" class="section-card">
-      <h2><span class="num">10</span> 开源决策模型全景与基准深度评测</h2>
+      <h2><span class="num">10</span> 开源决策模型与基准评测</h2>
       <p>当前开源社区四大主力模型横向对标：</p>
 
       <div class="table-container">
@@ -955,14 +955,14 @@
       <div class="callout danger">
         <strong>OrcaRouter 域迁移泛化失效警告：</strong><br>
         第三方评测机构 OrcaRouter 针对开源模型 Von 进行了未见业务场景的盲测：<strong>若只给裸标签，准确率暴跌至 8.8% ~ 26.7%！</strong><br>
-        其本质原因在于模型是“上下文语义核验器”，必须提供显式、具有操作意义的 <strong>Criteria 准则</strong>。
+        模型是“上下文语义核验器”，要提供显式、具有操作意义的 <strong>Criteria 准则</strong>。
       </div>
     </section>
 
     <!-- SECTION 11 -->
     <section id="sec-business-data" class="section-card">
-      <h2><span class="num">11</span> 工业级业务数据工程深度实战</h2>
-      <p>决定商业落地生死的正是<strong>业务工作流数据工程（占 85%）</strong>。</p>
+      <h2><span class="num">11</span> 工业级业务数据工程</h2>
+      <p>商业落地里，<strong>业务工作流数据工程占 85%</strong>。</p>
 
       <div class="figure-wrapper">
         <div class="figure-svg-container">
@@ -1056,7 +1056,7 @@
 
     <!-- SECTION 12 (NEW: PRODUCTS & ECOSYSTEM) -->
     <section id="sec-products" class="section-card">
-      <h2><span class="num">12</span> 业界产品落地与生态全景矩阵</h2>
+      <h2><span class="num">12</span> 业界产品与生态</h2>
       <p>
         JEV 与 System One 已经做成工业界能用的软硬件产品。研究概念还在，产品也已经在了。
         以下系统梳理业界当前<strong>商业级基础设施、开源开发套件与八大杀手级应用场景</strong>。
@@ -1151,7 +1151,7 @@
             <text x="785" y="475" font-family="-apple-system, sans-serif" font-size="11" font-weight="600" fill="#059669" text-anchor="middle">TD(λ=1.0) 轨迹建摸 / 免费</text>
           </svg>
         </div>
-        <div class="figure-caption">图 6：TypeSafe JEV 与 System One 决策模型在工业界的四层产品与生态全景矩阵</div>
+        <div class="figure-caption">图 6：TypeSafe JEV 与 System One 决策模型在工业界的四层产品与生态</div>
       </div>
 
       <h3>业界八大杀手级产品化应用场景</h3>
@@ -1229,7 +1229,7 @@
 
     <!-- SECTION 13 (NEW: PAPERS & THEORETICAL ROOTS) -->
     <section id="sec-papers" class="section-card">
-      <h2><span class="num">13</span> 学术论文与理论体系脉络</h2>
+      <h2><span class="num">13</span> 学术论文脉络</h2>
       <p>
         JEV 与 System One 的诞生并非凭空出现，其底层融合了<strong>自然语言处理、强化学习反思与统计真分数校准理论</strong>。
         以下整理该技术流派的关键学术文献脉络：
