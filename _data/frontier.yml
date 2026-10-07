@@ -1,5 +1,9 @@
 # 前沿技术栏目：独立 HTML 洞察索引。
 # 新增一篇：把 HTML 放到 /frontier/<slug>.html，再在这里加一条。
+- title: "Harness 是什么：套在模型外面的那层软件"
+  date: "2026-10-07"
+  url: /frontier/2026-10-07-what-is-a-harness.html
+  summary: "Earendil 把 agent harness 拆成系统提示、工具、循环、翻译层。用户能拥有并改这层软件，同一套带子可以换模型。Pi 用户互相分享了超过 5000 个扩展。"
 - title: "扫到的 MCP 工具，默认先关着"
   date: "2026-10-06"
   url: /frontier/2026-10-06-mcp-tools-start-off.html

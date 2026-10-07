@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Harness 是什么：套在模型外面的那层软件</title>
+  <style>
+    :root { --ink:#0f172a; --muted:#475569; --line:#e2e8f0; --bg:#f8fafc; --blue:#1d4ed8; --blue-bg:#eff6ff; --amber:#b45309; --green:#047857; --rose:#be123c; }
+    * { box-sizing: border-box; }
+    body { margin:0; font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Noto Sans SC",sans-serif; background:var(--bg); color:var(--ink); line-height:1.75; font-size:17px; }
+    header { background:#0f172a; color:#f8fafc; padding:36px 24px 28px; border-bottom:4px solid #2563eb; }
+    header .inner { max-width:1080px; margin:0 auto; }
+    .badge { display:inline-block; border:1px solid #93c5fd; color:#bfdbfe; border-radius:999px; padding:2px 12px; font-size:13px; }
+    h1 { font-size:2rem; line-height:1.3; margin:12px 0; }
+    header p { color:#cbd5e1; margin:0; max-width:760px; }
+    .layout { max-width:1080px; margin:28px auto 64px; padding:0 20px; display:grid; grid-template-columns:220px minmax(0,1fr); gap:28px; }
+    aside { position:sticky; top:16px; align-self:start; background:#fff; border:1px solid var(--line); border-radius:12px; padding:14px; }
+    aside p { font-size:12px; letter-spacing:.06em; color:var(--muted); margin:0 0 8px; }
+    aside a { display:block; color:var(--ink); text-decoration:none; font-size:14px; padding:6px 8px; border-radius:6px; }
+    aside a:hover { background:var(--blue-bg); color:var(--blue); }
+    h2 { font-size:1.35rem; margin:0 0 12px; }
+    h2 span { display:inline-block; background:var(--blue); color:#fff; border-radius:6px; font-size:13px; padding:2px 8px; margin-right:8px; }
+    section { background:#fff; border:1px solid var(--line); border-radius:14px; padding:26px 28px; margin-bottom:22px; }
+    p { margin:0 0 14px; }
+    a { color:var(--blue); }
+    figure { margin:16px 0; background:#fff; border:1px solid var(--line); border-radius:12px; padding:10px; }
+    figcaption { color:var(--muted); font-size:14px; margin-top:6px; }
+    table { width:100%; border-collapse:collapse; font-size:15px; }
+    th, td { border:1px solid var(--line); padding:8px 10px; text-align:left; vertical-align:top; }
+    th { background:#f1f5f9; }
+    svg text { font-family:-apple-system,"PingFang SC","Noto Sans SC",sans-serif; }
+    @media (max-width:860px) { .layout { grid-template-columns:1fr; } aside { position:static; } h1 { font-size:1.55rem; } section { padding:18px 16px; } }
+  </style>
+</head>
+<body>
+<header>
+  <div class="inner">
+    <span class="badge">FRONTIER · 2026-10-07 · Earendil</span>
+    <h1>Harness 是什么：套在模型外面的那层软件</h1>
+    <p>模型在里面。系统提示、工具、循环、翻译层在外面。外面这层用户可以拥有、改、换模型。Earendil 用攀岩安全带把这件事讲完。</p>
+  </div>
+</header>
+<div class="layout">
+<aside>
+  <p>目录</p>
+  <a href="#what">1 讨论什么</a>
+  <a href="#four">2 四个部件</a>
+  <a href="#loop">3 一次循环怎么走完</a>
+  <a href="#own">4 翻译层和所有权</a>
+  <a href="#result">5 结果</a>
+  <a href="#hard">6 难点</a>
+  <a href="#new">7 新在哪里</a>
+  <a href="#src">8 出处</a>
+</aside>
+<main>
+<section id="what">
+  <h2><span>1</span>讨论什么</h2>
+  <p>Earendil 在 2026 年 10 月 1 日发了 <a href="https://earendil.com/posts/what-is-a-harness/">What is a Harness?</a>。对象是听过 agent harness、又不好意思问它是什么的人。已经泡在 AI 新闻流里的人，这篇不打算说服他们。</p>
+  <p>他们先从攀岩安全带讲起。安全带把人连到绳和锁上，限制坠落、控制节奏、规定路线。粉袋、岩钉、快挂可以挂在上面。换一座山，这套带子还能带走。地形不同，挂什么可以改。杂技和 arborist 也用同类装备。拥有它的人能把它改成自己的。</p>
+  <p>Agent harness 在结构和功能上对得上。外面有人把 Agent 写成 Model + Harness。原文说这个等式写得太简。Harness 用模型做出 agent，最早一批用在写代码。现在各类型的 AI agent 核心都坐着一层 harness。弄懂它，才弄得懂 agent 在跑什么。</p>
+  <p>定义原句：an agent harness is a piece of software that provides an environment for an AI model to operate within。大多数模型本身，终端用户拥有不了。Harness 可以。工程师常用终端直接跟 <a href="https://pi.dev/">Pi</a> 说话。<a href="https://openclaw.ai/">OpenClaw</a> 走 iMessage、聊天软件或邮件。Earendil 自己的 <a href="https://www.lefos.com/about">Lefos</a> 主要走邮件。界面不同，干的事收成四件。</p>
+</section>
+<section id="four">
+  <h2><span>2</span>四个部件</h2>
+  <figure>
+    <svg viewBox="0 0 920 240" width="100%" role="img" aria-label="Harness 的四个部件围着模型">
+      <rect x="1" y="1" width="918" height="238" rx="10" fill="#fff" stroke="#e2e8f0"/>
+      <rect x="360" y="78" width="200" height="72" rx="8" fill="#eff6ff" stroke="#1d4ed8"/>
+      <text x="460" y="108" text-anchor="middle" font-size="16" font-weight="700" fill="#1e3a8a">模型</text>
+      <text x="460" y="132" text-anchor="middle" font-size="14" fill="#0f172a">用户通常拥有不了</text>
+      <rect x="24" y="36" width="200" height="64" rx="8" fill="#fffbeb" stroke="#b45309"/>
+      <text x="36" y="64" font-size="15" font-weight="700" fill="#92400e">系统提示</text>
+      <text x="36" y="86" font-size="14" fill="#0f172a">每次请求一起注入</text>
+      <rect x="696" y="36" width="200" height="64" rx="8" fill="#ecfdf5" stroke="#047857"/>
+      <text x="708" y="64" font-size="15" font-weight="700" fill="#065f46">工具</text>
+      <text x="708" y="86" font-size="14" fill="#0f172a">描述清楚，何时用由模型定</text>
+      <rect x="24" y="140" width="200" height="64" rx="8" fill="#fff1f2" stroke="#be123c"/>
+      <text x="36" y="168" font-size="15" font-weight="700" fill="#9f1239">Agentic loop</text>
+      <text x="36" y="190" font-size="14" fill="#0f172a">看结果，决定要不要再调</text>
+      <rect x="696" y="140" width="200" height="64" rx="8" fill="#f1f5f9" stroke="#475569"/>
+      <text x="708" y="168" font-size="15" font-weight="700" fill="#334155">翻译层</text>
+      <text x="708" y="190" font-size="14" fill="#0f172a">同一套 harness 换模型</text>
+      <text x="24" y="226" font-size="14" fill="#64748b">来源：Earendil，What is a Harness?，2026-10-01。四个部件都在模型外面。</text>
+    </svg>
+    <figcaption>图 1. 四个部件都由 harness 提供。模型坐在中间。</figcaption>
+  </figure>
+  <p>系统提示。模型训练时已经吃进一套规则。原文举 Claude Opus 4.5 公开过的 soul document，用来告诉模型自己是谁、该怎么做。Harness 里的系统提示更浅：像新员工第一天拿到的说明。它还没内化，但做这摊活时知道该照着走。这套说明会跟每一次用户请求一起注入对话。</p>
+  <p>工具。能力写在代码里，模型可以调用。Harness 负责两件事：把工具描述清楚，并提供工具本身的软件。例子包括网页搜索、写代码并执行、写邮件。Harness 通常不规定何时用、怎么用。它把工具摆出来，让模型自己决定。</p>
+  <p>Agentic loop。这是 harness 用来管模型行为的框架。里面事情很多，主轴是循环：模型看过工具返回的结果，可以自己决定再调一次。</p>
+  <p>翻译层。同一套 harness 可以接不同模型。一轮循环里也可以换模型，因为不同模型擅长不同步骤。翻译层把控制交给终端用户：Anthropic、OpenAI，或按每次任务成本更划算的开源权重，都可以接到同一套带子上。</p>
+</section>
+<section id="loop">
+  <h2><span>3</span>一次循环怎么走完</h2>
+  <p>原文用一个走邮件的 harness 把循环走完。工具有三个：网页搜索、写代码、写邮件。用户请它比较附近小学的排名和考试成绩，给建议。</p>
+  <p>模型先用预训练理解「小学」「附近」「排名」大概指什么，再构造搜索词去抓新数据。坐在 harness 里，它能拿搜索结果对照最初的请求。第一次不够，它可以自己决定再搜。这一步就是循环的第一下清楚的例子。</p>
+  <p>数据够了，它用写代码的工具做一张表。表也是代码。它做计算、排版，再把表拿回最初的请求上对照。还不满意，就再搜。满意了，调用写邮件：审一遍发现、写摘要、把表格当附件。模型再看终稿，认为活干完，循环合上。用户在几秒内收到一封带摘要和建议的邮件，附件是那张表。</p>
+  <p>原文给了一个可以点开看的 Pi 会话：<a href="https://pi.dev/session/#b23f2459599f8439327f65c90ee95d06">pi.dev/session/…</a>。这篇没有复现那个会话里的逐步调用。</p>
+  <figure>
+    <svg viewBox="0 0 920 200" width="100%" role="img" aria-label="邮件 harness 的一次循环">
+      <rect x="1" y="1" width="918" height="198" rx="10" fill="#fff" stroke="#e2e8f0"/>
+      <rect x="20" y="44" width="150" height="72" rx="8" fill="#eff6ff" stroke="#1d4ed8"/>
+      <rect x="198" y="44" width="150" height="72" rx="8" fill="#fffbeb" stroke="#b45309"/>
+      <rect x="376" y="44" width="150" height="72" rx="8" fill="#ecfdf5" stroke="#047857"/>
+      <rect x="554" y="44" width="150" height="72" rx="8" fill="#fff1f2" stroke="#be123c"/>
+      <rect x="732" y="44" width="168" height="72" rx="8" fill="#f1f5f9" stroke="#475569"/>
+      <text x="32" y="74" font-size="14" font-weight="700" fill="#1e3a8a">读请求</text>
+      <text x="32" y="96" font-size="13" fill="#0f172a">小学、附近、排名</text>
+      <text x="210" y="74" font-size="14" font-weight="700" fill="#92400e">搜索</text>
+      <text x="210" y="96" font-size="13" fill="#0f172a">不够就再搜</text>
+      <text x="388" y="74" font-size="14" font-weight="700" fill="#065f46">写代码出表</text>
+      <text x="388" y="96" font-size="13" fill="#0f172a">对照原请求</text>
+      <text x="566" y="74" font-size="14" font-weight="700" fill="#9f1239">写邮件</text>
+      <text x="566" y="96" font-size="13" fill="#0f172a">附上表格</text>
+      <text x="744" y="74" font-size="14" font-weight="700" fill="#334155">合上循环</text>
+      <text x="744" y="96" font-size="13" fill="#0f172a">用户收到邮件</text>
+      <path d="M170 80 H194" stroke="#64748b" stroke-width="1.6"/>
+      <path d="M348 80 H372" stroke="#64748b" stroke-width="1.6"/>
+      <path d="M526 80 H550" stroke="#64748b" stroke-width="1.6"/>
+      <path d="M704 80 H728" stroke="#64748b" stroke-width="1.6"/>
+      <text x="20" y="152" font-size="14" fill="#334155">循环合上的条件是模型自己判断活干完了。Harness 把工具摆出来，不替它规定搜几次。</text>
+      <text x="20" y="176" font-size="14" fill="#64748b">例子来自原文。没有给出搜索次数、耗时或费用。</text>
+    </svg>
+    <figcaption>图 2. 搜索可以回头。写表也可以回头。合上之后用户拿到的是一封邮件。</figcaption>
+  </figure>
+</section>
+<section id="own">
+  <h2><span>4</span>翻译层和所有权</h2>
+  <p>翻译层把杠杆从实验室挪到用户手里。Harness 能在自己电脑上跑，会话可以留在本地。长期看，这些会话会变成人和机器的通信记录。用户面对的是自己的 harness，而不是实验室发布的一个应用。同一封邮件可以分别丢给 OpenAI、Anthropic 和一个开源权重模型，在同一处比较结果和每次任务的成本，答案也留在同一处。</p>
+  <p>模型本身通常改不了。Harness 可以改。原文拿 Pi 当例子：系统提示短，工具少，默认把自己让开。用的人会改提示，或做一个贴合自己流程的扩展，再分享出去。Pi 是免费开源的，住在用户自己的笔记本上。</p>
+  <p>Harness 一开始并不开源，也不中立。第一款流行的 agent harness 是 Claude Code。它不是做成对各种模型一视同仁的翻译层，而是做成在本地用 Claude 写代码的应用。后来出现一批免费开源的 harness：OpenClaw、OpenCode、Hermes、Pi。Earendil 说他们把 Pi 做成中立的，把能力和选择交给用户，并在想办法把这套好处扩到更多人。</p>
+</section>
+<section id="result">
+  <h2><span>5</span>结果</h2>
+  <p>这篇是定义和机制说明，不是评测。原文里能当结果写的数字只有一个。</p>
+  <table>
+    <thead><tr><th>原文给出的结果</th><th>条件</th></tr></thead>
+    <tbody>
+      <tr><td>Pi 用户互相分享了超过 5000 个扩展</td><td>分母是分享出去的扩展份数，不是安装量，也不是活跃用户数</td></tr>
+      <tr><td>同一套 harness 可换实验室模型和开源权重</td><td>靠翻译层。原文没有给换模型后的正确率</td></tr>
+      <tr><td>邮件例子里用户在几秒内收到摘要和表格</td><td>叙事例子。没有延迟分布，没有费用</td></tr>
+    </tbody>
+  </table>
+  <p>四个部件、攀岩类比、Claude Code 的来历，都是机制陈述。不要把它们读成基准分数。</p>
+</section>
+<section id="hard">
+  <h2><span>6</span>难点</h2>
+  <p>循环什么时候该停，由模型自己判断。例子里「数据不够就再搜」写得很顺。搜错、搜偏、永远不觉得够，原文没有给出失败率。</p>
+  <p>工具何时调用由模型决定。Harness 把描述写清楚，不替它选。描述写糊了，模型会调错工具。Pi 的扩展超过 5000 份，质量没有进这篇的统计。</p>
+  <p>翻译层让用户能换模型。换过去之后，系统提示和工具描述未必仍然合适。原文把这写成自由，没有写适配成本。</p>
+  <p>本地拥有 harness，会话留在自己机器上。这要求用户愿意跑、愿意改。Earendil 自己也写了：他们还在探索怎么把这套好处扩到更宽的人群。这篇没有用户研究。</p>
+</section>
+<section id="new">
+  <h2><span>7</span>新在哪里</h2>
+  <p>新的部分是把 harness 拆成四件能指认的软件，并且把所有权放在用户这边：提示可以改，工具可以加，模型可以换，会话可以留下。攀岩安全带的用处是把这四件从口号里拖出来。</p>
+  <p>和 <a href="/frontier/2026-10-06-mcp-tools-start-off.html">扫到的 MCP 工具，默认先关着</a> 对得上：那边登记工具，默认关闭，打开权在服务团队；这边把工具摆进 harness，何时调用由模型定。登记和调用仍是两步。</p>
+  <p>和 <a href="/frontier/2026-10-05-tested-opt-still-running.html">测过的优化，为什么还在跑</a> 对得上：那边问哪一版程序继续跑；这边问哪一层软件用户还能改。增量落在哪一层，仍看 <a href="/frontier/llm-agent-tech-landscape.html">冻底座、改脚手架</a>。谱系仍看 <a href="/frontier/rsi-llm-agent-self-evolution.html">递归自改进前世今生</a>。这四篇都不在这里重写。</p>
+</section>
+<section id="src">
+  <h2><span>8</span>出处</h2>
+  <ul>
+    <li><a href="https://earendil.com/posts/what-is-a-harness/">What is a Harness?</a>，Earendil，页面标的发布时间是 2026-10-01 19:14:50 GMT。抓取通道是 r.jina.ai，2026-10-07。</li>
+    <li>定义原句：An agent harness is a piece of software that provides an environment for an AI model to operate within.</li>
+    <li>Pi 扩展：more than 5,000 extensions。Claude Code 被写成第一款流行的 agent harness。</li>
+    <li>可点开的循环例子：<a href="https://pi.dev/session/#b23f2459599f8439327f65c90ee95d06">一篇 Pi 会话</a>。本文没有逐步核对那次调用。</li>
+  </ul>
+  <p>没做的：没有跑 Pi / OpenClaw / Lefos 做对照；没有核验 5000 个扩展的统计口径；Reddit 和 X 没有登录态，不收。</p>
+</section>
+</main>
+</div>
+</body>
+</html>
