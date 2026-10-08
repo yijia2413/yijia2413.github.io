@@ -1,5 +1,9 @@
 # 前沿技术栏目：独立 HTML 洞察索引。
 # 新增一篇：把 HTML 放到 /frontier/<slug>.html，再在这里加一条。
+- title: "撤稿的三篇，都在 Lean 没盖到的那一半"
+  date: "2026-10-08"
+  url: /frontier/2026-10-08-withdrawals-outside-lean-coverage.html
+  summary: "OpenAI 放出 719 份数学稿，形式化覆盖 300 条顶层结果。隔天撤 3 篇修 14 篇，撤掉的三篇在两版形式化目录里都没出现。一个符号错误沿引用链传了两层，形式化目录自标未审查。"
 - title: "Harness 是什么：套在模型外面的那层软件"
   date: "2026-10-07"
   url: /frontier/2026-10-07-what-is-a-harness.html
