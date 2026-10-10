@@ -1,5 +1,9 @@
 # 前沿技术栏目：独立 HTML 洞察索引。
 # 新增一篇：把 HTML 放到 /frontier/<slug>.html，再在这里加一条。
+- title: "技能库自动改写，该盯的是原本稳定的任务还稳不稳"
+  date: "2026-10-10"
+  url: /frontier/2026-10-10-watch-regressions-not-coverage.html
+  summary: "一篇预印本把五种技能演化方法放在同两套技能库上对比。算子生成那套上，覆盖面最高的两个方法打平在 14/15，三次全过差 20 个百分点。490 个任务里改好的数量接近，变差的 9 对 36。"
 - title: "撤稿的三篇，都在 Lean 没盖到的那一半"
   date: "2026-10-08"
   url: /frontier/2026-10-08-withdrawals-outside-lean-coverage.html

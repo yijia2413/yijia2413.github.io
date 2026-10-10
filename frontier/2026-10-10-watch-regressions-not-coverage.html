@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>技能库自动改写，该盯的是原本稳定的任务还稳不稳</title>
+  <style>
+    :root { --ink:#0f172a; --muted:#475569; --line:#e2e8f0; --bg:#f8fafc; --blue:#1d4ed8; --blue-bg:#eff6ff; --amber:#b45309; --green:#047857; --rose:#be123c; }
+    * { box-sizing: border-box; }
+    body { margin:0; font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Noto Sans SC",sans-serif; background:var(--bg); color:var(--ink); line-height:1.75; font-size:17px; }
+    header { background:#0f172a; color:#f8fafc; padding:36px 24px 28px; border-bottom:4px solid #2563eb; }
+    header .inner { max-width:1080px; margin:0 auto; }
+    .badge { display:inline-block; border:1px solid #93c5fd; color:#bfdbfe; border-radius:999px; padding:2px 12px; font-size:13px; }
+    h1 { font-size:2rem; line-height:1.3; margin:12px 0; }
+    header p { color:#cbd5e1; margin:0; max-width:760px; }
+    .layout { max-width:1080px; margin:28px auto 64px; padding:0 20px; display:grid; grid-template-columns:220px minmax(0,1fr); gap:28px; }
+    aside { position:sticky; top:16px; align-self:start; background:#fff; border:1px solid var(--line); border-radius:12px; padding:14px; }
+    aside p { font-size:12px; letter-spacing:.06em; color:var(--muted); margin:0 0 8px; }
+    aside a { display:block; color:var(--ink); text-decoration:none; font-size:14px; padding:6px 8px; border-radius:6px; }
+    aside a:hover { background:var(--blue-bg); color:var(--blue); }
+    h2 { font-size:1.35rem; margin:0 0 12px; }
+    h2 span { display:inline-block; background:var(--blue); color:#fff; border-radius:6px; font-size:13px; padding:2px 8px; margin-right:8px; }
+    section { background:#fff; border:1px solid var(--line); border-radius:14px; padding:26px 28px; margin-bottom:22px; }
+    p { margin:0 0 14px; }
+    a { color:var(--blue); }
+    code { background:#f1f5f9; border-radius:4px; padding:1px 5px; font-size:15px; }
+    figure { margin:16px 0; background:#fff; border:1px solid var(--line); border-radius:12px; padding:10px; }
+    figcaption { color:var(--muted); font-size:14px; margin-top:6px; }
+    table { width:100%; border-collapse:collapse; font-size:15px; }
+    th, td { border:1px solid var(--line); padding:8px 10px; text-align:left; vertical-align:top; }
+    th { background:#f1f5f9; }
+    ul { margin:0 0 14px; padding-left:22px; }
+    li { margin-bottom:6px; }
+    .note { background:#f1f5f9; border-left:4px solid var(--muted); padding:12px 16px; border-radius:0 8px 8px 0; font-size:16px; }
+    svg text { font-family:-apple-system,"PingFang SC","Noto Sans SC",sans-serif; }
+    @media (max-width:860px) { .layout { grid-template-columns:1fr; } aside { position:static; } h1 { font-size:1.55rem; } section { padding:18px 16px; } }
+  </style>
+</head>
+<body>
+<header>
+  <div class="inner">
+    <span class="badge">FRONTIER · 2026-10-10 · 技能演化</span>
+    <h1>技能库自动改写，该盯的是原本稳定的任务还稳不稳</h1>
+    <p>一篇 10 月 8 日的预印本把技能演化方法放在同一批任务上对比。算子生成那套技能库上，覆盖面最高的两个方法打平在 14/15，三次全过的比例差 20 个百分点。拿掉定位模块后，同一套上覆盖面只掉 6.66 个百分点，三次全过掉 33.33 个百分点。</p>
+  </div>
+</header>
+<div class="layout">
+<aside>
+  <p>目录</p>
+  <a href="#what">1 这篇预印本测了什么</a>
+  <a href="#tie">2 覆盖面打平，一致性差 20 点</a>
+  <a href="#ledger">3 回归是一笔暗账</a>
+  <a href="#blind">4 为什么 pass@3 看不见它</a>
+  <a href="#how">5 定位模块干的事</a>
+  <a href="#gate">6 另一条路：改写先过重放</a>
+  <a href="#yours">7 对照你的运行位</a>
+  <a href="#limit">8 这篇撑不起什么</a>
+  <a href="#src">9 出处与未覆盖</a>
+</aside>
+<main>
+<section id="what">
+  <h2><span>1</span>这篇预印本测了什么</h2>
+  <p>2026 年 10 月 8 日，arXiv 收到 <a href="https://arxiv.org/abs/2610.11858">Trajectory-Guided Fault Localization for Agent Skill Evolution</a>（arXiv:2610.11858v1，cs.SE，南京大学与香港理工）。它提出的方法叫 SkillMorph，做的事是拿执行轨迹里的失败证据，定位到技能文档里具体该改的那几行，再生成修改。</p>
+  <p>对我有用的部分不是这个方法本身，是它的对照组设计。它把原始技能、四个已有技能演化方法和自己放在同两套技能库上跑，同时报三个指标：至少一次通过的任务比例、全部试次里成功试次的比例、三次独立试次全部通过的任务比例。论文里分别写作 pass@3、trial-level accuracy 和 pass3。</p>
+  <p>两套技能库：SWE-Skills-Bench 有 49 个相互独立的软件工程技能，每个配十组任务，任务挂在固定 commit 的真实 GitHub 仓库上；CannBot 是 12 个相互协作的技能，做 AscendC 算子生成，任务取自 NPUKernelBench。每个任务跑三次独立试次。</p>
+  <p>这篇只论证一件事：技能库被自动改写之后，覆盖面的提升容易拿到，原本稳定通过的任务掉下去是主要代价，而覆盖面指标基本看不见这笔代价。</p>
+  <div class="note">
+    <p style="margin:0">分母先摆清楚。SWE-Skills-Bench 的held-out 任务按两个互补折分跑了两个方向，合计 490 个任务、1470 个试次。CannBot 单一固定划分，held-out 15 个任务、45 个试次。下文每个比例都落在这两个分母上，两套基准的数字不互相折算。</p>
+  </div>
+</section>
+<section id="tie">
+  <h2><span>2</span>覆盖面打平，一致性差 20 点</h2>
+  <p>CannBot 上，SkillMorph 和最强基线 CAP-Evolve 的 pass@3 都是 14/15。按覆盖面看，这两个方法无法区分。换成三次全过的口径，SkillMorph 的 14 个任务每次都过，CAP-Evolve 只有 11/15。</p>
+  <figure>
+    <svg viewBox="0 0 920 330" width="100%" role="img" aria-label="CannBot 上两个方法在覆盖面和一致性两个口径下的对比">
+      <rect x="1" y="1" width="918" height="328" rx="10" fill="#fff" stroke="#e2e8f0"/>
+      <text x="24" y="34" font-size="16" font-weight="700" fill="#0f172a">CannBot held-out 15 个任务，每个任务 3 次独立试次（分母：15 个任务 / 45 个试次）</text>
+      <text x="24" y="70" font-size="15" font-weight="700" fill="#1e3a8a">口径一：至少一次通过（pass@3）</text>
+      <rect x="24" y="84" width="420" height="46" rx="6" fill="#eff6ff" stroke="#1d4ed8" stroke-width="2"/>
+      <text x="44" y="113" font-size="15" fill="#0f172a">CAP-Evolve　<tspan font-weight="700">14 / 15</tspan>　＝ 93.33%</text>
+      <rect x="464" y="84" width="420" height="46" rx="6" fill="#eff6ff" stroke="#1d4ed8" stroke-width="2"/>
+      <text x="484" y="113" font-size="15" fill="#0f172a">SkillMorph　<tspan font-weight="700">14 / 15</tspan>　＝ 93.33%</text>
+      <text x="454" y="152" text-anchor="middle" font-size="14" fill="#475569">这一行两个方法区分不开</text>
+      <text x="24" y="196" font-size="15" font-weight="700" fill="#9f1239">口径二：三次全部通过（pass3）</text>
+      <rect x="24" y="210" width="420" height="46" rx="6" fill="#fff1f2" stroke="#be123c" stroke-width="2"/>
+      <text x="44" y="239" font-size="15" fill="#0f172a">CAP-Evolve　<tspan font-weight="700">11 / 15</tspan>　＝ 73.33%</text>
+      <rect x="464" y="210" width="420" height="46" rx="6" fill="#ecfdf5" stroke="#047857" stroke-width="2"/>
+      <text x="484" y="239" font-size="15" fill="#0f172a">SkillMorph　<tspan font-weight="700">14 / 15</tspan>　＝ 93.33%</text>
+      <rect x="24" y="274" width="860" height="42" rx="6" fill="#f1f5f9" stroke="#475569"/>
+      <text x="44" y="300" font-size="15" fill="#0f172a">同一个覆盖面下，一致性相差 <tspan font-weight="700" fill="#9f1239">20.00 个百分点</tspan>：3 个任务能过但过不稳。四个基线的 pass3 落在 8/15 到 11/15 之间。</text>
+    </svg>
+    <figcaption>图 1 · 数字取自 arXiv:2610.11858v1 表 1 的 CannBot 三列。pass@3 与 pass3 共用 15 个任务这个分母。</figcaption>
+  </figure>
+  <p>原始技能在 CannBot 上是 pass@3 12/15、pass3 7/15。两个方法都把覆盖面推到 14/15，但其中一个把「能过」变成了「每次都过」，另一个没有。验收时只报前一个口径，这两种结果会写成同一句话。</p>
+</section>
+<section id="ledger">
+  <h2><span>3</span>回归是一笔暗账</h2>
+  <p>SWE-Skills-Bench 上，论文按任务逐个比对了改写前后三次试次里的成功次数，分成变好、不变、变差三类。这一组数把代价摆了出来。</p>
+  <figure>
+    <svg viewBox="0 0 920 400" width="100%" role="img" aria-label="五个技能演化方法在 SWE-Skills-Bench 上改进与回归的任务数对比">
+      <rect x="1" y="1" width="918" height="398" rx="10" fill="#fff" stroke="#e2e8f0"/>
+      <text x="24" y="32" font-size="16" font-weight="700" fill="#0f172a">相对原始技能的任务级变化（分母：490 个 held-out 任务，余下为不变）</text>
+      <text x="24" y="56" font-size="14" fill="#475569">横轴一格 = 60 个任务。绿色为变好，红色为变差。</text>
+      <line x1="200" y1="72" x2="200" y2="350" stroke="#cbd5e1" stroke-width="1"/>
+      <line x1="320" y1="72" x2="320" y2="350" stroke="#f1f5f9" stroke-width="1"/>
+      <line x1="440" y1="72" x2="440" y2="350" stroke="#f1f5f9" stroke-width="1"/>
+      <line x1="560" y1="72" x2="560" y2="350" stroke="#f1f5f9" stroke-width="1"/>
+      <line x1="680" y1="72" x2="680" y2="350" stroke="#f1f5f9" stroke-width="1"/>
+      <line x1="800" y1="72" x2="800" y2="350" stroke="#f1f5f9" stroke-width="1"/>
+
+      <text x="190" y="96" text-anchor="end" font-size="15" fill="#0f172a">SkillOpt</text>
+      <rect x="200" y="82" width="218" height="18" fill="#a7f3d0" stroke="#047857" stroke-width="1.5"/>
+      <text x="428" y="96" font-size="14" font-weight="700" fill="#065f46">109 变好</text>
+      <rect x="200" y="102" width="98" height="18" fill="#fecdd3" stroke="#be123c" stroke-width="1.5"/>
+      <text x="308" y="116" font-size="14" font-weight="700" fill="#9f1239">49 变差</text>
+
+      <text x="190" y="152" text-anchor="end" font-size="15" fill="#0f172a">EvoSkill</text>
+      <rect x="200" y="138" width="164" height="18" fill="#a7f3d0" stroke="#047857" stroke-width="1.5"/>
+      <text x="374" y="152" font-size="14" font-weight="700" fill="#065f46">82 变好</text>
+      <rect x="200" y="158" width="94" height="18" fill="#fecdd3" stroke="#be123c" stroke-width="1.5"/>
+      <text x="304" y="172" font-size="14" font-weight="700" fill="#9f1239">47 变差</text>
+
+      <text x="190" y="208" text-anchor="end" font-size="15" fill="#0f172a">SkillAdaptor</text>
+      <rect x="200" y="194" width="150" height="18" fill="#a7f3d0" stroke="#047857" stroke-width="1.5"/>
+      <text x="360" y="208" font-size="14" font-weight="700" fill="#065f46">75 变好</text>
+      <rect x="200" y="214" width="112" height="18" fill="#fecdd3" stroke="#be123c" stroke-width="1.5"/>
+      <text x="322" y="228" font-size="14" font-weight="700" fill="#9f1239">56 变差</text>
+
+      <text x="190" y="264" text-anchor="end" font-size="15" fill="#0f172a">CAP-Evolve</text>
+      <rect x="200" y="250" width="244" height="18" fill="#a7f3d0" stroke="#047857" stroke-width="1.5"/>
+      <text x="454" y="264" font-size="14" font-weight="700" fill="#065f46">122 变好</text>
+      <rect x="200" y="270" width="72" height="18" fill="#fecdd3" stroke="#be123c" stroke-width="1.5"/>
+      <text x="282" y="284" font-size="14" font-weight="700" fill="#9f1239">36 变差</text>
+
+      <text x="190" y="320" text-anchor="end" font-size="15" font-weight="700" fill="#0f172a">SkillMorph</text>
+      <rect x="200" y="306" width="252" height="18" fill="#6ee7b7" stroke="#047857" stroke-width="2"/>
+      <text x="462" y="320" font-size="14" font-weight="700" fill="#065f46">126 变好</text>
+      <rect x="200" y="326" width="18" height="18" fill="#fecdd3" stroke="#be123c" stroke-width="2"/>
+      <text x="228" y="340" font-size="14" font-weight="700" fill="#9f1239">9 变差</text>
+
+      <rect x="24" y="360" width="860" height="30" rx="6" fill="#f1f5f9" stroke="#475569"/>
+      <text x="44" y="380" font-size="15" fill="#0f172a">最后两行变好的任务数接近（126 与 122），变差的任务数差 4 倍（9 与 36）。</text>
+    </svg>
+    <figcaption>图 2 · 数字取自 arXiv:2610.11858v1 图 4（a）与正文第 5.3 节。490 个任务中未列出的部分为「不变」。</figcaption>
+  </figure>
+  <p>再看一个更窄的分母。原始技能下有 333 个任务三次试次全部通过。改写之后，SkillMorph 保住其中 327 个（98.20%），CAP-Evolve 保住 309 个（92.79%）。差的那 18 个任务，在改写前是这套技能库里最可靠的一批。</p>
+  <p>技能实例这一层也一样。49 个技能在两个互补折分下形成 98 个实例，SkillMorph 改好 60 个、不变 33 个、变差 5 个；四个基线改好 31 到 54 个，变差 11 到 19 个。</p>
+</section>
+<section id="blind">
+  <h2><span>4</span>为什么 pass@3 看不见它</h2>
+  <p>论文的消融实验正好把这件事量出来了。拿掉定位模块（<code>w/o Localization</code>，改成不做可疑动作定位和编辑位定位，直接从反馈生成修改），两套基准上三个指标的掉幅差别很大。</p>
+  <table>
+    <thead><tr><th>配置</th><th>SWE pass@3<br>（分母 490 任务）</th><th>SWE pass3<br>（分母 490 任务）</th><th>CannBot pass@3<br>（分母 15 任务）</th><th>CannBot pass3<br>（分母 15 任务）</th></tr></thead>
+    <tbody>
+      <tr><td>原始技能</td><td>82.45%</td><td>67.96%</td><td>80.00%</td><td>46.67%</td></tr>
+      <tr><td>单次执行（Single-run）</td><td>90.20%</td><td>84.90%</td><td>80.00%</td><td>73.33%</td></tr>
+      <tr><td>不带历史（w/o History）</td><td>93.88%</td><td>85.31%</td><td>93.33%</td><td>80.00%</td></tr>
+      <tr><td>不带定位（w/o Localization）</td><td>91.22%</td><td>82.24%</td><td>86.67%</td><td>60.00%</td></tr>
+      <tr><td>完整 SkillMorph</td><td>95.51%</td><td>88.37%</td><td>93.33%</td><td>93.33%</td></tr>
+    </tbody>
+  </table>
+  <p>CannBot 这一列最直白。拿掉定位，pass@3 从 93.33% 掉到 86.67%，差 6.66 个百分点，也就是 15 个任务里少过 1 个。同一个改动下 pass3 从 93.33% 掉到 60.00%，差 33.33 个百分点，也就是三次全过的任务从 14 个掉到 9 个。只看第一个口径，这个模块看起来可有可无。</p>
+  <p>SWE 那一列的方向相同，幅度小一些：pass@3 差 4.29 个百分点，pass3 差 6.13 个百分点。两套基准的百分点不要相加，它们的分母是 490 和 15。</p>
+  <p>还有一个配置值得单独记：<code>Single-run</code>（每个任务每轮只跑一次，不做重复执行）在 CannBot 上 pass@3 退回原始技能的 80.00%。失败证据只有一条轨迹时，这套改写拿不到可比对的成功对照。</p>
+</section>
+<section id="how">
+  <h2><span>5</span>定位模块干的事</h2>
+  <p>方法部分值得抄的是顺序，不是具体实现。三步：</p>
+  <ul>
+    <li>把原始轨迹抽象成状态转移序列，让动作和它的观测效果成为可比对的单位。同一任务重复执行多次，失败和成功的轨迹放在一起比。</li>
+    <li>比较各次执行里动作的失败覆盖和成功覆盖，选出可疑动作。论文每轮取前 10 个可疑动作往下传。</li>
+    <li>拿这些可疑动作去技能文档里找编辑位：哪里规定了不合适的动作、哪里漏了适用条件、哪里和相关内容冲突。改哪里和为什么改哪里都留着记录，后面的执行再暴露同一个问题时可以重新评估。</li>
+  </ul>
+  <p>先定位再改写，和直接把失败反馈喂给模型让它改技能文档，区别落在上一节那张表上。</p>
+  <p>时间开销这一项，论文给的数是 SWE-Skills-Bench 上每个技能每轮约 49 分钟，CannBot 约 127 分钟；其中框架自身三个阶段在 SWE 上分别是 3.1、7.4、18.3 分钟，CannBot 上是 4.4、5.6、19.0 分钟。两套基准的框架分析时间接近，差距来自代理执行任务本身。改写后的执行时间没变贵：SWE 上平均从 16.45 分钟变成 16.35 分钟，CannBot 上从 141.55 分钟降到 87.07 分钟。</p>
+  <p>还有一条落地记录：作者把这套方法用在算子生成上，提了 6 个技能修改 PR，被合作的算子开发团队接受。</p>
+</section>
+<section id="gate">
+  <h2><span>6</span>另一条路：改写先过重放</h2>
+  <p>同一天还有一篇相关的预印本，<a href="https://arxiv.org/abs/2610.11794">Memento 3: Model-Based Recursive Self-Improvement through Reflective Rulebooks</a>（arXiv:2610.11794v1）。它改的不是技能文档，是一本自然语言规则册，再把规则册编译成可执行代码用于预测和规划。模型权重冻结。</p>
+  <p>我关心它的采纳门禁。一次改写被接受，要同时满足两条：大模型判定这份可执行代码忠实实现了规则册；按记录的动作逐格重放，复现每一条观测到的转移。重放不通过就退回，规则册保留原样。</p>
+  <p>这跟上面那篇是同一个处理方式的两种形态。SkillMorph 用重复执行的成功轨迹当对照，Memento 3 用历史交互记录当对照。两者都在改写和采纳之间插了一道拿旧证据检查新版本的手续。论文给的 ARC-AGI-3 结果是：单模型版本通过 25 个公开游戏的全部关卡，相对人类动作效率均值 100.0，用掉人类动作数的 44%。这是预印本自报的数字。</p>
+</section>
+<section id="yours">
+  <h2><span>7</span>对照你的运行位</h2>
+  <p>如果你的系统里有一层会被自动改写的文本资产——技能文档、SOP、提示词模板、规则册、工具说明——照这几条查一遍：</p>
+  <ul>
+    <li><strong>验收口径里有没有「原本稳定的那批还稳不稳」这一项。</strong>只报覆盖面或者平均通过率，上面那 18 个任务的差别不会出现在报告里。至少要有一个分母是「改写前三次全过的任务数」。</li>
+    <li><strong>单次执行够不够定位。</strong>同一任务只有一条失败轨迹时，没有成功对照可比。Single-run 配置在复杂技能库上退回了原始水平。</li>
+    <li><strong>改写有没有留下「改了哪里、因为哪条证据」。</strong>这决定同一个问题第二次出现时能不能重新评估上次的判断，而不是再改一遍别处。</li>
+    <li><strong>采纳前有没有拿旧证据重放一遍。</strong>重放只能否掉和历史记录矛盾的版本，不能挑出正确的那个。它仍然挡掉了一类改坏。</li>
+    <li><strong>轮次收益的形状。</strong>SWE 上第一轮就拿到最终增益的 85% 到 88%，中间轮次有的指标会下滑，三个指标都在最后一轮达到最高。CannBot 上 pass@3 第二轮到 14/15 就不动了，pass3 在中间轮次从 12 掉到 11，第五轮才到 14。多跑几轮的收益主要落在一致性上，而且路径不单调。</li>
+  </ul>
+</section>
+<section id="limit">
+  <h2><span>8</span>这篇撑不起什么</h2>
+  <p>几条边界，写清楚免得被引用过头：</p>
+  <ul>
+    <li>两篇都是预印本，2026 年 10 月 8 日提交，没有同行评审记录。</li>
+    <li>SkillMorph 的代理执行用的是 Claude Code 配 DeepSeek-V4-Flash-0731 一个组合，演化过程也用同一个模型。换模型会不会保持这个排序，这篇答不了。</li>
+    <li>两套基准的技能都有可自动判定的验证：SWE-Skills-Bench 跑测试，CannBot 跑算子验证。没有自动验证器的技能库，失败证据从哪来是另一个问题。</li>
+    <li>CannBot held-out 只有 15 个任务、45 个试次。那些 20.00 和 33.33 个百分点落在这个分母上，1 个任务就是 6.67 个百分点。</li>
+    <li>pass@3 和 pass3 的三次试次口径，衡量的是同一技能版本的执行波动，不是跨版本稳定性。</li>
+  </ul>
+</section>
+<section id="src">
+  <h2><span>9</span>出处与未覆盖</h2>
+  <ul>
+    <li>SkillMorph：<a href="https://arxiv.org/abs/2610.11858">arXiv:2610.11858v1</a>，Trajectory-Guided Fault Localization for Agent Skill Evolution，2026-10-08，cs.SE。表 1（五个方法三指标两基准）、第 5.3 节细粒度对比、表 2 消融、第 5.4 节轮次效果、第 6 节落地记录。本文所有 SWE 与 CannBot 数字均出自此文。</li>
+    <li>Memento 3：<a href="https://arxiv.org/abs/2610.11794">arXiv:2610.11794v1</a>，Model-Based Recursive Self-Improvement through Reflective Rulebooks，2026-10-08。采纳门禁见摘要与第 2.2 节，ARC-AGI-3 结果见摘要。</li>
+    <li>当日另外扫过的源：OpenAI 博客（10 月 9 日两条为客户案例）、Anthropic 新闻页（最近为 10 月 8 日的使用政策更新与 Cyber Mission）、Hacker News 首页、GitHub Trending 当日榜。这些没有能支撑本文判断的一手数字。</li>
+    <li>X 与 Reddit：今日未覆盖，本次运行没有登录态。</li>
+  </ul>
+  <p>同系列里和这篇挨得最近的三篇：<a href="/frontier/2026-10-05-tested-opt-still-running.html">测过的优化，为什么还在跑</a>讲通过记录在授权规则变化后失效，<a href="/frontier/2026-10-06-mcp-tools-start-off.html">扫到的 MCP 工具，默认先关着</a>讲新增能力默认不放行，<a href="/frontier/2026-10-07-what-is-a-harness.html">Harness 是什么</a>讲这层软件由谁拥有和修改——这篇补的是同一层软件被自动改写时该记哪本账。</p>
+</section>
+</main>
+</div>
+</body>
+</html>
