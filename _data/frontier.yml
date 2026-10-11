@@ -1,5 +1,9 @@
 # 前沿技术栏目：独立 HTML 洞察索引。
 # 新增一篇：把 HTML 放到 /frontier/<slug>.html，再在这里加一条。
+- title: "护栏的选项名也是输入，换对一个词就放行"
+  date: "2026-10-11"
+  url: /frontier/2026-10-11-option-labels-are-input.html
+  summary: "一篇预印本把小型决策模型放在 Agent 的放行位上测。待判文本和选项定义不动，只给放行选项换名字，在 198 个候选里取最强的一个，四个把选项名送进输入的模型漏拦率到 98.2% 至 100%（GuardBench 六条策略平均）。另两个不受影响，因为调用库只拼定义。被翻掉的判决置信度没有变低。"
 - title: "技能库自动改写，该盯的是原本稳定的任务还稳不稳"
   date: "2026-10-10"
   url: /frontier/2026-10-10-watch-regressions-not-coverage.html
