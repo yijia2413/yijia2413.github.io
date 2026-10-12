@@ -23,9 +23,12 @@
     section { background:#fff; border:1px solid var(--line); border-radius:14px; padding:26px 28px; margin-bottom:22px; }
     p { margin:0 0 14px; }
     a { color:var(--blue); }
-    code { background:#f1f5f9; border-radius:4px; padding:1px 5px; font-size:15px; }
-    figure { margin:16px 0; background:#fff; border:1px solid var(--line); border-radius:12px; padding:10px; }
+    code { background:#f1f5f9; border-radius:4px; padding:1px 5px; font-size:15px; overflow-wrap:anywhere; }
+    main { min-width:0; }
+    figure { margin:16px 0; background:#fff; border:1px solid var(--line); border-radius:12px; padding:10px; overflow-x:auto; }
+    figure svg { display:block; min-width:700px; }
     figcaption { color:var(--muted); font-size:14px; margin-top:6px; }
+    .tw { overflow-x:auto; margin:0 0 14px; }
     table { width:100%; border-collapse:collapse; font-size:15px; }
     th, td { border:1px solid var(--line); padding:8px 10px; text-align:left; vertical-align:top; }
     th { background:#f1f5f9; }
@@ -33,7 +36,7 @@
     li { margin-bottom:6px; }
     .note { background:#f1f5f9; border-left:4px solid var(--muted); padding:12px 16px; border-radius:0 8px 8px 0; font-size:16px; }
     svg text { font-family:-apple-system,"PingFang SC","Noto Sans SC",sans-serif; }
-    @media (max-width:860px) { .layout { grid-template-columns:1fr; } aside { position:static; } h1 { font-size:1.55rem; } section { padding:18px 16px; } }
+    @media (max-width:860px) { .layout { grid-template-columns:minmax(0,1fr); } aside { position:static; } h1 { font-size:1.55rem; } section { padding:18px 16px; } }
   </style>
 </head>
 <body>
@@ -149,6 +152,7 @@
 <section id="blind">
   <h2><span>4</span>为什么 pass@3 看不见它</h2>
   <p>论文的消融实验正好把这件事量出来了。拿掉定位模块（<code>w/o Localization</code>，改成不做可疑动作定位和编辑位定位，直接从反馈生成修改），两套基准上三个指标的掉幅差别很大。</p>
+  <div class="tw">
   <table>
     <thead><tr><th>配置</th><th>SWE pass@3<br>（分母 490 任务）</th><th>SWE pass3<br>（分母 490 任务）</th><th>CannBot pass@3<br>（分母 15 任务）</th><th>CannBot pass3<br>（分母 15 任务）</th></tr></thead>
     <tbody>
@@ -159,6 +163,7 @@
       <tr><td>完整 SkillMorph</td><td>95.51%</td><td>88.37%</td><td>93.33%</td><td>93.33%</td></tr>
     </tbody>
   </table>
+  </div>
   <p>CannBot 这一列最直白。拿掉定位，pass@3 从 93.33% 掉到 86.67%，差 6.66 个百分点，也就是 15 个任务里少过 1 个。同一个改动下 pass3 从 93.33% 掉到 60.00%，差 33.33 个百分点，也就是三次全过的任务从 14 个掉到 9 个。只看第一个口径，这个模块看起来可有可无。</p>
   <p>SWE 那一列的方向相同，幅度小一些：pass@3 差 4.29 个百分点，pass3 差 6.13 个百分点。两套基准的百分点不要相加，它们的分母是 490 和 15。</p>
   <p>还有一个配置值得单独记：<code>Single-run</code>（每个任务每轮只跑一次，不做重复执行）在 CannBot 上 pass@3 退回原始技能的 80.00%。失败证据只有一条轨迹时，这套改写拿不到可比对的成功对照。</p>
