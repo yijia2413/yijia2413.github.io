@@ -3,22 +3,31 @@
 # 本脚本不再调用 pi：当天 HTML 已在则快进推送，没有稿就退出。
 # 旧的 -daily.html 只当跳转，不算当天稿。
 # 推送只走 gh 的 HTTPS 凭证，不改仓库 remote，不打印 token。
+# 凭证固定取 gh 里 yijia2413 这个账号的，不跟 gh 当前激活的账号走（2026-10-11 激活账号是别的号，推送 403）。
+# 补推某一天：FRONTIER_DAY=2026-10-10 run_daily.sh；日志仍写当天的文件。
 # 远端 master 必须是本地祖先，且本次相对远端只动 frontier/ 与 _data/frontier.yml，才允许快进推送。
 set -u
 REPO=/config/workspace/code/yijia2413.github.io
 LOGDIR=/config/workspace/drive/ai-tmp/frontier-daily/logs
 PUSH_URL=https://github.com/yijia2413/yijia2413.github.io.git
+PUSH_USER=yijia2413
 mkdir -p "$LOGDIR"
 export TZ=Asia/Shanghai
-DAY=$(date +%F)
-LOG="$LOGDIR/$DAY.log"
+DAY=${FRONTIER_DAY:-$(date +%F)}
+LOG="$LOGDIR/$(date +%F).log"
 find_html() {
   ls -1 "$REPO/frontier/${DAY}"-*.html 2>/dev/null | grep -v -- "-daily.html" | head -n 1 || true
 }
 HTML=$(find_html)
 
 push_if_safe() {
-  local remote_sha
+  local remote_sha tok
+  tok=$(env -u GH_TOKEN -u GITHUB_TOKEN gh auth token -h github.com -u "$PUSH_USER" 2>/dev/null) || tok=""
+  if [ -z "$tok" ]; then
+    echo "push skip: gh has no token for $PUSH_USER (gh auth login -h github.com)"
+    return 1
+  fi
+  export GH_TOKEN="$tok"
   remote_sha=$(gh api repos/yijia2413/yijia2413.github.io/commits/master --jq .sha) || {
     echo "push skip: cannot read remote master"
     return 1
@@ -55,5 +64,7 @@ push_if_safe() {
   fi
   echo "push $HTML"
   push_if_safe
-  echo "=== $(date '+%F %T %Z') push exit $? ==="
+  rc=$?
+  echo "=== $(date '+%F %T %Z') push exit $rc ==="
+  exit "$rc"
 } >>"$LOG" 2>&1
