@@ -49,7 +49,7 @@ grep -E '^- 20[0-9-]+T' /config/workspace/code/aigen/topics/2026/20261005-001-fr
    - `结论：REVISE`：把 Critical 和 Major 逐条改掉再提交，不用再评一轮。评审说数字对不上的，回原文再看一眼；评审看错了就不改，记录里写一句。
    - `结论：BLOCK`：改完重跑一次。还是 BLOCK，今天不发。
    - 退出码 3（评审没跑成）：今天不发。
-   - 今天不发的做法：不提交，不改 frontier.yml，稿件留在原处，回复和记录里写明卡在哪一条。没过评审的稿件不上线。
+   - 今天不发的做法：不提交；frontier.yml 里刚加的那一条撤掉（`git -C /config/workspace/code/yijia2413.github.io checkout -- _data/frontier.yml`），否则下一晚会把它连同一个打不开的链接一起提交；稿件留在原处，回复和记录里写明卡在哪一条。没过评审的稿件不上线。
    - 输出首行的「评审者」和你是同一家模型时，记录里注明这次评审的独立性较弱。
 
 磁盘：

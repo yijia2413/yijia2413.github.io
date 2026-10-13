@@ -134,7 +134,7 @@ run_claude() {
 run_pi() {
   command -v pi >/dev/null 2>&1 || return 1
   (cd "$WORK" && timeout "$LIMIT" pi -p --no-session --model "$PI_MODEL" --tools read,grep,find,ls \
-    "$(cat prompt.txt)" >review.md 2>review.err)
+    "$(cat prompt.txt)" </dev/null >review.md 2>review.err)
   has_verdict
 }
 
