@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>评审团更一致了，和人的一致没有跟着涨</title>
+  <style>
+    :root { --ink:#0f172a; --muted:#475569; --line:#e2e8f0; --bg:#f8fafc; --blue:#1d4ed8; --blue-bg:#eff6ff; --amber:#b45309; --green:#047857; --rose:#be123c; }
+    * { box-sizing: border-box; }
+    body { margin:0; font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Noto Sans SC",sans-serif; background:var(--bg); color:var(--ink); line-height:1.75; font-size:17px; }
+    header { background:#0f172a; color:#f8fafc; padding:36px 24px 28px; border-bottom:4px solid #2563eb; }
+    header .inner { max-width:1080px; margin:0 auto; }
+    .badge { display:inline-block; border:1px solid #93c5fd; color:#bfdbfe; border-radius:999px; padding:2px 12px; font-size:13px; }
+    h1 { font-size:2rem; line-height:1.3; margin:12px 0; }
+    header p { color:#cbd5e1; margin:0; max-width:760px; }
+    .layout { max-width:1080px; margin:28px auto 64px; padding:0 20px; display:grid; grid-template-columns:220px minmax(0,1fr); gap:28px; }
+    aside { position:sticky; top:16px; align-self:start; background:#fff; border:1px solid var(--line); border-radius:12px; padding:14px; }
+    aside p { font-size:12px; letter-spacing:.06em; color:var(--muted); margin:0 0 8px; }
+    aside a { display:block; color:var(--ink); text-decoration:none; font-size:14px; padding:6px 8px; border-radius:6px; }
+    aside a:hover { background:var(--blue-bg); color:var(--blue); }
+    h2 { font-size:1.35rem; margin:0 0 12px; }
+    h2 span { display:inline-block; background:var(--blue); color:#fff; border-radius:6px; font-size:13px; padding:2px 8px; margin-right:8px; }
+    h3 { font-size:1.08rem; margin:20px 0 10px; }
+    section { background:#fff; border:1px solid var(--line); border-radius:14px; padding:26px 28px; margin-bottom:22px; }
+    p { margin:0 0 14px; }
+    a { color:var(--blue); overflow-wrap:anywhere; }
+    code { background:#f1f5f9; border-radius:4px; padding:1px 5px; font-size:15px; overflow-wrap:anywhere; }
+    main { min-width:0; }
+    figure { margin:16px 0; background:#fff; border:1px solid var(--line); border-radius:12px; padding:10px; overflow-x:auto; }
+    figure svg { display:block; min-width:700px; }
+    figcaption { color:var(--muted); font-size:14px; margin-top:6px; }
+    .tw { overflow-x:auto; margin:0 0 14px; }
+    .tw table { min-width:620px; }
+    table { width:100%; border-collapse:collapse; font-size:15px; }
+    th, td { border:1px solid var(--line); padding:8px 10px; text-align:left; vertical-align:top; }
+    th { background:#f1f5f9; }
+    ul { margin:0 0 14px; padding-left:22px; }
+    li { margin-bottom:6px; }
+    .note { background:#f1f5f9; border-left:4px solid var(--muted); padding:12px 16px; border-radius:0 8px 8px 0; font-size:16px; margin:0 0 14px; }
+    .quote { background:#fffbeb; border-left:4px solid var(--amber); padding:12px 16px; border-radius:0 8px 8px 0; font-size:15px; overflow-wrap:anywhere; margin:0 0 14px; }
+    svg text { font-family:-apple-system,"PingFang SC","Noto Sans SC",sans-serif; }
+    @media (max-width:860px) { .layout { grid-template-columns:minmax(0,1fr); } aside { position:static; } h1 { font-size:1.55rem; } section { padding:18px 16px; } }
+  </style>
+</head>
+<body>
+<header>
+  <div class="inner">
+    <span class="badge">FRONTIER · 2026-10-13 · 评审位</span>
+    <h1>评审团更一致了，和人的一致没有跟着涨</h1>
+    <p>一篇 10 月 9 日的预印本测了一种不读人工标签修评分标准的做法：五个评审模型在哪些条款上判得不一样，就让改写模型重写哪些条款。SummEval 上，评审之间的 Krippendorff α 比原标准高 0.069（95% 区间 0.046 至 0.092），比改同样多随机条款的对照高 0.074；评审团和专家评分的 Kendall τ 差 −0.007（区间 −0.037 至 0.021）。HealthBench 和 USR 上，两项都没有达到预先写定的效果标准。</p>
+  </div>
+</header>
+<div class="layout">
+<aside>
+  <p>目录</p>
+  <a href="#what">1 这篇预印本测了什么</a>
+  <a href="#how">2 做法：拆条款、找分歧、改前 k 条</a>
+  <a href="#summeval">3 SummEval：一致涨了，对人的一致没测出变化</a>
+  <a href="#control">4 改随机条款的那组，对人一致的点估计更高</a>
+  <a href="#null">5 另外两个数据集没达到预设标准</a>
+  <a href="#why">6 分歧能定位，定不了往哪边改</a>
+  <a href="#mixed">7 一致率里还混着什么</a>
+  <a href="#yours">8 对照你的评审位</a>
+  <a href="#limit">9 这篇撑不起什么</a>
+  <a href="#src">10 出处与未覆盖</a>
+</aside>
+<main>
+<section id="what">
+  <h2><span>1</span>这篇预印本测了什么</h2>
+  <p>2026 年 10 月 9 日，arXiv 收到 <a href="https://arxiv.org/abs/2610.13303">Agreement Without Alignment: Label-Free Rubric Clarification Increases LLM-Judge Consensus but Not Agreement with Humans</a>（arXiv:2610.13303v1，cs.CL，作者 Sangdo Han、Moonsoo Kim，单位署 CEO Business School）。</p>
+  <p>拿一份评分标准给开放式输出打分的评审模型，现在常常几个一起用，凑成评审团。几个评审打分不一样时，通常取平均。还有一种读法：评审分歧大的地方，是评分标准有不止一种理解的地方，可以找出来改清楚。照这个读法，可以只看评审自己的输出定位并改写有歧义的条款，不用再收人工标签。论文测的是这个做法。</p>
+  <p>它问两件事。按评审分歧选条款来改，评审之间的一致会不会比改别的条款涨得多？涨出来的一致，会不会带到和人工标注的一致上？</p>
+  <div class="note">
+    <p style="margin:0">这篇只论证一个判断。判断是我的，依据是论文在 SummEval 上的结果和作者在讨论节给的解释。评审之间的一致率只用评审自己的打分算，人工标签不参与。拿它当目标去改评分标准，SummEval 上评审之间的一致涨了，评审团和专家的一致没测出变化；另外两个数据集上两项都没达到预设的效果标准。作者的解释是，改写把有歧义的条款定成了某一种读法，这种读法未必是标注者的，这个解释没有被直接检验。评分标准改完以后，要另外拿一份改的时候没读过的人工标签来验。</p>
+  </div>
+  <p>实验设置：</p>
+  <ul>
+    <li><strong>三个数据集，都有公开的人工标签。</strong>SummEval 是新闻摘要，400 条，4 个维度，1 到 5 分，人工标签取 3 位专家的均值。HealthBench 元评测是医疗对话，1,000 条，逐条标准判是否满足，人工标签取医生多数票，平票的剔除。USR Topical-Chat 是带知识的对话，360 条，6 个质量维度，取 3 位标注者的均值。按文章或对话成簇切分，20% 的簇做开发集，80% 做评测集。计数单位是「单元」，一条样本的一个维度算一个单元。</li>
+    <li><strong>五个评审，三家厂商。</strong>Claude Opus 5.5、Claude Sonnet 5.5、Claude Haiku 4.5、GPT-6 Luna、Gemini 3.5 Flash-Lite。负责改写评分标准的模型是 Claude Opus 5.5。</li>
+    <li><strong>六种评分标准。</strong>评测集每条样本由五个评审在六种标准下各打一次分：原标准；外部方法（SummEval 用 G-Eval 的提示词，不做概率加权；USR 用 G-Eval 的同一模板加一次生成的评估步骤；HealthBench 用官方评分模板）；不给分歧信息、整体重写一次；只拆成条款列表；完整做法；随机条款对照。后三种在第 2 节讲。</li>
+    <li><strong>两个量。</strong>评审之间的一致，用五个评审的 Krippendorff α。和人的一致（下文简称对人一致），用五个评审的合成分对人工标签。SummEval 和 USR 的合成分是五个分数的均值，不取整，分别算 Kendall τ 和 Spearman ρ；HealthBench 的合成分是五取三的多数判定，算宏 F1。三个指标不同，下文只在同一个数据集里比。</li>
+    <li><strong>先写定再跑。</strong>四个假设、指标、检验方法和选条款的规则，在任何评测调用和标签提取之前提交进版本库并打了标签。作者写明这是自己登记，没有进外部登记处。主要比较 9 个，每个数据集 3 个：完整做法减原标准的 α，完整做法减原标准的对人一致，完整做法减随机条款对照的 α。用按簇配对的自助法重采样 10,000 次，p 值按 Holm 法在 9 个检验上校正。α 的差值不小于 0.05 且区间不含零才算有效果，这条 0.05 的门槛不用于对人一致。</li>
+    <li><strong>规模。</strong>129,770 次评审请求，每个评审 25,954 次，不含重试。重试一次后仍解析不了的输出 27 条，占 0.021%。</li>
+  </ul>
+</section>
+
+<section id="how">
+  <h2><span>2</span>做法：拆条款、找分歧、改前 k 条</h2>
+  <p>输入是一个评分维度的标准、一份开发集、一组评审。输出是改过的标准。所有由模型生成的步骤都用固定提示词，只跑一次。</p>
+  <ul>
+    <li><strong>拆。</strong>改写模型把每个维度的标准拆成原子子条款。HealthBench 的 34 个官方标准类别原样各算一条。三个数据集合计 75 条。</li>
+    <li><strong>探。</strong>每个评审对开发集的每条样本给一份探查输出：每个子条款一个判定（通过、不通过、不适用），一两句理由，一个总分。探查输出只用来选条款和取例子，不进评测。</li>
+    <li><strong>转给代码（没有发生）。</strong>设计里还有一步，把能用确定性检查器判的子条款从评审的标准里移出、交给代码。改写模型没有把 75 条里的任何一条映射到四个检查器上，这一步没有跑。「只拆条款」这个条件和原标准的差别，只剩把标准排成了条款列表。</li>
+    <li><strong>找分歧，改前 k 条。</strong>五个评审两两配成 10 对。对每个子条款，算这 10 对里判定不同的比例，不适用和缺失的不算。一个维度有 n 条子条款，取 k = min(5, ⌊n/2⌋)，按分歧率从高到低选至多 k 条，分歧率为零的不选。改写模型对选中的条款各改一次，拿到的是条款原文、评审判得不一样的开发集样本、评审各自的理由，指令里禁止添加新的考察内容。开发集里如果既有五个评审全判通过的样本、又有全判不通过的样本，就附至多两对正反例，否则不附。条款以外的文字不动。</li>
+    <li><strong>剩下的分歧只报告。</strong>改完还在的分歧不再改，分三层报：同一个评审重复跑的波动、同厂商评审之间、跨厂商评审之间。</li>
+  </ul>
+  <p>对照组这样配：k 的上界取 ⌊n/2⌋，保证没被选中的条款至少和选中的一样多。对照组从没被选中的条款里按固定种子抽同样多条，不看它们的分歧率，用同一个改写提示词、同一条例子规则去改。两组各改了 23 条，11 个维度每个至少改一条。选中的 23 条里 12 条附了例子，对照的 23 条里 16 条附了例子。</p>
+  <p>选哪条、怎么改，全程不读人工标签。评测集的人工标签在最终清单封存之后才提取，开发集的人工标签从未提取。</p>
+  <figure>
+    <svg viewBox="0 0 920 470" width="100%" role="img" aria-label="流程图：原评分标准拆成子条款，五个评审在开发集上探查，按分歧率排序，改写前 k 条；对照组改随机条款；评测集上分别量评审间一致和对人一致，人工标签只在最后用到">
+      <defs>
+        <marker id="ar1" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#475569"/></marker>
+      </defs>
+      <rect x="1" y="1" width="918" height="468" rx="10" fill="#fff" stroke="#e2e8f0"/>
+      <text x="24" y="32" font-size="16" font-weight="700" fill="#0f172a">选哪条、怎么改，都不读人工标签；人工标签到最后才用</text>
+
+      <g font-size="14" fill="#0f172a" text-anchor="middle">
+        <rect x="24" y="52" width="156" height="92" rx="8" fill="#eff6ff" stroke="#1d4ed8" stroke-width="2"/>
+        <text x="102" y="80" font-size="15" font-weight="700">原评分标准</text>
+        <text x="102" y="104">各基准自带的</text>
+        <text x="102" y="126">标注指南</text>
+
+        <rect x="202" y="52" width="156" height="92" rx="8" fill="#eff6ff" stroke="#1d4ed8" stroke-width="2"/>
+        <text x="280" y="80" font-size="15" font-weight="700">拆成子条款</text>
+        <text x="280" y="104">三个数据集</text>
+        <text x="280" y="126">共 75 条</text>
+
+        <rect x="380" y="52" width="156" height="92" rx="8" fill="#eff6ff" stroke="#1d4ed8" stroke-width="2"/>
+        <text x="458" y="80" font-size="15" font-weight="700">五个评审探查</text>
+        <text x="458" y="104">开发集上逐条判</text>
+        <text x="458" y="126">通过或不通过</text>
+
+        <rect x="558" y="52" width="156" height="92" rx="8" fill="#eff6ff" stroke="#1d4ed8" stroke-width="2"/>
+        <text x="636" y="80" font-size="15" font-weight="700">按分歧率排序</text>
+        <text x="636" y="104">10 对评审里</text>
+        <text x="636" y="126">判得不同的比例</text>
+
+        <rect x="736" y="52" width="156" height="92" rx="8" fill="#eff6ff" stroke="#1d4ed8" stroke-width="2"/>
+        <text x="814" y="80" font-size="15" font-weight="700">改写前 k 条</text>
+        <text x="814" y="104">k = min(5, ⌊n/2⌋)</text>
+        <text x="814" y="126">每条只改一次</text>
+
+        <rect x="24" y="176" width="334" height="80" rx="8" fill="#f1f5f9" stroke="#475569" stroke-width="2"/>
+        <text x="191" y="208" font-size="15" font-weight="700">这一段全程不读人工标签</text>
+        <text x="191" y="234">开发集的人工标签从未提取</text>
+
+        <rect x="380" y="176" width="320" height="80" rx="8" fill="#fffbeb" stroke="#b45309" stroke-width="2"/>
+        <text x="540" y="200" font-size="15" font-weight="700" fill="#b45309">随机条款对照</text>
+        <text x="540" y="222">从没选中的条款里抽同样多条</text>
+        <text x="540" y="244">同一提示词、同一例子规则</text>
+
+        <text x="852" y="220" font-size="14" fill="#1d4ed8">完整做法</text>
+
+        <rect x="24" y="286" width="868" height="40" rx="8" fill="#fff" stroke="#475569" stroke-width="2"/>
+        <text x="458" y="311" font-size="15">评测集（80% 的簇）：每条样本由五个评审在六种评分标准下各打一次分</text>
+
+        <rect x="24" y="356" width="422" height="92" rx="8" fill="#eff6ff" stroke="#1d4ed8" stroke-width="2"/>
+        <text x="235" y="384" font-size="15" font-weight="700" fill="#1d4ed8">评审间一致</text>
+        <text x="235" y="408">Krippendorff α，五个评审之间</text>
+        <text x="235" y="430">只用评审自己的打分</text>
+
+        <rect x="470" y="356" width="422" height="92" rx="8" fill="#ecfdf5" stroke="#047857" stroke-width="2"/>
+        <text x="681" y="384" font-size="15" font-weight="700" fill="#047857">和人的一致</text>
+        <text x="681" y="408">SummEval τ、HealthBench 宏 F1、USR ρ</text>
+        <text x="681" y="430">人工标签第一次用在这里</text>
+      </g>
+
+      <g stroke="#475569" stroke-width="2" fill="none" marker-end="url(#ar1)">
+        <line x1="182" y1="98" x2="200" y2="98"/>
+        <line x1="360" y1="98" x2="378" y2="98"/>
+        <line x1="538" y1="98" x2="556" y2="98"/>
+        <line x1="716" y1="98" x2="734" y2="98"/>
+        <line x1="636" y1="146" x2="636" y2="174"/>
+        <line x1="540" y1="258" x2="540" y2="284"/>
+        <line x1="814" y1="146" x2="814" y2="284"/>
+        <line x1="235" y1="328" x2="235" y2="354"/>
+        <line x1="681" y1="328" x2="681" y2="354"/>
+      </g>
+    </svg>
+    <figcaption>图 1 · 按 arXiv:2610.13303v1 第 3 节和第 4.1、4.3 节画。上面两行不读人工标签，只有绿框里的三个指标用到人工标签。</figcaption>
+  </figure>
+</section>
+
+<section id="summeval">
+  <h2><span>3</span>SummEval：一致涨了，对人的一致没测出变化</h2>
+  <p>九个预先写定的主要比较如下。差值是各维度等权平均；区间是未校正的 95% 百分位区间；p 值经 Holm 校正。</p>
+  <div class="tw">
+  <table>
+    <thead>
+      <tr><th>数据集</th><th>比较</th><th>差值</th><th>95% 区间</th><th>Holm p</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>SummEval</td><td>完整做法 − 原标准，评审间 α</td><td>+0.069</td><td>[0.046, 0.092]</td><td>&lt;0.001</td></tr>
+      <tr><td>SummEval</td><td>完整做法 − 原标准，对专家 τ</td><td>−0.007</td><td>[−0.037, 0.021]</td><td>1.000</td></tr>
+      <tr><td>SummEval</td><td>完整做法 − 随机条款，评审间 α</td><td>+0.074</td><td>[0.047, 0.097]</td><td>&lt;0.001</td></tr>
+      <tr><td>HealthBench</td><td>完整做法 − 原标准，评审间 α</td><td>−0.012</td><td>[−0.031, 0.007]</td><td>1.000</td></tr>
+      <tr><td>HealthBench</td><td>完整做法 − 原标准，对医生宏 F1</td><td>−0.023</td><td>[−0.043, −0.003]</td><td>0.155</td></tr>
+      <tr><td>HealthBench</td><td>完整做法 − 随机条款，评审间 α</td><td>+0.003</td><td>[−0.017, 0.023]</td><td>1.000</td></tr>
+      <tr><td>USR</td><td>完整做法 − 原标准，评审间 α</td><td>+0.027</td><td>[0.007, 0.047]</td><td>0.070</td></tr>
+      <tr><td>USR</td><td>完整做法 − 原标准，对标注者 ρ</td><td>+0.005</td><td>[−0.011, 0.023]</td><td>1.000</td></tr>
+      <tr><td>USR</td><td>完整做法 − 随机条款，评审间 α</td><td>+0.007</td><td>[−0.009, 0.023]</td><td>1.000</td></tr>
+    </tbody>
+  </table>
+  </div>
+  <p>SummEval 上，评审间的 α 两个比较都过了门槛。比原标准高 0.069，比随机条款对照高 0.074，两个数几乎一样大：用同一个改写模型、同一条例子规则去改同样多的其他条款，带不来这部分涨幅。以「只拆条款」为共同起点来看，改分歧条款让 α 涨 0.090，改对照条款涨 0.016。最简单的解释是随便改几条、加上例子，一致都会涨。论文说这组对照和它对不上，并限定只说这个数据集。在 SummEval 上，开发集的评审分歧指到了评审读法不同的条款。</p>
+  <p>同一批改动下，评审团和专家评分的 τ 差 −0.007，区间 −0.037 至 0.021。按预先写定的报告规则，论文把 SummEval 的主结果写成：一致上去了，评审没有离人工标注者更近。</p>
+  <p>作者没有做等价性检验。「没测出变化」不能读成「证明了没变」。</p>
+  <figure>
+    <svg viewBox="0 0 920 420" width="100%" role="img" aria-label="SummEval 评测集上六种评分标准的评审间一致 α 和对专家评分的一致 τ，点图">
+      <rect x="1" y="1" width="918" height="418" rx="10" fill="#fff" stroke="#e2e8f0"/>
+      <text x="24" y="32" font-size="16" font-weight="700" fill="#0f172a">SummEval 六种评分标准：左栏量评审之间，右栏量评审团和专家</text>
+      <rect x="16" y="180" width="888" height="40" rx="6" fill="#eff6ff" stroke="#1d4ed8" stroke-width="1.5"/>
+      <rect x="16" y="225" width="888" height="40" rx="6" fill="#fffbeb" stroke="#b45309" stroke-width="1.5"/>
+
+      <text x="200" y="68" font-size="15" font-weight="700" fill="#1d4ed8">评审间一致 α</text>
+      <text x="600" y="68" font-size="15" font-weight="700" fill="#047857">和专家评分的一致 τ</text>
+
+      <g stroke="#e2e8f0" stroke-width="1">
+        <line x1="200" y1="85" x2="200" y2="365"/><line x1="277.8" y1="85" x2="277.8" y2="365"/><line x1="355.6" y1="85" x2="355.6" y2="365"/><line x1="433.3" y1="85" x2="433.3" y2="365"/>
+        <line x1="600" y1="85" x2="600" y2="365"/><line x1="677.8" y1="85" x2="677.8" y2="365"/><line x1="755.6" y1="85" x2="755.6" y2="365"/><line x1="833.3" y1="85" x2="833.3" y2="365"/>
+      </g>
+      <g stroke="#475569" stroke-width="1.5">
+        <line x1="200" y1="365" x2="480" y2="365"/>
+        <line x1="600" y1="365" x2="880" y2="365"/>
+      </g>
+      <g stroke="#94a3b8" stroke-width="1.5" stroke-dasharray="5 4">
+        <line x1="319.8" y1="85" x2="319.8" y2="365"/>
+        <line x1="757.1" y1="85" x2="757.1" y2="365"/>
+      </g>
+      <g font-size="14" fill="#475569" text-anchor="middle">
+        <text x="200" y="386">0.50</text><text x="277.8" y="386">0.55</text><text x="355.6" y="386">0.60</text><text x="433.3" y="386">0.65</text>
+        <text x="600" y="386">0.40</text><text x="677.8" y="386">0.45</text><text x="755.6" y="386">0.50</text><text x="833.3" y="386">0.55</text>
+      </g>
+
+      <g font-size="15" fill="#0f172a">
+        <text x="24" y="115">原标准</text>
+        <text x="24" y="160">只拆条款</text>
+        <text x="24" y="205" font-weight="700">改分歧最大的条款</text>
+        <text x="24" y="250" font-weight="700">改随机条款（对照）</text>
+        <text x="24" y="295">整体重写一次</text>
+        <text x="24" y="340">G-Eval 提示词</text>
+      </g>
+
+      <g fill="#1d4ed8">
+        <circle cx="319.8" cy="110" r="7"/><circle cx="287.1" cy="155" r="7"/><circle cx="427.1" cy="200" r="7"/>
+        <circle cx="312.0" cy="245" r="7"/><circle cx="308.9" cy="290" r="7"/><circle cx="263.8" cy="335" r="7"/>
+      </g>
+      <g font-size="14" fill="#0f172a">
+        <text x="332" y="115">0.577</text><text x="275" y="160" text-anchor="end">0.556</text><text x="439" y="205" font-weight="700">0.646</text>
+        <text x="332" y="250">0.572</text><text x="332" y="295">0.570</text><text x="276" y="340">0.541</text>
+      </g>
+
+      <g fill="#047857">
+        <circle cx="757.1" cy="110" r="7"/><circle cx="724.4" cy="155" r="7"/><circle cx="746.2" cy="200" r="7"/>
+        <circle cx="780.5" cy="245" r="7"/><circle cx="757.1" cy="290" r="7"/><circle cx="764.9" cy="335" r="7"/>
+      </g>
+      <g font-size="14" fill="#0f172a">
+        <text x="769" y="115">0.501</text><text x="682" y="160">0.480</text><text x="700" y="205" font-weight="700">0.494</text>
+        <text x="793" y="250" font-weight="700">0.516</text><text x="769" y="295">0.501</text><text x="777" y="340">0.506</text>
+      </g>
+      <text x="24" y="408" font-size="14" fill="#475569">虚线是原标准的位置。两栏横轴的一格都是 0.05。</text>
+    </svg>
+    <figcaption>图 2 · 数字取自 arXiv:2610.13303v1 表 4，SummEval 评测集，各维度等权平均。表 4 的每一行在该条件全部有效单元上计算，行间差是描述性的，和上表的配对差值会差一点。两栏是不同的指标，各自对着虚线看方向，不比两栏的幅度。</figcaption>
+  </figure>
+</section>
+
+<section id="control">
+  <h2><span>4</span>改随机条款的那组，对人一致的点估计更高</h2>
+  <p>图 2 右栏里，对人一致最高的是随机条款对照。它在 SummEval 上的 τ 是 0.516，完整做法是 0.494；USR 上它的 ρ 是 0.748，完整做法是 0.735。两个数据集上，它都是六种评分标准里对人一致最高的一个。</p>
+  <p>论文预先写定了一个次要比较：在配对样本上，完整做法减随机条款对照的对人一致。</p>
+  <ul>
+    <li>SummEval，τ：−0.022，95% 区间 −0.043 至 0.000，未校正 p = 0.049。论文注明区间上界是 +0.0001。</li>
+    <li>HealthBench，宏 F1：−0.007，区间 −0.027 至 0.013，p = 0.497。</li>
+    <li>USR，ρ：−0.012，区间 −0.025 至 0.001，p = 0.060。</li>
+  </ul>
+  <p>三个数据集的点估计方向相同，改分歧条款的那组都更低。论文的说法是三个区间都含零。SummEval 那一行未校正的 p 是 0.049，这是一个没有做多重校正的次要比较，论文不称它显著。</p>
+  <p>不看分歧、整体重写一次的那个条件，对人一致在三个数据集上的变化都不到 0.01（探索性的配对比较）。</p>
+  <p>把这几行放在一起。SummEval 上，改随机条款，评审间的 α 几乎不动（0.572，原标准 0.577），对人一致的点估计是六种评分标准里最高的；改分歧条款，α 涨得最多，对人一致的点估计更低。USR 上两组的 α 只差 0.007。HealthBench 上完整做法的 α 低于原标准。论文的结论句是，这些对比合起来不支持修评分标准时只拿评审间一致当目标。它同时写明，除了上面那个次要比较，这一段里的对比都不是计划内的检验，也没有一个显著。</p>
+</section>
+
+<section id="null">
+  <h2><span>5</span>另外两个数据集没达到预设标准</h2>
+  <p>标题里「更一致了」那半句，三个数据集里只有 SummEval 达到预设标准。</p>
+  <ul>
+    <li><strong>HealthBench。</strong>评审间的 α 在两个比较里都没测出变化。对医生多数票的宏 F1 降了 0.023，未校正区间 −0.043 至 −0.003 不含零，Holm 校正后 p = 0.155，论文不把它报告为显著下降。</li>
+    <li><strong>USR。</strong>评审间的 α 涨 0.027，未校正区间不含零，没到 0.05 的预设门槛，校正后 p = 0.070。另外两个比较没有差别。</li>
+  </ul>
+  <p>作者列了几个可能的原因，并写明现有设计分不开它们。HealthBench 的 34 条标准里只改了 5 条，受这 5 条评判的样本是 799 个评测单元里的 120 个，占 15%，合并算 α 时被稀释。选中的 5 条在开发集上都凑不出「五个评审全判通过」和「全判不通过」的例子对，改动只动了措辞。医生之间的一致本身有限，这一条引的是别人的研究。USR 上好几个维度在开发集上的一致已经很高，数据集也小。</p>
+</section>
+
+<section id="why">
+  <h2><span>6</span>分歧能定位，定不了往哪边改</h2>
+  <p>论文对第 3 节结果的解释是：不读标签的流程，不知道标注者对一条条款持哪一种读法。改写模型把一条有歧义的条款定成其中一种，评审团在这种读法上内部自洽，这种读法未必是标注者的。它引了 2026 年的另一篇预印本（Mukherjee 等，arXiv:2606.03043），按它的转述，那篇报告 LLM 评审可能收敛到人工标注者不看重的轴上。</p>
+  <figure>
+    <svg viewBox="0 0 920 350" width="100%" role="img" aria-label="示意图：一条有两种读法的条款。改写前三个评审按读法 A、两个评审和人工标注者按读法 B。改写后有两种情形：定成读法 A，五个评审都在 A，标注者在 B；定成读法 B，五个评审和标注者都在 B。两种情形下评审间一致相同">
+      <rect x="1" y="1" width="918" height="348" rx="10" fill="#fff" stroke="#e2e8f0"/>
+      <text x="24" y="32" font-size="16" font-weight="700" fill="#0f172a">示意：一条有两种读法的条款，改写后的两种情形</text>
+
+      <g font-size="14" text-anchor="middle">
+        <rect x="24" y="50" width="276" height="186" rx="8" fill="#fff" stroke="#475569" stroke-width="2"/>
+        <text x="162" y="76" font-size="15" font-weight="700" fill="#0f172a">改写前：评审分成两边</text>
+        <rect x="34" y="92" width="124" height="130" rx="8" fill="#eff6ff" stroke="#1d4ed8" stroke-width="2"/>
+        <rect x="166" y="92" width="124" height="130" rx="8" fill="#ecfdf5" stroke="#047857" stroke-width="2"/>
+        <text x="96" y="116" font-weight="700" fill="#0f172a">读法 A</text>
+        <text x="228" y="116" font-weight="700" fill="#0f172a">读法 B</text>
+        <g fill="#1d4ed8"><circle cx="74" cy="152" r="9"/><circle cx="96" cy="152" r="9"/><circle cx="118" cy="152" r="9"/><circle cx="217" cy="152" r="9"/><circle cx="239" cy="152" r="9"/></g>
+        <rect x="180" y="178" width="96" height="28" rx="6" fill="#fff" stroke="#047857" stroke-width="2"/>
+        <text x="228" y="197" fill="#047857">人工标注者</text>
+
+        <rect x="322" y="50" width="276" height="186" rx="8" fill="#fff" stroke="#b45309" stroke-width="2"/>
+        <text x="460" y="76" font-size="15" font-weight="700" fill="#0f172a">改写后，情形一：定成读法 A</text>
+        <rect x="332" y="92" width="124" height="130" rx="8" fill="#eff6ff" stroke="#1d4ed8" stroke-width="2"/>
+        <rect x="464" y="92" width="124" height="130" rx="8" fill="#ecfdf5" stroke="#047857" stroke-width="2"/>
+        <text x="394" y="116" font-weight="700" fill="#0f172a">读法 A</text>
+        <text x="526" y="116" font-weight="700" fill="#0f172a">读法 B</text>
+        <g fill="#1d4ed8"><circle cx="350" cy="152" r="9"/><circle cx="372" cy="152" r="9"/><circle cx="394" cy="152" r="9"/><circle cx="416" cy="152" r="9"/><circle cx="438" cy="152" r="9"/></g>
+        <rect x="478" y="178" width="96" height="28" rx="6" fill="#fff" stroke="#047857" stroke-width="2"/>
+        <text x="526" y="197" fill="#047857">人工标注者</text>
+
+        <rect x="620" y="50" width="276" height="186" rx="8" fill="#fff" stroke="#047857" stroke-width="2"/>
+        <text x="758" y="76" font-size="15" font-weight="700" fill="#0f172a">改写后，情形二：定成读法 B</text>
+        <rect x="630" y="92" width="124" height="130" rx="8" fill="#eff6ff" stroke="#1d4ed8" stroke-width="2"/>
+        <rect x="762" y="92" width="124" height="130" rx="8" fill="#ecfdf5" stroke="#047857" stroke-width="2"/>
+        <text x="692" y="116" font-weight="700" fill="#0f172a">读法 A</text>
+        <text x="824" y="116" font-weight="700" fill="#0f172a">读法 B</text>
+        <g fill="#1d4ed8"><circle cx="780" cy="152" r="9"/><circle cx="802" cy="152" r="9"/><circle cx="824" cy="152" r="9"/><circle cx="846" cy="152" r="9"/><circle cx="868" cy="152" r="9"/></g>
+        <rect x="776" y="178" width="96" height="28" rx="6" fill="#fff" stroke="#047857" stroke-width="2"/>
+        <text x="824" y="197" fill="#047857">人工标注者</text>
+
+        <text x="162" y="262" fill="#0f172a">评审间一致：低</text>
+        <text x="460" y="262" fill="#0f172a">评审间一致：高　和人的一致：降</text>
+        <text x="758" y="262" fill="#0f172a">评审间一致：高　和人的一致：升</text>
+        <text x="460" y="296" font-size="15" font-weight="700" fill="#0f172a">只看评审间一致，情形一和情形二是同一个数</text>
+      </g>
+      <circle cx="36" cy="324" r="8" fill="#1d4ed8"/>
+      <text x="52" y="329" font-size="14" fill="#475569">一个评审模型</text>
+      <text x="180" y="329" font-size="14" fill="#475569">评审和标注者各在哪一边，是为了说明而假设的</text>
+    </svg>
+    <figcaption>图 3 · 示意图，画的是 arXiv:2610.13303v1 第 6 节的解释，不是测出来的分布。论文实测的是 SummEval 上对专家的 τ 没测出变化，没有逐条核对哪条条款被定成了哪种读法。</figcaption>
+  </figure>
+  <p>这是解释，没有被直接检验。论文里能支持它的，是第 3、4 节那几组数的方向。</p>
+  <p>有一条限制和这个解释直接相关，作者自己列了：改写模型和五个评审里的三个同属 Claude 家族，改出来的条款可能偏向这三个评审读得一样的写法。论文有一组探索性的数字：三个 Claude 评审两两之间的加权 κ，在三个数据集上都高于三个不同厂商小模型之间的。SummEval 上，原标准下是 0.707 对 0.578，改完是 0.757 对 0.654，差距缩小 0.026；HealthBench 和 USR 上差距分别扩大 0.047 和 0.017。这两组在厂商和模型大小上都不同，Haiku 两组都在，分不清差别来自厂商还是模型大小。</p>
+  <p>作者给的做法是分工：用评审分歧定位有歧义的条款；往哪边改，用少量人工标签或原始的标注说明来定。</p>
+</section>
+
+<section id="mixed">
+  <h2><span>7</span>一致率里还混着什么</h2>
+  <p>同一篇里还有四个结果，和评审位上怎么读一致率有关。</p>
+  <h3>两个评审一起判反</h3>
+  <p>正式评测前，每个评审先过一轮预检，用的是作者自己写的合成样本，不含基准原文。HealthBench 的条款 C31 是否定式的：回复向用户追问、或者告诉用户还该补什么信息，就判不通过；两步都没犯，才填 <code>criteria_met = true</code>。合成的差样本整段都是追问。Claude Haiku 4.5 给它的输出是 <code>criteria_met: true</code>，理由里写：</p>
+  <div class="quote">Since the response does ask follow-up questions with this intent, the criteria is met (meaning it fails the rubric requirement).</div>
+  <p>理由认出了追问，也写了按条款该判不通过，判定字段填的是通过。GPT-6 Luna 在最低推理档给了同一条样本通过分，它只返回分数，看不出原因是否相同。这两个判定如果出现在评测里，会被记成一次一致。这一句是我的推论，预检数据不进 α。</p>
+  <p>Haiku 对这条条款的好样本和差样本都填了通过，在预检里算一对平分。预检标准原本不允许平分，作者在 10 月 7 日把它放宽成允许一对，并写明这是事后放宽；回查过去 67 批预检，别的结果都不变。Haiku 留在了评审团里。</p>
+  <h3>一致上去了，单个评审没有都变稳</h3>
+  <p>评测集里有 20% 的簇被重复打了三次分。同一个评审对同一条样本，三次里两两比较、分数不同的比例，SummEval 上从原标准到完整做法：GPT-6 Luna 0.246 → 0.214，Gemini 3.5 Flash-Lite 0.102 → 0.051，Claude Haiku 4.5 0.022 → 0.013（温度 0），Claude Opus 5.5 0.086 → 0.113，Claude Sonnet 5.5 0.062 → 0.092。两个更大的 Claude 评审，自己和自己的不一致变多了。每格的分母是 483 至 1,080 个运行对，这组数是描述性的，没有区间。</p>
+  <h3>多数票合成分换了分母</h3>
+  <p>论文另外算了一种多数票合成分，要求至少三个评审给出相同的分数，否则记缺失。按论文表 4，SummEval 上它的 τ 是 0.550，比其他各行都高，只在 1,280 个单元中有多数的 974 个上算出。USR 上它的 ρ 是 0.679，比其他各行都低，在 1,728 个中的 1,646 个上算出。论文给这两格打了星号，注明和其他行不可比。</p>
+  <h3>排成条款列表，一致率也动了</h3>
+  <p>只把标准排成条款列表、不做任何澄清，SummEval 的 α 从 0.577 降到 0.556，探索性配对差值 −0.021，区间 −0.038 至 −0.005，未校正 p = 0.014。HealthBench 的 α 从 0.375 到 0.358，配对差值 −0.017，区间 −0.035 至 0.002，未校正 p = 0.079。USR 上配对差值是 +0.004，区间 −0.016 至 0.024。三个都是计划外的比较。</p>
+</section>
+
+<section id="yours">
+  <h2><span>8</span>对照你的评审位</h2>
+  <p>论文评的是摘要、医疗对话、知识对话的打分。下表把它搬到 Agent 系统里的三个位置：第二列是同一个问题在你的系统里可能的样子，第三列是论文里对应的结果，第四列是可以加的检查。三个位置的划分、第二列和第四列都是我的外推，第 9 节写了它撑不起的部分。</p>
+  <div class="tw">
+  <table>
+    <thead>
+      <tr><th>位置</th><th>同一个问题在你系统里的样子</th><th>论文里对应的结果</th><th>可以加的检查</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>运行位：放行、验收、质检位上的多评审</td>
+        <td>拿评审之间的一致率当「评分标准改好了」或「评审可信」的验收数</td>
+        <td>SummEval 上 α 从 0.577 到 0.646，τ 从 0.501 到 0.494（表 4）</td>
+        <td>评审间一致和对人一致分两栏报。留一份只做验收的人工标注集，改评分标准的流程从头到尾不读它</td>
+      </tr>
+      <tr>
+        <td>编辑起点：评分标准、审核规则、评审提示词从哪条改起、往哪边改</td>
+        <td>改动由评审分歧触发，改法由一个模型读完评审的理由后给出</td>
+        <td>SummEval 上以只拆条款为起点，改分歧条款 α 涨 0.090，改随机条款涨 0.016；对人一致的点估计是随机条款那组高，区间含零</td>
+        <td>分歧只用来决定看哪条。往哪边改，对着原始标注说明或另一小份人工标注定，这一份和验收用的那份不重叠。每轮改动配一个「同样改法、改同样多其他条款」的对照</td>
+      </tr>
+      <tr>
+        <td>技能记录：改清楚的条款、判例写回规则库或记忆</td>
+        <td>写回去的条款，之后每一轮评审都当已知</td>
+        <td>论文没有测。每条条款只改一次，没有多轮</td>
+        <td>写回之前过一次验收用的人工标注集。记录里留下这条读法是谁定的、依据是什么</td>
+      </tr>
+    </tbody>
+  </table>
+  </div>
+  <p>逐条样本上「几票一致」和判得对不对的关系，论文没有测，这张表不涉及。</p>
+  <p>另外三项检查：</p>
+  <ul>
+    <li><strong>否定式条款单独测方向。</strong>「出现某行为就判不通过」这类条款，造一条只犯这一条的样本，核对判定字段和理由是不是同一个方向。对应第 7 节的 C31，做法是我加的。</li>
+    <li><strong>每种输出格式、每条调用通道各测一次强制。</strong>这一条是论文的建议。它报告，在评测前的一次受控测试里，Google 批量接口用 <code>responseJsonSchema</code> 字段传的输出格式没有被强制：提示词要求一个和 schema 矛盾的输出，同步调用 20 条里 20 条符合，批量调用 20 条里 0 条符合；换成 <code>responseFormat</code> 带 schema，批量 20 条里 20 条符合。只要一个分数的简单检查，两种写法都能过，嵌套的探查输出才露出问题。探查格式在 Gemini 3.1 和 3.5 Flash-Lite 上都没过，评审团因此换了一个成员，事后才查到原因在通道。</li>
+    <li><strong>合成分写清分母。</strong>多数票只在有多数的样本上有值。把它和全量样本上的数放在一张表里比，比的是两批不同的样本。对应第 7 节的多数票合成分，做法是我加的。</li>
+  </ul>
+</section>
+
+<section id="limit">
+  <h2><span>9</span>这篇撑不起什么</h2>
+  <ul>
+    <li>预印本，2026 年 10 月 9 日提交，没有同行评审记录。作者说会放出代码、冻结的评分标准、样本标识和评审打分，论文里还没有给地址，我没有重跑。</li>
+    <li>评审间一致的提升只在 SummEval 达到预设门槛。HealthBench 和 USR 上两项都没达到预设的效果标准；HealthBench 宏 F1 的点估计是下降，校正后不显著。</li>
+    <li>对人一致「没测出变化」，作者没有做等价性检验。第 4 节的三个差值，论文的说法是区间都含零。</li>
+    <li>区间是未校正的百分位区间，p 值是 Holm 校正的。区间不含零，不等于校正后显著，HealthBench 的宏 F1 就是这种情况。</li>
+    <li>五个评审里三个是 Claude，另两家各只有一个小模型。各评审的推理档和输出上限不同。改写模型和三个评审同家族。</li>
+    <li>每条条款只改一次，只用一个改写提示词。没有测多轮迭代，没有换改写模型。</li>
+    <li>把条款转给代码检查的那一步没有被检验：75 条里映射上的是 0 条，四个检查器只针对重复、截断这类表面缺陷。</li>
+    <li>人工标签本身有噪声。三个都是英文数据集。SummEval 用得很广，可能在评审模型的训练数据里。外部方法是拿已发表的提示词配现在的评审重跑，G-Eval 那一组没有做概率加权。</li>
+    <li>预先登记是自己在版本库里登记。登记之后、评测之前有几处改动：换 Google 评审、GPT-6 Luna 的推理档加一档、Opus 的输出上限从 64 提到 512、HealthBench 的输出指令统一、去掉提示缓存、预检的排序标准放宽一处。评测中途驱动程序异常退出后重启过一次，有一批 100 条请求重新提交。论文附录 A 逐条列了日期和原因。</li>
+    <li>被评的对象是摘要和对话。Agent 轨迹、工具调用、代码评审这类对象没有测。</li>
+    <li>作者披露用 Claude 做了软件开发、实验编排和论文的起草与编辑，并写明数字由作者对照分析日志核对。</li>
+  </ul>
+</section>
+
+<section id="src">
+  <h2><span>10</span>出处与未覆盖</h2>
+  <ul>
+    <li>论文：<a href="https://arxiv.org/abs/2610.13303">arXiv:2610.13303v1</a>，Agreement Without Alignment: Label-Free Rubric Clarification Increases LLM-Judge Consensus but Not Agreement with Humans，2026-10-09，cs.CL。本文数字的位置：第 3 节（做法、75 条、k 的取法）、第 4.1 节与表 1（数据集与切分）、第 4.2 节与表 2（评审）、第 4.3 节（六种条件）、第 4.4 节（预检与合成样本）、第 4.5、4.6 节（指标、合成分、检验、登记）、第 5.1 节（请求数、各改 23 条）、第 5.2 节与表 3、表 4（主要比较、各条件绝对值、次要比较）、第 5.3 节与表 5、表 6（同厂商与跨厂商、重复打分）、第 6、7 节（解释与限制）、附录 A（计划变更）、附录 B（条款 C31）、附录 C 与表 8（格式强制测试）、附录 E 与表 12（探索性配对比较）。</li>
+    <li>论文引的 Mukherjee 等 <a href="https://arxiv.org/abs/2606.03043">arXiv:2606.03043</a>，我只转述了这篇论文对它的一句引用，没有读它的正文。</li>
+    <li>下列各处是我加的，其余是论文内容：第 1 节灰底的判断段；第 7 节「会被记成一次一致」那一句；第 8 节表格里三个位置的划分、第二列和第四列，表后第一、三条检查的做法；图 3 里评审和标注者各在哪一边；本节最后一句对这篇的概括。</li>
+    <li>当日另外扫过的源：arXiv 接口 cs.AI、cs.CL、cs.LG 各取最新 1,200 条，去重后 2,974 条，提交时间最晚到 10 月 9 日；写稿时 arXiv 列表页最新一批仍是 10 月 12 日公告的那批。同批读过摘要没有写的有 2610.12822（多 Agent 编码系统里 reward hacking 的传播）、2610.13841（编码 Agent 从沙箱快照恢复）、2610.13105（不用逐步标注的失败归因）、2610.13356（编码 Agent 轨迹的验证器）、2610.13829（Minecraft 里自我改进的审计）、2610.13889（按工具可用性重排检索）。本文没有用它们的数字。</li>
+    <li>OpenAI 博客 RSS 最新条目停在 10 月 9 日，是两篇客户案例。Anthropic 新闻页最近日期是 10 月 8 日。Hacker News 首页前 120 条。GitHub 上 claude-code、codex、langgraph、OpenHands、goose、pi-mono、opencode 的最近发布，只看了版本号和日期，以及 Trending 当日榜。Product Hunt feed。这些没有用于本文。</li>
+    <li>X 与 Reddit：今日未覆盖。本次运行没有登录态，Reddit 接口返回 403。</li>
+  </ul>
+  <p>同系列里，<a href="/frontier/rsi-llm-agent-self-evolution.html">递归自改进前世今生</a>把评估器在不在更新边界之外当作有界自精炼和开放自改进的分界，<a href="/frontier/llm-agent-tech-landscape.html">冻底座、改脚手架</a>说公开增量落在 harness 这一层；这篇里被改的评分标准是评估器的一部分，驱动改动的信号也出自评审自己，人工标签只在最后验收时用了一次。</p>
+</section>
+</main>
+</div>
+</body>
+</html>

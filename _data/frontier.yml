@@ -1,5 +1,9 @@
 # 前沿技术栏目：独立 HTML 洞察索引。
 # 新增一篇：把 HTML 放到 /frontier/<slug>.html，再在这里加一条。
+- title: "评审团更一致了，和人的一致没有跟着涨"
+  date: "2026-10-13"
+  url: /frontier/2026-10-13-judge-consensus-not-alignment.html
+  summary: "一篇预印本按评审团内部的分歧定位并改写评分标准的条款，全程不读人工标签。SummEval 上五个评审之间的 Krippendorff α 比原标准高 0.069（95% 区间 0.046 至 0.092），评审团和专家评分的 Kendall τ 差 −0.007（区间 −0.037 至 0.021）。HealthBench 和 USR 上两项都没达到预设的效果标准。改同样多随机条款的对照组，对人一致的点估计在三个数据集上都更高，区间都含零。"
 - title: "护栏的选项名也是输入，换对一个词就放行"
   date: "2026-10-11"
   url: /frontier/2026-10-11-option-labels-are-input.html
