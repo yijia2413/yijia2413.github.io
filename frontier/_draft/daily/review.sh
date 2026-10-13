@@ -101,7 +101,7 @@ for n, u in enumerate(links[:15], 1):
                 pdf = f"{work}/src/{n:02d}.pdf"
                 open(pdf, "wb").write(body)
                 text = subprocess.run(["pdftotext", "-layout", pdf, "-"], capture_output=True,
-                                      text=True, timeout=120).stdout
+                                      encoding="utf-8", errors="replace", timeout=120).stdout
             else:
                 text = to_text(body.decode("utf-8", "replace"))
             if len(text) < 200:
@@ -118,8 +118,9 @@ if len(links) > 15:
 open(f"{work}/src/INDEX.txt", "w", encoding="utf-8").write("\n".join(index) + "\n")
 PY
 
+# 全角冒号写成 (:|：) 而不是放进方括号：没有 UTF-8 语言环境时方括号按单字节匹配，会认不出结论行。
 has_verdict() {
-  grep -q -E '^[#*> ]*结论[:：] *\**(BLOCK|REVISE|PASS)' "$WORK/review.md" 2>/dev/null
+  grep -q -E '^[#*> ]*结论(:|：) *\**(BLOCK|REVISE|PASS)' "$WORK/review.md" 2>/dev/null
 }
 
 run_claude() {
