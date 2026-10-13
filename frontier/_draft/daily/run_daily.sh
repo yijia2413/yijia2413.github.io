@@ -56,6 +56,7 @@ push_if_safe() {
   cd "$REPO" || exit 1
   HTML=$(find_html)
   rm -rf /tmp/frontier-daily
+  rm -rf /tmp/frontier-review
   rm -rf /config/workspace/drive/ai-tmp/frontier-daily/sources
   if [ -z "$HTML" ] || [ ! -f "$HTML" ]; then
     echo "no html for $DAY, skip push"
