@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>决策单价降了七成，账要按每个成功交付算</title>
+  <style>
+    :root { --ink:#0f172a; --muted:#475569; --line:#e2e8f0; --bg:#f8fafc; --blue:#1d4ed8; --blue-bg:#eff6ff; --amber:#b45309; --green:#047857; --rose:#be123c; }
+    * { box-sizing: border-box; }
+    body { margin:0; font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Noto Sans SC",sans-serif; background:var(--bg); color:var(--ink); line-height:1.75; font-size:17px; }
+    header { background:#0f172a; color:#f8fafc; padding:36px 24px 28px; border-bottom:4px solid #2563eb; }
+    header .inner { max-width:1080px; margin:0 auto; }
+    .badge { display:inline-block; border:1px solid #93c5fd; color:#bfdbfe; border-radius:999px; padding:2px 12px; font-size:13px; }
+    h1 { font-size:2rem; line-height:1.3; margin:12px 0; }
+    header p { color:#cbd5e1; margin:0; max-width:760px; }
+    .layout { max-width:1080px; margin:28px auto 64px; padding:0 20px; display:grid; grid-template-columns:220px minmax(0,1fr); gap:28px; }
+    aside { position:sticky; top:16px; align-self:start; background:#fff; border:1px solid var(--line); border-radius:12px; padding:14px; }
+    aside p { font-size:12px; letter-spacing:.06em; color:var(--muted); margin:0 0 8px; }
+    aside a { display:block; color:var(--ink); text-decoration:none; font-size:14px; padding:6px 8px; border-radius:6px; }
+    aside a:hover { background:var(--blue-bg); color:var(--blue); }
+    h2 { font-size:1.35rem; margin:0 0 12px; }
+    h2 span { display:inline-block; background:var(--blue); color:#fff; border-radius:6px; font-size:13px; padding:2px 8px; margin-right:8px; }
+    h3 { font-size:1.08rem; margin:20px 0 10px; }
+    section { background:#fff; border:1px solid var(--line); border-radius:14px; padding:26px 28px; margin-bottom:22px; }
+    p { margin:0 0 14px; }
+    a { color:var(--blue); overflow-wrap:anywhere; }
+    code { background:#f1f5f9; border-radius:4px; padding:1px 5px; font-size:15px; overflow-wrap:anywhere; }
+    main { min-width:0; }
+    figure { margin:16px 0; background:#fff; border:1px solid var(--line); border-radius:12px; padding:10px; overflow-x:auto; }
+    figure svg { display:block; min-width:700px; }
+    figcaption { color:var(--muted); font-size:14px; margin-top:6px; }
+    .tw { overflow-x:auto; margin:0 0 14px; }
+    .tw table { min-width:620px; }
+    table { width:100%; border-collapse:collapse; font-size:15px; }
+    th, td { border:1px solid var(--line); padding:8px 10px; text-align:left; vertical-align:top; }
+    th { background:#f1f5f9; }
+    ul { margin:0 0 14px; padding-left:22px; }
+    li { margin-bottom:6px; }
+    .note { background:#f1f5f9; border-left:4px solid var(--muted); padding:12px 16px; border-radius:0 8px 8px 0; font-size:16px; }
+    svg text { font-family:-apple-system,"PingFang SC","Noto Sans SC",sans-serif; }
+    @media (max-width:860px) { .layout { grid-template-columns:minmax(0,1fr); } aside { position:static; } h1 { font-size:1.55rem; } section { padding:18px 16px; } }
+  </style>
+</head>
+<body>
+<header>
+  <div class="inner">
+    <span class="badge">FRONTIER · 2026-10-12 · 运行位</span>
+    <h1>决策单价降了七成，账要按每个成功交付算</h1>
+    <p>一篇 10 月 9 日的预印本把 Jev 接进五个 Agent 的选动作位置，在 ALFWorld 和 AndroidWorld 上跑了 4,500 次任务执行。单次决策的成本降 66.1% 至 78.4%，五个 Agent 都降。把失败的尝试也计入、按每个成功交付来除，T3A 每次尝试便宜 17.1%，每个成功交付的均值却从 68.70 涨到 73.97 mUSD（差值的 95% 区间跨零）；FastAgent 每交付一个成功的用时从 239.4 秒涨到 377.8 秒（差值的 95% 区间整段为正）。</p>
+  </div>
+</header>
+<div class="layout">
+<aside>
+  <p>目录</p>
+  <a href="#what">1 这篇预印本测了什么</a>
+  <a href="#decision">2 每次决策都便宜了七成上下</a>
+  <a href="#attempt">3 每次尝试，省下的被别处花掉</a>
+  <a href="#success">4 每个成功交付，失败的尝试也要付钱</a>
+  <a href="#recover">5 出错之后，救回来多少</a>
+  <a href="#who">6 算模型的，还是算接法的</a>
+  <a href="#yours">7 对照你的运行位</a>
+  <a href="#limit">8 这篇撑不起什么</a>
+  <a href="#src">9 出处与未覆盖</a>
+</aside>
+<main>
+<section id="what">
+  <h2><span>1</span>这篇预印本测了什么</h2>
+  <p>2026 年 10 月 9 日，arXiv 收到 <a href="https://arxiv.org/abs/2610.13092">When Faster Decisions Do Not Make Better Agents: An Empirical Study of Jev in Agent Workflows</a>（arXiv:2610.13092v1，cs.AI，南京大学与慕尼黑工业大学）。</p>
+  <p>Jev 是 TypeSafe AI 在 2026 年 9 月发布的决策模型，厂商叫它 System One Model。调用方给一段状态和若干带类型的问题，它返回候选项上的概率、分数或二元概率。Agent 每一步都要在有限的候选里挑一个：点哪个控件、调哪个工具、发哪条命令。这一步原来由通用大模型做。论文把它换成 Jev，看单步省下的钱和时间能带多少到任务层面。</p>
+  <p><a href="/frontier/2026-10-11-option-labels-are-input.html">昨天那篇</a>讲的预印本测的是开放权重的复刻模型，位置是放行，有攻击者，没有测 Jev 本身。今天这篇测的是 Jev 1.13.0，位置是选动作，没有攻击者。</p>
+  <ul>
+    <li><strong>两个环境，全部用文本观测。</strong>Jev 目前只收文本。ALFWorld 是文字版家务任务，用 valid_unseen 划分的 134 个任务。AndroidWorld 是手机应用操作，116 个任务类型各取一个固定参数实例。</li>
+    <li><strong>五个 Agent。</strong>ALFWorld 上是 ReAct 和 Reflexion，AndroidWorld 上是 T3A、AutoDroid 和 Droidrun 的 FastAgent。论文把同一个 Agent 的几种配置合称一个家族。</li>
+    <li><strong>原配置 B 和 Jev 配置 J。</strong>J 每个决策步发一次 Jev 请求选动作，观测、历史、执行机制不动。摘要、Reflexion 的反思这类开放文本仍由通用模型写，论文叫辅助调用。ALFWorld 上 Jev 的候选里有一项 THINK，选中就调一次通用模型做推理。</li>
+    <li><strong>对照 C，只有 ALFWorld 有。</strong>ALFWorld 的原配置直接生成命令，不看候选列表；接 Jev 时顺带给了候选列表。C 让通用模型拿着和 Jev 相同的候选列表和选择指令。B 对 C 量的是候选列表这个接口，C 对 J 量的是换模型。</li>
+    <li><strong>模型与遍数。</strong>通用模型是 gpt-5.6-luna，Jev 是 jev-1.13.0。每个配置在同一批任务上跑三遍，任务之间重置环境和记忆。两个环境各 6 个配置，（6 × 134 + 6 × 116）× 3 = 4,500 次任务执行。</li>
+    <li><strong>计价，每百万 token。</strong>通用模型输入 0.20 美元、输出 1.20 美元；Jev 输入 0.042 美元，输出不收费。下文 mUSD 是千分之一美元，µUSD 是百万分之一美元。</li>
+  </ul>
+  <p>这篇只论证一个判断。把选动作这一步换成便宜的决策模型，单步的降幅在五个 Agent 上都稳。交付一个成功要花多少钱和时间，还取决于三个量：这一步原本占任务多大比例，换完之后多出多少辅助调用和交互，成功率掉了多少以及失败的尝试花掉多少。验收这类替换，分母要用成功交付的次数。第 5、6 两节拆的是第三个量：成功率为什么掉，掉的部分算模型的还是算接法的。</p>
+  <div class="note">
+    <p style="margin:0">三个分母先摆清楚。每次决策：只算选动作的调用，分母是该配置的决策调用次数。每次任务尝试：算一次任务里的全部模型调用，含辅助调用和反思，分母是任务执行次数，成败都算。每个成功交付：全部尝试（含失败）的总花费或总用时，除以成功次数。成功与否由各基准的官方评测器判定。两个环境的任务和预算不同，家族之间的数字不互相折算，下文只在同一家族内比 B 和 J。</p>
+  </div>
+</section>
+<section id="decision">
+  <h2><span>2</span>每次决策都便宜了七成上下</h2>
+  <p>五个家族的单次决策成本降 66.1% 至 78.4%，单次决策用时降 73.9% 至 81.5%。绝对值上，决策用时从 4.13 至 8.13 秒降到 1.04 至 1.75 秒。只看各配置自己做成的任务，两项优势都还在。</p>
+  <p>每次决策吃的 token 多了 53.5% 至 134.9%，因为选动作要把观测、候选和历史都送进去。成本仍然降，靠的是单价：Jev 的输入价是 0.042 美元，通用模型是 0.20 美元；Jev 输出不收费，通用模型的输出是 1.20 美元。</p>
+  <p>到这一层，厂商给它的定位（快、便宜的决策模型）在五个 Agent 上都成立。下面两节换分母。</p>
+</section>
+<section id="attempt">
+  <h2><span>3</span>每次尝试，省下的被别处花掉</h2>
+  <p>每次任务尝试的成本，五个家族都降：ReAct 50.9%，Reflexion 32.6%，T3A 17.1%，AutoDroid 68.8%，FastAgent 43.0%。按任务配对的 95% 自助区间里，Reflexion 的成本差值跨零，其余四个整段在零以下。</p>
+  <p>每次任务尝试的用时：ReAct 降 47.6%，Reflexion 降 37.8%，T3A 降 10.6%，AutoDroid 降 5.7%，FastAgent 涨 0.7%。AutoDroid 和 FastAgent 的用时差值区间跨零。</p>
+  <p>决策快了四分之三，T3A、AutoDroid、FastAgent 三个的任务用时变化却都在 11% 以内。论文把每次任务的平均用时拆成三块：选动作的调用、辅助调用、环境交互及其他。</p>
+  <figure>
+    <svg viewBox="0 0 920 500" width="100%" role="img" aria-label="五个 Agent 的原配置与 Jev 配置，每次任务平均用时拆成选动作、辅助调用、环境交互及其他三块">
+      <rect x="1" y="1" width="918" height="498" rx="10" fill="#fff" stroke="#e2e8f0"/>
+      <text x="24" y="32" font-size="16" font-weight="700" fill="#0f172a">每次任务的平均用时花在哪（秒，三遍全部执行的均值）</text>
+      <text x="24" y="56" font-size="14" fill="#475569">横轴一格 = 50 秒。每个 Agent 上面一条是原配置 B，下面一条是 Jev 配置 J。百分比是 J 相对 B 的总用时变化。</text>
+      <rect x="24" y="68" width="16" height="14" fill="#bfdbfe" stroke="#1d4ed8" stroke-width="1.5"/>
+      <text x="46" y="80" font-size="14" fill="#0f172a">选动作的调用</text>
+      <rect x="170" y="68" width="16" height="14" fill="#fde68a" stroke="#b45309" stroke-width="1.5"/>
+      <text x="192" y="80" font-size="14" fill="#0f172a">辅助调用（推理、摘要、反思）</text>
+      <rect x="430" y="68" width="16" height="14" fill="#e2e8f0" stroke="#475569" stroke-width="1.5"/>
+      <text x="452" y="80" font-size="14" fill="#0f172a">环境交互及其他</text>
+
+      <line x1="200" y1="94" x2="200" y2="394" stroke="#94a3b8" stroke-width="1.5"/>
+      <line x1="300" y1="94" x2="300" y2="394" stroke="#f1f5f9" stroke-width="1"/>
+      <line x1="400" y1="94" x2="400" y2="394" stroke="#f1f5f9" stroke-width="1"/>
+      <line x1="500" y1="94" x2="500" y2="394" stroke="#f1f5f9" stroke-width="1"/>
+      <line x1="600" y1="94" x2="600" y2="394" stroke="#f1f5f9" stroke-width="1"/>
+      <line x1="700" y1="94" x2="700" y2="394" stroke="#f1f5f9" stroke-width="1"/>
+
+      <text x="24" y="124" font-size="15" font-weight="700" fill="#0f172a">ReAct</text>
+      <text x="190" y="114" text-anchor="end" font-size="14" fill="#475569">B</text>
+      <rect x="200" y="100" width="136.6" height="18" fill="#bfdbfe" stroke="#1d4ed8" stroke-width="1.5"/>
+      <rect x="336.6" y="100" width="5.7" height="18" fill="#e2e8f0" stroke="#475569" stroke-width="1.5"/>
+      <text x="351" y="114" font-size="14" fill="#0f172a">71.17</text>
+      <text x="190" y="136" text-anchor="end" font-size="14" fill="#475569">J</text>
+      <rect x="200" y="122" width="34.5" height="18" fill="#bfdbfe" stroke="#1d4ed8" stroke-width="1.5"/>
+      <rect x="234.5" y="122" width="34.5" height="18" fill="#fde68a" stroke="#b45309" stroke-width="1.5"/>
+      <rect x="269" y="122" width="5.7" height="18" fill="#e2e8f0" stroke="#475569" stroke-width="1.5"/>
+      <text x="283" y="136" font-size="14" fill="#0f172a">37.33　−47.6%</text>
+
+      <text x="24" y="186" font-size="15" font-weight="700" fill="#0f172a">Reflexion</text>
+      <text x="190" y="176" text-anchor="end" font-size="14" fill="#475569">B</text>
+      <rect x="200" y="162" width="191.5" height="18" fill="#bfdbfe" stroke="#1d4ed8" stroke-width="1.5"/>
+      <rect x="391.5" y="162" width="1.8" height="18" fill="#fde68a" stroke="#b45309" stroke-width="1"/>
+      <rect x="393.3" y="162" width="5.8" height="18" fill="#e2e8f0" stroke="#475569" stroke-width="1.5"/>
+      <text x="408" y="176" font-size="14" fill="#0f172a">99.55</text>
+      <text x="190" y="198" text-anchor="end" font-size="14" fill="#475569">J</text>
+      <rect x="200" y="184" width="40.3" height="18" fill="#bfdbfe" stroke="#1d4ed8" stroke-width="1.5"/>
+      <rect x="240.3" y="184" width="77.1" height="18" fill="#fde68a" stroke="#b45309" stroke-width="1.5"/>
+      <rect x="317.4" y="184" width="6.3" height="18" fill="#e2e8f0" stroke="#475569" stroke-width="1.5"/>
+      <text x="332" y="198" font-size="14" fill="#0f172a">61.90　−37.8%</text>
+
+      <text x="24" y="248" font-size="15" font-weight="700" fill="#0f172a">T3A</text>
+      <text x="190" y="238" text-anchor="end" font-size="14" fill="#475569">B</text>
+      <rect x="200" y="224" width="177" height="18" fill="#bfdbfe" stroke="#1d4ed8" stroke-width="1.5"/>
+      <rect x="377" y="224" width="134.9" height="18" fill="#fde68a" stroke="#b45309" stroke-width="1.5"/>
+      <rect x="511.9" y="224" width="114" height="18" fill="#e2e8f0" stroke="#475569" stroke-width="1.5"/>
+      <text x="634" y="238" font-size="14" fill="#0f172a">213.00</text>
+      <text x="190" y="260" text-anchor="end" font-size="14" fill="#475569">J</text>
+      <rect x="200" y="246" width="32.3" height="18" fill="#bfdbfe" stroke="#1d4ed8" stroke-width="1.5"/>
+      <rect x="232.3" y="246" width="194" height="18" fill="#fde68a" stroke="#b45309" stroke-width="1.5"/>
+      <rect x="426.3" y="246" width="154.5" height="18" fill="#e2e8f0" stroke="#475569" stroke-width="1.5"/>
+      <text x="589" y="260" font-size="14" fill="#0f172a">190.36　−10.6%</text>
+
+      <text x="24" y="310" font-size="15" font-weight="700" fill="#0f172a">AutoDroid</text>
+      <text x="190" y="300" text-anchor="end" font-size="14" fill="#475569">B</text>
+      <rect x="200" y="286" width="193.6" height="18" fill="#bfdbfe" stroke="#1d4ed8" stroke-width="1.5"/>
+      <rect x="393.6" y="286" width="328.9" height="18" fill="#e2e8f0" stroke="#475569" stroke-width="1.5"/>
+      <text x="731" y="300" font-size="14" fill="#0f172a">261.20</text>
+      <text x="190" y="322" text-anchor="end" font-size="14" fill="#475569">J</text>
+      <rect x="200" y="308" width="46.7" height="18" fill="#bfdbfe" stroke="#1d4ed8" stroke-width="1.5"/>
+      <rect x="246.7" y="308" width="19.1" height="18" fill="#fde68a" stroke="#b45309" stroke-width="1.5"/>
+      <rect x="265.8" y="308" width="426.7" height="18" fill="#e2e8f0" stroke="#475569" stroke-width="1.5"/>
+      <text x="701" y="322" font-size="14" fill="#0f172a">246.27　−5.7%</text>
+
+      <text x="24" y="372" font-size="15" font-weight="700" fill="#0f172a">FastAgent</text>
+      <text x="190" y="362" text-anchor="end" font-size="14" fill="#475569">B</text>
+      <rect x="200" y="348" width="106" height="18" fill="#bfdbfe" stroke="#1d4ed8" stroke-width="1.5"/>
+      <rect x="306" y="348" width="4.5" height="18" fill="#fde68a" stroke="#b45309" stroke-width="1"/>
+      <rect x="310.5" y="348" width="128.8" height="18" fill="#e2e8f0" stroke="#475569" stroke-width="1.5"/>
+      <text x="448" y="362" font-size="14" fill="#0f172a">119.68</text>
+      <text x="190" y="384" text-anchor="end" font-size="14" fill="#475569">J</text>
+      <rect x="200" y="370" width="40.1" height="18" fill="#bfdbfe" stroke="#1d4ed8" stroke-width="1.5"/>
+      <rect x="240.1" y="370" width="29.5" height="18" fill="#fde68a" stroke="#b45309" stroke-width="1.5"/>
+      <rect x="269.6" y="370" width="171.4" height="18" fill="#e2e8f0" stroke="#475569" stroke-width="1.5"/>
+      <text x="450" y="384" font-size="14" fill="#9f1239" font-weight="700">120.50　+0.7%</text>
+
+      <text x="200" y="414" text-anchor="middle" font-size="14" fill="#475569">0</text>
+      <text x="300" y="414" text-anchor="middle" font-size="14" fill="#475569">50</text>
+      <text x="400" y="414" text-anchor="middle" font-size="14" fill="#475569">100</text>
+      <text x="500" y="414" text-anchor="middle" font-size="14" fill="#475569">150</text>
+      <text x="600" y="414" text-anchor="middle" font-size="14" fill="#475569">200</text>
+      <text x="700" y="414" text-anchor="middle" font-size="14" fill="#475569">250 秒</text>
+
+      <rect x="24" y="428" width="872" height="58" rx="6" fill="#f1f5f9" stroke="#475569"/>
+      <text x="40" y="452" font-size="14" fill="#0f172a">蓝色那一块五个 Agent 都大幅缩短。ReAct 原本几乎全是蓝色，所以总用时近乎减半。</text>
+      <text x="40" y="474" font-size="14" fill="#0f172a">AutoDroid 的灰色从 164.43 秒涨到 213.37 秒；T3A 的黄色从 67.47 秒涨到 96.99 秒。各家族预算不同，条长不跨家族比。</text>
+    </svg>
+    <figcaption>图 1 · 数字取自 arXiv:2610.13092v1 表 9（三块用时）和第 5.2 节（总用时变化）。「环境交互及其他」是总用时减去两类模型调用后的余量。</figcaption>
+  </figure>
+  <ul>
+    <li><strong>ReAct。</strong>原配置 71.17 秒里有 68.31 秒在选动作。换成 Jev 后选动作 17.25 秒，另外多出 17.23 秒辅助推理，原配置这一项是 0。按论文对接法的描述，这部分应是 Jev 选中 THINK 后调通用模型的时间。净省仍然多。</li>
+    <li><strong>AutoDroid。</strong>原配置 261.20 秒里有 164.43 秒在模型调用之外。换成 Jev 后这一块涨到 213.37 秒，选动作省下的时间大半被它抵掉。</li>
+    <li><strong>T3A。</strong>辅助调用从 67.47 秒涨到 96.99 秒，占 Jev 配置推理花费的 81.9%，原配置是 56.3%。选动作那一步便宜了，钱主要花在别的调用上。</li>
+    <li><strong>FastAgent。</strong>换成 Jev 后决策次数多了 44.1%，辅助调用和非模型执行的时间也更长。它的 Jev 配置每步只执行一个工具，原配置一步可以发多个调用。单价低了，步数多了。</li>
+  </ul>
+  <p>能带到任务层面的有多少，看被加速的那一块原来占多大，以及换完之后总工作量有没有变多。前一半是 Amdahl 定律的算术。后一半这篇给了实测，替换之后其余部分的用时也变长了。</p>
+</section>
+<section id="success">
+  <h2><span>4</span>每个成功交付，失败的尝试也要付钱</h2>
+  <p>先看成功率。分母是每个配置的全部执行次数，ALFWorld 402 次，AndroidWorld 348 次。</p>
+  <div class="tw">
+  <table>
+    <thead><tr><th>Agent</th><th>环境</th><th>原配置 B</th><th>Jev 配置 J</th><th>J 减 B（百分点）<br>与 95% 区间</th></tr></thead>
+    <tbody>
+      <tr><td>ReAct</td><td>ALFWorld</td><td>97.51%（392/402）</td><td>96.02%（386/402）</td><td>−1.49　[−4.48, +1.24]</td></tr>
+      <tr><td>Reflexion</td><td>ALFWorld</td><td>99.75%（401/402）</td><td>98.01%（394/402）</td><td>−1.74　[−3.98, +0.00]</td></tr>
+      <tr><td>T3A</td><td>AndroidWorld</td><td>57.47%（200/348）</td><td>44.25%（154/348）</td><td>−13.22　[−17.82, −8.62]</td></tr>
+      <tr><td>AutoDroid</td><td>AndroidWorld</td><td>18.68%（65/348）</td><td>16.38%（57/348）</td><td>−2.30　[−5.46, +0.86]</td></tr>
+      <tr><td>FastAgent</td><td>AndroidWorld</td><td>50.00%（174/348）</td><td>31.90%（111/348）</td><td>−18.10　[−26.44, −9.77]</td></tr>
+    </tbody>
+  </table>
+  </div>
+  <p>ALFWorld 上两个 Agent 的差距在 2 个百分点以内，区间含零。AndroidWorld 上 T3A 和 FastAgent 的区间整段为负。AutoDroid 两个配置都不到 20%。</p>
+  <p>失败的尝试照样花钱。论文算了失败尝试占推理花费的比例，分母是该配置全部执行的推理花费合计：</p>
+  <div class="tw">
+  <table>
+    <thead><tr><th>Agent</th><th>每次尝试的成本<br>B → J（mUSD）</th><th>失败尝试占推理花费<br>B → J</th><th>每个成功交付的成本<br>B → J（mUSD）</th><th>每个成功交付的成本差值<br>与 95% 区间（mUSD）</th></tr></thead>
+    <tbody>
+      <tr><td>ReAct</td><td>7.74 → 3.80</td><td>8.7% → 34.6%</td><td>7.93 → 3.96</td><td>−3.98　[−5.07, −2.81]</td></tr>
+      <tr><td>Reflexion</td><td>8.98 → 6.05</td><td>3.5% → 53.3%</td><td>9.00 → 6.18</td><td>−2.83　[−6.06, +1.30]</td></tr>
+      <tr><td>T3A</td><td>39.48 → 32.73</td><td>55.0% → 71.2%</td><td>68.70 → 73.97</td><td>+5.27　[−3.83, +17.34]</td></tr>
+      <tr><td>AutoDroid</td><td>5.22 → 1.63</td><td>92.8% → 94.7%</td><td>27.93 → 9.93</td><td>−18.00　[−29.85, −11.68]</td></tr>
+      <tr><td>FastAgent</td><td>10.98 → 6.26</td><td>56.0% → 82.7%</td><td>21.96 → 19.62</td><td>−2.33　[−7.60, +4.38]</td></tr>
+    </tbody>
+  </table>
+  </div>
+  <p>Reflexion 的 Jev 配置，402 次执行里失败 8 次，占 2.0%，这 8 次花掉了 53.3% 的推理花费。按 Reflexion 的设计，失败后带着反思整轮重来，实验里最多十轮、每轮 49 步；按这个设计，救不回来的任务会试到轮数或时间上限。这 8 次各试了几轮，论文没有列。</p>
+  <figure>
+    <svg viewBox="0 0 920 524" width="100%" role="img" aria-label="五个 Agent 换成 Jev 后的成本，按每次决策、每次任务尝试、每个成功交付三个分母分别相对原配置的比值">
+      <rect x="1" y="1" width="918" height="522" rx="10" fill="#fff" stroke="#e2e8f0"/>
+      <text x="24" y="32" font-size="16" font-weight="700" fill="#0f172a">同一次替换，成本按三个分母算（各 Agent 的原配置 = 100）</text>
+      <text x="24" y="56" font-size="14" fill="#475569">条长和条右的数是 Jev 配置相对原配置的比值，右栏是原配置 → Jev 配置的绝对值。横轴一格 = 25。</text>
+      <rect x="24" y="68" width="16" height="14" fill="#bfdbfe" stroke="#1d4ed8" stroke-width="1.5"/>
+      <text x="46" y="80" font-size="14" fill="#0f172a">每次决策</text>
+      <rect x="130" y="68" width="16" height="14" fill="#fde68a" stroke="#b45309" stroke-width="1.5"/>
+      <text x="152" y="80" font-size="14" fill="#0f172a">每次任务尝试（成败都算）</text>
+      <rect x="350" y="68" width="16" height="14" fill="#fecdd3" stroke="#be123c" stroke-width="1.5"/>
+      <text x="372" y="80" font-size="14" fill="#0f172a">每个成功交付（失败尝试的花费计入）</text>
+
+      <line x1="200" y1="96" x2="200" y2="446" stroke="#94a3b8" stroke-width="1.5"/>
+      <line x1="280" y1="96" x2="280" y2="446" stroke="#f1f5f9" stroke-width="1"/>
+      <line x1="360" y1="96" x2="360" y2="446" stroke="#f1f5f9" stroke-width="1"/>
+      <line x1="440" y1="96" x2="440" y2="446" stroke="#f1f5f9" stroke-width="1"/>
+      <line x1="520" y1="96" x2="520" y2="446" stroke="#0f172a" stroke-width="1.5" stroke-dasharray="6 4"/>
+      <line x1="608" y1="96" x2="608" y2="446" stroke="#e2e8f0" stroke-width="1"/>
+
+      <text x="190" y="135" text-anchor="end" font-size="15" font-weight="700" fill="#0f172a">ReAct</text>
+      <rect x="200" y="104" width="83.2" height="16" fill="#bfdbfe" stroke="#1d4ed8" stroke-width="1.5"/>
+      <text x="291.2" y="117" font-size="14" fill="#0f172a">26</text>
+      <text x="620" y="117" font-size="14" fill="#0f172a">468 → 122 µUSD</text>
+      <rect x="200" y="122" width="156.8" height="16" fill="#fde68a" stroke="#b45309" stroke-width="1.5"/>
+      <text x="364.8" y="135" font-size="14" fill="#0f172a">49</text>
+      <text x="620" y="135" font-size="14" fill="#0f172a">7.74 → 3.80 mUSD</text>
+      <rect x="200" y="140" width="160" height="16" fill="#fecdd3" stroke="#be123c" stroke-width="1.5"/>
+      <text x="368" y="153" font-size="14" fill="#0f172a">50</text>
+      <text x="620" y="153" font-size="14" fill="#0f172a">7.93 → 3.96 mUSD</text>
+
+      <text x="190" y="205" text-anchor="end" font-size="15" font-weight="700" fill="#0f172a">Reflexion</text>
+      <rect x="200" y="174" width="83.2" height="16" fill="#bfdbfe" stroke="#1d4ed8" stroke-width="1.5"/>
+      <text x="291.2" y="187" font-size="14" fill="#0f172a">26</text>
+      <text x="620" y="187" font-size="14" fill="#0f172a">479 → 124 µUSD</text>
+      <rect x="200" y="192" width="214.4" height="16" fill="#fde68a" stroke="#b45309" stroke-width="1.5"/>
+      <text x="422.4" y="205" font-size="14" fill="#0f172a">67</text>
+      <text x="620" y="205" font-size="14" fill="#0f172a">8.98 → 6.05 mUSD</text>
+      <rect x="200" y="210" width="220.8" height="16" fill="#fecdd3" stroke="#be123c" stroke-width="1.5"/>
+      <text x="428.8" y="223" font-size="14" fill="#0f172a">69</text>
+      <text x="620" y="223" font-size="14" fill="#0f172a">9.00 → 6.18 mUSD</text>
+
+      <text x="190" y="275" text-anchor="end" font-size="15" font-weight="700" fill="#0f172a">T3A</text>
+      <rect x="200" y="244" width="108.8" height="16" fill="#bfdbfe" stroke="#1d4ed8" stroke-width="1.5"/>
+      <text x="316.8" y="257" font-size="14" fill="#0f172a">34</text>
+      <text x="620" y="257" font-size="14" fill="#0f172a">1413 → 480 µUSD</text>
+      <rect x="200" y="262" width="265.6" height="16" fill="#fde68a" stroke="#b45309" stroke-width="1.5"/>
+      <text x="473.6" y="275" font-size="14" fill="#0f172a">83</text>
+      <text x="620" y="275" font-size="14" fill="#0f172a">39.48 → 32.73 mUSD</text>
+      <rect x="200" y="280" width="345.6" height="16" fill="#fecdd3" stroke="#be123c" stroke-width="1.5"/>
+      <text x="553.6" y="293" font-size="14" font-weight="700" fill="#9f1239">108</text>
+      <text x="620" y="293" font-size="14" font-weight="700" fill="#9f1239">68.70 → 73.97 mUSD</text>
+
+      <text x="190" y="345" text-anchor="end" font-size="15" font-weight="700" fill="#0f172a">AutoDroid</text>
+      <rect x="200" y="314" width="70.4" height="16" fill="#bfdbfe" stroke="#1d4ed8" stroke-width="1.5"/>
+      <text x="278.4" y="327" font-size="14" fill="#0f172a">22</text>
+      <text x="620" y="327" font-size="14" fill="#0f172a">436 → 94 µUSD</text>
+      <rect x="200" y="332" width="99.2" height="16" fill="#fde68a" stroke="#b45309" stroke-width="1.5"/>
+      <text x="307.2" y="345" font-size="14" fill="#0f172a">31</text>
+      <text x="620" y="345" font-size="14" fill="#0f172a">5.22 → 1.63 mUSD</text>
+      <rect x="200" y="350" width="115.2" height="16" fill="#fecdd3" stroke="#be123c" stroke-width="1.5"/>
+      <text x="323.2" y="363" font-size="14" fill="#0f172a">36</text>
+      <text x="620" y="363" font-size="14" fill="#0f172a">27.93 → 9.93 mUSD</text>
+
+      <text x="190" y="415" text-anchor="end" font-size="15" font-weight="700" fill="#0f172a">FastAgent</text>
+      <rect x="200" y="384" width="99.2" height="16" fill="#bfdbfe" stroke="#1d4ed8" stroke-width="1.5"/>
+      <text x="307.2" y="397" font-size="14" fill="#0f172a">31</text>
+      <text x="620" y="397" font-size="14" fill="#0f172a">1102 → 346 µUSD</text>
+      <rect x="200" y="402" width="182.4" height="16" fill="#fde68a" stroke="#b45309" stroke-width="1.5"/>
+      <text x="390.4" y="415" font-size="14" fill="#0f172a">57</text>
+      <text x="620" y="415" font-size="14" fill="#0f172a">10.98 → 6.26 mUSD</text>
+      <rect x="200" y="420" width="284.8" height="16" fill="#fecdd3" stroke="#be123c" stroke-width="1.5"/>
+      <text x="492.8" y="433" font-size="14" fill="#0f172a">89</text>
+      <text x="620" y="433" font-size="14" fill="#0f172a">21.96 → 19.62 mUSD</text>
+
+      <text x="200" y="466" text-anchor="middle" font-size="14" fill="#475569">0</text>
+      <text x="280" y="466" text-anchor="middle" font-size="14" fill="#475569">25</text>
+      <text x="360" y="466" text-anchor="middle" font-size="14" fill="#475569">50</text>
+      <text x="440" y="466" text-anchor="middle" font-size="14" fill="#475569">75</text>
+      <text x="520" y="466" text-anchor="middle" font-size="14" font-weight="700" fill="#0f172a">100 = 原配置</text>
+      <text x="620" y="466" font-size="14" fill="#475569">原配置 → Jev 配置</text>
+
+      <rect x="24" y="478" width="872" height="34" rx="6" fill="#f1f5f9" stroke="#475569"/>
+      <text x="40" y="500" font-size="14" fill="#0f172a">蓝条五个 Agent 都在 22 到 34 之间。红条从 36 到 108，差值区间整段在零以下的只有 ReAct 和 AutoDroid，见上表。</text>
+    </svg>
+    <figcaption>图 2 · 绝对值取自 arXiv:2610.13092v1 表 7、表 8（每次决策、每次任务尝试，全部执行）和表 2（每个成功交付）。整数比值是我用这些均值相除后四舍五入得到的，原文只给了其中一部分百分比。</figcaption>
+  </figure>
+  <p>T3A 是最清楚的一格。每次尝试 39.48 → 32.73 mUSD，省 17.1%。成功次数从 200 掉到 154，分母都是 348 次执行。每个成功交付 68.70 → 73.97 mUSD，涨 7.7%。差值 +5.27 mUSD 的 95% 区间是 −3.83 至 +17.34，跨零。论文的说法是，按观测到的均值，成功率的下降抵掉了每次尝试省下的 17.1%。</p>
+  <p>按上表最右一列，每个成功交付的成本差值区间整段在零以下的，只有 ReAct 和 AutoDroid。Reflexion、T3A、FastAgent 三个的区间都跨零。论文正文只点了 T3A 这一格；另外两格是我读表 10 得到的。</p>
+  <p>换算式可以由定义直接写出来：每个成功交付的成本 = 每次尝试的成本 ÷ 成功率。每次尝试省 s，成功率从 p₀ 变成 p₁，每个成功交付的成本变成原来的 (1 − s) × p₀ ÷ p₁ 倍。T3A 是 0.829 × 57.47 ÷ 44.25 ≈ 1.077，FastAgent 是 0.570 × 50.00 ÷ 31.90 ≈ 0.893。成功率的相对跌幅超过每次尝试的省幅，每个成功就变贵。这个式子是我推的，代入论文的数对得上。</p>
+  <p>时间按同样三个分母列出来：</p>
+  <div class="tw">
+  <table>
+    <thead><tr><th>Agent</th><th>每次决策<br>B → J（秒）</th><th>每次任务尝试<br>B → J（秒）</th><th>每个成功交付<br>B → J（秒）</th><th>每个成功交付的用时差值<br>与 95% 区间（秒）</th></tr></thead>
+    <tbody>
+      <tr><td>ReAct</td><td>4.13 → 1.08</td><td>71.17 → 37.33</td><td>73.0 → 38.9</td><td>−34.11　[−43.92, −23.82]</td></tr>
+      <tr><td>Reflexion</td><td>5.14 → 1.04</td><td>99.55 → 61.90</td><td>99.8 → 63.2</td><td>−36.64　[−61.92, −6.47]</td></tr>
+      <tr><td>T3A</td><td>7.24 → 1.34</td><td>213.00 → 190.36</td><td>370.6 → 430.2</td><td>+59.55　[+7.44, +126.66]</td></tr>
+      <tr><td>AutoDroid</td><td>8.13 → 1.75</td><td>261.20 → 246.27</td><td>1398.4 → 1503.5</td><td>+105.07　[−206.65, +559.67]</td></tr>
+      <tr><td>FastAgent</td><td>5.40 → 1.41</td><td>119.68 → 120.50</td><td>239.4 → 377.8</td><td>+138.43　[+60.33, +257.46]</td></tr>
+    </tbody>
+  </table>
+  </div>
+  <p>FastAgent 每次尝试的用时几乎没变，成功次数从 174 掉到 111，每交付一个成功的用时从 239.4 秒涨到 377.8 秒。T3A 从 370.6 秒涨到 430.2 秒。这两格的区间整段为正。AutoDroid 的均值也涨，区间很宽，跨零。</p>
+  <p>只看两个配置都做成的那些「任务–遍次」对（ReAct 378 对、Reflexion 393 对、T3A 145 对、AutoDroid 50 对、FastAgent 84 对），Jev 配置确实便宜。ALFWorld 成本低 64.8% 和 66.2%，用时短 59.2% 和 60.8%。AndroidWorld 成本低 11.3%（T3A）、75.3%（AutoDroid）、50.8%（FastAgent）；用时上 AutoDroid 短 18.6%，FastAgent 短 5.5%，T3A 慢 1.1%，后两项的差值区间跨零。每成功成本和用时的差距出在两处：做不成的任务变多了，做不成时也在花钱和时间。</p>
+</section>
+<section id="recover">
+  <h2><span>5</span>出错之后，救回来多少</h2>
+  <p>Reflexion 允许一个任务试多轮，第一轮对不对、错了能不能救回，可以分开数。</p>
+  <figure>
+    <svg viewBox="0 0 920 336" width="100%" role="img" aria-label="Reflexion 三个配置的第一轮成功数、第一轮失败数、后续轮次救回数和最终成功数">
+      <rect x="1" y="1" width="918" height="334" rx="10" fill="#fff" stroke="#e2e8f0"/>
+      <text x="24" y="32" font-size="16" font-weight="700" fill="#0f172a">Reflexion：第一轮成功 383 对 376，失败后救回 11/19 对 25/26</text>
+      <text x="24" y="56" font-size="14" fill="#475569">每个配置 402 次执行（134 个任务 × 3 遍）。一个任务最多试十轮，成功即停。</text>
+
+      <text x="99" y="84" text-anchor="middle" font-size="14" fill="#475569">配置</text>
+      <text x="289" y="84" text-anchor="middle" font-size="14" fill="#475569">第一轮成功</text>
+      <text x="469" y="84" text-anchor="middle" font-size="14" fill="#475569">第一轮失败</text>
+      <text x="639" y="84" text-anchor="middle" font-size="14" fill="#475569">后续轮次救回</text>
+      <text x="820" y="84" text-anchor="middle" font-size="14" fill="#475569">最终成功</text>
+
+      <rect x="24" y="94" width="150" height="52" rx="6" fill="#f8fafc" stroke="#475569" stroke-width="2"/>
+      <text x="99" y="116" text-anchor="middle" font-size="15" font-weight="700" fill="#0f172a">原配置 B</text>
+      <text x="99" y="136" text-anchor="middle" font-size="14" fill="#475569">通用模型直接写命令</text>
+      <rect x="204" y="94" width="170" height="52" rx="6" fill="#eff6ff" stroke="#1d4ed8" stroke-width="2"/>
+      <text x="289" y="126" text-anchor="middle" font-size="16" font-weight="700" fill="#1e3a8a">376 / 402</text>
+      <rect x="404" y="94" width="130" height="52" rx="6" fill="#fffbeb" stroke="#b45309" stroke-width="2"/>
+      <text x="469" y="126" text-anchor="middle" font-size="16" font-weight="700" fill="#92400e">26</text>
+      <rect x="564" y="94" width="150" height="52" rx="6" fill="#ecfdf5" stroke="#047857" stroke-width="2"/>
+      <text x="639" y="126" text-anchor="middle" font-size="16" font-weight="700" fill="#065f46">25 / 26</text>
+      <rect x="744" y="94" width="152" height="52" rx="6" fill="#f8fafc" stroke="#475569" stroke-width="2"/>
+      <text x="820" y="126" text-anchor="middle" font-size="16" font-weight="700" fill="#0f172a">401 / 402</text>
+      <path d="M374 120 H394 M534 120 H554 M714 120 H734" stroke="#475569" stroke-width="2" fill="none"/>
+      <path d="M402 120 l-9 -6 v12 z M562 120 l-9 -6 v12 z M742 120 l-9 -6 v12 z" fill="#475569"/>
+
+      <rect x="24" y="162" width="150" height="52" rx="6" fill="#fff1f2" stroke="#be123c" stroke-width="2"/>
+      <text x="99" y="184" text-anchor="middle" font-size="15" font-weight="700" fill="#9f1239">Jev 配置 J</text>
+      <text x="99" y="204" text-anchor="middle" font-size="14" fill="#475569">Jev 从候选里选</text>
+      <rect x="204" y="162" width="170" height="52" rx="6" fill="#eff6ff" stroke="#1d4ed8" stroke-width="2"/>
+      <text x="289" y="194" text-anchor="middle" font-size="16" font-weight="700" fill="#1e3a8a">383 / 402</text>
+      <rect x="404" y="162" width="130" height="52" rx="6" fill="#fffbeb" stroke="#b45309" stroke-width="2"/>
+      <text x="469" y="194" text-anchor="middle" font-size="16" font-weight="700" fill="#92400e">19</text>
+      <rect x="564" y="162" width="150" height="52" rx="6" fill="#fff1f2" stroke="#be123c" stroke-width="2"/>
+      <text x="639" y="194" text-anchor="middle" font-size="16" font-weight="700" fill="#9f1239">11 / 19</text>
+      <rect x="744" y="162" width="152" height="52" rx="6" fill="#f8fafc" stroke="#475569" stroke-width="2"/>
+      <text x="820" y="194" text-anchor="middle" font-size="16" font-weight="700" fill="#0f172a">394 / 402</text>
+      <path d="M374 188 H394 M534 188 H554 M714 188 H734" stroke="#475569" stroke-width="2" fill="none"/>
+      <path d="M402 188 l-9 -6 v12 z M562 188 l-9 -6 v12 z M742 188 l-9 -6 v12 z" fill="#475569"/>
+
+      <rect x="24" y="230" width="150" height="52" rx="6" fill="#f8fafc" stroke="#475569" stroke-width="2"/>
+      <text x="99" y="252" text-anchor="middle" font-size="15" font-weight="700" fill="#0f172a">对照 C</text>
+      <text x="99" y="272" text-anchor="middle" font-size="14" fill="#475569">通用模型从候选里选</text>
+      <rect x="204" y="230" width="170" height="52" rx="6" fill="#eff6ff" stroke="#1d4ed8" stroke-width="2"/>
+      <text x="289" y="262" text-anchor="middle" font-size="16" font-weight="700" fill="#1e3a8a">371 / 402</text>
+      <rect x="404" y="230" width="130" height="52" rx="6" fill="#fffbeb" stroke="#b45309" stroke-width="2"/>
+      <text x="469" y="262" text-anchor="middle" font-size="16" font-weight="700" fill="#92400e">31</text>
+      <rect x="564" y="230" width="150" height="52" rx="6" fill="#ecfdf5" stroke="#047857" stroke-width="2"/>
+      <text x="639" y="262" text-anchor="middle" font-size="16" font-weight="700" fill="#065f46">23 / 31</text>
+      <rect x="744" y="230" width="152" height="52" rx="6" fill="#f8fafc" stroke="#475569" stroke-width="2"/>
+      <text x="820" y="262" text-anchor="middle" font-size="16" font-weight="700" fill="#0f172a">394 / 402</text>
+      <path d="M374 256 H394 M534 256 H554 M714 256 H734" stroke="#475569" stroke-width="2" fill="none"/>
+      <path d="M402 256 l-9 -6 v12 z M562 256 l-9 -6 v12 z M742 256 l-9 -6 v12 z" fill="#475569"/>
+
+      <text x="24" y="312" font-size="14" fill="#0f172a">救回比例的分母是各配置自己第一轮失败的次数。三行失败的不是同一批任务，救回比例之间不能直接当难度相同来比。</text>
+    </svg>
+    <figcaption>图 3 · 数字取自 arXiv:2610.13092v1 表 4。三个配置里写反思的都是通用模型。</figcaption>
+  </figure>
+  <p>Jev 配置第一轮成功 383/402（95.27%），高于原配置的 376/402（93.53%）。第一轮失败之后，原配置救回 25/26，Jev 配置救回 11/19。最终原配置 401/402，Jev 配置 394/402。论文的说法是，Jev 第一轮的优势在后续轮次之后变成了最终的劣势，选动作和辅助模型的反思共同决定这个结果，没有把它单算给 Jev。对照 C 的最终成功数也是 394/402，救回 23/31：通用模型拿着同一份候选列表，比原配置同样少 7 次。这几个救回比例的分母只有十几到三十几，论文没有给它们的区间。</p>
+  <h3>按结果挑出来的 43 对任务</h3>
+  <p>作者按三遍的官方结果挑了三组「家族–任务」对：原配置三遍全过而 Jev 配置三遍全败的 19 对，反过来的 3 对，双方都只过一两遍的 21 对。合计 43 对，全集是 616 对；每对 6 次执行，共 258 次，其中 251 次有可编码的动作记录。两位作者各自独立打七个二元行为标签，第三位作者仲裁。仲裁前逐标签 Cohen's κ 的均值是 0.867。</p>
+  <p>Jev 持续失败的那一组里，57 次 Jev 执行有 40 次带「纠错失败」，29 次带「无效搜索」；同组 57 次原配置执行里是 3 次和 2 次。纠错失败的定义是：反复做不成功的操作，或者反馈已经否定了前提还在坚持。全部 73 个纠错失败标签里，FastAgent 的 Jev 配置占 39 个，T3A 的 Jev 配置占 11 个。19 对持续失败有 16 对在 AndroidWorld，其中 14 对是 FastAgent。</p>
+  <p>这 43 对是按结果挑的，标签频率只描述这三组，不能外推到全部 4,500 次执行。</p>
+  <h3>三个案例</h3>
+  <ul>
+    <li><strong>打开 Wi-Fi（AndroidWorld）。</strong>FastAgent 的 Jev 配置三遍都一样：打开快捷设置，点了一个标着「Off」的开关，三次决策后宣布完成，Wi-Fi 仍然关着。那个标签里没有写它是哪一项的开关。原配置三遍全过。宣布完成之后，后面没有纠错的机会。</li>
+    <li><strong>洗布（ALFWorld 046）。</strong>ReAct 的 Jev 配置三遍都把 handtowel 当成 cloth 拿了，清洗一直做不了，它反复选 THINK。原配置第 2 遍犯了同样的错：第 3 步拿了 handtowel，第 5 步和第 12 步清洗返回「Nothing happens」，第 28 步放下，第 32 步拿到 cloth，第 34 步洗，第 36 步放进柜子。两个配置第一步错得一样，差别在后面改没改。</li>
+    <li><strong>Reflexion 045。</strong>第 1 遍里，辅助模型写的反思把「拿错物体」这个前提带过了十轮，十轮都失败。作者的评语是多出来的推理加固了错误。</li>
+  </ul>
+  <p>反过来，Jev 配置三遍全过而原配置三遍全败的 3 对，全在 FastAgent：</p>
+  <ul>
+    <li><strong>建菜谱。</strong>原配置第 1 遍把几个字段操作打成一批发出去，表单中途变了位置，值填进了错的字段。Jev 配置一步一个工具，每步之间拿到新的观测。</li>
+    <li><strong>查运动时长。</strong>两边第 1 遍都算出 105 分钟。Jev 配置返回「105」，原配置返回一句含这个数的话，评测器判失败。</li>
+    <li><strong>地图收藏。</strong>原配置扩大搜索，核实不了地点就停了。Jev 配置按要求的名字建了收藏，评测器按名字判过。作者把两件事分开写：地点有没有核实，和评测器收不收。</li>
+  </ul>
+</section>
+<section id="who">
+  <h2><span>6</span>算模型的，还是算接法的</h2>
+  <p>ALFWorld 有对照 C，可以拆开看。</p>
+  <div class="tw">
+  <table>
+    <thead><tr><th>配置</th><th>成功率（分母 402）</th><th>每次尝试的成本（mUSD）</th><th>每次尝试的用时（秒）</th></tr></thead>
+    <tbody>
+      <tr><td>ReAct-B　通用模型直接写命令</td><td>97.51%</td><td>7.74</td><td>71.17</td></tr>
+      <tr><td>ReAct-C　通用模型从候选里选</td><td>97.01%</td><td>8.75</td><td>86.02</td></tr>
+      <tr><td>ReAct-J　Jev 从候选里选</td><td>96.02%</td><td>3.80</td><td>37.33</td></tr>
+      <tr><td>Reflexion-B</td><td>99.75%</td><td>8.98</td><td>99.55</td></tr>
+      <tr><td>Reflexion-C</td><td>98.01%</td><td>16.75</td><td>143.03</td></tr>
+      <tr><td>Reflexion-J</td><td>98.01%</td><td>6.05</td><td>61.90</td></tr>
+    </tbody>
+  </table>
+  </div>
+  <p>同一个候选接口下换模型（C 对 J）：成功率差 ReAct 是 −1.00 个百分点，区间 −3.23 至 +0.75；Reflexion 是 0.00，区间 −1.00 至 +1.00。成本 J 比 C 低 56.6% 和 63.9%，用时都短约 56.6%。Reflexion 上 J 和 C 的最终成功数相同，都是 394/402。在这两个 Agent 上，候选接口固定之后，换成 Jev 成功率基本持平，成本降一半以上。</p>
+  <p>通用模型拿着候选列表（C）比原配置更贵、更慢。表 7 里它每次决策的 token 更多，ReAct 是 2.51 千对 2.04 千；Reflexion 上它第一轮失败也更多，31 次对 26 次。</p>
+  <p>AndroidWorld 没有 C 对照。三个 Agent 原本就用预定义的动作列表，论文据此把 T3A 和 FastAgent 的差距读成比 ALFWorld 更大的损失；两个环境的基线成功率、预算和接口都不同，这是论文的读法。FastAgent 的两个配置还差一个步粒度，Jev 配置一步一个工具，原配置一步可以多个调用。作者在局限一节写明：比较的对象是这几种接法，不能把每一处差异都算到 Jev 头上。</p>
+  <p>论文给的适用边界分两半。决策输入里目标、当前状态、动作的前置条件都写明时，Jev 最合适，举的例子是工作流路由、API 或工具选择、目标可识别且完成条件可观测的常规软件操作。目标含糊、观测不全、子目标要反复修订的工作流，对解读和纠错的要求更高，论文认为手机任务上的差距和这两项能力有关，没有单独测。时间上，外部操作本身慢的工作流省不出多少。</p>
+</section>
+<section id="yours">
+  <h2><span>7</span>对照你的运行位</h2>
+  <p>下面八条是我按这篇预印本整理的检查项，适用于打算把循环里某一步换成更便宜模型的系统。前六条各对应论文里的一项结果或建议，后两条是我加的。</p>
+  <ul>
+    <li><strong>先量被替换的那一步占多少。</strong>按任务把时间和钱拆成三块：这一步的调用、其他模型调用、环境和工具执行。ReAct 是 71.17 秒里 68.31 秒在选动作；AutoDroid 是 261.20 秒里 164.43 秒在模型之外，选动作的调用占 96.78 秒，约 37%，这一步降到零，任务用时也只少这么多。</li>
+    <li><strong>换完之后重新数调用次数和步数。</strong>T3A 的辅助调用变长，FastAgent 的决策次数多了 44.1%。账单按任务全量算，被替换的那个调用点只占其中一部分。步粒度变了要单独记：一步一个工具让每步都对着最新的界面，也让步数变多。</li>
+    <li><strong>验收用每个成功交付的成本和用时。</strong>失败尝试的花费计入分子，同时报成功率和失败尝试占花费的比例。只报每次尝试的降幅，T3A 这一格会被记成省了 17.1%。</li>
+    <li><strong>完成判定单独设检查。</strong>宣布完成之前，对照任务要求的最终状态核一次。Wi-Fi 那个任务三次决策就结束了，开关没打开。</li>
+    <li><strong>连续没有进展要有出口。</strong>同一操作反复失败、反馈已经否定当前前提时，换策略、补观测，或者交给更强的模型。论文的建议是把额外的观测和推理集中投到这类决策上，常规选择保持便宜。它记录的一遍 FastAgent Jev 配置的执行，删掉两个目标后滑了 24 次屏，预算用完，第三个目标还在。</li>
+    <li><strong>候选列表写明目标身份、前置条件、预期的状态变化。</strong>这是论文对候选接口的建议。标着「Off」的开关没有写它属于哪一项设置。ALFWorld 133 失败的那一遍，手里拿着第一件物体反复推理怎么取第二件；成功的几遍是先把第一件放好再去取。</li>
+    <li><strong>重试从哪里起，上限按什么定。</strong>这一条论文没有测。Reflexion 的 Jev 配置里，2.0% 的执行花掉 53.3% 的推理费用，都是整轮重来又没救回的任务。重试是从头来还是从最后一个确认正确的状态接着来，重试上限按次数定还是按已花的钱定，各自的每成功成本不一样。</li>
+    <li><strong>跨轮次保留的内容，写入前核对前提。</strong>这一条论文也没有专门测。Reflexion 045 里，反思把拿错物体的前提带了十轮。反思、记忆、技能记录里写进去的结论，后面的每一轮都会当成已知。</li>
+  </ul>
+</section>
+<section id="limit">
+  <h2><span>8</span>这篇撑不起什么</h2>
+  <ul>
+    <li>预印本，2026 年 10 月 9 日提交，没有同行评审记录。实验代码在匿名仓库，我没有重跑。</li>
+    <li>只测了文本观测、有界动作接口的两个环境。带视觉的 Agent、开放式造工具、更长的工作流没有覆盖。</li>
+    <li>三遍用同一个种子、同一批固定任务实例，量的是固定实例上的执行波动。换一批任务或环境后差多少，没有量。</li>
+    <li>比较是系统级的。ALFWorld 的原配置不看候选列表；FastAgent 两个配置的步粒度不同；AutoDroid 两边都关了应用记忆；AndroidWorld 没有 C 对照。</li>
+    <li>家族之间预算不同。AndroidWorld 每任务 600 秒，步数上限按任务复杂度定；ReAct 是 49 步、600 秒；Reflexion 最多十轮、6,000 秒。跨家族的差别里混着预算和设计。</li>
+    <li>成本按实验时的固定单价算，延迟含托管服务的波动。通用模型只用了 gpt-5.6-luna 一个，Jev 只用了 1.13.0 一个版本。换价格、换版本，三个分母下的数字都会动。</li>
+    <li>成本是按论文的记账规则得到的估计值。记账里有重试调整和补算的用量，论文说这会带来测量上的不确定，没有给出影响有多大。</li>
+    <li>区间是逐项的 95% 自助区间，按任务重采样 20,000 次，没有做多重比较校正，论文不报 p 值。</li>
+    <li>轨迹编码的标注者是论文作者，样本按结果挑选。</li>
+    <li>AutoDroid 两个配置的成功次数是 65 和 57，它的每成功成本和用时是用很少的成功次数算出来的，用时差值的区间从 −206.65 到 +559.67 秒。</li>
+    <li>成功由基准的官方评测器判定。地图收藏那个任务里评测器只看名字。评测器收了，和事情做对了，在这套数据里没有分开统计。</li>
+  </ul>
+</section>
+<section id="src">
+  <h2><span>9</span>出处与未覆盖</h2>
+  <ul>
+    <li>论文：<a href="https://arxiv.org/abs/2610.13092">arXiv:2610.13092v1</a>，When Faster Decisions Do Not Make Better Agents: An Empirical Study of Jev in Agent Workflows，2026-10-09，cs.AI。本文数字的位置：第 4.2 节（设置与预算）、附录 A.1（计价与口径）、第 5.1 节与表 5（成功率）、第 5.2 节与表 2、表 7、表 8、表 9（成本与用时）、表 10（配对差值与区间）、第 5.3 节与表 3、表 4、表 11（失败与纠错）、附录 C.2 与表 12（案例）。</li>
+    <li>代码：论文给的地址是 <a href="https://anonymous.4open.science/r/jev-emp-5BF4/">anonymous.4open.science/r/jev-emp-5BF4</a>，匿名仓库。写稿时的请求和发稿前评审的重新抓取都没有拿到仓库内容，仓库内容未核对。</li>
+    <li>我自己算的三处：图 2 的整数比值；第 4 节的换算式和两个代入结果；「每成功成本区间整段为负的只有两个 Agent」这句对表 10 的读法。</li>
+    <li>当日另外扫过的源：arXiv 接口 cs.AI / cs.CL / cs.LG 最新 1,200 条，提交时间从 10 月 7 日到 10 月 9 日，周末没有新的公告批次。同批读过摘要但没有写的有 <a href="https://arxiv.org/abs/2610.12849">2610.12849</a>（Agent 提交的同时改应用代码和部署配置的 PR）、<a href="https://arxiv.org/abs/2610.12822">2610.12822</a>（多 Agent 编码系统里 reward hacking 的传播）、<a href="https://arxiv.org/abs/2610.12601">2610.12601</a>（深度研究 Agent 的反思式提示优化）、<a href="https://arxiv.org/abs/2610.13841">2610.13841</a>（编码 Agent 从沙箱快照恢复）。本文没有用它们的数字。</li>
+    <li>OpenAI 博客 RSS：10 月 8 日至 9 日是客户案例和一篇影响力行动通报。其中两篇标题讲降成本，正文请求返回 403，没有读到，未引用。Anthropic 新闻页最近日期是 10 月 8 日。Hacker News 首页前 90 条。GitHub 上 claude-code、codex、langgraph、OpenHands、goose、pi-mono 的最近发布标题和 Trending 当日榜。Product Hunt feed。这些没有能支撑本文判断的一手数字。</li>
+    <li>X 与 Reddit：今日未覆盖。本次运行没有登录态，Reddit 接口返回 403。</li>
+  </ul>
+  <p>同系列里，<a href="/frontier/typesafe-jev-training-guide.html">从零训练类似 TypeSafe JEV 的 System One 决策模型</a>在应用场景里列了动作离散决策和降低账单，这篇给的是接进完整工作流之后按成功交付算的账。<a href="/frontier/llm-agent-tech-landscape.html">冻底座、改脚手架</a>说公开增量落在 harness 这一层，这篇里省下的钱被花掉的地方（辅助调用、交互步数、完成检查、纠错）也都在这一层。<a href="/frontier/rsi-llm-agent-self-evolution.html">递归自改进前世今生</a>里的冻结评估器，对应这里判定「交付成功」的官方评测器；地图收藏那个案例里，它只核对名字。</p>
+</section>
+</main>
+</div>
+</body>
+</html>
