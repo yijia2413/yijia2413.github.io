@@ -1,5 +1,9 @@
 # 前沿技术栏目：独立 HTML 洞察索引。
 # 新增一篇：把 HTML 放到 /frontier/<slug>.html，再在这里加一条。
+- title: "整池口径下，复现成功撑不起联合验收"
+  date: "2026-10-14"
+  url: /frontier/2026-10-14-reproduction-is-not-validation.html
+  summary: "一篇预印本把 12 套编码 Agent 生成的测试回放到 619 个先去掉容易复现任务的仓库问题上。候选补丁来自轨迹，由官方评测打标签。八个代表配置的联合验收率都低于 10%，最高 9.21%（95% 区间 6.95% 至 11.47%）；复现率最高 68.17%。联合验收要求同一条任务上错误池全拦住、正确池全放过。前三名的差距区间含 0。"
 - title: "评审团更一致了，和人的一致没有跟着涨"
   date: "2026-10-13"
   url: /frontier/2026-10-13-judge-consensus-not-alignment.html

@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>整池口径下，复现成功撑不起联合验收</title>
+  <style>
+    :root { --ink:#0f172a; --muted:#475569; --line:#e2e8f0; --bg:#f8fafc; --blue:#1d4ed8; --blue-bg:#eff6ff; --amber:#b45309; --green:#047857; --rose:#be123c; }
+    * { box-sizing: border-box; }
+    body { margin:0; font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Noto Sans SC",sans-serif; background:var(--bg); color:var(--ink); line-height:1.75; font-size:17px; }
+    header { background:#0f172a; color:#f8fafc; padding:36px 24px 28px; border-bottom:4px solid #2563eb; }
+    header .inner { max-width:1080px; margin:0 auto; }
+    .badge { display:inline-block; border:1px solid #93c5fd; color:#bfdbfe; border-radius:999px; padding:2px 12px; font-size:13px; }
+    h1 { font-size:2rem; line-height:1.3; margin:12px 0; }
+    header p { color:#cbd5e1; margin:0; max-width:760px; }
+    .layout { max-width:1080px; margin:28px auto 64px; padding:0 20px; display:grid; grid-template-columns:220px minmax(0,1fr); gap:28px; }
+    aside { position:sticky; top:16px; align-self:start; background:#fff; border:1px solid var(--line); border-radius:12px; padding:14px; }
+    aside p { font-size:12px; letter-spacing:.06em; color:var(--muted); margin:0 0 8px; }
+    aside a { display:block; color:var(--ink); text-decoration:none; font-size:14px; padding:6px 8px; border-radius:6px; }
+    aside a:hover { background:var(--blue-bg); color:var(--blue); }
+    h2 { font-size:1.35rem; margin:0 0 12px; }
+    h2 span { display:inline-block; background:var(--blue); color:#fff; border-radius:6px; font-size:13px; padding:2px 8px; margin-right:8px; }
+    h3 { font-size:1.08rem; margin:20px 0 10px; }
+    section { background:#fff; border:1px solid var(--line); border-radius:14px; padding:26px 28px; margin-bottom:22px; }
+    p { margin:0 0 14px; }
+    a { color:var(--blue); overflow-wrap:anywhere; }
+    code { background:#f1f5f9; border-radius:4px; padding:1px 5px; font-size:15px; overflow-wrap:anywhere; }
+    main { min-width:0; }
+    figure { margin:16px 0; background:#fff; border:1px solid var(--line); border-radius:12px; padding:10px; overflow-x:auto; }
+    figure svg { display:block; min-width:700px; }
+    figcaption { color:var(--muted); font-size:14px; margin-top:6px; }
+    .tw { overflow-x:auto; margin:0 0 14px; }
+    .tw table { min-width:620px; }
+    table { width:100%; border-collapse:collapse; font-size:15px; }
+    th, td { border:1px solid var(--line); padding:8px 10px; text-align:left; vertical-align:top; }
+    th { background:#f1f5f9; }
+    ul { margin:0 0 14px; padding-left:22px; }
+    li { margin-bottom:6px; }
+    .note { background:#f1f5f9; border-left:4px solid var(--muted); padding:12px 16px; border-radius:0 8px 8px 0; font-size:16px; margin:0 0 14px; }
+    .quote { background:#fffbeb; border-left:4px solid var(--amber); padding:12px 16px; border-radius:0 8px 8px 0; font-size:15px; overflow-wrap:anywhere; margin:0 0 14px; }
+    svg text { font-family:-apple-system,"PingFang SC","Noto Sans SC",sans-serif; }
+    @media (max-width:860px) { .layout { grid-template-columns:minmax(0,1fr); } aside { position:static; } h1 { font-size:1.55rem; } section { padding:18px 16px; } }
+  </style>
+</head>
+<body>
+<header>
+  <div class="inner">
+    <span class="badge">FRONTIER · 2026-10-14 · 验收位</span>
+    <h1>整池口径下，复现成功撑不起联合验收</h1>
+    <p>一篇 10 月 13 日的预印本把 12 套编码 Agent 自己生成的测试，回放到 619 个仓库任务上。这 619 条先去掉了容易复现的任务。候选补丁来自编码 Agent 的轨迹，由官方评测打成正确或错误。八个代表配置的联合验收率都低于 10%，最高 9.21%（95% 区间 6.95% 至 11.47%）；复现率最高的配置是 68.17%。联合验收按整池计：同一条任务上，错误补丁要全部拦住，正确补丁要全部放过。</p>
+  </div>
+</header>
+<div class="layout">
+<aside>
+  <p>目录</p>
+  <a href="#what">1 这篇预印本测了什么</a>
+  <a href="#how">2 三个量，只有同时成立才算验收</a>
+  <a href="#gap">3 复现过了，联合验收停在一成以下</a>
+  <a href="#two">4 拦错补丁和放过对补丁是两件事</a>
+  <a href="#case">5 一条过了复现、两边都判错的测试</a>
+  <a href="#train">6 训练侧的数字不改变上面的判断</a>
+  <a href="#yours">7 对照你的验收位</a>
+  <a href="#limit">8 这篇撑不起什么</a>
+  <a href="#src">9 出处与未覆盖</a>
+</aside>
+<main>
+<section id="what">
+  <h2><span>1</span>这篇预印本测了什么</h2>
+  <p>2026 年 10 月 13 日，arXiv 收到 <a href="https://arxiv.org/abs/2610.18004">SWEPatchTest: Evaluating Software Tests Beyond Reproduction</a>（arXiv:2610.18004v1，cs.SE，作者 Hua Lu、Pengcheng Wang、Han Li、Zichen Tian、Yanyu Chen、Huang He、Bingjin Chen，单位署百度、南京大学、香港中文大学）。</p>
+  <p>编码 Agent 修仓库问题的时候，会自己写测试，用测试结果决定一个补丁能不能交。现在常见的评法只看一件事：测试在有 bug 的代码上失败，打上参考补丁之后通过。这篇把这件事叫参考识别，指标是 Gold Recognition Rate（GRR）。SWT-Bench 和 TDD-Bench Verified 用的就是这个 fail-to-pass 转换。</p>
+  <p>过了这一关的测试，还可以做两件相反的事。它可能放过一个官方评测判为错误的补丁，也可能拒掉一个官方评测判为正确的补丁。论文把前者叫规格太弱，把后者叫解法偏见。两种都可以和一次成功的参考转换同时出现。</p>
+  <div class="note">
+    <p style="margin:0">这篇只论证一个判断。判断是我的，依据是论文表 2。在这个先去掉容易复现任务的 619 条上，八个代表配置的联合验收率都低于 10%，最高 9.21%（95% 区间 6.95% 至 11.47%）。联合验收是论文的整池口径：同一条任务上复现成立，错误池全部拦住，正确池全部放过，平均每条大约 133 个候选。漏一个，这条任务记 0。论文没有只抽「复现已经通过」的任务再算一次。拿这个口径当门禁，复现成功撑不起一条任务被完整验收。</p>
+  </div>
+  <p>实验设置：</p>
+  <ul>
+    <li><strong>619 个任务，十种语言。</strong>从 1,144 条里筛出来：SWE-bench Pro 731 条留 342，SWE-bench Multilingual 300 条留 167，DeepSWE 113 条留 110。筛两道。一道用 LLM 审计官方测试的断言强度，阈值 80 分，再人工复核；一道用一组测试生成配置把「大家都很容易复现」的任务去掉。留下的是复现本身就不轻松的集合，不代表全部仓库任务。</li>
+    <li><strong>82,579 个候选补丁，标签来自官方评测。</strong>补丁从编码 Agent 的轨迹里收集，打上之后重跑该任务的官方评测：通过的进正确池，失败的进错误池。正确 27,749 个，错误 54,830 个，每条任务平均 44.83 个和 88.58 个。参考补丁单独评，不进候选池。同一任务、同一类里，字符 n-gram 的 TF–IDF 余弦相似度达到 0.9 的近重复删掉；一类超过 128 个就用最远点采样留 128 个。</li>
+    <li><strong>12 个配置，模型带着自己的 Agent。</strong>主表列了 8 个：GPT-5.6-sol 用 Codex，Claude Fable 和 Opus 用 Claude Code，Kimi-K3 用 Kimi Code，Qwen3.8-max 用 Qwen Code，GLM-5.3 用 ZCode，两个 DeepSeek-V4 用 OpenHands。比较的是完整配置，含脚手架和推理设置，不是同一个 Agent 换模型。</li>
+    <li><strong>同一套测试，原样回放。</strong>生成的测试装进任务本地的临时目录，不改仓库里已有的文件。同一份测试分别跑在坏代码、打上参考补丁的代码、打上每一个候选补丁的代码上。跑不通、超时、只有基础设施错误的结果，既不算放过也不算拦住，分母照旧保留。</li>
+  </ul>
+</section>
+
+<section id="how">
+  <h2><span>2</span>三个量，只有同时成立才算验收</h2>
+  <p>一条任务上，论文记三个分数，分母都是这一条任务自己的池子。</p>
+  <ul>
+    <li><strong>复现 g。</strong>测试在坏代码上失败，并且在参考补丁上通过，记 1，否则 0。619 条上的平均是 GRR。</li>
+    <li><strong>拦错 w。</strong>错误池里，测试稳定失败的补丁占比。619 条上的平均是 Wrong Patch Detection Rate（WDR）。</li>
+    <li><strong>放过对 c。</strong>正确池里，测试全部通过的补丁占比。619 条上的平均是 Correct Patch Acceptance Rate（CAR）。</li>
+  </ul>
+  <p>另外还有「整池」版本。CT-WDR 要求这条任务的每一个错误补丁都被拦住，CT-CAR 要求每一个正确补丁都被放过。十个里错一个，候选级的 WDR 仍然很高，整池版本记 0。</p>
+  <p>联合验收率（Joint Validation Rate，JVR）比整池更严一档。它要求同一条任务上三件事同时成立：复现了，错误池全拦住，正确池全放过。619 条任务等权，JVR 是这三条同时为 1 的任务占比。候选池在所有配置之间固定。论文写，池子更大或更多样，完整验收会更难。</p>
+  <figure>
+    <svg viewBox="0 0 920 430" width="100%" role="img" aria-label="流程图：同一份生成的测试回放到坏代码、参考补丁和两类候选补丁上，三个指示同时为 1 才计入联合验收">
+      <defs>
+        <marker id="ar1" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#475569"/></marker>
+      </defs>
+      <rect x="1" y="1" width="918" height="428" rx="10" fill="#fff" stroke="#e2e8f0"/>
+      <text x="24" y="32" font-size="16" font-weight="700" fill="#0f172a">同一份测试，四个落点；三个指示同时为 1，这条任务才算联合验收</text>
+
+      <rect x="24" y="56" width="200" height="78" rx="8" fill="#eff6ff" stroke="#1d4ed8" stroke-width="2"/>
+      <text x="124" y="86" font-size="15" font-weight="700" fill="#0f172a" text-anchor="middle">生成的测试套件</text>
+      <text x="124" y="110" font-size="14" fill="#0f172a" text-anchor="middle">不改仓库原有文件</text>
+
+      <line x1="224" y1="95" x2="268" y2="95" stroke="#475569" stroke-width="1.6" marker-end="url(#ar1)"/>
+
+      <g font-size="14" fill="#0f172a">
+        <rect x="276" y="52" width="250" height="64" rx="8" fill="#fff7ed" stroke="#b45309" stroke-width="2"/>
+        <text x="292" y="78" font-weight="700">坏代码：必须失败</text>
+        <text x="292" y="100">参考补丁：必须通过</text>
+
+        <rect x="276" y="132" width="250" height="64" rx="8" fill="#f0fdf4" stroke="#047857" stroke-width="2"/>
+        <text x="292" y="158" font-weight="700">正确池：每一个都通过</text>
+        <text x="292" y="180">平均每条任务 44.83 个</text>
+
+        <rect x="276" y="212" width="250" height="64" rx="8" fill="#fff1f2" stroke="#be123c" stroke-width="2"/>
+        <text x="292" y="238" font-weight="700">错误池：每一个都失败</text>
+        <text x="292" y="260">平均每条任务 88.58 个</text>
+      </g>
+
+      <line x1="526" y1="84" x2="574" y2="150" stroke="#475569" stroke-width="1.6" marker-end="url(#ar1)"/>
+      <line x1="526" y1="164" x2="574" y2="168" stroke="#475569" stroke-width="1.6" marker-end="url(#ar1)"/>
+      <line x1="526" y1="244" x2="574" y2="186" stroke="#475569" stroke-width="1.6" marker-end="url(#ar1)"/>
+
+      <rect x="582" y="128" width="310" height="92" rx="8" fill="#eff6ff" stroke="#1d4ed8" stroke-width="2"/>
+      <text x="737" y="160" font-size="15" font-weight="700" fill="#0f172a" text-anchor="middle">JVR：三条同时成立</text>
+      <text x="737" y="184" font-size="14" fill="#0f172a" text-anchor="middle">619 条任务等权</text>
+      <text x="737" y="206" font-size="14" fill="#0f172a" text-anchor="middle">缺一条，这条任务记 0</text>
+
+      <rect x="24" y="308" width="868" height="96" rx="8" fill="#f8fafc" stroke="#cbd5e1"/>
+      <text x="40" y="338" font-size="15" font-weight="700" fill="#0f172a">只看复现，漏掉的是后两格</text>
+      <text x="40" y="364" font-size="14" fill="#334155">GRR 只读第一格。WDR、CAR 是池子内的平均占比，错一个仍然有分。</text>
+      <text x="40" y="386" font-size="14" fill="#334155">跑不通、超时、只有基础设施错误：既不算通过也不算失败，分母不减。</text>
+    </svg>
+    <figcaption>图 1. 联合验收的定义。数字来自论文第 2.4 节和第 2.5 节：619 条任务，正确池 27,749，错误池 54,830。</figcaption>
+  </figure>
+</section>
+
+<section id="gap">
+  <h2><span>3</span>复现过了，联合验收停在一成以下</h2>
+  <p>表 2 列了 8 个代表配置。百分数都是 619 条任务上的占比。GRR、WDR、CAR 是任务平均；CT-WDR、CT-CAR 是整池都判对的任务占比；JVR 是三件事同时成立的任务占比。</p>
+  <div class="tw">
+  <table>
+    <thead>
+      <tr><th>配置</th><th>GRR</th><th>WDR</th><th>CAR</th><th>CT-WDR</th><th>CT-CAR</th><th>JVR</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>GPT-5.6-sol + Codex</td><td>59.29%</td><td>88.57%</td><td>50.20%</td><td>47.66%</td><td>28.59%</td><td>9.21%</td></tr>
+      <tr><td>Claude-Fable-5.1 + Claude Code</td><td>65.11%</td><td>83.74%</td><td>62.19%</td><td>34.89%</td><td>30.37%</td><td>7.92%</td></tr>
+      <tr><td>Claude-Opus-5 + Claude Code</td><td>68.17%</td><td>85.91%</td><td>66.76%</td><td>32.47%</td><td>31.34%</td><td>7.11%</td></tr>
+      <tr><td>Kimi-K3 + Kimi Code</td><td>33.12%</td><td>80.24%</td><td>40.64%</td><td>49.43%</td><td>22.94%</td><td>5.98%</td></tr>
+      <tr><td>Qwen3.8-max + Qwen Code</td><td>49.60%</td><td>84.69%</td><td>61.68%</td><td>32.47%</td><td>30.21%</td><td>5.17%</td></tr>
+      <tr><td>DeepSeek-V4-Pro + OpenHands</td><td>36.03%</td><td>82.53%</td><td>49.36%</td><td>36.35%</td><td>27.95%</td><td>4.52%</td></tr>
+      <tr><td>DeepSeek-V4-Flash + OpenHands</td><td>29.89%</td><td>80.53%</td><td>44.62%</td><td>40.87%</td><td>22.94%</td><td>3.88%</td></tr>
+      <tr><td>GLM-5.3 + ZCode</td><td>38.77%</td><td>85.36%</td><td>53.55%</td><td>37.64%</td><td>25.04%</td><td>3.72%</td></tr>
+    </tbody>
+  </table>
+  </div>
+  <p>复现率最高的是 Claude-Opus-5，68.17%，它的 JVR 点估计是 7.11%。联合验收点估计最高的是 GPT-5.6-sol，9.21%，它自己的复现率是 59.29%。表 8 里 Opus 相对 GPT 的 JVR 差 −2.10 个百分点，95% 区间 −4.36 至 +0.16，含 0；Fable 相对 GPT 是 −1.29，区间 −3.72 至 +0.97，也含 0。精确双侧 McNemar 检验经 Holm 校正之后，p 分别是 0.222 和 0.350。</p>
+  <p>9.21% 的 95% 区间是 6.95% 至 11.47%，按来源分层、配对的自助法，10,000 次。这个区间只覆盖在已记录的运行和固定候选池上对任务做重抽样，不含测试生成再跑一遍的方差。论文写明，证据能站住的是联合验收整体很低。前三名的名次立不住。八个配置的 JVR 都低于 10%，最高那个的区间上沿是 11.47%。</p>
+  <figure>
+    <svg viewBox="0 0 920 500" width="100%" role="img" aria-label="条形图：八个配置的复现率 GRR 和联合验收率 JVR，纵轴 0 到 80 百分比">
+      <rect x="1" y="1" width="918" height="498" rx="10" fill="#fff" stroke="#e2e8f0"/>
+      <text x="24" y="30" font-size="16" font-weight="700" fill="#0f172a">复现率（蓝）对联合验收率（红），同一 619 条任务</text>
+      <text x="24" y="52" font-size="14" fill="#475569">纵轴是任务占比。红条最高 9.21%，95% 区间 6.95% 至 11.47%。</text>
+      <rect x="560" y="36" width="16" height="16" fill="#1d4ed8" stroke="#1e3a8a"/>
+      <text x="582" y="49" font-size="14" fill="#0f172a">GRR 复现</text>
+      <rect x="700" y="36" width="16" height="16" fill="#be123c" stroke="#9f1239"/>
+      <text x="722" y="49" font-size="14" fill="#0f172a">JVR 联合验收</text>
+
+      <!-- axis: plot top 96 = 80%, baseline 416. 1% = 4px -->
+      <line x1="168" y1="96" x2="168" y2="416" stroke="#94a3b8" stroke-width="1.4"/>
+      <line x1="168" y1="416" x2="890" y2="416" stroke="#94a3b8" stroke-width="1.4"/>
+      <g font-size="14" fill="#475569" text-anchor="end">
+        <text x="158" y="420">0</text>
+        <text x="158" y="340">20%</text>
+        <text x="158" y="260">40%</text>
+        <text x="158" y="180">60%</text>
+        <text x="158" y="100">80%</text>
+      </g>
+      <g stroke="#e2e8f0" stroke-width="1">
+        <line x1="168" y1="336" x2="890" y2="336"/>
+        <line x1="168" y1="256" x2="890" y2="256"/>
+        <line x1="168" y1="176" x2="890" y2="176"/>
+        <line x1="168" y1="96" x2="890" y2="96"/>
+      </g>
+
+      <!-- baseline y=416. GPT 59.29 -> y 178.84 h 237.16; JVR 9.21 -> y 379.16 h 36.84 -->
+      <g>
+        <rect x="184" y="178.8" width="26" height="237.2" fill="#1d4ed8" stroke="#1e3a8a"/>
+        <rect x="214" y="379.2" width="26" height="36.8" fill="#be123c" stroke="#9f1239"/>
+        <rect x="272" y="155.6" width="26" height="260.4" fill="#1d4ed8" stroke="#1e3a8a"/>
+        <rect x="302" y="384.3" width="26" height="31.7" fill="#be123c" stroke="#9f1239"/>
+        <rect x="360" y="143.3" width="26" height="272.7" fill="#1d4ed8" stroke="#1e3a8a"/>
+        <rect x="390" y="387.6" width="26" height="28.4" fill="#be123c" stroke="#9f1239"/>
+        <rect x="448" y="283.5" width="26" height="132.5" fill="#1d4ed8" stroke="#1e3a8a"/>
+        <rect x="478" y="392.1" width="26" height="23.9" fill="#be123c" stroke="#9f1239"/>
+        <rect x="536" y="217.6" width="26" height="198.4" fill="#1d4ed8" stroke="#1e3a8a"/>
+        <rect x="566" y="395.3" width="26" height="20.7" fill="#be123c" stroke="#9f1239"/>
+        <rect x="624" y="271.9" width="26" height="144.1" fill="#1d4ed8" stroke="#1e3a8a"/>
+        <rect x="654" y="397.9" width="26" height="18.1" fill="#be123c" stroke="#9f1239"/>
+        <rect x="712" y="296.4" width="26" height="119.6" fill="#1d4ed8" stroke="#1e3a8a"/>
+        <rect x="742" y="400.5" width="26" height="15.5" fill="#be123c" stroke="#9f1239"/>
+        <rect x="800" y="260.9" width="26" height="155.1" fill="#1d4ed8" stroke="#1e3a8a"/>
+        <rect x="830" y="401.1" width="26" height="14.9" fill="#be123c" stroke="#9f1239"/>
+      </g>
+      <g font-size="14" text-anchor="middle">
+        <text x="212" y="440" fill="#334155">GPT</text>
+        <text x="300" y="440" fill="#334155">Fable</text>
+        <text x="388" y="440" fill="#334155">Opus</text>
+        <text x="476" y="440" fill="#334155">Kimi</text>
+        <text x="564" y="440" fill="#334155">Qwen</text>
+        <text x="652" y="440" fill="#334155">DS-Pro</text>
+        <text x="740" y="440" fill="#334155">DS-Flash</text>
+        <text x="828" y="440" fill="#334155">GLM</text>
+      </g>
+      <text x="24" y="476" font-size="14" fill="#475569">蓝条最高：Claude-Opus-5，68.17%。红条最高：GPT-5.6-sol，9.21%。前三名的红条差距不显著。</text>
+    </svg>
+    <figcaption>图 2. 表 2 的 GRR 与 JVR。蓝条最高是 Claude-Opus-5 的 68.17%，红条最高是 GPT-5.6-sol 的 9.21%。前三名红条的差距，区间含 0。</figcaption>
+  </figure>
+  <p>三个来源上的数字差得很大，比的是不同题目子集，不是同一批题的重复跑。GPT-5.6-sol 在 Multilingual 的 167 条上 JVR 16.17%，WDR 82.57%，CAR 79.19%；在 DeepSWE 的 110 条上 JVR 是 2.73%，WDR 96.82%，CAR 34.26%。Pro 的 342 条上，JVR 最高的换成 Claude-Fable-5，8.77%。筛选后的保留率也不同：Pro 46.8%（342/731），Multilingual 55.7%（167/300），DeepSWE 97.3%（110/113），难度筛选对 DeepSWE 几乎没去掉任务。论文没有把来源之间的差距归因到轨迹长度。</p>
+</section>
+
+<section id="two">
+  <h2><span>4</span>拦错补丁和放过对补丁是两件事</h2>
+  <p>GPT-5.6-sol 的 WDR 是 8 个配置里最高的，88.57%，CAR 只有 50.20%。整池版本把两边再拉开：CT-WDR 47.66%，CT-CAR 28.59%。论文举的例子是，十条错误补丁拦住九条，这条任务的 WDR 仍然高，CT-WDR 记 0，因为漏掉的那一条会从这套测试里穿过去。</p>
+  <p>Kimi-K3 的 CT-WDR 是表里最高的，49.43%，JVR 只有 5.98%。整池都拦住，和联合验收不是一回事：它的复现率只有 33.12%，CAR 只有 40.64%。</p>
+  <p>12 个配置里，论文点名 Claude Opus 4.8 更平衡，WDR 74.12%，CAR 76.47%，JVR 5.49%。这一组不在表 2 的八行里，数字出自第 3.1 节对图 1 的描述。拿它和表 2 八行比，是我做的：WDR 74.12% 低于八行里最低的 80.24%（Kimi-K3），CAR 76.47% 高于八行里最高的 66.76%（Claude-Opus-5），JVR 5.49% 落在八行的 3.72% 到 9.21% 之间。论文没有做这个比较。</p>
+  <p>论文的读法是：单独优化拦住错误补丁，确立不了可靠的验收。拦错有用的前提，是同一条任务上正确补丁也过得去。</p>
+</section>
+
+<section id="case">
+  <h2><span>5</span>一条过了复现、两边都判错的测试</h2>
+  <p>论文拿 SWE-bench Multilingual 里的 Caddy 实例 4774 做例子。GPT-5.6-sol 用 Codex 生成的测试，在坏代码上失败，在参考补丁上通过。问题是服务器用 <code>default_bind</code> 配多个 IPv4 和 IPv6 地址时，解析到第二个地址就失败，起不来。要求的修复要支持这个全局设置，同时允许单个站点覆盖它。</p>
+  <p>这套测试放过了官方标签为错误的补丁 #65，拒掉了官方标签为正确的补丁 #13。它比较地址时忽略顺序，官方测试会检查顺序。它又要求空的 <code>default_bind</code> 必须报错，问题和官方评测都没有这个条件。两条都和「参考补丁能通过」相容。在这条任务的池子上，它拦住 66.2% 的错误补丁，放过 49.1% 的正确补丁，联合验收失败。</p>
+  <p>论文写，单条分歧仍然要回到问题要求和官方测试的覆盖范围才能解释。66.2% 和 49.1% 是这一条任务的池子内占比，论文没有把它当成 619 条上的发生率。</p>
+</section>
+
+<section id="train">
+  <h2><span>6</span>训练侧的数字不改变上面的判断</h2>
+  <p>论文还用判别分数挑了微调数据。这一节只划边界：这些数字没有把联合验收补到能当门禁的水平，显著性也不是两种挑法之间的比较。基座是 Qwen3-30B-A3B-Instruct，轨迹由 DeepSeek-V4-Flash 生成，训五个 epoch，评测用 OpenHands。修复轨迹 19 亿 token。两种挑选各加 20 亿 token，轨迹池大约 20,000 个问题环境，仓库和评测集不相交。下表的 F1 是 WDR 与 CAR 的调和平均。</p>
+  <div class="tw">
+  <table>
+    <thead>
+      <tr><th>配置</th><th>JVR</th><th>相对只训修复</th><th>F1</th><th>Verified AVG@4</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>只训修复轨迹</td><td>1.29%</td><td>—</td><td>22.79%</td><td>67.53%</td></tr>
+      <tr><td>+ 按 GRR 挑的 20 亿 token</td><td>2.26%</td><td>+0.97 个百分点</td><td>50.39%</td><td>69.47%</td></tr>
+      <tr><td>+ 按 WDR、CAR、JVR 挑的 20 亿 token</td><td>3.23%</td><td>+1.94 个百分点</td><td>56.45%</td><td>70.24%</td></tr>
+      <tr><td>+ 同一标准再加 20 亿，共 40 亿</td><td>3.88%</td><td>+2.59 个百分点</td><td>60.18%</td><td>71.84%</td></tr>
+    </tbody>
+  </table>
+  </div>
+  <p>同样 20 亿 token，按判别分数挑的 JVR 是 3.23%，按复现挑的是 2.26%。论文给的显著性检验是对「只训修复轨迹」的比较，不是这两种挑法之间的比较：按判别挑的 JVR 增量，95% 区间 0.81 至 3.23 个百分点，McNemar 经 Holm 校正 p = 0.008；按复现挑的那一档 p = 0.146，不显著。扩到 40 亿 token 之后 JVR 到 3.88%，区间 1.29 至 4.04 个百分点。这一档同时改了数据量和环境池，论文写明挑法和规模的贡献拆不开。</p>
+  <p>论文说的「大约三倍」，是 3.88% 对 1.29%，同一个 619 条的分母。三倍之后仍然是 3.88%。下游修复用 AVG@4，四个回合的平均解决率：扩到 40 亿之后，Verified、Multilingual、Pro 分别是 71.84%、63.30%、50.70%，相对只训修复轨迹高 4.31、8.22、4.14 个百分点。这个增量对照的是没有额外测试生成 token 的那一档，论文没有给同样 token 预算的下游对照。三个基准的分母论文没有在这篇里写出，不能和 SWEPatchTest 的 619 放在一起比。微调模型是另一个基座、另一个 Agent，不能和表 2 的 9.21% 比高低。</p>
+</section>
+
+<section id="yours">
+  <h2><span>7</span>对照你的验收位</h2>
+  <p>如果你的编码 Agent 用自己写的测试决定一个补丁交不交，把下面三件事对一下。</p>
+  <ul>
+    <li><strong>门禁现在读的是哪一格。</strong>只要求坏代码失败、参考解或上一版通过，对应的是 GRR。这篇里 GRR 最高 68.17% 的配置，JVR 是 7.11%。参考解通过，挡不住测试去查一个问题没要求的条件。</li>
+    <li><strong>有没有一份正确补丁的池子。</strong>只有错误补丁或变异体时，优化目标会滑向 WDR。GPT-5.6-sol 的 WDR 是 88.57%，CAR 是 50.20%，后者含未决执行。没被放过的那部分，论文没有拆成「被拒」和「跑不通」。正确池要来自官方评测通过的不同实现，近重复删掉之后仍然要留。这篇的正确池平均每条任务 44.83 个。</li>
+    <li><strong>汇报时用整池，不用池内平均。</strong>WDR、CAR 是一条任务内的占比再对 619 条取平均。十个错补丁漏一个，平均数还是高的，漏掉的那个会过门禁。CT-WDR、CT-CAR、JVR 把「漏一个」记成这条任务失败。</li>
+  </ul>
+  <p>做不到第三件，至少把正确池和错误池分开记，不要合成一个通过率。论文没有算过合成通过率。按表 9 的拆分，DeepSWE 这 110 条上 WDR 96.82%、CAR 34.26% 会同时出现，JVR 是 2.73%。作者写 DeepSWE 的正确池更薄，这个 2.73% 不要单独拿出去用。</p>
+</section>
+
+<section id="limit">
+  <h2><span>8</span>这篇撑不起什么</h2>
+  <ul>
+    <li><strong>撑不起「官方评测就是语义正确」。</strong>候选标签来自官方评测的通过与否。作者写了，这是可操作的正确，不是语义正确的形式保证。生成的测试可以去查官方评测没覆盖的行为。Caddy 那条就是。</li>
+    <li><strong>撑不起「换任何池子都是 9%」。</strong>JVR 只在放出的候选池上计算，不覆盖所有可能的补丁。82,579 个补丁是观察到的尝试，文本去重不等于语义多样。池子更大，联合验收更难，方向作者写了，幅度没有测。</li>
+    <li><strong>撑不起「所有仓库任务都这样」。</strong>619 条先去掉了官方测试弱的，再去掉了现有配置很容易复现的。难度筛选用的模型族和最终受测的模型族有重叠。这是一个偏难的集合。</li>
+    <li><strong>撑不起前三名的名次。</strong>9.21%、7.92%、7.11% 的差距，校正后的 McNemar 不显著，差值的区间含 0。能说的是八个配置的 JVR 都低于 10%，最高那个的区间上沿是 11.47%。</li>
+    <li><strong>未决执行留在分母里。</strong>超时、缺输出、适用性失败会压低固定分母上的分数，即使没有评到行为断言。CAR 里没被放过的部分，不等于被拒绝。一条任务大约 45 个正确补丁，其中一个超时，这条的 c 到不了 1，JVR 记 0。</li>
+    <li><strong>区间不含再跑一遍测试生成。</strong>自助法量的是任务抽样，条件是已记录的运行和当时的候选池。论文结论节写了这一点。</li>
+    <li><strong>撑不起「换个挑法就能把门禁补上」。</strong>按判别分数挑训练数据，JVR 从 1.29% 到 3.23% 再到 3.88%。后一档改了数据量。显著性是对只训修复轨迹，不是两种挑法之间。微调模型是另一个基座、另一个 Agent，不能和表 2 的 9.21% 比高低。</li>
+    <li><strong>DeepSWE 的正确池更薄。</strong>作者点名这一来源对「放过正确补丁」的结论约束更强。2.73% 不要单独拿出去用。</li>
+  </ul>
+</section>
+
+<section id="src">
+  <h2><span>9</span>出处与未覆盖</h2>
+  <p>数字和口径来自这篇预印本：<a href="https://arxiv.org/abs/2610.18004">arXiv:2610.18004v1</a>，HTML 版 <a href="https://arxiv.org/html/2610.18004">arxiv.org/html/2610.18004</a>。表 2 的八行、表 3 的四行、表 9 的三个来源、第 2.4 节的池子规模、第 3.1 节的区间和 p 值、第 5 节与附录 G 的局限，都按原文抄。9.21%、16.17%、2.73%、8.77% 与 57/619、27/167、3/110、30/342 一致，正文用论文报告的百分数。</p>
+  <p>同一判断不重复已有的 Frontier。<a href="/frontier/2026-10-10-watch-regressions-not-coverage.html">10-10</a> 讲的是技能库改写之后，原本稳定的任务有没有变差，分母是技能覆盖的任务。<a href="/frontier/2026-10-12-cost-per-delivered-success.html">10-12</a> 讲的是选动作的成本要按每个成功交付算。这篇的门禁在测试套件，不在技能条目，也不在动作单价。</p>
+  <p>谱系和增量层分别在 <a href="/frontier/rsi-llm-agent-self-evolution.html">递归自改进前世今生</a> 和 <a href="/frontier/llm-agent-tech-landscape.html">冻底座、改脚手架</a>。这篇只加一条：生成测试若只按复现来验收补丁，验收器本身没有就位。</p>
+  <p>今日未覆盖：X、Reddit，没有登录态。另外四处看过，没有进入这篇的论证。<a href="https://openai.com/news/">OpenAI 新闻页</a>直接请求返回 403，经 r.jina.ai 于 2026-10-14 抓到的列表里，最近条目止于 10 月 8 日的安全通报。<a href="https://www.anthropic.com/engineering/redesigning-source-control">Anthropic 工程文</a>标注 Published Oct 13, 2026，讲单仓库从 git 迁到自建版本控制。<a href="https://github.com/trending?since=daily">GitHub 当日 Trending</a>和 <a href="https://www.producthunt.com/leaderboard/daily/2026/10/14">Product Hunt 10 月 14 日榜</a>没有可用的对照实验。</p>
+</section>
+</main>
+</div>
+</body>
+</html>
