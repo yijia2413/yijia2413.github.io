@@ -1,0 +1,205 @@
+﻿<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>合并翻倍，回退掉了四成以上。人还在读每一行吗</title>
+  <style>
+    :root { --ink:#0f172a; --muted:#475569; --line:#e2e8f0; --bg:#f8fafc; --blue:#1d4ed8; --blue-bg:#eff6ff; --amber:#b45309; --green:#047857; --rose:#be123c; }
+    * { box-sizing: border-box; }
+    body { margin:0; font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Noto Sans SC",sans-serif; background:var(--bg); color:var(--ink); line-height:1.75; font-size:17px; }
+    header { background:#0f172a; color:#f8fafc; padding:36px 24px 28px; border-bottom:4px solid #2563eb; }
+    header .inner { max-width:1080px; margin:0 auto; }
+    .badge { display:inline-block; border:1px solid #93c5fd; color:#bfdbfe; border-radius:999px; padding:2px 12px; font-size:13px; }
+    h1 { font-size:2rem; line-height:1.3; margin:12px 0; }
+    header p { color:#cbd5e1; margin:0; max-width:760px; }
+    .layout { max-width:1080px; margin:28px auto 64px; padding:0 20px; display:grid; grid-template-columns:220px minmax(0,1fr); gap:28px; }
+    aside { position:sticky; top:16px; align-self:start; background:#fff; border:1px solid var(--line); border-radius:12px; padding:14px; }
+    aside p { font-size:12px; letter-spacing:.06em; color:var(--muted); margin:0 0 8px; }
+    aside a { display:block; color:var(--ink); text-decoration:none; font-size:14px; padding:6px 8px; border-radius:6px; }
+    aside a:hover { background:var(--blue-bg); color:var(--blue); }
+    h2 { font-size:1.35rem; margin:0 0 12px; }
+    h2 span { display:inline-block; background:var(--blue); color:#fff; border-radius:6px; font-size:13px; padding:2px 8px; margin-right:8px; }
+    h3 { font-size:1.08rem; margin:20px 0 10px; }
+    section { background:#fff; border:1px solid var(--line); border-radius:14px; padding:26px 28px; margin-bottom:22px; }
+    p { margin:0 0 14px; }
+    a { color:var(--blue); overflow-wrap:anywhere; }
+    main { min-width:0; }
+    figure { margin:16px 0; background:#fff; border:1px solid var(--line); border-radius:12px; padding:10px; overflow-x:auto; }
+    figure svg { display:block; width:100%; height:auto; min-width:700px; }
+    figcaption { color:var(--muted); font-size:14px; margin-top:6px; }
+    .tw { overflow-x:auto; margin:0 0 14px; }
+    .tw table { min-width:620px; }
+    table { width:100%; border-collapse:collapse; font-size:15px; }
+    th, td { border:1px solid var(--line); padding:8px 10px; text-align:left; vertical-align:top; }
+    th { background:#f1f5f9; }
+    ul { margin:0 0 14px; padding-left:22px; }
+    li { margin-bottom:6px; }
+    .note { background:#f1f5f9; border-left:4px solid var(--muted); padding:12px 16px; border-radius:0 8px 8px 0; font-size:16px; margin:0 0 14px; }
+    .quote { background:#fffbeb; border-left:4px solid var(--amber); padding:12px 16px; border-radius:0 8px 8px 0; font-size:15px; overflow-wrap:anywhere; margin:0 0 14px; }
+    .cards { display:grid; grid-template-columns:1fr 1fr; gap:12px; margin:0 0 16px; }
+    .card { border:1px solid var(--line); border-radius:10px; padding:14px 14px 10px; background:#fff; }
+    .card b { display:block; font-size:15px; margin-bottom:4px; }
+    .card span { display:block; color:var(--muted); font-size:14px; line-height:1.6; }
+    .card.alt { border-top:3px solid #2563eb; }
+    .card.dep { border-top:3px solid #047857; }
+    .card.rng { border-top:3px solid #b45309; }
+    .card.rose { border-top:3px solid #be123c; }
+    svg text { font-family:-apple-system,"PingFang SC","Noto Sans SC",sans-serif; }
+    @media (max-width:860px) {
+      .layout { grid-template-columns:minmax(0,1fr); }
+      aside { position:static; }
+      h1 { font-size:1.55rem; }
+      section { padding:18px 16px; }
+      .cards { grid-template-columns:1fr; }
+    }
+  </style>
+</head>
+<body>
+<header>
+  <div class="inner">
+    <span class="badge">FRONTIER · 2026-10-17 · 工程</span>
+    <h1>合并翻倍，回退掉了四成以上。人还在读每一行吗</h1>
+    <p>Claude Code 团队 2026 年 10 月 15 日写了自己的代码评审。6 月到 9 月，合并的拉取请求翻了一倍以上，必须回退的比例掉了四成以上。他们没取消评审，把大部分阅读交给机器，人的注意力按风险进场。护栏是回退和事故，涨了就算没省下人的时间。</p>
+  </div>
+</header>
+<div class="layout">
+<aside>
+  <p>目录</p>
+  <a href="#measure">1 他们量的是什么</a>
+  <a href="#layers">2 七层，不是一道闸</a>
+  <a href="#risk">3 人按风险进场</a>
+  <a href="#converge">4 评审必须停下来</a>
+  <a href="#human">5 人还决定什么</a>
+  <a href="#context">6 共享上下文怎么补</a>
+  <a href="#src">7 出处与这篇撑不起什么</a>
+</aside>
+<main>
+
+<section id="measure">
+  <h2><span>1</span>他们量的是什么</h2>
+  <p>原文在 <a href="https://claude.dev/blog/solving-code-review-at-anthropic/">How the Claude Code team does code review</a>，2026-10-15。他们说过，Claude Code 自己的代码大约九成是 Claude 写的。接下来的问题是：这个量怎么审、还有没有人在读、出事谁拦住。</p>
+  <p>Claude Code 不在 Anthropic 的单体仓库里，压力也很大。单体仓库那边，日合并从 2026 年 5 月大约 2,500 条涨到 9 月超过 30,000 条，数字写在 <a href="https://www.anthropic.com/engineering/redesigning-source-control">Redesigning source control at Anthropic</a>。那是整仓，不是 Claude Code 这个仓库。</p>
+  <div class="cards">
+    <div class="card alt"><b>6 月到 9 月</b><span>Claude Code 仓库里合并的拉取请求翻了一倍以上，必须回退的比例掉了四成以上。原文没给绝对条数。</span></div>
+    <div class="card dep"><b>目标</b><span>大多数拉取请求最多一个人过，这个人可以是作者。回退和事故不能涨。涨了，只是把时间从审挪到修。</span></div>
+    <div class="card rng"><b>人的时间</b><span>每条拉取请求的人工批准数（中位数和 95 分位）、人工评论数、等人的时长。</span></div>
+    <div class="card rose"><b>护栏</b><span>回退率和事故率。他们还没有按这两项自动收紧批准的断路器，文里写工程师想先有这个，再把更多代码放到零人工合并。</span></div>
+  </div>
+  <p>评审原来干两件事：发之前找出问题；让团队共享对代码的理解。这篇主要写第一件。第二件放到第 6 节。</p>
+  <p>他们换了一个问法。以前问「有没有人读过这段代码」。现在问「这次改动会出什么错，哪一层检查该拦住它，机器还是人」。问法一换，评审从终点的闸门变成写代码时一直在跑的拼写检查。大多数改动在请人看之前，已经被 Claude 审过并修过至少一轮。</p>
+</section>
+
+<section id="layers">
+  <h2><span>2</span>七层，不是一道闸</h2>
+  <p>一条改动从工程师的电脑，或者 Slack 里的一次 Claude 会话，经过多层。每一层拦住一部分，漏掉一部分。漏过全部的，交给回退。</p>
+  <figure>
+    <svg viewBox="0 0 960 520" role="img" aria-label="七层检查：前四层机器，第五层人按风险，第六层发布，第七层回退">
+      <rect x="0" y="0" width="960" height="520" fill="#ffffff"/>
+      <text x="480" y="32" text-anchor="middle" font-size="20" font-weight="700" fill="#0f172a">一条改动经过的七层</text>
+      <text x="480" y="56" text-anchor="middle" font-size="13" fill="#64748b">前四层机器先跑完；人只在第五层按风险进场；漏过的交给回退</text>
+      <rect x="40" y="76" width="880" height="52" rx="8" fill="#f1f5f9" stroke="#94a3b8" stroke-width="2"/>
+      <text x="62" y="107" font-size="15" font-weight="700" fill="#475569">1 提交前</text>
+      <text x="180" y="107" font-size="14" fill="#334155">能跑的测试、构建或截图对照；新上下文的子代理审 diff；找 bug、简化、端到端的内部技能</text>
+      <rect x="40" y="136" width="880" height="52" rx="8" fill="#eff6ff" stroke="#1d4ed8" stroke-width="2"/>
+      <text x="62" y="167" font-size="15" font-weight="700" fill="#1d4ed8">2 每条 PR</text>
+      <text x="180" y="167" font-size="14" fill="#1e3a8a">Claude 对照整仓和声明意图审一遍；多代理找 bug，另一组投票，够票才贴；风格和清理类丢掉</text>
+      <rect x="40" y="196" width="880" height="52" rx="8" fill="#fef2f2" stroke="#be123c" stroke-width="2"/>
+      <text x="62" y="227" font-size="15" font-weight="700" fill="#be123c">3 安全</text>
+      <text x="180" y="227" font-size="14" fill="#9f1239">单独的自动安全评审。bug 或安全发现还开着，不能合并。修掉或写明原因关掉</text>
+      <rect x="40" y="256" width="880" height="52" rx="8" fill="#ecfdf5" stroke="#047857" stroke-width="2"/>
+      <text x="62" y="287" font-size="15" font-weight="700" fill="#047857">4 CI</text>
+      <text x="180" y="287" font-size="14" fill="#065f46">lint、类型、各平台测试、构建。模板要写怎么测过、怎么撤。Claude 可填，签字的是要这次改动的人</text>
+      <rect x="40" y="316" width="880" height="52" rx="8" fill="#fffbeb" stroke="#b45309" stroke-width="2"/>
+      <text x="62" y="347" font-size="15" font-weight="700" fill="#b45309">5 人</text>
+      <text x="180" y="347" font-size="14" fill="#92400e">低风险 0 人，中风险 1 人，高风险 2 人。档位看这次改动，不看作者。机器人批准不算人</text>
+      <rect x="40" y="376" width="880" height="52" rx="8" fill="#f8fafc" stroke="#334155" stroke-width="2"/>
+      <text x="62" y="407" font-size="15" font-weight="700" fill="#334155">6 发布</text>
+      <text x="180" y="407" font-size="14" fill="#334155">合并队列对 main 再跑一遍。新行为先开关给内部。公开先 latest，stable 跟着</text>
+      <rect x="40" y="436" width="880" height="52" rx="8" fill="#fff7ed" stroke="#c2410c" stroke-width="2"/>
+      <text x="62" y="467" font-size="15" font-weight="700" fill="#c2410c">7 回退</text>
+      <text x="180" y="467" font-size="14" fill="#9a3412">开关可关，不必重新部署。周值班。事故复盘问哪一层该拦住。发现坏合并仍靠作者和值班</text>
+    </svg>
+    <figcaption>图 1　七层叠在一起。前四层机器先把常规错误清掉；第五层才按风险叫人；第六层防两条各自通过的请求合成坏的 main；第七层接住漏网的。</figcaption>
+  </figure>
+  <h3>提交前就要能证明做完了</h3>
+  <p>大多数评审发生在拉取请求出现之前。他们给 Claude 一件它能跑的东西：测试、构建，或者一张对照设计的截图，然后要输出，不要一句「做完了」。再开一个新上下文的子代理审 diff。这两条来自他们的 <a href="https://code.claude.com/docs/en/best-practices">best-practices</a>。Boris Cherny 把「给 Claude 一个验证自己工作的办法」称作大概最重要的一件事，估计最终结果好两到三倍。验证按领域不同：一条 bash、一套测试、浏览器或手机模拟器都可以。</p>
+  <p>同一类问题被自动评审反复标出来，他们改源头：技能、lint，或者说明文件。</p>
+  <ul>
+    <li><code>CLAUDE.md</code> 告诉 Claude 这个项目是什么：技术栈、约定、目标和非目标。每次评审都会加载，大仓库里写短，再指向别的文档。评审也会标出违反约定的代码，以及让某一行过时的改动。</li>
+    <li><code>REVIEW.md</code> 由代码负责人写，告诉评审在这块代码里什么算失败。文档仓是「它撒谎」，配置仓是「它指错路」。限制挑剔的数量，列出可跳过的路径，要求文件和行号作证据，不要凭名字猜。摘要以计数开头，没事可修就直说。</li>
+  </ul>
+  <h3>贴出来的发现要过投票</h3>
+  <p>每条拉取请求在人看之前都过一遍 Claude 评审。它对照整仓和这条请求声明的意图问：这次改动解没解决问题、合不合系统、有没有弄坏别处。修 bug 时找根因。公开产品是 <a href="https://code.claude.com/docs/en/code-review">Code Review for Claude Code</a>，Team 和 Enterprise 已正式可用。本地有一个更轻的 <code>/code-review</code>。</p>
+  <p>研究预览上线时，内部拉取请求拿到实质评论的比例从 16% 到 54%。这两个数写在 2026 年 3 月 9 日的 <a href="https://claude.com/resources/articles/code-review">发布说明</a>，分母是当时 Anthropic 内部的拉取请求，不是后来 6 到 9 月那批。超过 1,000 行的大多数会有发现，小的大多数干净回来。管理员按仓库设 Quick、Standard 或 Deep。漏一个 bug 比多花评审时间更贵的地方，他们用 Deep。</p>
+  <p>发现贴给人看之前，另一组代理投票。够票才贴。只谈风格、诊断或清理的丢掉。这些过滤器他们在自己的拉取请求上做过 A/B 才留下。剩下的按严重程度排成行内评论，标 Important、Nit 或 Pre-existing，这条请求没引入的 bug 不算作者的错。每条发现都要答复：修，或者关掉并写原因。常常有代理夜里接着修，作者回来时已经又过了一轮。</p>
+</section>
+
+<section id="risk">
+  <h2><span>3</span>人按风险进场</h2>
+  <p>改文档和改自动更新器风险不同，要的人数也不同。档位看这次改动，不看作者。一个分类器读改动定档，第二个分类器再问：即便档位说不用人，这一次要不要再叫一个人。负责人标过敏感的路径，以及任何 CI 工作流文件，永远要人。</p>
+  <div class="tw">
+    <table>
+      <thead>
+        <tr><th>风险</th><th>例子</th><th>要几个人</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>低</td><td>文档、文案、仅内部功能、开关后面的增量改动</td><td>自动评审和安全检查绿了，可以 0 人</td></tr>
+        <tr><td>中</td><td>普通产品改动；缓存、自动更新器、系统提示这类敏感区</td><td>1 人</td></tr>
+        <tr><td>高</td><td>最高风险的代码，外加一小批路径永远要两个人</td><td>2 人</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p>更轻的路径只给仓库信任名单上的作者，多半是拥有这块代码的团队。其他人要第二个人批准。代理的批准永远不能顶人的名额。自动评审可以放行低风险改动，填不了「必须有人」的那个空位。</p>
+  <p>谁提示了这次改动，谁就对它负责。代理写的拉取请求上，指挥代理的人算一个必需的评审人，和自己敲代码一样。一次批准只覆盖一个具体提交。后面如果落到系统无法担保的新提交，比如代理再推一次，或者有人手工解决了合并冲突，批准要重给。</p>
+  <p>合并队列把每项检查对着已经打上这次改动的 main 再跑一遍，避免两条各自通过的请求合成坏的 main。新行为通常先开关给 Anthropic 员工。公开发布先走 <code>latest</code>，<code>stable</code> 跟着。</p>
+</section>
+
+<section id="converge">
+  <h2><span>4</span>评审必须停下来</h2>
+  <p>代理作者和代理评审可以互相喂活，停不下来。他们举过一条 CLI 拉取请求，夜里修了五十多轮，作者才叫停。</p>
+  <p>他们对评审一直在标的东西跑了 git blame，大约 59% 是评审第一轮就已经在的代码。评审很少在找新 bug，每一轮多找出几个旧的。他们自己把这套惯成了默认多跑几轮，因为每轮总能再抓到一点。风险高的改动值得，每条拉取请求都这么跑不值得。</p>
+  <div class="note"><p style="margin:0">噪声对人便宜，对代理贵。人几秒就能挥掉一条挑剔。代理会去修，于是又一次提交、又一轮评审。</p></div>
+  <p>他们后来改了复审，并同时盯「过关要几轮」和召回：</p>
+  <ul>
+    <li>轮次上限。三轮之后，评审请作者停下来，重新考虑做法。</li>
+    <li>前几轮之后，只审新增的 diff。</li>
+    <li>标出这一类 bug，让作者修每一处，不是修一行。</li>
+    <li>已经贴过的发现不再重复。</li>
+  </ul>
+  <p>噪声他们按人对评论做了什么来分：修了、说标错了、说行为是故意的、或者觉得无所谓。他们也把评审跑在已知干净的拉取请求上，数它报出会让人做出有害改动的次数。写下来的优先级：先抓真 bug，再减轮次。</p>
+  <p>事故现在变成评测集。他们收集过去导致事故的拉取请求，连同后续修复和回退，让熟悉那块代码的工程师确认每个 bug 和它所在的位置。评审每天对着这套跑。改提示、工具或模型，都按整套重新打分。</p>
+</section>
+
+<section id="human">
+  <h2><span>5</span>人还决定什么</h2>
+  <p>把资深工程师从深入的工作里拉出来抓一个常规错误，比自动评审贵得多。他们的工作从读每一份 diff，挪到机器做不好的决定：</p>
+  <ul>
+    <li>该不该做这件事。方向、口味、范围。有个团队宣称评审瓶颈已经解开，对外来改动仍留人审，好有人问「我们到底该不该做」。</li>
+    <li>账单、自动更新器、CI 工作流这类风险高的代码。</li>
+    <li>会被别人照着抄的架构。</li>
+    <li>读证据：测试输出、跑过的命令和它返回了什么、截图、评审的发现。说不出这些检查会漏什么，就去要一次真审，不要快速批准。</li>
+    <li>对结果负责。发出去的每一条改动都有人对它负责，不管字是谁敲的。</li>
+  </ul>
+  <p>规范是「你合进去，你接着」。小改动或中等改动出了问题，通常由合进去的人修。几件事让这条规范不至于变成甩锅：改动小，好审、好查、好撤；开关、回退、分批发布多数能在几分钟里撤掉；爆炸半径定门槛；遥测和内部使用很快把回归顶出来。拥有一次修复，是因为你上下文最多。事故复盘看系统。</p>
+  <p>代理让开工变便宜，有些活不该合进去。频道里通常会有人问为什么、指到更早的决定、或者提出更简单的路，作者关掉或改形状。代码写得快，关掉拉取请求不像亏了一笔。不同方向要尽早在线程里提出来，不要等成品上再当阻塞评论。</p>
+</section>
+
+<section id="context">
+  <h2><span>6</span>共享上下文怎么补</h2>
+  <p>评审的第二份工作一直是把对代码的理解摊开。读同事的 diff，是你知道改了什么、各块怎么接上的办法。机器读了大多数 diff 之后，人怎么学代码？</p>
+  <p>他们没有正式流程。团队里没有人在脑子里装着完整的 Claude Code，他们也不认为需要。想搞懂某一块，就让 Claude 只给那一块写一份说明，几分钟，对着今天的代码。有人还会让 Claude 做一个小物件，把那一块画出来，按自己习惯的方式教。</p>
+  <p>一行文案改动，逐行读几乎什么也教不到。你正要改的那个模块的说明，能教到很多。默认在公开 Slack 频道里干活也帮了忙：别人在建什么，你在他们建的时候就看得见。</p>
+</section>
+
+<section id="src">
+  <h2><span>7</span>出处与这篇撑不起什么</h2>
+  <p>流程、七层、风险分档、59%、五十多轮、6 到 9 月合并翻倍和回退掉四成以上，都来自 Claude Code 团队 2026-10-15 的 <a href="https://claude.dev/blog/solving-code-review-at-anthropic/">How the Claude Code team does code review</a>。16% 到 54% 来自 2026-03-09 的 <a href="https://claude.com/resources/articles/code-review">Code Review 发布说明</a>，口径是当时内部拉取请求有实质评论的比例。日合并 2,500 到 30,000 来自 <a href="https://www.anthropic.com/engineering/redesigning-source-control">Redesigning source control</a>，口径是 Anthropic 单体仓库，不是 Claude Code 这个仓。</p>
+  <p>约九成代码由 Claude 写，是他们「以前说过」的说法，这篇没有新的测量。回退掉四成以上没有绝对条数，也没有置信区间。公开产品发的是发现，不发批准；他们自己的仓库更靠前，允许负责人决定哪些低风险改动只靠自动检查合并。那条线还在往前挪。我没有他们的原始拉取请求数据，也没有核过那 59% 的 git blame 分母。</p>
+  <p>文末致谢 Emma Webb、Michael Segner、Amie Rotherham 审过原文。</p>
+</section>
+
+</main>
+</div>
+</body>
+</html>
