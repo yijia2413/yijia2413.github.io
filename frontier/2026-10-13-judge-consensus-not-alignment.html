@@ -58,20 +58,20 @@
 <div class="layout">
 <aside>
   <p>目录</p>
-  <a href="#what">1 这篇预印本测了什么</a>
+  <a href="#what">1 评审更一致了，跟人没对齐</a>
   <a href="#how">2 做法：拆条款、找分歧、改前 k 条</a>
   <a href="#summeval">3 SummEval：一致涨了，对人的一致没测出变化</a>
   <a href="#control">4 改随机条款的那组，对人一致的点估计更高</a>
   <a href="#null">5 另外两个数据集没达到预设标准</a>
   <a href="#why">6 分歧能定位，定不了往哪边改</a>
   <a href="#mixed">7 一致率里还混着什么</a>
-  <a href="#yours">8 对照你的评审位</a>
-  <a href="#limit">9 这篇撑不起什么</a>
-  <a href="#src">10 出处与未覆盖</a>
+  <a href="#yours">8 改标准之前先看对人的一致</a>
+  <a href="#limit">9 这篇没测到的</a>
+  <a href="#src">10 出处</a>
 </aside>
 <main>
 <section id="what">
-  <h2><span>1</span>这篇预印本测了什么</h2>
+  <h2><span>1</span>评审更一致了，跟人没对齐</h2>
   <p>2026 年 10 月 9 日，arXiv 收到 <a href="https://arxiv.org/abs/2610.13303">Agreement Without Alignment: Label-Free Rubric Clarification Increases LLM-Judge Consensus but Not Agreement with Humans</a>（arXiv:2610.13303v1，cs.CL，作者 Sangdo Han、Moonsoo Kim，单位署 CEO Business School）。</p>
   <p>拿一份评分标准给开放式输出打分的评审模型，现在常常几个一起用，凑成评审团。几个评审打分不一样时，通常取平均。还有一种读法：评审分歧大的地方，是评分标准有不止一种理解的地方，可以找出来改清楚。照这个读法，可以只看评审自己的输出定位并改写有歧义的条款，不用再收人工标签。论文测的是这个做法。</p>
   <p>它问两件事。按评审分歧选条款来改，评审之间的一致会不会比改别的条款涨得多？涨出来的一致，会不会带到和人工标注的一致上？</p>
@@ -355,7 +355,7 @@
 </section>
 
 <section id="yours">
-  <h2><span>8</span>对照你的评审位</h2>
+  <h2><span>8</span>改标准之前先看对人的一致</h2>
   <p>论文评的是摘要、医疗对话、知识对话的打分。下表把它搬到 Agent 系统里的三个位置：第二列是同一个问题在你的系统里可能的样子，第三列是论文里对应的结果，第四列是可以加的检查。三个位置的划分、第二列和第四列都是我的外推，第 9 节写了它撑不起的部分。</p>
   <div class="tw">
   <table>
@@ -394,7 +394,7 @@
 </section>
 
 <section id="limit">
-  <h2><span>9</span>这篇撑不起什么</h2>
+  <h2><span>9</span>这篇没测到的</h2>
   <ul>
     <li>预印本，2026 年 10 月 9 日提交，没有同行评审记录。作者说会放出代码、冻结的评分标准、样本标识和评审打分，论文里还没有给地址，我没有重跑。</li>
     <li>评审间一致的提升只在 SummEval 达到预设门槛。HealthBench 和 USR 上两项都没达到预设的效果标准；HealthBench 宏 F1 的点估计是下降，校正后不显著。</li>
@@ -411,7 +411,7 @@
 </section>
 
 <section id="src">
-  <h2><span>10</span>出处与未覆盖</h2>
+  <h2><span>10</span>出处</h2>
   <ul>
     <li>论文：<a href="https://arxiv.org/abs/2610.13303">arXiv:2610.13303v1</a>，Agreement Without Alignment: Label-Free Rubric Clarification Increases LLM-Judge Consensus but Not Agreement with Humans，2026-10-09，cs.CL。本文数字的位置：第 3 节（做法、75 条、k 的取法）、第 4.1 节与表 1（数据集与切分）、第 4.2 节与表 2（评审）、第 4.3 节（六种条件）、第 4.4 节（预检与合成样本）、第 4.5、4.6 节（指标、合成分、检验、登记）、第 5.1 节（请求数、各改 23 条）、第 5.2 节与表 3、表 4（主要比较、各条件绝对值、次要比较）、第 5.3 节与表 5、表 6（同厂商与跨厂商、重复打分）、第 6、7 节（解释与限制）、附录 A（计划变更）、附录 B（条款 C31）、附录 C 与表 8（格式强制测试）、附录 E 与表 12（探索性配对比较）。</li>
     <li>论文引的 Mukherjee 等 <a href="https://arxiv.org/abs/2606.03043">arXiv:2606.03043</a>，我只转述了这篇论文对它的一句引用，没有读它的正文。</li>

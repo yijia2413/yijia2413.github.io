@@ -48,29 +48,29 @@
 <div class="layout">
 <aside>
   <p>目录</p>
-  <a href="#what">1 讨论什么</a>
-  <a href="#how">2 三条登记路径</a>
-  <a href="#run">3 调用时网关做什么</a>
-  <a href="#result">4 结果</a>
-  <a href="#hard">5 难点</a>
-  <a href="#new">6 新在哪里</a>
+  <a href="#what">1 发现了还不等于能调用</a>
+  <a href="#how">2 三条路都先关着入库</a>
+  <a href="#run">3 原服务不用改接口</a>
+  <a href="#result">4 当时已经超过 800 个 server</a>
+  <a href="#hard">5 开关不在爬虫手里</a>
+  <a href="#new">6 有一份记录，和可以执行，是两步</a>
   <a href="#src">7 出处</a>
 </aside>
 <main>
 <section id="what">
-  <h2><span>1</span>讨论什么</h2>
-  <p>Uber Engineering 在 2026 年 10 月 2 日发了一篇 X 长文，<a href="https://x.com/UberEng/status/2106071967619322330">Designing MCP Gateway</a>。他们要解决的是内部 agent 接工具时各写各的：难找、难运维，也和具体服务绑死。</p>
+  <h2><span>1</span>发现了还不等于能调用</h2>
+  <p>Uber Engineering 2026 年 10 月 2 日发了 <a href="https://x.com/UberEng/status/2106071967619322330">Designing MCP Gateway</a>。内部 agent 接工具时各写各的：难找、难运维，也和具体服务绑死。</p>
   <p>做法是做一个 MCP Gateway。控制面放注册表，数据面做运行时代理。已有 API 不用改成 MCP server，网关负责把 MCP 调用翻成原来的协议。</p>
   <p>这篇工程笔记里最硬的一句原则是：discovery doesn’t imply exposure。发现了，还不等于对外暴露。每个 MCP server、每个工具，初始状态都是 disabled。所属团队明确审查并启用之后，才进到可调用的集合。</p>
 </section>
 <section id="how">
-  <h2><span>2</span>三条登记路径</h2>
+  <h2><span>2</span>三条路都先关着入库</h2>
   <p>内部有几千个服务，接口走 HTTP、gRPC 或 TChannel。让每个团队手写一个 MCP server，他们判断会又慢又痛。登记交给 AutoCrawler。它是挂在 Cadence 上的分布式工作流，订阅 IDL 注册表和内部服务信号。cron 按固定节奏触发一次扫描，找新服务、新 API 和 schema 变更。</p>
   <p>IDL 路径针对 Protobuf 或 Thrift。对每个服务的 API 组，AutoCrawler 建立或更新虚拟 MCP server，解析方法名、请求和响应 schema、注释，再用 LLM 生成给 agent 看的工具说明，把 schema 译成 MCP 用的 JSON-RPC 2.0，然后写入注册表。写入时就是关闭状态。</p>
   <p>原生 MCP 用另一套。Uber 用 MCPFx 写直接实现 MCP 的服务。每个原生 server 打心跳，表示自己在、并且就绪。AutoCrawler 看到心跳后调用 listTools，把对方声明的工具和 schema 收进来，在注册表里建一个虚拟代理。这些工具同样以关闭状态入库。</p>
   <p>第三方点名了 Jira 和 Google。网关把调用方的内部用户 token 往后传，同时做鉴权、限流和敏感数据打码。对方的 MCP 服务再把这个内部 token 换成自己的凭证，然后才打到外部 server。</p>
   <figure>
-    <svg viewBox="0 0 920 250" width="100%" role="img" aria-label="三条登记路径都先进入关闭状态">
+    <svg viewBox="0 0 920 250" width="100%" role="img" aria-label="三条路都先关着入库都先进入关闭状态">
       <rect x="1" y="1" width="918" height="248" rx="10" fill="#fff" stroke="#e2e8f0"/>
       <rect x="24" y="56" width="250" height="100" rx="8" fill="#eff6ff" stroke="#1d4ed8"/>
       <rect x="334" y="56" width="250" height="100" rx="8" fill="#fffbeb" stroke="#b45309"/>
@@ -92,7 +92,7 @@
   <p>工具说明一旦要改，会走出一份配置 diff，必须由 server 的 owner 批准。owner 可以批准并发布，也可以回到之前已知的一版。</p>
 </section>
 <section id="run">
-  <h2><span>3</span>调用时网关做什么</h2>
+  <h2><span>3</span>原服务不用改接口</h2>
   <p>数据面按固定节奏把控制面的 server 和工具配置拉进内存。启用状态变了，不用重启网关。它按配置物化虚拟 MCP server。每个虚拟 server 对外一个入口：<code>/&lt;service-name&gt;/mcp</code>。</p>
   <p>进来的 MCP 调用由 Proxy Gateway 翻成 HTTP、gRPC 或 TChannel，发给原来的后端，再把 Protobuf 或 Thrift 的响应翻回 MCP 能用的 JSON。打到下游的那一跳走 Muttley，也就是跟后端服务放在一起的服务网格 sidecar。下游服务本身不用为了 agent 改接口。</p>
   <p>鉴权用 Uber 内部的访问控制系统。策略按调用方的身份来，身份包括人、服务和 agent。Charter policy 写在 server 上，需要时可以按工具覆盖。工具回复里的 PII 和敏感字段，网关直接打码。</p>
@@ -120,11 +120,11 @@
   </figure>
 </section>
 <section id="result">
-  <h2><span>4</span>结果</h2>
+  <h2><span>4</span>当时已经超过 800 个 server</h2>
   <p>文中给出的规模是：网关当时托管超过 800 个 MCP server、超过 5000 个工具。这是「超过」，不是精确到个位的计数。分母是这座网关上的 server 和 tool，不是某一次 agent 任务的成功率。</p>
   <p>编码 agent 还有一条不把工具定义放进上下文的用法，他们叫 Code Mode。命令行是 aifx，三条子命令：<code>aifx mcp list</code> 列出 server，<code>aifx mcp search</code> 在全部 server 里搜工具，<code>aifx mcp call</code> 经网关调用。输出写到文件，文件系统 agent 再按需摘。原文写：这已经是公司内部 coding agent 使用 MCP 的默认方式。本机不需要安装那些 MCP server。</p>
   <table>
-    <thead><tr><th>原文里的结果</th><th>条件</th></tr></thead>
+    <thead><tr><th>原文里的当时已经超过 800 个 server</th><th>条件</th></tr></thead>
     <tbody>
       <tr><td>超过 800 个 MCP server，超过 5000 个工具</td><td>这篇发布时网关上的托管规模</td></tr>
       <tr><td>新工具初始为 disabled</td><td>IDL 生成的、原生 listTools 收来的，都一样</td></tr>
@@ -134,13 +134,13 @@
   <p>帖子互动只说明传播，不说明设计是否成立。2026-10-07 00:36（北京时间）抓取时，这条帖子浏览 968462，赞 3098。分母是这一条帖。</p>
 </section>
 <section id="hard">
-  <h2><span>5</span>难点</h2>
+  <h2><span>5</span>开关不在爬虫手里</h2>
   <p>爬虫可以替团队把工具写进注册表，所有权仍要留在服务团队。打开之前，owner 还要看生成出来的工具说明。说明一改就要批 diff。这一步若没人批，注册表里会堆着永远关着的工具。文章没有给「关着的比例」或平均打开时间。</p>
   <p>工具回复可能带 PII。打码做在网关，按工具粒度。下游若在网关看不到的侧信道里返回同一份数据，这层打码盖不住。文章没有写他们测过哪些侧信道。</p>
   <p>Code Mode 把工具定义留在网关外面，agent 用搜索来找。搜错工具时，上下文里没有那份完整 schema 帮它自查。文章把这当作省上下文的办法，没有给搜错率。</p>
 </section>
 <section id="new">
-  <h2><span>6</span>新在哪里</h2>
+  <h2><span>6</span>有一份记录，和可以执行，是两步</h2>
   <p>新的部分是把「扫进目录」和「允许调用」拆开，打开权在所属团队。爬虫和调用方的 agent 没有这道开关。配置可以回滚到上一版已知状态。运行时只消费已经启用的那一版。</p>
   <p>和 <a href="/frontier/2026-10-05-tested-opt-still-running.html">测过的优化，为什么还在跑</a> 放在一起看：那边是旧的通过记录继续挑选程序，这边是新的工具记录先落库、默认不暴露。两篇都把「有一份记录」和「可以执行」分开。谱系仍在 <a href="/frontier/rsi-llm-agent-self-evolution.html">递归自改进前世今生</a>，这里不重写。</p>
 </section>

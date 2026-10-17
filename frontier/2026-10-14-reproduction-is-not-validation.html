@@ -58,19 +58,19 @@
 <div class="layout">
 <aside>
   <p>目录</p>
-  <a href="#what">1 这篇预印本测了什么</a>
+  <a href="#what">1 619 条任务，先去掉容易复现的</a>
   <a href="#how">2 三个量，只有同时成立才算验收</a>
   <a href="#gap">3 复现过了，联合验收停在一成以下</a>
   <a href="#two">4 拦错补丁和放过对补丁是两件事</a>
   <a href="#case">5 一条过了复现、两边都判错的测试</a>
   <a href="#train">6 训练侧的数字不改变上面的判断</a>
-  <a href="#yours">7 对照你的验收位</a>
-  <a href="#limit">8 这篇撑不起什么</a>
-  <a href="#src">9 出处与未覆盖</a>
+  <a href="#yours">7 验收要同时看三件事</a>
+  <a href="#limit">8 这篇没测到的</a>
+  <a href="#src">9 出处</a>
 </aside>
 <main>
 <section id="what">
-  <h2><span>1</span>这篇预印本测了什么</h2>
+  <h2><span>1</span>619 条任务，先去掉容易复现的</h2>
   <p>2026 年 10 月 13 日，arXiv 收到 <a href="https://arxiv.org/abs/2610.18004">SWEPatchTest: Evaluating Software Tests Beyond Reproduction</a>（arXiv:2610.18004v1，cs.SE，作者 Hua Lu、Pengcheng Wang、Han Li、Zichen Tian、Yanyu Chen、Huang He、Bingjin Chen，单位署百度、南京大学、香港中文大学）。</p>
   <p>编码 Agent 修仓库问题的时候，会自己写测试，用测试结果决定一个补丁能不能交。现在常见的评法只看一件事：测试在有 bug 的代码上失败，打上参考补丁之后通过。这篇把这件事叫参考识别，指标是 Gold Recognition Rate（GRR）。SWT-Bench 和 TDD-Bench Verified 用的就是这个 fail-to-pass 转换。</p>
   <p>过了这一关的测试，还可以做两件相反的事。它可能放过一个官方评测判为错误的补丁，也可能拒掉一个官方评测判为正确的补丁。论文把前者叫规格太弱，把后者叫解法偏见。两种都可以和一次成功的参考转换同时出现。</p>
@@ -263,7 +263,7 @@
 </section>
 
 <section id="yours">
-  <h2><span>7</span>对照你的验收位</h2>
+  <h2><span>7</span>验收要同时看三件事</h2>
   <p>如果你的编码 Agent 用自己写的测试决定一个补丁交不交，把下面三件事对一下。</p>
   <ul>
     <li><strong>门禁现在读的是哪一格。</strong>只要求坏代码失败、参考解或上一版通过，对应的是 GRR。这篇里 GRR 最高 68.17% 的配置，JVR 是 7.11%。参考解通过，挡不住测试去查一个问题没要求的条件。</li>
@@ -274,7 +274,7 @@
 </section>
 
 <section id="limit">
-  <h2><span>8</span>这篇撑不起什么</h2>
+  <h2><span>8</span>这篇没测到的</h2>
   <ul>
     <li><strong>撑不起「官方评测就是语义正确」。</strong>候选标签来自官方评测的通过与否。作者写了，这是可操作的正确，不是语义正确的形式保证。生成的测试可以去查官方评测没覆盖的行为。Caddy 那条就是。</li>
     <li><strong>撑不起「换任何池子都是 9%」。</strong>JVR 只在放出的候选池上计算，不覆盖所有可能的补丁。82,579 个补丁是观察到的尝试，文本去重不等于语义多样。池子更大，联合验收更难，方向作者写了，幅度没有测。</li>
@@ -288,7 +288,7 @@
 </section>
 
 <section id="src">
-  <h2><span>9</span>出处与未覆盖</h2>
+  <h2><span>9</span>出处</h2>
   <p>数字和口径来自这篇预印本：<a href="https://arxiv.org/abs/2610.18004">arXiv:2610.18004v1</a>，HTML 版 <a href="https://arxiv.org/html/2610.18004">arxiv.org/html/2610.18004</a>。表 2 的八行、表 3 的四行、表 9 的三个来源、第 2.4 节的池子规模、第 3.1 节的区间和 p 值、第 5 节与附录 G 的局限，都按原文抄。9.21%、16.17%、2.73%、8.77% 与 57/619、27/167、3/110、30/342 一致，正文用论文报告的百分数。</p>
   <p>同一判断不重复已有的 Frontier。<a href="/frontier/2026-10-10-watch-regressions-not-coverage.html">10-10</a> 讲的是技能库改写之后，原本稳定的任务有没有变差，分母是技能覆盖的任务。<a href="/frontier/2026-10-12-cost-per-delivered-success.html">10-12</a> 讲的是选动作的成本要按每个成功交付算。这篇的门禁在测试套件，不在技能条目，也不在动作单价。</p>
   <p>谱系和增量层分别在 <a href="/frontier/rsi-llm-agent-self-evolution.html">递归自改进前世今生</a> 和 <a href="/frontier/llm-agent-tech-landscape.html">冻底座、改脚手架</a>。这篇只加一条：生成测试若只按复现来验收补丁，验收器本身没有就位。</p>

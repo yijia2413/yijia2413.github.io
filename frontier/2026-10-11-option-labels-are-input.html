@@ -56,20 +56,20 @@
 <div class="layout">
 <aside>
   <p>目录</p>
-  <a href="#what">1 这篇预印本测了什么</a>
+  <a href="#what">1 换一个词，门禁就放行</a>
   <a href="#clean">2 没人攻击时，各偏一个方向</a>
   <a href="#log">3 六行日志就让门禁放行</a>
   <a href="#label">4 选项名这条通道</a>
   <a href="#lib">5 选项名进不进输入，由调用库决定</a>
   <a href="#conf">6 翻过去的判决，置信度并不低</a>
   <a href="#defense">7 五种防御各输在哪</a>
-  <a href="#yours">8 对照你的运行位</a>
-  <a href="#limit">9 这篇撑不起什么</a>
-  <a href="#src">10 出处与未覆盖</a>
+  <a href="#yours">8 护栏该盯调用库怎么拼输入</a>
+  <a href="#limit">9 这篇没测到的</a>
+  <a href="#src">10 出处</a>
 </aside>
 <main>
 <section id="what">
-  <h2><span>1</span>这篇预印本测了什么</h2>
+  <h2><span>1</span>换一个词，门禁就放行</h2>
   <p>2026 年 10 月 8 日，arXiv 收到 <a href="https://arxiv.org/abs/2610.12292">One Word Opens the Gate: The Option-Channel Attack on Typed Decision Models as Agent Guardrails</a>（arXiv:2610.12292v1，cs.AI，南加州大学）。它把一类小模型放在 Agent 的放行位上，按安全控制件的标准测了一遍。</p>
   <p>这类模型叫类型化决策模型（typed decision model）。调用方给它两段输入：一段待判文本，论文叫 state；一个带类型的问题，包含一句指令、一组选项、每个选项一句书面定义。它返回每个选项的概率，不生成文字。引入这套接口的商业模型是 Jev，之后出了几个开放权重的复刻，调用约定相同：每个选项有一个短名字（label）和一句定义（definition）。名字给调用方读回答案用，选项的含义写在定义里。</p>
   <p>论文测的五个类型化模型在 1.51 亿到 4.21 亿参数之间，返回概率，接进程序方便。近期有几篇工作把它们放进 Agent 系统当护栏：读一条待执行的工具调用或进来的消息，决定放行还是拦截。</p>
@@ -369,7 +369,7 @@
   <p>作者给这个结果加了限定。GuardBench 的构造让生成属性直接出现在 trace 里，规则能解它是构造带来的，不能当作这类任务普遍容易的证据。三个公开筛查集是另一半，那里没有字段可解析，没有规则可写，第 3 节的攻击照原数字成立。按作者的结论，用得着决策模型的只有没法这样解析的地方，这项防御在那里用不上。</p>
 </section>
 <section id="yours">
-  <h2><span>8</span>对照你的运行位</h2>
+  <h2><span>8</span>护栏该盯调用库怎么拼输入</h2>
   <p>下面八条是我按这篇预印本整理的检查项，适用于有模型站在放行位上的系统，比如工具调用执行前、消息发出前、审核通过前。前七条各对应预印本里的一项结果，最后一条是我加的。</p>
   <ul>
     <li><strong>选项名从哪来，谁能改。</strong>写死在源码里的归代码评审管。从配置文件、运行时取回的策略文档、工具 schema，或者 Agent 自己生成的问题里拼出来的，是数据，送模型前在调用点改写成固定记号。</li>
@@ -383,7 +383,7 @@
   </ul>
 </section>
 <section id="limit">
-  <h2><span>9</span>这篇撑不起什么</h2>
+  <h2><span>9</span>这篇没测到的</h2>
   <ul>
     <li>预印本，2026 年 10 月 8 日提交，没有同行评审记录。</li>
     <li>只测了开放权重模型，没有测 Jev 本身。商业模型上的选项名效应，论文引的是另一篇（Sun et al., 2026），我没有核对那篇。</li>
@@ -395,7 +395,7 @@
   </ul>
 </section>
 <section id="src">
-  <h2><span>10</span>出处与未覆盖</h2>
+  <h2><span>10</span>出处</h2>
   <ul>
     <li>论文：<a href="https://arxiv.org/abs/2610.12292">arXiv:2610.12292v1</a>，One Word Opens the Gate: The Option-Channel Attack on Typed Decision Models as Agent Guardrails，2026-10-08，cs.AI。本文数字的位置：表 2（干净流量）、表 3 与第 6.2 节（日志和断言攻击）、表 4 至表 7 与第 6.3 节（选项名）、第 6.4 节（间距与阈值）、表 8 与第 6.5 节（送审）、表 9 至表 13 与第 7、8 节（防御与适应性攻击）、附录 A（逐条例子）。</li>
     <li>代码与缓存结果：<a href="https://github.com/ArminAzizi98/option-channel-attack">github.com/ArminAzizi98/option-channel-attack</a>，MIT 许可。「19 个格子、小数点后四位相同」出自 README；README 还写明论文里的数字都由脚本从缓存的运行结果生成。我没有重跑。</li>

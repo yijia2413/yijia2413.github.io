@@ -57,19 +57,19 @@
 <div class="layout">
 <aside>
   <p>目录</p>
-  <a href="#what">1 这篇预印本测了什么</a>
+  <a href="#what">1 决策便宜了，账还没算完</a>
   <a href="#decision">2 每次决策都便宜了七成上下</a>
   <a href="#attempt">3 每次尝试，省下的被别处花掉</a>
   <a href="#success">4 每个成功交付，失败的尝试也要付钱</a>
   <a href="#recover">5 出错之后，救回来多少</a>
   <a href="#who">6 算模型的，还是算接法的</a>
-  <a href="#yours">7 对照你的运行位</a>
-  <a href="#limit">8 这篇撑不起什么</a>
-  <a href="#src">9 出处与未覆盖</a>
+  <a href="#yours">7 该按哪个分母记账</a>
+  <a href="#limit">8 这篇没测到的</a>
+  <a href="#src">9 出处</a>
 </aside>
 <main>
 <section id="what">
-  <h2><span>1</span>这篇预印本测了什么</h2>
+  <h2><span>1</span>决策便宜了，账还没算完</h2>
   <p>2026 年 10 月 9 日，arXiv 收到 <a href="https://arxiv.org/abs/2610.13092">When Faster Decisions Do Not Make Better Agents: An Empirical Study of Jev in Agent Workflows</a>（arXiv:2610.13092v1，cs.AI，南京大学与慕尼黑工业大学）。</p>
   <p>Jev 是 TypeSafe AI 在 2026 年 9 月发布的决策模型，厂商叫它 System One Model。调用方给一段状态和若干带类型的问题，它返回候选项上的概率、分数或二元概率。Agent 每一步都要在有限的候选里挑一个：点哪个控件、调哪个工具、发哪条命令。这一步原来由通用大模型做。论文把它换成 Jev，看单步省下的钱和时间能带多少到任务层面。</p>
   <p><a href="/frontier/2026-10-11-option-labels-are-input.html">昨天那篇</a>讲的预印本测的是开放权重的复刻模型，位置是放行，有攻击者，没有测 Jev 本身。今天这篇测的是 Jev 1.13.0，位置是选动作，没有攻击者。</p>
@@ -431,7 +431,7 @@
   <p>论文给的适用边界分两半。决策输入里目标、当前状态、动作的前置条件都写明时，Jev 最合适，举的例子是工作流路由、API 或工具选择、目标可识别且完成条件可观测的常规软件操作。目标含糊、观测不全、子目标要反复修订的工作流，对解读和纠错的要求更高，论文认为手机任务上的差距和这两项能力有关，没有单独测。时间上，外部操作本身慢的工作流省不出多少。</p>
 </section>
 <section id="yours">
-  <h2><span>7</span>对照你的运行位</h2>
+  <h2><span>7</span>该按哪个分母记账</h2>
   <p>下面八条是我按这篇预印本整理的检查项，适用于打算把循环里某一步换成更便宜模型的系统。前六条各对应论文里的一项结果或建议，后两条是我加的。</p>
   <ul>
     <li><strong>先量被替换的那一步占多少。</strong>按任务把时间和钱拆成三块：这一步的调用、其他模型调用、环境和工具执行。ReAct 是 71.17 秒里 68.31 秒在选动作；AutoDroid 是 261.20 秒里 164.43 秒在模型之外，选动作的调用占 96.78 秒（96.78 ÷ 261.20，约 37%），这一步降到零，任务用时也只少这 96.78 秒。</li>
@@ -445,7 +445,7 @@
   </ul>
 </section>
 <section id="limit">
-  <h2><span>8</span>这篇撑不起什么</h2>
+  <h2><span>8</span>这篇没测到的</h2>
   <ul>
     <li>预印本，2026 年 10 月 9 日提交，没有同行评审记录。实验代码在匿名仓库，我没有重跑。</li>
     <li>只测了文本观测、有界动作接口的两个环境。带视觉的 Agent、开放式造工具、更长的工作流没有覆盖。</li>
@@ -461,7 +461,7 @@
   </ul>
 </section>
 <section id="src">
-  <h2><span>9</span>出处与未覆盖</h2>
+  <h2><span>9</span>出处</h2>
   <ul>
     <li>论文：<a href="https://arxiv.org/abs/2610.13092">arXiv:2610.13092v1</a>，When Faster Decisions Do Not Make Better Agents: An Empirical Study of Jev in Agent Workflows，2026-10-09，cs.AI。本文数字的位置：第 4.2 节（设置与预算）、附录 A.1（计价与口径）、第 5.1 节与表 5（成功率）、第 5.2 节与表 2、表 7、表 8、表 9（成本与用时）、表 10（配对差值与区间）、第 5.3 节与表 3、表 4（失败与纠错）、附录 C.1 与表 11（轨迹编码）、附录 C.2 与表 12（案例）。</li>
     <li>代码：论文给的地址是 <a href="https://anonymous.4open.science/r/jev-emp-5BF4/">anonymous.4open.science/r/jev-emp-5BF4</a>，匿名仓库。写稿时的请求和发稿前评审的重新抓取都没有拿到仓库内容，仓库内容未核对。</li>

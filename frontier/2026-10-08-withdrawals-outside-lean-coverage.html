@@ -51,18 +51,18 @@
 <div class="layout">
 <aside>
   <p>目录</p>
-  <a href="#what">1 发生了什么</a>
+  <a href="#what">1 719 份稿，隔天撤了 3 篇</a>
   <a href="#where">2 撤稿落在哪一半</a>
   <a href="#chain">3 一个符号传两层</a>
   <a href="#verifier">4 验证器自己盖了多少</a>
   <a href="#mech">5 做对的机制</a>
-  <a href="#yours">6 对照你的运行位</a>
+  <a href="#yours">6 形式化没盖到的那一半</a>
   <a href="#outside">7 场外声音</a>
-  <a href="#src">8 出处与未覆盖</a>
+  <a href="#src">8 出处</a>
 </aside>
 <main>
 <section id="what">
-  <h2><span>1</span>发生了什么</h2>
+  <h2><span>1</span>719 份稿，隔天撤了 3 篇</h2>
   <p>2026 年 10 月 6 日，OpenAI 发了 <a href="https://openai.com/index/sharing-ai-progress-in-mathematics/">Sharing AI progress in mathematics</a>，同时开放仓库 <a href="https://github.com/openai/math">openai/math</a>。README 写明：719 份手稿，分 372 个家族；一个未发布的内部模型，平均每条结果用了约三小时 ChatGPT Pro 思考算力；整个评估期间模型被喂了约 4000 道题。仓库首次提交时间是 UTC 10 月 6 日 21:58。</p>
   <p>UTC 10 月 8 日 05:20，仓库合并了唯一一个 PR。<a href="https://github.com/openai/math/blob/main/history.md">history.md</a> 把这次更新标为 10 月 7 日：撤回 3 篇，修补 14 篇，另有 13 篇只改引用指向修订版。三篇撤稿说明里写的日期是 10 月 6 日。同一次更新还加了 6 条形式化和 5 条支持结果，顶层结果形式化比例写成 300 / 719，约 42%。</p>
   <p>这篇只论证一件事：撤稿发生在验证器没覆盖的那一半，而验证器自己的覆盖范围，比「42% 已形式化」这个数字要窄。</p>
@@ -160,7 +160,7 @@
   <p>缺的是一条逐篇的覆盖状态字段。现在判断一篇有没有 Lean 证明，要去 formalization.yaml 里搜标题；判断 Lean 陈述盖到论文哪部分，要去 lean/docs 读对应编号。README 写的「Not all have accompanying Lean formalizations」是集合级陈述，读者拿到一篇具体论文时，没有现成的标记告诉他这篇在哪一半。</p>
 </section>
 <section id="yours">
-  <h2><span>6</span>对照你的运行位</h2>
+  <h2><span>6</span>形式化没盖到的那一半</h2>
   <p>做 Agent 系统的人大多有一个类似结构：一批产物，一部分过了检查器，一部分只过了生成。检查器可能是测试、schema、类型检查、模拟器。这个仓库给的对照很直接。</p>
   <p>第一问：你的产物目录里，每一条有没有「检查器是否盖到」的字段。没有的话，你汇报的也是集合级覆盖率，用户拿到任一条时不知道它在哪一半。</p>
   <p>第二问：产物之间的依赖有没有记录。这里的三篇靠人写撤稿说明把链条讲清。Agent 产物互相引用的场景更常见，一条 skill 调另一条 skill，一个缓存结果喂进下一个推理。上游未经检查，下游继承的就是未经检查，哪怕下游自己过了检查。</p>
@@ -175,7 +175,7 @@
   <p>这几方的分歧在生态和伦理层。本文只处理验证层：覆盖率是什么口径，撤稿落在哪，验证器自己有没有被验证。</p>
 </section>
 <section id="src">
-  <h2><span>8</span>出处与未覆盖</h2>
+  <h2><span>8</span>出处</h2>
   <table>
     <thead><tr><th>数字或引文</th><th>来源</th></tr></thead>
     <tbody>
