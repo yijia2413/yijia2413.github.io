@@ -36,10 +36,10 @@
   date: "2026-10-08"
   url: /frontier/2026-10-08-withdrawals-outside-lean-coverage.html
   summary: "OpenAI 放出 719 份数学稿，形式化覆盖 300 条顶层结果。隔天撤 3 篇修 14 篇，撤掉的三篇在两版形式化目录里都没出现。一个符号错误沿引用链传了两层，形式化目录自标未审查。"
-- title: "Harness 是什么：套在模型外面的那层软件"
+- title: "Harness 是什么"
   date: "2026-10-07"
   url: /frontier/2026-10-07-what-is-a-harness.html
-  summary: "Earendil 把 agent harness 拆成系统提示、工具、循环、翻译层。用户能拥有并改这层软件，同一套带子可以换模型。Pi 用户互相分享了超过 5000 个扩展。"
+  summary: "译文。原文 Earendil，2026-10-01。安全带把人连到绳和锁上；agent harness 把模型放进一套可改的软件里：系统提示、工具、循环、翻译层。Pi 用户互相分享了超过 5000 个扩展。"
 - title: "扫到的 MCP 工具，默认先关着"
   date: "2026-10-06"
   url: /frontier/2026-10-06-mcp-tools-start-off.html
