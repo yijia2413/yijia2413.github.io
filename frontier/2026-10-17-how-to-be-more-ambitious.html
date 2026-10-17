@@ -1,0 +1,191 @@
+﻿<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>怎么把一件事交给模型时做得更大胆</title>
+  <style>
+    :root { --ink:#0f172a; --muted:#475569; --line:#e2e8f0; --bg:#f8fafc; --blue:#1d4ed8; --blue-bg:#eff6ff; --amber:#b45309; --green:#047857; --rose:#be123c; }
+    * { box-sizing: border-box; }
+    body { margin:0; font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Noto Sans SC",sans-serif; background:var(--bg); color:var(--ink); line-height:1.75; font-size:17px; }
+    header { background:#0f172a; color:#f8fafc; padding:36px 24px 28px; border-bottom:4px solid #2563eb; }
+    header .inner { max-width:1080px; margin:0 auto; }
+    .badge { display:inline-block; border:1px solid #93c5fd; color:#bfdbfe; border-radius:999px; padding:2px 12px; font-size:13px; }
+    h1 { font-size:2rem; line-height:1.3; margin:12px 0; }
+    header p { color:#cbd5e1; margin:0; max-width:760px; }
+    .layout { max-width:1080px; margin:28px auto 64px; padding:0 20px; display:grid; grid-template-columns:220px minmax(0,1fr); gap:28px; }
+    aside { position:sticky; top:16px; align-self:start; background:#fff; border:1px solid var(--line); border-radius:12px; padding:14px; }
+    aside p { font-size:12px; letter-spacing:.06em; color:var(--muted); margin:0 0 8px; }
+    aside a { display:block; color:var(--ink); text-decoration:none; font-size:14px; padding:6px 8px; border-radius:6px; }
+    aside a:hover { background:var(--blue-bg); color:var(--blue); }
+    h2 { font-size:1.35rem; margin:0 0 12px; }
+    h2 span { display:inline-block; background:var(--blue); color:#fff; border-radius:6px; font-size:13px; padding:2px 8px; margin-right:8px; }
+    h3 { font-size:1.08rem; margin:20px 0 10px; }
+    section { background:#fff; border:1px solid var(--line); border-radius:14px; padding:26px 28px; margin-bottom:22px; }
+    p { margin:0 0 14px; }
+    a { color:var(--blue); overflow-wrap:anywhere; }
+    main { min-width:0; }
+    figure { margin:16px 0; background:#fff; border:1px solid var(--line); border-radius:12px; padding:10px; overflow-x:auto; }
+    figure svg { display:block; width:100%; height:auto; min-width:640px; }
+    figcaption { color:var(--muted); font-size:14px; margin-top:6px; }
+    ul { margin:0 0 14px; padding-left:22px; }
+    li { margin-bottom:6px; }
+    .note { background:#f1f5f9; border-left:4px solid var(--muted); padding:12px 16px; border-radius:0 8px 8px 0; font-size:16px; margin:0 0 14px; }
+    .quote { background:#fffbeb; border-left:4px solid var(--amber); padding:12px 16px; border-radius:0 8px 8px 0; font-size:15px; overflow-wrap:anywhere; margin:0 0 14px; }
+    .cards { display:grid; grid-template-columns:1fr 1fr; gap:12px; margin:0 0 16px; }
+    .card { border:1px solid var(--line); border-radius:10px; padding:14px 14px 10px; background:#fff; }
+    .card b { display:block; font-size:15px; margin-bottom:4px; }
+    .card span { display:block; color:var(--muted); font-size:14px; line-height:1.6; }
+    .card.alt { border-top:3px solid #2563eb; }
+    .card.dep { border-top:3px solid #047857; }
+    .card.rng { border-top:3px solid #b45309; }
+    .steps { display:grid; grid-template-columns:1fr; gap:10px; margin:0 0 16px; }
+    .step { display:grid; grid-template-columns:72px minmax(0,1fr); gap:12px; align-items:start; border:1px solid var(--line); border-radius:10px; padding:12px 14px; }
+    .step i { font-style:normal; font-weight:700; color:#fff; background:#1d4ed8; border-radius:8px; text-align:center; padding:4px 0; font-size:13px; }
+    .step p { margin:0; }
+    svg text { font-family:-apple-system,"PingFang SC","Noto Sans SC",sans-serif; }
+    @media (max-width:860px) {
+      .layout { grid-template-columns:minmax(0,1fr); }
+      aside { position:static; }
+      h1 { font-size:1.55rem; }
+      section { padding:18px 16px; }
+      .cards { grid-template-columns:1fr; }
+    }
+  </style>
+</head>
+<body>
+<header>
+  <div class="inner">
+    <span class="badge">FRONTIER · 2026-10-17 · 用法</span>
+    <h1>怎么把一件事交给模型时做得更大胆</h1>
+    <p>Felix Rieseberg 做 Claude。2026 年 10 月 13 日他写了一篇教程，把「更大胆」拆成速度、高度、深度、广度。速度他跳过了。这篇留下后三类，各配一个能照做的问法，并标出我没用的一条。</p>
+  </div>
+</header>
+<div class="layout">
+<aside>
+  <p>目录</p>
+  <a href="#four">1 三类，速度不算</a>
+  <a href="#altitude">2 高度：问下一步要发生什么</a>
+  <a href="#depth">3 深度：换工具，不换说法</a>
+  <a href="#range">4 广度：借做法，不借文风</a>
+  <a href="#why">5 人为什么不敢开大</a>
+  <a href="#mine">6 我准备改的一件事</a>
+  <a href="#src">7 出处与我没采用的</a>
+</aside>
+<main>
+
+<section id="four">
+  <h2><span>1</span>三类，速度不算</h2>
+  <p>原文在 <a href="https://felixrieseberg.com/how-to-be-more-ambitious-a-tutorial-for-humans-with-models/">How to be more ambitious: A tutorial for humans with models</a>。他每天看到别人用 Claude 做出他没想过的事，于是把那句常被转发的「我们还不够大胆」拆成可以照做的步骤。</p>
+  <div class="cards">
+    <div class="card"><b>速度</b><span>同一件事做得更快。他认定这已经是大家的默认用法，整节跳过。</span></div>
+    <div class="card alt"><b>高度</b><span>不问这步怎么做，问下一步要发生什么。目标抬高一层。</span></div>
+    <div class="card dep"><b>深度</b><span>同一件事，按这个领域最强的人的工具、原始材料和验证方法来做。</span></div>
+    <div class="card rng"><b>广度</b><span>把名词换成动词，再按动词去找别的行当会做的事。</span></div>
+  </div>
+  <figure>
+    <svg viewBox="0 0 960 440" role="img" aria-label="四类野心：速度跳过，高度、深度、广度从同一件事分出">
+      <rect x="0" y="0" width="960" height="440" fill="#ffffff"/>
+      <text x="480" y="34" text-anchor="middle" font-size="20" font-weight="700" fill="#0f172a">同一件事，可以沿三个方向加码</text>
+      <rect x="330" y="58" width="300" height="64" rx="10" fill="#f8fafc" stroke="#64748b" stroke-width="2"/>
+      <text x="480" y="86" text-anchor="middle" font-size="16" font-weight="700" fill="#334155">手头这件事</text>
+      <text x="480" y="108" text-anchor="middle" font-size="13" fill="#64748b">例如：做一份季度回顾</text>
+      <line x1="400" y1="122" x2="170" y2="176" stroke="#94a3b8" stroke-width="1.5" stroke-dasharray="5 4"/>
+      <rect x="40" y="178" width="250" height="92" rx="10" fill="#f1f5f9" stroke="#94a3b8" stroke-width="2"/>
+      <text x="165" y="210" text-anchor="middle" font-size="16" font-weight="700" fill="#64748b">速度 · 他跳过</text>
+      <text x="165" y="234" text-anchor="middle" font-size="13" fill="#64748b">同样的幻灯片，做得更快</text>
+      <text x="165" y="254" text-anchor="middle" font-size="13" fill="#94a3b8">大家已经会，不需要教程</text>
+      <line x1="480" y1="122" x2="480" y2="176" stroke="#1d4ed8" stroke-width="2"/>
+      <polygon points="480,184 474,172 486,172" fill="#1d4ed8"/>
+      <rect x="345" y="186" width="270" height="108" rx="10" fill="#eff6ff" stroke="#1d4ed8" stroke-width="2"/>
+      <text x="480" y="216" text-anchor="middle" font-size="16" font-weight="700" fill="#1d4ed8">高度 · 抬一层</text>
+      <text x="480" y="240" text-anchor="middle" font-size="13" fill="#1e3a8a">问：下一步要发生什么</text>
+      <text x="480" y="260" text-anchor="middle" font-size="13" fill="#1e3a8a">从改数字，到提早发现问题</text>
+      <text x="480" y="280" text-anchor="middle" font-size="13" fill="#1e40af">适合本来就要开会的事</text>
+      <line x1="560" y1="122" x2="790" y2="176" stroke="#047857" stroke-width="2"/>
+      <polygon points="796,182 786,170 792,184" fill="#047857"/>
+      <rect x="660" y="178" width="260" height="108" rx="10" fill="#ecfdf5" stroke="#047857" stroke-width="2"/>
+      <text x="790" y="208" text-anchor="middle" font-size="16" font-weight="700" fill="#047857">深度 · 换工具</text>
+      <text x="790" y="232" text-anchor="middle" font-size="13" fill="#065f46">用最强的人用的器具</text>
+      <text x="790" y="252" text-anchor="middle" font-size="13" fill="#065f46">从原始数据重做判断</text>
+      <text x="790" y="272" text-anchor="middle" font-size="13" fill="#065f46">对错交给外部工具</text>
+      <line x1="480" y1="294" x2="480" y2="338" stroke="#b45309" stroke-width="2"/>
+      <polygon points="480,346 474,334 486,334" fill="#b45309"/>
+      <rect x="300" y="348" width="360" height="72" rx="10" fill="#fffbeb" stroke="#b45309" stroke-width="2"/>
+      <text x="480" y="376" text-anchor="middle" font-size="16" font-weight="700" fill="#b45309">广度 · 换行当</text>
+      <text x="480" y="400" text-anchor="middle" font-size="13" fill="#92400e">名词换动词，再借别的行当的做法，不借文风</text>
+    </svg>
+    <figcaption>图 1　速度被他排除。高度往上抬目标，深度往下换工具，广度往旁边找行当。三者都从同一件事出发，不需要先换一件更大的事。</figcaption>
+  </figure>
+  <div class="note"><p style="margin:0">前提他放在文末，我放到这里。三类都要求模型有一台能装软件的电脑，并且能碰到相关的数据。没有这两样，深度和广度只会换成一种更专业的说法。</p></div>
+</section>
+
+<section id="altitude">
+  <h2><span>2</span>高度：问下一步要发生什么</h2>
+  <p>你把任务交给模型，它执行的是你对做法的猜测。他的问法是：你到底想让接下来发生什么。</p>
+  <p>他自己的例子。年初他还在让 Claude 修一个一个的崩溃。后来改成一句话：让这些应用保持不崩溃。这句话能兑现，是因为他先做了三件杂事：崩溃报告要能直接取到，每个版本要对得上哪一次提交，还得有 Windows、macOS、Linux 的机器，让它自己复现、自己验证修没修好。人退出循环，靠的是这三件事。</p>
+  <h3>季度回顾，一层比一层高</h3>
+  <div class="steps">
+    <div class="step"><i>第一层</i><p>别照着模板改数字。把你能拿到的数据都给它，让它说这个季度变了什么、为什么、该怎么办。</p></div>
+    <div class="step"><i>第二层</i><p>会开完要有决定。让它从刚看到的东西里挑出最急的三个决定，每个写出赞成和反对。</p></div>
+    <div class="step"><i>第三层</i><p>这份材料本来是为了让负责人早点发现问题，把钱和人挪到该去的地方。让它设计一个比季度幻灯片更早发现问题的办法，用你们自己的历史证明它当时能更早抓住，然后和现有流程并排跑一个季度。</p></div>
+  </div>
+  <p>第三层最容易空转。「去赚钱」这种话，他写明 2026 年对大多数生意还是没用。高度适合你本来就要开会讨论的事。写东西、做设计，抬高一层常常把你想要的那个东西抬没了。</p>
+</section>
+
+<section id="depth">
+  <h2><span>3</span>深度：换工具，不换说法</h2>
+  <p>同一件事想做好，就让它用这个领域最强的人在用的工具、原始材料和验证方法。他写了一句我对照过：你让模型「表现得专业一点」，它通常只换词，不换做法。</p>
+  <p>还是那份回顾，假设公司在丢用户。他列了五条，我留下四条。</p>
+  <ul>
+    <li>用这个行业里最好的人用的器具。它要是掏出 Markdown 表格，就要求数据库和统计模型。你不必先知道专家用什么，它通常知道。你要做的是不让它用表格交差。</li>
+    <li>把你以为知道的事拿去撞原始数据。「我们觉得用户流失是新手引导的问题。用原始数据把这个说法重做一遍。」</li>
+    <li>在它已经钻进数据之后，再要一个你们还不知道的东西。他的例子：用日志搭一个能重放过去一年的客户模拟，找出一个你们还没注意到的最早流失信号，并且在它没见过的数据上也能预测。</li>
+    <li>判断对错不要问它自己。他写的时间是 2026 年 10 月，这件事还没解决。最好是一个它能自己跑的工具，跑完立刻有反馈。</li>
+  </ul>
+  <div class="quote">我要的是这件事的更深版本，不是更大的版本。动手改写之前先说四件事：这个领域最强的人在这里会做哪件我没要求的事；他们会从哪份最原始的材料开始，而不是从已经替我消化过的摘要开始；他们会用哪些具体的方法和工具；除了你和我，什么东西能证明结果是对的。然后按这四件事重写我的要求。</div>
+  <p>这是他的原话，我翻译过来，没加东西。引号里的「不是……而是……」是原文的句式，我留着。</p>
+</section>
+
+<section id="range">
+  <h2><span>4</span>广度：借做法，不借文风</h2>
+  <p>广度是让别的领域来看同一件事。以前请一个人跨行要花钱、要时间，现在多开几个线程便宜得多。他说这是他看到意外结果最多的地方，也是最依赖你自己会想的地方。同事 Alex Albert 用 Blender 渲染室内设计，他才想到自己的主页可以用三维场景，尽管他早就做过游戏。</p>
+  <h3>名词换成动词</h3>
+  <p>这是 Tom Kelley 和 Jonathan Littman 在《The Art of Innovation》里的老办法。季度回顾叫「一份幻灯片」的时候，跟它相关的行当只剩下做幻灯片的人。换成动词之后，它是「让忙的人在 30 分钟里相信一个因果故事，并且在不确定的情况下做决定」。别的行当能插进来的位置这才看得见。</p>
+  <h3>找人，只借他们的做法</h3>
+  <p>制作质量，他会找分析师、记者、编辑。要上台讲，再加动作和声音设计。想有人专门唱反调，他找做空的人和法务会计。</p>
+  <p>容易做错的一步在后面。不要让模型模仿做空的人的文风，让它去做空的人研究一个仓位时会做的那些事。角色扮演会让记录变得古怪，结果并不更好。</p>
+</section>
+
+<section id="why">
+  <h2><span>5</span>人为什么不敢开大</h2>
+  <p>他后半段解释这种教程为什么有必要。心理学里有个词叫 <a href="https://en.wikipedia.org/wiki/Self-efficacy">self-efficacy</a>：你觉得自己做得到，才会真的去做，而且做得成的也更多。他引用 Locke 和 Latham 对 35 年目标设定研究的回顾：给人一个具体的难目标，比只说「尽力而为」表现更好。</p>
+  <ul>
+    <li>相信一件事做得到，就更可能做成。他举的是 1939 年 George Dantzig 迟到进了统计课，把黑板上两道题当成作业做完交上去。那是两道还没人解出来的题。</li>
+    <li>看别人做成，自己的上限会跟着动。四分钟一英里，Roger Bannister 1954 年 5 月打破之后，46 天里就有第二个人打破。两小时马拉松他也写了：Sabastian Sawe 今年 4 月在伦敦跑出第一个官方的两小时以内，同一场比赛的第二名也破了。</li>
+    <li>允许搞砸，也松得开手。他举《The Inner Game of Tennis》，以及 Linus 宣布 Linux 时那句「只是个爱好，不会像 GNU 那样又大又专业」。</li>
+  </ul>
+  <p>这半段我认。我卡住的时候，多半是我把任务说成了我已经会做的那样。</p>
+</section>
+
+<section id="mine">
+  <h2><span>6</span>我准备改的一件事</h2>
+  <p>给这个站写一篇技术笔记时，我习惯先定标题、定结构、再填内容。这是速度。</p>
+  <ul>
+    <li>按高度，我该问的是读完的人下一步会改自己的哪一个做法。文章只是这个结果的一种做法。</li>
+    <li>按深度，我现在让它看的是别人写好的摘要。这个领域最强的人会从原始论文、代码和它没见过的例子开始，并且留一个写稿的模型自己判不了的核对：数字对得上原文，结论换一个没参与写稿的模型还能站住。</li>
+    <li>按广度，一篇技术笔记是「让一个忙的人在十分钟里判断这东西值不值得试」。记者会先写读者会丢掉什么，做空的人会先找哪一个数字最容易被夸大。两件我都没让它做过。</li>
+  </ul>
+</section>
+
+<section id="src">
+  <h2><span>7</span>出处与我没采用的</h2>
+  <p>正文的做法和例子都来自 Felix Rieseberg，<a href="https://felixrieseberg.com/how-to-be-more-ambitious-a-tutorial-for-humans-with-models/">How to be more ambitious</a>，2026-10-13。self-efficacy 的词条、Locke 与 Latham 的回顾、Patrick Collison 的 Fast 清单，都是文中所引，我没有另核原文。Dantzig、Bannister、Sawe、Linux 公告这四则掌故同样只转述他的说法，没有逐条查证。</p>
+  <p>他还有一条我没写成建议：「定一个高得离谱的目标，并且告诉模型这个目标很合理」。把 10 秒的加载时间要成 200 毫秒，有时能逼它继续找，有时只是逼它交出一个跑不通的方案。我没有把握区分这两种时候。</p>
+  <p>文首的画是 Francisco Goya 的版画「Modo de volar」（一种飞行的方式），1796 到 1797 年间的系列，现藏马德里。我没把它放进这篇。</p>
+</section>
+
+</main>
+</div>
+</body>
+</html>

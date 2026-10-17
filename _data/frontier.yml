@@ -1,5 +1,9 @@
-# 前沿技术栏目：独立 HTML 洞察索引。
+﻿# 前沿技术栏目：独立 HTML 洞察索引。
 # 新增一篇：把 HTML 放到 /frontier/<slug>.html，再在这里加一条。
+- title: "怎么把一件事交给模型时做得更大胆"
+  date: "2026-10-17"
+  url: /frontier/2026-10-17-how-to-be-more-ambitious.html
+  summary: "Felix Rieseberg 做 Claude。2026 年 10 月 13 日他把「更大胆」拆成速度、高度、深度、广度，速度整节跳过。这篇留下后三类：高度问下一步要发生什么，深度换工具不换说法，广度借别的行当的做法、不借文风。他那条「把目标定得离谱再告诉模型这很合理」我没写成建议。"
 - title: "修好的最后一站，报告仍差 34.8 个点"
   date: "2026-10-15"
   url: /frontier/2026-10-15-gap-remains-after-fix.html
