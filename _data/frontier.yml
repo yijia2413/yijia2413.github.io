@@ -1,5 +1,9 @@
 ﻿# 前沿技术栏目：独立 HTML 洞察索引。
 # 新增一篇：把 HTML 放到 /frontier/<slug>.html，再在这里加一条。
+- title: "私下已经改口，聊天记录大半看不出来"
+  date: "2026-10-18"
+  url: /frontier/2026-10-18-hidden-belief-collapse.html
+  summary: "一篇预印本让十个同模型智能体聊一条事实，16 轮。没有攻击者时，良性智能体最终私下给出假答案的比例平均 0.6%。一个反复主张假答案的攻击者把这个比例抬到 44.8%，三个抬到 60.5%。三个攻击者在场时，暴露回合上私下假答案 51.6%，聊天里认领 19.7%。已经改口的回合里，公开认领只占 34.3%。"
 - title: "Claude Code 团队怎样做代码评审"
   date: "2026-10-17"
   url: /frontier/2026-10-17-code-review-at-anthropic.html
