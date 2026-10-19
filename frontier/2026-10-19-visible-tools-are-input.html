@@ -1,0 +1,221 @@
+﻿<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>可见工具列表也是输入，加一个近邻掉 4.7 个点</title>
+  <style>
+    :root { --ink:#0f172a; --muted:#475569; --line:#e2e8f0; --bg:#f8fafc; --blue:#1d4ed8; --blue-bg:#eff6ff; --amber:#b45309; --green:#047857; --rose:#be123c; }
+    * { box-sizing: border-box; }
+    body { margin:0; font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Noto Sans SC",sans-serif; background:var(--bg); color:var(--ink); line-height:1.75; font-size:17px; }
+    header { background:#0f172a; color:#f8fafc; padding:36px 24px 28px; border-bottom:4px solid #2563eb; }
+    header .inner { max-width:1080px; margin:0 auto; }
+    .badge { display:inline-block; border:1px solid #93c5fd; color:#bfdbfe; border-radius:999px; padding:2px 12px; font-size:13px; }
+    h1 { font-size:2rem; line-height:1.3; margin:12px 0; }
+    header p { color:#cbd5e1; margin:0; max-width:760px; }
+    .layout { max-width:1080px; margin:28px auto 64px; padding:0 20px; display:grid; grid-template-columns:220px minmax(0,1fr); gap:28px; }
+    aside { position:sticky; top:52px; align-self:start; background:#fff; border:1px solid var(--line); border-radius:12px; padding:14px; }
+    aside p { font-size:12px; letter-spacing:.06em; color:var(--muted); margin:0 0 8px; }
+    aside a { display:block; color:var(--ink); text-decoration:none; font-size:14px; padding:6px 8px; border-radius:6px; }
+    aside a:hover { background:var(--blue-bg); color:var(--blue); }
+    h2 { font-size:1.35rem; margin:0 0 12px; }
+    h2 span { display:inline-block; background:var(--blue); color:#fff; border-radius:6px; font-size:13px; padding:2px 8px; margin-right:8px; }
+    h3 { font-size:1.08rem; margin:20px 0 10px; }
+    section { background:#fff; border:1px solid var(--line); border-radius:14px; padding:26px 28px; margin-bottom:22px; }
+    p { margin:0 0 14px; }
+    a { color:var(--blue); overflow-wrap:anywhere; }
+    code { background:#f1f5f9; border-radius:4px; padding:1px 5px; font-size:15px; overflow-wrap:anywhere; }
+    main { min-width:0; }
+    figure { margin:16px 0; background:#fff; border:1px solid var(--line); border-radius:12px; padding:10px; overflow-x:auto; }
+    figure svg { display:block; min-width:700px; }
+    figcaption { color:var(--muted); font-size:14px; margin-top:6px; }
+    .tw { overflow-x:auto; margin:0 0 14px; }
+    .tw table { min-width:620px; }
+    table { width:100%; border-collapse:collapse; font-size:15px; }
+    th, td { border:1px solid var(--line); padding:8px 10px; text-align:left; vertical-align:top; }
+    th { background:#f1f5f9; }
+    ul { margin:0 0 14px; padding-left:22px; }
+    li { margin-bottom:6px; }
+    .note { background:#f1f5f9; border-left:4px solid var(--muted); padding:12px 16px; border-radius:0 8px 8px 0; font-size:16px; margin:0 0 14px; }
+    .quote { background:#fffbeb; border-left:4px solid var(--amber); padding:12px 16px; border-radius:0 8px 8px 0; font-size:15px; overflow-wrap:anywhere; margin:0 0 14px; }
+    svg text { font-family:-apple-system,"PingFang SC","Noto Sans SC",sans-serif; }
+    @media (max-width:860px) { .layout { grid-template-columns:minmax(0,1fr); } aside { position:static; } h1 { font-size:1.55rem; } section { padding:18px 16px; } }
+  </style>
+</head>
+<body>
+<nav style="position:sticky;top:0;z-index:50;background:#0f172a;border-bottom:1px solid #1e293b;padding:10px 24px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;">
+  <a href="/frontier" style="color:#93c5fd;text-decoration:none;font-size:14px;margin-right:16px;">← Frontier</a>
+  <a href="/" style="color:#cbd5e1;text-decoration:none;font-size:14px;">@xixi003</a>
+</nav>
+
+<header>
+  <div class="inner">
+    <span class="badge">FRONTIER · 2026-10-19 · 工具列表</span>
+    <h1>可见工具列表也是输入，加一个近邻掉 4.7 个点</h1>
+    <p>一篇 10 月 16 日的预印本把工具接口的表面改动拆开测。DICE-300 上每个任务原先只有一个候选工具。Qwen3.5-9B 只加一个描述重叠的干扰工具，准确率从 0.757 降到 0.710，掉 4.7 个点（分母 300）。只改描述掉 1.3 个点，只改参数名掉 0.7 个点。</p>
+  </div>
+</header>
+<div class="layout">
+<aside>
+  <p>目录</p>
+  <a href="#what">1 加一个近邻，掉 4.7 个点</a>
+  <a href="#how">2 每次调用看见的那张列表</a>
+  <a href="#ablate">3 改描述和改参数名几乎不动</a>
+  <a href="#bfcl">4 第二套切片上，三件一起也掉</a>
+  <a href="#fix">5 漂移弄错的调用，校验看见多少</a>
+  <a href="#name">6 别的模型上掉幅不一样</a>
+  <a href="#yours">7 你的工具列表在涨吗</a>
+  <a href="#limit">8 这篇没测到的</a>
+  <a href="#src">9 出处</a>
+</aside>
+<main>
+<section id="what">
+  <h2><span>1</span>加一个近邻，掉 4.7 个点</h2>
+  <p>2026 年 10 月 16 日，arXiv 收到 <a href="https://arxiv.org/abs/2610.23342">Robust Function Calling for LLM Agents Under Interface Drift</a>（arXiv:2610.23342v1，cs.AI，作者 Aniruddha Chattopadhyay、Kanishka Halder、Partha Sarathi Roy，单位署 Independent Researcher）。预印本，未经同行评审。论文写有公开仓库 <a href="https://github.com/AniruddhaChattopadhyay/tool-drift">AniruddhaChattopadhyay/tool-drift</a>；本轮只核对仓库存在，没有核对其运行产物是否覆盖正文 300 条和 200 条。</p>
+  <p>工具调用靠三段文本：工具描述、参数 schema、这一次调用时模型看得见的候选工具列表。底层工具语义可以不变，这三段仍会改：文档补了过时例子、字段改名、目录里多了一个近邻。论文把这类改动叫接口漂移，并分开测。</p>
+  <div class="note">
+    <p style="margin:0">这篇只论证一个判断。判断是我的，依据是论文第 6.4 节和表 4。DICE-300 每个任务原先只有一个候选工具。Qwen3.5-9B 上，只加一个描述重叠的干扰工具，准确率从 0.757 降到 0.710，掉 4.7 个点（分母 300；0.757×300≈227，0.710×300=213，净少约 14 条）。只改描述从 0.760 到 0.747，掉 1.3 个点（约 4 条）；只改参数名从 0.767 到 0.760，掉 0.7 个点（约 2 条）。三件一起做从 0.763 到 0.713，掉 5.0 个点（约 15 条）。四行原接口分数不同，我按「evaluates each in isolation」读成分开跑，不能横比成同一个倍数。4.7、1.3、0.7 是点估计，表 4 没给区间，也没有配对检验；4.7 对 1.3、0.7 的差距未经检验。同一套三件一起的配置，跨轮次掉幅分别是 3.7（表 1 预言机，0.750→0.713）、4.0（表 1 非预言机，0.757→0.717）、5.0（表 4，0.763→0.713）个点。第 4–6 节是修补层和跨模型对照，不当主判断。</p>
+  </div>
+  <p>主实验另有一张表。表 1 的非预言机协议把三种漂移叠在一起：DICE-300 上 Qwen3.5-9B 原接口 0.757（95% 自助区间 0.70 至 0.80），漂移后 0.717（0.67 至 0.77，seed 42），分母 300。原先做对的 227 条里，漂移弄错 22 条。表 1 和表 4 的 Orig/Drift 读数对不上（0.757/0.717 对 0.763/0.713），修补列都是 0.813；原文 6.4 写表 4 的「三件一起」修补列取自主实验。0.717 和 0.710 不能当成一次实验的两个读数。</p>
+</section>
+
+<section id="how">
+  <h2><span>2</span>每次调用看见的那张列表</h2>
+  <p>每次评测分三步：原接口、漂移后的接口、对校验失败的调用做一次修补。漂移注入一次。打分前，金标准调用按改名后的 schema 重写。修补只在校验判定调用无效或不完整时触发。温度 0.0；论文写，托管推理仍可能有提供商侧的不确定。</p>
+  <p>两套切片：</p>
+  <ul>
+    <li><strong>DICE-300。</strong>300 条，取自 DICE-BENCH 单函数、第一轮对话，允许重复函数以凑够条数。轻度：两种描述改法（legacy-example 和 marketing）、两种 schema 改法（rename-parameters 和 reorder-parameters）、一个干扰工具。这一片里，每个任务原先恰好一个候选工具。</li>
+    <li><strong>BFCL-200。</strong>200 条，四类各四分之一：simple Python、multiple-function、live-simple、live-multiple。中等：三种描述改法、三种 schema 改法、三个干扰工具。和 DICE 的轻度、一个干扰工具不是同一套强度。</li>
+  </ul>
+  <p>三种算子都是作者按部署场景设计的，论文没有从变更日志里挖分布。论文另外人工看了 Notion 和 Stripe 2022–2026 的 11 条官方变更：6 条对得上文档/例子和参数/schema，3 条接近「厂商加了或合并了邻近工具」，2 条是更大的结构重构，落在语义保持的范围外。论文把合成算子当成常见表面改动的压缩模型，没有当成全部 API 演化的实测分布。</p>
+  <p>修补协议分两档。正文主证据是非预言机：校验对着模型选中的、当时可见的那个工具；模型没写出工具名时，先在可见工具上做一次候选重试，再约束修补。预言机档把目标工具直接告诉修补阶段，论文只当上界，不当部署证据。下面凡是非预言机的数字，都写明；预言机的另标。</p>
+</section>
+
+<section id="ablate">
+  <h2><span>3</span>改描述和改参数名几乎不动</h2>
+  <p>表 4 把三种算子拆开，仍在 DICE-300、Qwen3.5-9B 上。描述漂移：legacy-example（往说明里加过时或遗留字段名的例子）和 marketing。schema 漂移：rename-parameters（改参数名、保持语义）和 reorder-parameters（改参数顺序）。候选集漂移：加一个描述重叠的干扰工具。</p>
+  <div class="tw">
+    <table>
+      <thead>
+        <tr><th>只做哪一种</th><th>原接口</th><th>漂移后</th><th>掉了多少</th><th>修补后</th><th>修补口径</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>只改描述</td><td>0.760</td><td>0.747</td><td>1.3 个点</td><td>0.813</td><td>单候选，等同预言机</td></tr>
+        <tr><td>只改参数名 / 顺序</td><td>0.767</td><td>0.760</td><td>0.7 个点</td><td>0.830</td><td>单候选，等同预言机</td></tr>
+        <tr><td>只加干扰工具</td><td>0.757</td><td>0.710</td><td>4.7 个点</td><td>0.817</td><td>非预言机</td></tr>
+        <tr><td>三件一起</td><td>0.763</td><td>0.713</td><td>5.0 个点</td><td>0.813</td><td>非预言机，修补列取自主实验</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p>分母都是 300。掉了多少看原接口到漂移后；修补列是另一回事。这一片每个任务原先只有一个候选工具，所以只改描述、只改参数名时，修补目标会退化成预言机档。非预言机问的是：加了干扰工具之后还能不能修。论文另跑了一轮只加干扰工具的非预言机修补，到 0.817。</p>
+  <figure>
+    <svg viewBox="0 0 760 380" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="三种漂移在 DICE-300 上的准确率下降">
+      <rect width="760" height="380" fill="#ffffff"/>
+      <text x="24" y="32" font-size="16" font-weight="700" fill="#0f172a">DICE-300 · Qwen3.5-9B · 原接口到漂移后掉了多少</text>
+      <text x="24" y="54" font-size="14" fill="#475569">分母 300。四行原接口分数不同。表 4 没给区间，4.7 对 1.3、0.7 未经检验。</text>
+      <line x1="80" y1="80" x2="80" y2="300" stroke="#94a3b8" stroke-width="1"/>
+      <line x1="80" y1="300" x2="720" y2="300" stroke="#94a3b8" stroke-width="1"/>
+      <text x="36" y="304" font-size="14" fill="#475569">0</text>
+      <text x="20" y="216" font-size="14" fill="#475569">2.5</text>
+      <text x="28" y="128" font-size="14" fill="#475569">5.0</text>
+      <line x1="80" y1="212" x2="720" y2="212" stroke="#e2e8f0" stroke-width="1"/>
+      <line x1="80" y1="124" x2="720" y2="124" stroke="#e2e8f0" stroke-width="1"/>
+      <rect x="100" y="254" width="90" height="46" fill="#eff6ff" stroke="#1d4ed8" stroke-width="2"/>
+      <text x="118" y="244" font-size="18" font-weight="700" fill="#1d4ed8">1.3</text>
+      <text x="108" y="324" font-size="14" fill="#0f172a">只改描述</text>
+      <text x="96" y="344" font-size="14" fill="#475569">0.760 → 0.747</text>
+      <rect x="250" y="275" width="90" height="25" fill="#ecfdf5" stroke="#047857" stroke-width="2"/>
+      <text x="268" y="265" font-size="18" font-weight="700" fill="#047857">0.7</text>
+      <text x="232" y="324" font-size="14" fill="#0f172a">只改参数名/顺序</text>
+      <text x="244" y="344" font-size="14" fill="#475569">0.767 → 0.760</text>
+      <rect x="400" y="135" width="90" height="165" fill="#fff1f2" stroke="#be123c" stroke-width="2"/>
+      <text x="418" y="125" font-size="18" font-weight="700" fill="#be123c">4.7</text>
+      <text x="390" y="324" font-size="14" fill="#0f172a">只加干扰工具</text>
+      <text x="388" y="344" font-size="14" fill="#475569">0.757 → 0.710</text>
+      <rect x="550" y="124" width="90" height="176" fill="#fff7ed" stroke="#c2410c" stroke-width="2"/>
+      <text x="568" y="114" font-size="18" font-weight="700" fill="#c2410c">5.0</text>
+      <text x="558" y="324" font-size="14" fill="#0f172a">三件一起</text>
+      <text x="538" y="344" font-size="14" fill="#475569">0.763 → 0.713</text>
+      <text x="24" y="368" font-size="14" fill="#475569">柱高按掉了多少个点画。跨轮次三件一起掉 3.7 至 5.0 个点。</text>
+    </svg>
+    <figcaption>图 1. 表 4：DICE-300 上三种算子分开做。4.7 与 1.3、0.7 的差距未经检验。打分按严格字符串匹配，原文 6.6 把 Mistral 上 15/23 条「漂移后更好」读成匹配噪声。</figcaption>
+  </figure>
+</section>
+
+<section id="bfcl">
+  <h2><span>4</span>第二套切片上，三件一起也掉</h2>
+  <p>这一节不是主判断。BFCL-200 没有把三种算子拆开，0.790→0.580 不能算到干扰工具头上。它只表明：换一套切片、换成中等强度（三个干扰工具加更多描述和 schema 改法），叠在一起的表面改动仍然掉分。</p>
+  <p>表 1 非预言机：Qwen3.5-9B 原接口 0.790（区间 0.74 至 0.84），漂移后 0.580（0.51 至 0.65），修补后 0.805（0.75 至 0.86）。分母 200。原先做对 158 条，漂移弄错 45 条。同一张表上的 DICE-300 非预言机：原接口 0.757（0.70 至 0.80），漂移后 0.717（0.67 至 0.77）。分母 300。0.580 和 0.717 不能放进同一个倍数。</p>
+  <figure>
+    <svg viewBox="0 0 760 360" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="DICE-300 与 BFCL-200 原接口和漂移后准确率">
+      <rect width="760" height="360" fill="#ffffff"/>
+      <text x="24" y="32" font-size="16" font-weight="700" fill="#0f172a">表 1 非预言机 · 原接口对漂移后 · Qwen3.5-9B</text>
+      <text x="24" y="54" font-size="14" fill="#475569">DICE 分母 300，轻度、一个干扰工具；BFCL 分母 200，中等、三个干扰工具。两套不能横比倍数。</text>
+      <line x1="80" y1="80" x2="80" y2="280" stroke="#94a3b8" stroke-width="1"/>
+      <line x1="80" y1="280" x2="720" y2="280" stroke="#94a3b8" stroke-width="1"/>
+      <text x="40" y="284" font-size="14" fill="#475569">0.5</text>
+      <text x="40" y="192" font-size="14" fill="#475569">0.7</text>
+      <text x="40" y="100" font-size="14" fill="#475569">0.9</text>
+      <line x1="80" y1="188" x2="720" y2="188" stroke="#e2e8f0" stroke-width="1"/>
+      <line x1="80" y1="96" x2="720" y2="96" stroke="#e2e8f0" stroke-width="1"/>
+      <rect x="160" y="162" width="80" height="118" fill="#eff6ff" stroke="#1d4ed8" stroke-width="2"/>
+      <text x="170" y="152" font-size="16" font-weight="700" fill="#1d4ed8">0.757</text>
+      <rect x="250" y="180" width="80" height="100" fill="#fffbeb" stroke="#b45309" stroke-width="2"/>
+      <text x="260" y="170" font-size="16" font-weight="700" fill="#b45309">0.717</text>
+      <text x="188" y="304" font-size="14" fill="#0f172a">DICE-300</text>
+      <text x="168" y="324" font-size="14" fill="#475569">原 / 漂移</text>
+      <rect x="460" y="147" width="80" height="133" fill="#eff6ff" stroke="#1d4ed8" stroke-width="2"/>
+      <text x="470" y="137" font-size="16" font-weight="700" fill="#1d4ed8">0.790</text>
+      <rect x="550" y="243" width="80" height="37" fill="#fff1f2" stroke="#be123c" stroke-width="2"/>
+      <text x="560" y="233" font-size="16" font-weight="700" fill="#be123c">0.580</text>
+      <text x="488" y="304" font-size="14" fill="#0f172a">BFCL-200</text>
+      <text x="468" y="324" font-size="14" fill="#475569">原 / 漂移</text>
+      <text x="24" y="348" font-size="14" fill="#475569">柱从 0.50 起画。修补列不画，主判断不靠修补。</text>
+    </svg>
+    <figcaption>图 2. 表 1 非预言机：两套切片上原接口对漂移后。BFCL 没有拆开三种算子。</figcaption>
+  </figure>
+</section>
+
+<section id="fix">
+  <h2><span>5</span>漂移弄错的调用，校验看见多少</h2>
+  <p>这一节只用来看：列表变了之后，失败是不是写残的调用。原先做对的那一截里，漂移弄错的调用进得了校验的：DICE 20/22，BFCL 45/45。DICE 剩下 2 条，原文 6.6 写成 validator-invisible value mismatches，参数值不对，校验看不见。整片上，DICE 漂移弄错 85 条里 63 条校验看得见（22 条看不见，占 26%）；BFCL 84 条里 73 条（11 条看不见，占 13%）。论文把合法但值不对叫残余；整片 26% 仍进不了校验。</p>
+  <p>表 3 相对漂移后调用多出来的条数：DICE 29 条（0.813−0.717，约 29/300），19 条是原先做对、漂移弄错、又修回来的，10 条是原接口就错、修补顺手补上的。BFCL 45 条（0.805−0.580），33 条漂移救回，12 条补原接口。相对原接口，DICE 大约多 17 条。论文把后一列当成附带好处，不当主因果。</p>
+  <p>论文把修补栈叫 SchemaShield-Lite：校验错误报告，加上一次约束修补；名字缺失时先在可见工具上重试。表 2 是另一轮，用来排除「再生成一次就好」。无新信息的重试：DICE 0.727、BFCL 0.610。只告诉模型调用无效并列出工具名：0.753 和 0.625。SchemaShield-Lite 这一轮是 0.813 和 0.795。表 2 的漂移后读数（0.713、0.590）和表 1（0.717、0.580）不是同一轮。</p>
+</section>
+
+<section id="name">
+  <h2><span>6</span>别的模型上掉幅不一样</h2>
+  <p>同一套 BFCL-200 非预言机协议，GPT-4o-mini 原接口 0.865，漂移后 0.840，掉 2.5 个点；修补 0.860，增益不显著（McNemar p = 0.125）。论文把这一轮当可信度核对：更强的闭源模型上，这一套漂移一开始就伤得少。Qwen3.5-35B-A3B 漂移后 0.635、修补后 0.845。Llama-4-Scout 漂移后 0.635、修补后 0.665（p = 0.031），常不写工具名，未解析 43 个，原先做对的一截只救回 1/11。</p>
+  <p>相对更早一轮「名字缺失就跳过」，候选重试把 DICE 修补后准确率从 0.780 抬到 0.813，未解析目标从 35 降到 15；BFCL 从 0.725 到 0.805，未解析从 34 降到 9。论文写，最干净的非预言机证据仍集中在 Qwen3.5 家族。不写工具名时，修补层没有目标。</p>
+</section>
+
+<section id="yours">
+  <h2><span>7</span>你的工具列表在涨吗</h2>
+  <p>证据边界先写清：表 4 是每个任务从 1 个候选变成 2 个、单个 Qwen3.5-9B、DICE-300 一个切片。生产目录已经有几十个工具时，4.7 个点读不出来。GPT-4o-mini 在 BFCL 三件一起、含三个干扰工具的设置下只掉 2.5 个点（0.865→0.840）。</p>
+  <p>在这条边界里，加一个描述重叠的近邻，掉幅已经接近把描述、参数名、候选集三件一起做。改文档例子和改字段名、参数顺序，在这一片上几乎不动。</p>
+  <p><a href="/frontier/2026-10-06-mcp-tools-start-off.html">10-06</a> 写过，扫到的 MCP 工具默认先关着。<a href="/frontier/2026-10-11-option-labels-are-input.html">10-11</a> 写过，护栏的选项名也是输入。这一篇补的是第三段文本：可见工具列表本身。论文建议盯工具目录扩张，优先于小改文档和参数。这是论文在自己切片上的建议，没有测过目录治理效果。论文还写，同一套修补栈原则上也能盖住对抗性的工具注入，建议和新加工具的来源检查一起用；这条没有实验。</p>
+  <p>下面是我的推断，论文没有在 MCP 网关或生产目录上做对照。编辑起点如果是给每个新工具写更清楚的描述，表 4 说这条在 DICE-300 上不是主伤害。要看见 4.7 个点那一列，看的是这一次调用模型实际看见了几个近邻，仓库注册总数对不上这一列。校验能拦住的是写残的调用；DICE 原先做对的 22 条漂移错误里，有 2 条合法但参数值不对，只盯 schema 合法会漏掉它们。</p>
+</section>
+
+<section id="limit">
+  <h2><span>8</span>这篇没测到的</h2>
+  <ul>
+    <li><strong>最干净的非预言机数字在 Qwen3.5。</strong>35B 复制了 BFCL 方向。Llama 受困于不写工具名。没有更宽的闭源扫描。跨家族的多模型数字大多是预言机上界。</li>
+    <li><strong>算子是作者设计的。</strong>测了过时描述、营销改写、字段改名、参数重排、干扰工具。类型收窄、枚举替换、多工具重构没测。11 条变更日志是人工对照，没有当成变更事件的抽样分布。</li>
+    <li><strong>漂移类型消融和组件消融仍是预言机上界。</strong>原文写，非预言机解析失败时，机制结论未必能原样搬过去。原接口到漂移后这一列不经过修补，标题用的 4.7、1.3、0.7 不受这条影响。只改描述、只改参数名的修补列在单候选任务上会退化成预言机。</li>
+    <li><strong>DICE-300 允许重复函数。</strong>300 条来自单函数第一轮，覆盖不到 DICE-BENCH 全量。BFCL-200 是四类各 50 条。</li>
+    <li><strong>托管推理。</strong>温度 0.0，提供商仍可能引入不确定。延迟数字来自另一次 BFCL 重跑，触发率 27.0%，和表 1 的 32.0% 分开读。</li>
+    <li><strong>严格字符串匹配低估救回。</strong>三个非主模型预言机档上，13 条没救回的里 11 条是格式或同义写法，2 条是真没修好。正文主表的救回率按严格匹配报，是下界。打分噪声也会动原接口到漂移后的差值：Mistral 上 15/23 条「漂移后更好」被读成匹配假象。</li>
+  </ul>
+</section>
+
+<section id="src">
+  <h2><span>9</span>出处</h2>
+  <p>数字来自预印本 HTML 全文（<a href="https://arxiv.org/html/2610.23342v1">arxiv.org/html/2610.23342v1</a>，<a href="https://arxiv.org/abs/2610.23342">abs</a>，2026-10-16，未经同行评审）。表 1、表 2、表 3、表 4 和第 6.1–6.7 节、第 8 节。仓库 <a href="https://github.com/AniruddhaChattopadhyay/tool-drift">github.com/AniruddhaChattopadhyay/tool-drift</a> 本轮只核对存在。abs 页 published 时间为 2026-10-16T11:49:37Z。</p>
+  <p><a href="https://openai.com/news/">OpenAI 新闻页</a>直连返回 403，未核对当日条目。用 r.jina.ai 读到的副本上近几日是 Rosalind 学术计划和教学帖，没有带分母的工具列表测量；这条未作为数字来源。<a href="https://www.anthropic.com/news/an-update-on-independent-evaluators">Anthropic 10 月 15 日独立评估方更新</a>给 METR employee-like access，没有可写进运行位的新测量。Hacker News 用 firebase API 拉到的当时首页有 Harness Engineering 101、Harness2 仓库和 Hybrid Reasoning Agents，没有带这一组分母的接口漂移测量。Product Hunt 当日榜用 r.jina.ai 读到 Beam.win、readywhen，未作为数字来源。X、Reddit 今日未覆盖：本机没有可用登录态。arXiv cs.AI / cs.CL / cs.LG 的 export API 本轮抓取时返回的最新提交停在 2026-10-16T17:59Z。</p>
+  <p>谱系和增量层分别在 <a href="/frontier/rsi-llm-agent-self-evolution.html">递归自改进前世今生</a> 和 <a href="/frontier/llm-agent-tech-landscape.html">冻底座、改脚手架</a>。这篇只加一条：可见工具列表也是输入，DICE-300 上加一个描述重叠的近邻掉 4.7 个点，改描述掉 1.3，改参数名掉 0.7。</p>
+</section>
+</main>
+</div>
+</body>
+</html>
