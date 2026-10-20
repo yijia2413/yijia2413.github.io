@@ -1,5 +1,9 @@
 ﻿# 前沿技术栏目：独立 HTML 洞察索引。
 # 新增一篇：把 HTML 放到 /frontier/<slug>.html，再在这里加一条。
+- title: "GPT-5.1 检索读报告，158 条掉 11.3 个点"
+  date: "2026-10-20"
+  url: /frontier/2026-10-20-retrieval-costs-eleven-points.html
+  summary: "一篇预印本只改地球化学模拟器报告怎么到模型眼前。158 条已核答案的四选一上，GPT-5.1 按章节目录读报告，比报告贴进上下文掉 11.3 个点（区间 −18.0 至 −4.9）。数值题上暴露加闭合合计 −8.7。把模拟冻住的只有 GPT-5.2，131 条检查点上掉 9.4 个点。Claude 两个模型和 GPT-5.4 的净差区间含 0。"
 - title: "可见工具列表也是输入，加一个近邻掉 4.7 个点"
   date: "2026-10-19"
   url: /frontier/2026-10-19-visible-tools-are-input.html

@@ -1,0 +1,255 @@
+﻿<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GPT-5.1 检索读报告，158 条掉 11.3 个点</title>
+  <style>
+    :root { --ink:#0f172a; --muted:#475569; --line:#e2e8f0; --bg:#f8fafc; --blue:#1d4ed8; --blue-bg:#eff6ff; --amber:#b45309; --green:#047857; --rose:#be123c; }
+    * { box-sizing: border-box; }
+    body { margin:0; font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Noto Sans SC",sans-serif; background:var(--bg); color:var(--ink); line-height:1.75; font-size:17px; }
+    header { background:#0f172a; color:#f8fafc; padding:36px 24px 28px; border-bottom:4px solid #2563eb; }
+    header .inner { max-width:1080px; margin:0 auto; }
+    .badge { display:inline-block; border:1px solid #93c5fd; color:#bfdbfe; border-radius:999px; padding:2px 12px; font-size:13px; }
+    h1 { font-size:2rem; line-height:1.3; margin:12px 0; }
+    header p { color:#cbd5e1; margin:0; max-width:760px; }
+    .layout { max-width:1080px; margin:28px auto 64px; padding:0 20px; display:grid; grid-template-columns:220px minmax(0,1fr); gap:28px; }
+    aside { position:sticky; top:52px; align-self:start; background:#fff; border:1px solid var(--line); border-radius:12px; padding:14px; }
+    aside p { font-size:12px; letter-spacing:.06em; color:var(--muted); margin:0 0 8px; }
+    aside a { display:block; color:var(--ink); text-decoration:none; font-size:14px; padding:6px 8px; border-radius:6px; }
+    aside a:hover { background:var(--blue-bg); color:var(--blue); }
+    h2 { font-size:1.35rem; margin:0 0 12px; }
+    h2 span { display:inline-block; background:var(--blue); color:#fff; border-radius:6px; font-size:13px; padding:2px 8px; margin-right:8px; }
+    h3 { font-size:1.08rem; margin:20px 0 10px; }
+    section { background:#fff; border:1px solid var(--line); border-radius:14px; padding:26px 28px; margin-bottom:22px; }
+    p { margin:0 0 14px; }
+    a { color:var(--blue); overflow-wrap:anywhere; }
+    code { background:#f1f5f9; border-radius:4px; padding:1px 5px; font-size:15px; overflow-wrap:anywhere; }
+    main { min-width:0; }
+    figure { margin:16px 0; background:#fff; border:1px solid var(--line); border-radius:12px; padding:10px; overflow-x:auto; }
+    figure svg { display:block; min-width:700px; }
+    figcaption { color:var(--muted); font-size:14px; margin-top:6px; }
+    .tw { overflow-x:auto; margin:0 0 14px; }
+    .tw table { min-width:620px; }
+    table { width:100%; border-collapse:collapse; font-size:15px; }
+    th, td { border:1px solid var(--line); padding:8px 10px; text-align:left; vertical-align:top; }
+    th { background:#f1f5f9; }
+    ul { margin:0 0 14px; padding-left:22px; }
+    li { margin-bottom:6px; }
+    .note { background:#f1f5f9; border-left:4px solid var(--muted); padding:12px 16px; border-radius:0 8px 8px 0; font-size:16px; margin:0 0 14px; }
+    .quote { background:#fffbeb; border-left:4px solid var(--amber); padding:12px 16px; border-radius:0 8px 8px 0; font-size:15px; overflow-wrap:anywhere; margin:0 0 14px; }
+    svg text { font-family:-apple-system,"PingFang SC","Noto Sans SC",sans-serif; }
+    @media (max-width:860px) { .layout { grid-template-columns:minmax(0,1fr); } aside { position:static; } h1 { font-size:1.55rem; } section { padding:18px 16px; } }
+  </style>
+</head>
+<body>
+<nav style="position:sticky;top:0;z-index:50;background:#0f172a;border-bottom:1px solid #1e293b;padding:10px 24px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;">
+  <a href="/frontier" style="color:#93c5fd;text-decoration:none;font-size:14px;margin-right:16px;">← Frontier</a>
+  <a href="/" style="color:#cbd5e1;text-decoration:none;font-size:14px;">@xixi003</a>
+</nav>
+
+<header>
+  <div class="inner">
+    <span class="badge">FRONTIER · 2026-10-20 · 工具输出</span>
+    <h1>GPT-5.1 检索读报告，158 条掉 11.3 个点</h1>
+    <p>一篇 10 月 19 日的预印本只改地球化学模拟器报告怎么到模型眼前。158 条已核答案的选择题上，GPT-5.1 从目录检索读报告，比报告贴进上下文掉 11.3 个点（分母 158）。数值题上暴露加闭合合计 −8.7，约占 −11.9 的四分之三；另有约 4 个点来自没看见正确值时的作答，区间含 0。把模拟冻住的只有 GPT-5.2，131 条检查点上掉 9.4 个点。</p>
+  </div>
+</header>
+<div class="layout">
+<aside>
+  <p>目录</p>
+  <a href="#what">1 GPT-5.1 掉 11.3 个点</a>
+  <a href="#how">2 只改报告怎么到眼前</a>
+  <a href="#ex">3 2.75065 截成 2.750</a>
+  <a href="#sub">4 算对了，读的是自己那份</a>
+  <a href="#hide">5 净差接近零也会藏着</a>
+  <a href="#fix">6 点名权威文件，四舍五入不够</a>
+  <a href="#yours">7 你的长输出是贴进去还是存文件</a>
+  <a href="#limit">8 这篇没测到的</a>
+  <a href="#src">9 出处</a>
+</aside>
+<main>
+<section id="what">
+  <h2><span>1</span>GPT-5.1 掉 11.3 个点</h2>
+  <p>2026 年 10 月 19 日，arXiv 收到 <a href="https://arxiv.org/abs/2610.26836">Same Simulation, Different Evidence: Where Retrieved Tool Output Costs LLM Agents Accuracy</a>（arXiv:2610.26836v1，cs.AI，作者 Ke Zhang、Sahchit Chundur、Jerry Peprah Owusu、Mohammad Javad Abdolhosseini Qomi、Maziar Raissi，单位署加州大学河滨分校与欧文分校）。预印本，未经同行评审。本轮读的是 PDF 全文；实验性 HTML 页返回 200，没有另核一版排版。</p>
+  <p>长工具输出进不了上下文时，harness 常把它存成文件，让模型按目录、搜索或行号去读。论文问的是：这份报告已经算对了，换成检索读，准确率会不会掉。工具是美国地质调查局的水溶液地球化学模拟器 PHREEQC，报告最长 846.8k 字符，同一份输入再跑一遍，打印值对得上。</p>
+  <div class="note">
+    <p style="margin:0">这篇只论证一个判断。判断是我的，依据是论文表 1 的主对照。158 条已核答案的四选一上，每个条目的各次运行先按条目汇总，TOC（按章节目录读报告）减 inline（报告截断后贴进上下文）：GPT-5.1 掉 11.3 个点（95% 条目自助区间 −18.0 至 −4.9；五个模型 Holm 校正符号翻转 p = 0.005）。五个模型里另外三个净差区间含 0；GPT-5.2 点估计掉 7.9 个点（区间 −14.9 至 −0.9），Holm 后 p = 0.128，未校正 0.032。11.3 没有冻住模拟。冻住模拟的只有 GPT-5.2，131 条数值题检查点上掉 9.4 个点（区间 −14.5 至 −4.6）。第 4–6 节用来定位掉在哪、改哪一处会回来，不当另一条主判断。</p>
+  </div>
+  <p>表 1 里 Agent-TOC / Agent-Raw100k 两列是各模型的头条运行：GPT-5.1 是 57.0% 对 67.7%，GPT-5.2 是 57.0% 对 65.8%。主对照用的是同一条件下全部运行按条目汇总后的差，不是这两列相减。GPT-5.4 头条 TOC 75.3%、inline 70.9%，汇总后的差是 +0.2，两列不能拿来当主对照。</p>
+</section>
+
+<section id="how">
+  <h2><span>2</span>只改报告怎么到眼前</h2>
+  <p>题目来自 Zhang 等 2026 的四选一，一位领域专家写的。每条给一套 PHREEQC 设置，问报告里的一个量：某一步的 pH、饱和指数、某个迁移格子里的摩尔浓度。参考答案用 PHREEQC 3.8.6 和作者提供的固定 <code>phreeqc.dat</code>。数值题的干扰项通常只在最后一位印刷数字上不一样。作者把原池 200 条全部再跑一遍：有作者原输入的 9 套用原输入，其余按题面字面编码，从不往答案上调。留下的条件是：打印值与正确选项完全、唯一匹配，收紧收敛或换步长也不改那位数字。158 条、19 套设置留下；42 条排除（错误答案、数值不稳的氧化还原量、题面有缺陷），排除过程没用模型输出。题目作者确认这 42 条作为题目是坏的。</p>
+  <p>每个智能体四个工具：<code>write_file</code>、<code>read_file</code>（可带行号范围）、<code>list_file</code>、<code>execute_phreeqc</code>。独立工作区，最多 24 步，答案写进文件。模拟器写格式化报告 <code>result.out</code>，每个量按选项的精度印刷。智能体还可以加 <code>SELECTED_OUTPUT</code> 或 <code>USER_PUNCH</code>，把选中的量写到自己的文件里，位数更多。</p>
+  <p>对照只改 <code>execute_phreeqc</code> 返回什么，以及系统提示里描述这一返回值的那一行。Raw100k（inline）返回报告，头尾截到 10 万字符。TOC 返回元数据和章节目录（带起始行），智能体自己读行范围。Grep 只返回元数据，用正则搜索。Hybrid：报告能进 10 万字符就 inline，否则 TOC。TOC+Report 和 TOC+Round 在 TOC 上各加三句话，分别是从报告作答，或按选项精度四舍五入。无工具基线是 Direct 和思维链，不加模拟器。</p>
+  <p>模型走 API：Claude Opus 4.6、Claude Sonnet 4.6 温度 0、不开 extended thinking；GPT-5.4、GPT-5.2、GPT-5.1 和 Gemini 3 Flash Preview 用接口默认，不设 reasoning-effort。每个模型一条 Raw100k 头条和一条 TOC 头条。Sonnet 和三个 GPT 的 TOC 再跑三次，GPT 的 Raw100k 再记一次。33 条报告超过 10 万字符的题，四次 TOC 共用一次已修好目录的运行，因为原先这类报告的目录是空的。率按运行平均；计数每条轨迹只用一次。Gemini 3 Flash 即使 inline 也有 46% 给不出可解析答案（TOC 下 71%），正文分析去掉它。</p>
+</section>
+
+<section id="ex">
+  <h2><span>3</span>2.75065 截成 2.750</h2>
+  <p>第 121 条：纯水加 0.001 mol 硫酸，问第一步反应后的 pH。选项 A 2.750、B 2.751、C 2.748、D 2.745。正确项是 B。模拟器报告印 <code>pH = 2.751</code>，和选项精度一致。智能体自己的输出文件印 2.75065。</p>
+  <p>TOC 下 GPT-5.1 不打开 <code>result.out</code>，去读自己那份，把 2.75065 截成 2.750，选 A。系统提示改成「四舍五入，不要截断」，它仍截。改成「从 <code>result.out</code> 作答」，它选 B。图 1 右侧两个数：GPT-5.1 / GPT-5.2 在 158 条上跳过报告的比例约 53% 和 60%；137 条数值题上，看见正确值仍答错的比例约 15% 和 18%（100 减去闭合率）。这两个百分比按轨迹计，原文没给轨迹总数。</p>
+  <figure>
+    <svg viewBox="0 0 920 430" width="100%" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="同一份模拟写出两份数，检索读自己那份就选成干扰项">
+      <rect width="920" height="430" fill="#ffffff"/>
+      <text x="24" y="32" font-size="18" font-weight="700" fill="#0f172a">第 121 条：同一份模拟，两份数</text>
+      <rect x="24" y="52" width="270" height="86" rx="8" fill="#eff6ff" stroke="#1d4ed8" stroke-width="2"/>
+      <text x="38" y="80" font-size="15" font-weight="700" fill="#1d4ed8">模拟器报告 result.out</text>
+      <text x="38" y="106" font-size="16" fill="#0f172a">pH = 2.751（选项精度）</text>
+      <rect x="326" y="52" width="270" height="86" rx="8" fill="#fffbeb" stroke="#b45309" stroke-width="2"/>
+      <text x="340" y="80" font-size="15" font-weight="700" fill="#b45309">自己写的 sel.out</text>
+      <text x="340" y="106" font-size="16" fill="#0f172a">2.75065（位数更多）</text>
+      <rect x="628" y="52" width="268" height="86" rx="8" fill="#f1f5f9" stroke="#475569" stroke-width="2"/>
+      <text x="642" y="80" font-size="15" font-weight="700" fill="#475569">四选一</text>
+      <text x="642" y="106" font-size="15" fill="#0f172a">A 2.750　B 2.751</text>
+      <line x1="159" y1="138" x2="159" y2="168" stroke="#1d4ed8" stroke-width="2"/>
+      <line x1="461" y1="138" x2="461" y2="168" stroke="#b45309" stroke-width="2"/>
+      <rect x="24" y="172" width="270" height="70" rx="8" fill="#ecfdf5" stroke="#047857" stroke-width="2"/>
+      <text x="38" y="200" font-size="15" font-weight="700" fill="#047857">报告贴进上下文</text>
+      <text x="38" y="226" font-size="15" fill="#0f172a">看见 2.751，选 B</text>
+      <rect x="326" y="172" width="270" height="70" rx="8" fill="#fff1f2" stroke="#be123c" stroke-width="2"/>
+      <text x="340" y="200" font-size="15" font-weight="700" fill="#be123c">只给章节目录</text>
+      <text x="340" y="226" font-size="15" fill="#0f172a">读 2.75065，截成 A</text>
+      <rect x="24" y="262" width="270" height="70" rx="8" fill="#fff1f2" stroke="#be123c" stroke-width="2"/>
+      <text x="38" y="290" font-size="15" font-weight="700" fill="#be123c">目录 + 四舍五入提示</text>
+      <text x="38" y="316" font-size="15" fill="#0f172a">仍截成 2.750，选 A</text>
+      <rect x="326" y="262" width="270" height="70" rx="8" fill="#ecfdf5" stroke="#047857" stroke-width="2"/>
+      <text x="340" y="290" font-size="15" font-weight="700" fill="#047857">目录 + 从报告作答</text>
+      <text x="340" y="316" font-size="15" fill="#0f172a">打开 result.out，选 B</text>
+      <rect x="628" y="172" width="268" height="160" rx="8" fill="#ffffff" stroke="#1d4ed8" stroke-width="2"/>
+      <text x="642" y="202" font-size="15" font-weight="700" fill="#1d4ed8">图 1 右侧两个读数</text>
+      <text x="642" y="230" font-size="14" fill="#0f172a">跳过报告（158 条）</text>
+      <text x="642" y="254" font-size="15" fill="#be123c">GPT-5.1  53%　GPT-5.2  60%</text>
+      <text x="642" y="286" font-size="14" fill="#0f172a">看见仍错（137 条数值题）</text>
+      <text x="642" y="310" font-size="15" fill="#be123c">GPT-5.1  15%　GPT-5.2  18%</text>
+      <text x="24" y="368" font-size="14" fill="#475569">蓝框是报告在眼前时的路径，红框是检索时去读自己那份。数字抄自原文图 1。</text>
+      <text x="24" y="392" font-size="14" fill="#475569">53 / 60 与表 4 的 53.0% / 60.3% 是同一列；15 / 18 是 100 减去闭合率。</text>
+      <text x="24" y="416" font-size="14" fill="#0f172a">底行：同一份模拟已经写出正确项，检索让模型去选证据。</text>
+    </svg>
+    <figcaption>图 1. 第 121 条上的证据替换。报告印 2.751，自己的文件印 2.75065；TOC 下截成干扰项 2.750。</figcaption>
+  </figure>
+</section>
+
+<section id="sub">
+  <h2><span>4</span>算对了，读的是自己那份</h2>
+  <p>完整日志的全智能体轨迹 5,773 条。作者把智能体写过的输入全部离线重跑，同一二进制、同一数据库，一共 11,007 次模拟调用。有最后一次执行可对照的数值轨迹里，4,971 / 5,009 次重跑报告与存档一致，其余只是行序不同。137 条有数值答案的题上，作者按选项印刷精度做三问：</p>
+  <ul>
+    <li><strong>构建 p：</strong>智能体自己的某次模拟有没有印出正确值。</li>
+    <li><strong>暴露 s：</strong>印出来了，这个值有没有进到模型眼前（inline、读文件或搜索结果）。</li>
+    <li><strong>闭合 c：</strong>看见了，有没有答对。</li>
+  </ul>
+  <p>准确率恰好拆成 p×s×c，再加上没看见正确值时的作答（就近选、猜）。相对同一模型那一次有日志的 inline 运行，用 Shapley 把观察到的差分到这四项；论文写明这是分摊，不是各自独立的因果。手工读了 58 条数值轨迹，自动标签和人工在 52 条上一致。</p>
+  <p>GPT-5.1 和 GPT-5.2 的构建率在各接口之间差不多，构建项的贡献落在 2 个点以内，区间含 0。掉点落在读什么。TOC 下 GPT-5.2 有 60.3% 的轨迹完全没收到报告的任何一段，GPT-5.1 是 53.0%（按轨迹计，原文没给轨迹总数）。同一批轨迹里，读过自己 selected-output 文件的占 86.7% 和 67.5%，这是占全部 TOC 轨迹，不是占跳过报告的那一截。inline 时它们也常定义这种文件，可报告已经在上下文里，答的是报告。论文把这种做法叫证据替换：去答自己定义的输出，不答工具的权威报告。名字是描述性的；文件更短，模型可能只是图省事。Sonnet 在 TOC 下跳过报告只有 10.5%。</p>
+  <p>报告按选项精度印，自己的文件位数更多，读后者必须四舍五入。看见一个值四舍五入是正确项、截断是邻项时，GPT-5.2 在 26/35 条 TOC 轨迹里选了邻项，GPT-5.1 是 19/27，Sonnet 是 1/35。这些约占「看见正确值仍答错」的三分之二。只看见更多位数时，答对率落到 GPT-5.2 的 72.5% 和 GPT-5.1 的 66.3%；按报告印刷看见时，表 4 写 100.0%。两种形式都在眼前的 20 条里，19 条答对。这列是观察对照，两种轨迹的题目可以不同。</p>
+  <p>数值题上，相对那一次有日志的 inline：GPT-5.2 的 TOC 总差 −11.4 个点（区间 −21.2 至 −1.5），闭合 −7.7（−12.6 至 −2.9），暴露 −2.5（−5.3 至 +0.4，含 0）。GPT-5.1 总差 −11.9（−20.7 至 −2.7），暴露 −4.3（−6.9 至 −2.2），闭合 −4.4（−8.4 至 −0.5），没看见正确值时的作答 −4.2（−11.0 至 +2.5，含 0）。暴露加闭合合计 −8.7，约占 −11.9 的四分之三；证据替换主要落在这两项。这组是 137 条数值题、三次 TOC 重跑对一次 inline，和表 1 的 158 条汇总差不是同一列。Grep 没有用 PHREEQC 的章节结构，掉幅和 TOC 同向；Grep 每个模型只跑了一次（论文表 8）。</p>
+  <p>把计算冻住之后，掉幅还在。作者取 GPT-5.2 那次 inline 日志里第一次退出码为 0 的执行，137 条数值题里 131 条有这个检查点。两臂共用文件、系统提示、读工具和剩余步数，不能再跑模拟器，只改这一次返回是报告还是目录。三轮配对：inline 280/393，TOC 243/393，差 −9.4 个点（区间 −14.5 至 −4.6）。115 份能 inline 的冻结报告上差 −10.1；84 条冻结报告里含正确值的题上差 −9.9。附录写，两臂共用同一份系统提示，掉幅不能只归因于 TOC 那一行鼓励去读文件。</p>
+</section>
+
+<section id="hide">
+  <h2><span>5</span>净差接近零也会藏着</h2>
+  <p>GPT-5.4 也替换证据：TOC 下 41.8% 跳过报告，截断陷阱 15/31。相对那次 inline，暴露 −2.6（−4.8 至 −0.5），闭合 −7.2（−11.1 至 −4.2），大约十个点；构建 +4.1（+0.0 至 +8.1），TOC 下模拟更常印出正确值。数值题净差 −4.4（−12.4 至 +3.4）；158 条全部运行汇总是 +0.2。两个净差的区间都含 0，暴露和闭合两项的区间不含 0。</p>
+  <p>无工具时 Direct 准确率 25.9%–43.0%，最多大约高出多数类标签率 32.9% 十个点。五个 Claude 和 GPT 模型上，加上模拟器比更好的无工具基线高 15.8 至 45.6 个点（原文按未舍入数据算；用稿件表里头条列重算，GPT-5.1 是 57.0 − 41.1 = 15.9）。TOC 与 inline 之间的差另算。</p>
+  <figure>
+    <svg viewBox="0 0 920 420" width="100%" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="五个模型上 TOC 减 inline 的汇总差，只有 GPT-5.1 的 Holm 校正显著">
+      <rect width="920" height="420" fill="#ffffff"/>
+      <text x="24" y="32" font-size="18" font-weight="700" fill="#0f172a">表 1：TOC 减 inline，158 条按条目汇总</text>
+      <text x="520" y="56" font-size="14" fill="#475569">掉点 →</text>
+      <text x="24" y="88" font-size="16" font-weight="700" fill="#be123c">GPT-5.1</text>
+      <text x="24" y="108" font-size="14" fill="#be123c">−11.3  [−18.0, −4.9]  pHolm 0.005</text>
+      <line x1="598" y1="94" x2="808" y2="94" stroke="#fda4af" stroke-width="8"/>
+      <rect x="695" y="82" width="12" height="24" fill="#be123c"/>
+      <text x="24" y="146" font-size="16" font-weight="700" fill="#b45309">GPT-5.2</text>
+      <text x="24" y="166" font-size="14" fill="#b45309">−7.9  [−14.9, −0.9]  pHolm 0.128</text>
+      <line x1="534" y1="152" x2="758" y2="152" stroke="#fcd34d" stroke-width="8"/>
+      <rect x="640" y="140" width="12" height="24" fill="#b45309"/>
+      <text x="24" y="204" font-size="16" font-weight="700" fill="#475569">GPT-5.4</text>
+      <text x="24" y="224" font-size="14" fill="#475569">+0.2  [−5.5, +5.7]  pHolm 1.000</text>
+      <line x1="429" y1="210" x2="608" y2="210" stroke="#cbd5e1" stroke-width="8"/>
+      <rect x="511" y="198" width="12" height="24" fill="#475569"/>
+      <text x="24" y="262" font-size="16" font-weight="700" fill="#1d4ed8">Sonnet 4.6</text>
+      <text x="24" y="282" font-size="14" fill="#1d4ed8">−0.5  [−3.8, +3.2]  pHolm 1.000</text>
+      <line x1="469" y1="268" x2="581" y2="268" stroke="#93c5fd" stroke-width="8"/>
+      <rect x="522" y="256" width="12" height="24" fill="#1d4ed8"/>
+      <text x="24" y="320" font-size="16" font-weight="700" fill="#047857">Opus 4.6</text>
+      <text x="24" y="340" font-size="14" fill="#047857">−0.6  [−3.8, +2.5]  pHolm 1.000</text>
+      <line x1="480" y1="326" x2="581" y2="326" stroke="#6ee7b7" stroke-width="8"/>
+      <rect x="524" y="314" width="12" height="24" fill="#047857"/>
+      <line x1="520" y1="64" x2="520" y2="350" stroke="#0f172a" stroke-width="2"/>
+      <text x="512" y="368" font-size="14" fill="#0f172a">0</text>
+      <text x="604" y="368" font-size="14" fill="#475569">−6</text>
+      <text x="700" y="368" font-size="14" fill="#475569">−12</text>
+      <text x="24" y="392" font-size="14" fill="#475569">横条是 95% 区间，色块是点估计。刻度 16 像素 / 百分点，零线 x=520。</text>
+      <text x="24" y="412" font-size="14" fill="#0f172a">底行：五个模型里，Holm 校正后跨过阈值的是 GPT-5.1 这一列。</text>
+    </svg>
+    <figcaption>图 2. 论文表 1 主对照，158 条按条目汇总。GPT-5.2 的区间不含 0，五个模型一起校正后 p = 0.128。GPT-5.2 冻结模拟的 −9.4 不画在这张图上，分母是 131 条检查点。</figcaption>
+  </figure>
+  <div class="tw">
+    <table>
+      <thead>
+        <tr><th>模型</th><th>Direct</th><th>思维链</th><th>头条 TOC</th><th>头条 inline</th><th>TOC − inline 汇总</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Claude Opus 4.6</td><td>43.0%</td><td>39.9%</td><td>87.3%</td><td>88.0%</td><td>−0.6［−3.8, +2.5］</td></tr>
+        <tr><td>Claude Sonnet 4.6</td><td>38.0%</td><td>46.2%</td><td>91.8%</td><td>91.1%</td><td>−0.5［−3.8, +3.2］</td></tr>
+        <tr><td>GPT-5.4</td><td>25.9%</td><td>34.2%</td><td>75.3%</td><td>70.9%</td><td>+0.2［−5.5, +5.7］</td></tr>
+        <tr><td>GPT-5.2</td><td>27.2%</td><td>32.9%</td><td>57.0%</td><td>65.8%</td><td>−7.9［−14.9, −0.9］</td></tr>
+        <tr><td>GPT-5.1</td><td>41.1%</td><td>36.1%</td><td>57.0%</td><td>67.7%</td><td>−11.3［−18.0, −4.9］</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p>论文表 2 的 TOC 区间：GPT-5.1 53.2%–59.5%，GPT-5.2 55.7%–60.1%；两次 inline 分别是 67.7%/65.8% 和 65.8%/67.7%。两次 inline 都高于每一次 TOC 和那一次 Grep。按 19 套设置再抽样，GPT-5.1 区间 −19.1 至 −2.9，GPT-5.2 是 −16.2 至 +1.0（含 0）；去掉任意一套，点估计仍落在 −14.0 至 −9.7 和 −10.9 至 −5.8。</p>
+</section>
+
+<section id="fix">
+  <h2><span>6</span>点名权威文件，四舍五入不够</h2>
+  <p>如果掉点是因为去读自己那份更高精度文件，只改读什么，构建不应动。TOC+Report 在工具说明和每一次工具结果里加三句：<code>result.out</code> 里的值是权威的，按选项精度印刷；从相关章节取值，不要从 selected-output 作答。Hybrid 不加这句话，报告能进 10 万字符就贴进去。</p>
+  <p>加了这句话，GPT-5.2 跳过报告落到 0.0%，GPT-5.1 落到 1.6%；闭合升到 98.8% 和 99.2%；截断陷阱 0 条；构建在运行波动内不动。相对全部五次 TOC，准确率 +7.9 和 +6.3 个点（两模型平均 +7.1，区间 +1.9 至 +12.4）；相对 TOC 对照运行是 +3.5 和 +7.9。GPT-5.4 两次都是 81.6%，相对其 TOC 运行 +7.8（+2.2 至 +13.6），相对 inline +7.9（+2.5 至 +13.3）；跳过报告 0.0%，闭合 99.0%，检索带来的构建增益还在（相对 inline +3.4）。摘要把三个 GPT 上相对普通检索的升幅写成 6.3–7.9 个点。</p>
+  <p>TOC+Round 换成三句四舍五入规则，不点文件名。跳过报告仍接近 TOC，闭合仍约 82%。截断陷阱里 GPT-5.2 仍 17/25，GPT-5.1 仍 14/19。相对全部 TOC 运行，准确率只 +0.6 和 +1.2 个点。TOC+Report 超出 TOC+Round：GPT-5.2 +7.3（+0.6 至 +13.9），GPT-5.1 +5.1（−1.6 至 +12.0，含 0）。告诉它怎么进位，截断还在。点名权威文件之后，闭合升到 98.8% 和 99.2%；GPT-5.1 相对 inline 仍低 5.1 个点（区间 −11.4 至 +0.9），剩下的差在构建、暴露和没有正确值在眼前时的作答，不在闭合。</p>
+  <p>三次 Hybrid：相对 TOC 对照，GPT-5.2 +4.6，GPT-5.1 +8.0。跳过报告几乎消失，闭合回到 inline 水平。相对 inline，GPT-5.2 +1.2，到了 inline 水平；GPT-5.1 −5.0，剩下的差在闭合以外。Hybrid 不需要知道这个工具；那句指令留着检索，但必须点出权威输出。论文写明，干预对照每个模型只有一次对照运行。GPT-5.2 的 TOC 对照是 63.3%，落在其余 TOC 运行的 55.7%–60.1% 之外。</p>
+  <div class="tw">
+    <table>
+      <thead>
+        <tr><th>模型</th><th>条件（运行数）</th><th>准确率（158 条）</th><th>Δ</th><th>跳过报告（158）</th><th>闭合 c（137 条数值题）</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>GPT-5.2</td><td>TOC 对照 1 / TOC+Report 2 / Hybrid 3</td><td>63.3% / 66.8% / 67.9%</td><td>相对 TOC 对照：— / +3.5 / +4.6</td><td>57.0% / 0.0% / 5.3%</td><td>83.5 / 98.8 / 94.9</td></tr>
+        <tr><td>GPT-5.1</td><td>TOC 对照 1 / TOC+Report 2 / Hybrid 3</td><td>53.8% / 61.7% / 61.8%</td><td>相对 TOC 对照：— / +7.9 / +8.0</td><td>48.7% / 1.6% / 1.1%</td><td>89.3 / 99.2 / 98.5</td></tr>
+        <tr><td>GPT-5.4</td><td>三次 TOC 重跑 / TOC+Report 2</td><td>73.4% / 81.6%</td><td>相对全部四次 TOC：+7.8（81.6 − 73.4 = 8.2，基准不是这一行的 73.4）</td><td>41.8% / 0.0%</td><td>89.0 / 99.0</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<section id="yours">
+  <h2><span>7</span>你的长输出是贴进去还是存文件</h2>
+  <p>证据边界先写清：PHREEQC 四选一、158 条已核答案、闭源 API、最多 24 步。生产日志、搜索结果、MCP 返回值没有直接测。能进 10 万字符的报告上，GPT-5.2 冻结模拟仍掉 10.1 个点，所以这条不绑在「报告太长贴不进去」。</p>
+  <p>下面是我的推断，论文没有在 MCP 网关或生产会话上做对照。在这条边界里，最终准确率接近零的差，盖不住暴露和闭合两项。GPT-5.4 的净差区间含 0，替换证据仍在。Claude 两个模型的净差看不出来；有完整轨迹日志的 Sonnet，跳过报告只有 10.5%，截断陷阱 1/35。论文没找出是哪一项模型性质把 GPT 和 Claude 切开。净差不跟厂商品牌走：GPT-5.4 和 Claude 落在一起，它的两个前代不在。</p>
+  <p><a href="/frontier/2026-10-15-gap-remains-after-fix.html">10-15</a> 写的是编码 Agent 自己的例行报告对不上完整执行记录。这一篇是工具的权威报告对上了，模型去读自己写的那份。<a href="/frontier/2026-10-19-visible-tools-are-input.html">10-19</a> 写可见工具列表也是输入。这一篇补的是工具输出怎么进上下文。论文第 6 节写，检索把读报告变成选证据；那句话只在 PHREEQC 上测过。</p>
+  <p>运行位如果把长工具输出一律落盘、只给目录或搜索，先看轨迹里模型打开的是不是那份权威输出。编辑起点如果是加一句「记得四舍五入」，论文表 5 说这句在这一片上几乎不动。点名权威文件或把能贴的贴进去，GPT-5.2 回到 inline 水平，GPT-5.1 大约回来一半，仍低约 5 个点（TOC+Report −5.1，区间 −11.4 至 +0.9；Hybrid −5.0）。11.3 那一列没有整列回来。</p>
+</section>
+
+<section id="limit">
+  <h2><span>8</span>这篇没测到的</h2>
+  <ul>
+    <li><strong>闭源 API。</strong>证据替换出现在三个 GPT 上，有完整日志的 Sonnet 上很少。作者不知道是哪一项模型性质在驱动。</li>
+    <li><strong>解码设置。</strong>Claude 温度 0、无 extended thinking；GPT 和 Gemini 用接口默认、不设 reasoning-effort。有没有显式推理时这条还在，不知道。</li>
+    <li><strong>提示差不止返回值。</strong>inline 的说明不鼓励再读，检索的说明要求去读。配对重放两臂共用一份系统提示，掉幅仍在。每句指令只测了一种措辞。</li>
+    <li><strong>预算没跑全。</strong>不是每个模型、每种条件都有重复和完整日志。全智能体条件跑在不同时间，服务端模型可能变了，作者没建模。四次 TOC 在 33 条长报告上共用一次运行。分解用每个模型一次有日志的 inline。配对重放只覆盖 GPT-5.2，从它的 inline 检查点接着跑。</li>
+    <li><strong>核答案不是独立科学审查。</strong>留下的题，用作者输入或题面字面编码能复现键。三套设置、24 条留下的题，题面没有完全指定参考输入；去掉它们剩 134 条，结论方向不变。</li>
+    <li><strong>手工核对有限。</strong>阶段标签在 58 条样本上 52 条一致。检索损失里读过的 30 条，走错报告章节 1 条。附录 C 另读了 24 条 TOC 损失（GPT-5.1 和 GPT-5.2 各 12 条，TOC 错、inline 对）：7 条是检索通道造成的，2 条是值已在手仍答错，15 条是构建失败。按条目选出的损失被构建失败主导，构建失败在运行之间进进出出、净效果对冲，所以论文用分解，不用条目级损失。读者看到 53%–60% 跳过报告，不能当成每条丢分的题都是这个原因。</li>
+    <li><strong>干预对照每个模型一次。</strong>论文写明 a comparison limited by one control run per model。GPT-5.2 的 TOC 对照 63.3%，落在其余 TOC 运行的 55.7%–60.1% 之外。</li>
+  </ul>
+</section>
+
+<section id="src">
+  <h2><span>9</span>出处</h2>
+  <p>数字来自预印本 PDF 全文（<a href="https://arxiv.org/pdf/2610.26836">arxiv.org/pdf/2610.26836</a>，<a href="https://arxiv.org/abs/2610.26836">abs</a>，版本戳 19 Oct 2026，未经同行评审）。表 1 至表 5、表 9、表 10，第 2–5 节、附录 C 和第 9 节。论文没有在摘要里给出配套仓库，本轮未把 GitHub 检索结果当数字来源。</p>
+  <p><a href="https://openai.com/news/">OpenAI 新闻页</a>直连返回 403，未核对当日条目。用 r.jina.ai 读到 <a href="https://openai.com/index/low-resource-programming-languages/">低资源编程语言</a> 评测（MultiLangBench 20 种语言、COBOL 迁移）；页面没有发布日期，稿件未把「10 月 19 日」当作该页日期，也没有把这些数字写入正文。<a href="https://www.anthropic.com/news">Anthropic 新闻页</a>本轮用 r.jina.ai 读到的列表停在 10 月 16 日；独立评审另抓到 10 月 18 日 Investing in the public benefit，没有可写进运行位的新测量。Hacker News 近两日可见 Hybrid Reasoning Agents、Harness2，没有带 158 条分母的证据替换测量。Product Hunt 当日榜被验证页挡住。X、Reddit 今日未覆盖：本机没有可用登录态。arXiv cs.CL / cs.AI / cs.LG 的 export API 本轮按 2026-10-18 至 2026-10-21 检索。</p>
+  <p>谱系和增量层分别在 <a href="/frontier/rsi-llm-agent-self-evolution.html">递归自改进前世今生</a> 和 <a href="/frontier/llm-agent-tech-landscape.html">冻底座、改脚手架</a>。这篇只加一条：GPT-5.1 在 158 条上，报告改成检索读掉 11.3 个点；冻住模拟的对照只覆盖 GPT-5.2，131 条上掉 9.4 个点。</p>
+</section>
+</main>
+</div>
+</body>
+</html>
