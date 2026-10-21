@@ -1,5 +1,9 @@
 ﻿# 前沿技术栏目：独立 HTML 洞察索引。
 # 新增一篇：把 HTML 放到 /frontier/<slug>.html，再在这里加一条。
+- title: "Anthropic 的就业正在怎样变化"
+  date: "2026-10-21"
+  url: /frontier/2026-10-21-employment-at-anthropic.html
+  summary: "译文。原文 Nathan Wilmers 等，2026-10-16。到 8 月交互式代理工时是员工的六倍。技术部门初级员工从 21% 到 14%，初级招聘从 27% 到 9%。跟着同一人看，采用编码代理后产出上升。非技术员工把代理输出读完也要约半个工作周。招聘经理更盯自主和判断。"
 - title: "GPT-5.1 检索读报告，158 条掉 11.3 个点"
   date: "2026-10-20"
   url: /frontier/2026-10-20-retrieval-costs-eleven-points.html
