@@ -1,5 +1,9 @@
 ﻿# 前沿技术栏目：独立 HTML 洞察索引。
 # 新增一篇：把 HTML 放到 /frontier/<slug>.html，再在这里加一条。
+- title: "怎样用决策模型做评测"
+  date: "2026-10-21"
+  url: /frontier/2026-10-21-decision-model-evals.html
+  summary: "译文。原文 Hamel Husain 与 Antaripa Saha，2026-10-20。98 条租房客服轨迹上比较六家决策模型。默认阈值 0.50 不要直接用。调过之后 Perplexity 每 100 次评测 0.82 美分、F1 0.79；OpenAI Decisions 3.72 美分、F1 0.87。交互图在原文。"
 - title: "Anthropic 的就业正在怎样变化"
   date: "2026-10-21"
   url: /frontier/2026-10-21-employment-at-anthropic.html
