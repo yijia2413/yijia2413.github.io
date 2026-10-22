@@ -1,5 +1,9 @@
 ﻿# 前沿技术栏目：独立 HTML 洞察索引。
 # 新增一篇：把 HTML 放到 /frontier/<slug>.html，再在这里加一条。
+- title: "格式盲转换，76 篇上 docling 的 F1 是 0.150"
+  date: "2026-10-22"
+  url: /frontier/2026-10-22-ingestion-drops-cues.html
+  summary: "一篇预印本只改 Word 政策文档怎么变成模型眼前的字。76 篇、Claude Opus 4.6 上找回作者用红字或高亮标过的要求：作者那套 micro F1 0.690，docx2python 0.586，docling 0.150，纯文本 0.075。这 76 篇是从 6,462 篇里筛出的。高亮和颜色来自作者对自己那套表示做的留一。"
 - title: "怎样用决策模型做评测"
   date: "2026-10-21"
   url: /frontier/2026-10-21-decision-model-evals.html

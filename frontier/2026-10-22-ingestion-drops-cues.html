@@ -1,0 +1,210 @@
+﻿<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>格式盲转换，76 篇上 docling 的 F1 是 0.150</title>
+  <style>
+    :root { --ink:#0f172a; --muted:#475569; --line:#e2e8f0; --bg:#f8fafc; --blue:#1d4ed8; --blue-bg:#eff6ff; --amber:#b45309; --green:#047857; --rose:#be123c; }
+    * { box-sizing: border-box; }
+    body { margin:0; font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Noto Sans SC",sans-serif; background:var(--bg); color:var(--ink); line-height:1.75; font-size:17px; }
+    header { background:#0f172a; color:#f8fafc; padding:36px 24px 28px; border-bottom:4px solid #2563eb; }
+    header .inner { max-width:1080px; margin:0 auto; }
+    .badge { display:inline-block; border:1px solid #93c5fd; color:#bfdbfe; border-radius:999px; padding:2px 12px; font-size:13px; }
+    h1 { font-size:2rem; line-height:1.3; margin:12px 0; }
+    header p { color:#cbd5e1; margin:0; max-width:760px; }
+    .layout { max-width:1080px; margin:28px auto 64px; padding:0 20px; display:grid; grid-template-columns:220px minmax(0,1fr); gap:28px; }
+    aside { position:sticky; top:52px; align-self:start; background:#fff; border:1px solid var(--line); border-radius:12px; padding:14px; }
+    aside p { font-size:12px; letter-spacing:.06em; color:var(--muted); margin:0 0 8px; }
+    aside a { display:block; color:var(--ink); text-decoration:none; font-size:14px; padding:6px 8px; border-radius:6px; }
+    aside a:hover { background:var(--blue-bg); color:var(--blue); }
+    h2 { font-size:1.35rem; margin:0 0 12px; }
+    h2 span { display:inline-block; background:var(--blue); color:#fff; border-radius:6px; font-size:13px; padding:2px 8px; margin-right:8px; }
+    h3 { font-size:1.08rem; margin:20px 0 10px; }
+    section { background:#fff; border:1px solid var(--line); border-radius:14px; padding:26px 28px; margin-bottom:22px; }
+    p { margin:0 0 14px; }
+    a { color:var(--blue); overflow-wrap:anywhere; }
+    code { background:#f1f5f9; border-radius:4px; padding:1px 5px; font-size:15px; overflow-wrap:anywhere; }
+    main { min-width:0; }
+    figure { margin:16px 0; background:#fff; border:1px solid var(--line); border-radius:12px; padding:10px; overflow-x:auto; }
+    figure svg { display:block; min-width:700px; }
+    figcaption { color:var(--muted); font-size:14px; margin-top:6px; }
+    .tw { overflow-x:auto; margin:0 0 14px; }
+    .tw table { min-width:620px; }
+    table { width:100%; border-collapse:collapse; font-size:15px; }
+    th, td { border:1px solid var(--line); padding:8px 10px; text-align:left; vertical-align:top; }
+    th { background:#f1f5f9; }
+    ul { margin:0 0 14px; padding-left:22px; }
+    li { margin-bottom:6px; }
+    .note { background:#f1f5f9; border-left:4px solid var(--muted); padding:12px 16px; border-radius:0 8px 8px 0; font-size:16px; margin:0 0 14px; }
+    .quote { background:#fffbeb; border-left:4px solid var(--amber); padding:12px 16px; border-radius:0 8px 8px 0; font-size:15px; overflow-wrap:anywhere; margin:0 0 14px; }
+    svg text { font-family:-apple-system,"PingFang SC","Noto Sans SC",sans-serif; }
+    @media (max-width:860px) { .layout { grid-template-columns:minmax(0,1fr); } aside { position:static; } h1 { font-size:1.55rem; } section { padding:18px 16px; } }
+  </style>
+</head>
+<body>
+<nav style="position:sticky;top:0;z-index:50;background:#0f172a;border-bottom:1px solid #1e293b;padding:10px 24px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;">
+  <a href="/frontier" style="color:#93c5fd;text-decoration:none;font-size:14px;margin-right:16px;">← Frontier</a>
+  <a href="/" style="color:#cbd5e1;text-decoration:none;font-size:14px;">@xixi003</a>
+</nav>
+
+<header>
+  <div class="inner">
+    <span class="badge">FRONTIER · 2026-10-22 · 文档 ingestion</span>
+    <h1>格式盲转换，76 篇上 docling 的 F1 是 0.150</h1>
+    <p>一篇 10 月 21 日的预印本只改 Word 政策文档怎么变成模型眼前的字。76 篇、Claude Opus 4.6 上找回作者用红字或高亮标过的要求：作者那套 micro F1 0.690，docx2python 0.586，docling 0.150，纯文本 0.075。这 76 篇是从 6,462 篇里筛出、靠标记才能答的那一截。高亮和颜色是作者对自己那套表示做留一得到的负荷，原文没拆 docling 的输出里还剩什么。</p>
+  </div>
+</header>
+<div class="layout">
+<aside>
+  <p>目录</p>
+  <a href="#what">1 76 篇上 docling 0.150</a>
+  <a href="#how">2 金标写在 OOXML 里</a>
+  <a href="#ex">3 红字的 I-9，字还在</a>
+  <a href="#cue">4 留一：高亮和颜色</a>
+  <a href="#guess">5 同一缺口，有的多列有的少列</a>
+  <a href="#yours">6 你的文档进 agent 之前过哪一层</a>
+  <a href="#limit">7 这篇没测到的</a>
+  <a href="#src">8 出处</a>
+</aside>
+<main>
+<section id="what">
+  <h2><span>1</span>76 篇上 docling 0.150</h2>
+  <p>2026 年 10 月 21 日，arXiv 收到 <a href="https://arxiv.org/abs/2610.30026">What the Author Wrote, What the Agent Reads: Silent Cue Loss in Enterprise Document Ingestion</a>（arXiv:2610.30026v1，cs.CL，作者 Yikai Zhao、Saurabh Pandey、Pradeep Kumar Misra，单位署 Amazon）。预印本，未经同行评审。本轮读的是 PDF 全文；实验性 HTML 页返回 200，表 1 的列与 PDF 对齐。</p>
+  <p>企业 agent 读 ingestion 交出来的 token。Word 文件本身到不了模型眼前。转换器把文字、表格、阅读顺序保住了，流水线报成功。题在问：哪些要求是作者用红字或高亮标过的。格式盲的两臂在这道题上塌掉。</p>
+  <div class="note">
+    <p style="margin:0">这篇只论证一个判断。判断是我的，依据是论文表 1 上方面板。76 篇真实政策文档、3 次重复、1,368 次调用，同一题、同一篇，只换解析，作答模型 Claude Opus 4.6、温度 0。找回作者标过的要求，micro F1：作者那套 0.690，docx2python 0.586，docling 0.150，纯文本 0.075。篇均 macro F1 相对作者那套，docling 差 +0.578（57/76 篇作者赢），纯文本差 +0.689（62/76 篇），Holm 校正后都 &lt; 10<sup>−4</sup>。docx2python 把字符格式保成 HTML，是测到的最强基线，仍低 0.110 个 macro F1（pHolm = 0.022）。第 4 节的留一、第 5 节的假阳性用来定位掉在哪、看不见之后怎么答，不当另一条主判断。</p>
+  </div>
+  <p>表 1 的 Δ 是作者那套减去对照臂的篇均 macro F1，正数表示作者那套更高。micro F1 和这篇 Δ 不是同一列，不要拿 0.690 − 0.150 = 0.540 去对 +0.578。摘要写「所有主流转换器」都丢掉视觉层；表 1 里 docx2python 已经保住格式，和那句摘要不是同一口径。下面写测到的臂。</p>
+</section>
+
+<section id="how">
+  <h2><span>2</span>金标写在 OOXML 里</h2>
+  <p>作者扫了 6,462 份真实 <code>.docx</code> 政策文档，按内容 SHA-256 命名，在 OOXML 的 run 上检测标记，不从措辞推断。整包走一遍，32.8% 带故意的红字或非白高亮，10.3% 落在带情态义务的句子上。另有 2.6% 的标记只出现在页眉、页脚、脚注或批注，正文走不到。摘要写 6,460，正文和附录 S1 写 6,462；下面用正文这个分母。</p>
+  <p>任务从这些文件里做：一篇政策里有多句写得像要求，作者用红字或高亮标了一部分，其余不标。问模型：列出作者特地标出来、提高优先级的每一条要求。金标就是 OOXML 里那组被标记的句子，没有人工判，也没有 LLM 评审。计分是集合检索（精确率、召回、F1），假阳性对着同一篇里没被标记的真实要求算，把所有要求都列出来会罚。全池未标记干扰 4,192 条；计分 76 篇里还剩多少条，原文没给。</p>
+  <p>匹配是词面、确定性的：连续四个开头实词出现在答案里，就算找回。332 条金标里只有 1 条实词不足四个，构造上匹配不到，召回上限 0.997。没被标记的干扰项没有匹配不到的。放宽到三个词或 60% 实词重合，会再接受 4.8% 未匹配对，检查后多数是另一条共用套话的要求被误配，所以保持四词规则。</p>
+  <p>入池条件：每篇至少一个已标记、至少三个未标记要求，并且已标记句不能是唯一带紧迫词的句子。这样得到 84 篇（332 条已标记，4,192 条未标记干扰），占 6,462 的约 1.3%（84/6,462，我算的）。一次运行里计分 76–79 篇：一篇要所有臂都在长度上限内产出表示，对照才成对。这 76 篇是按「靠标记才能答」挑出来的。默认作答模型是 Claude Opus 4.6，温度 0；出题和第二意见评审用别的模型家族。</p>
+  <p>没有格式，题还能做吗？作者测过，不当成默认。按文档分组的监督分类器（TF-IDF 词 1–2 元加上字符 3–5 元，逻辑回归，同一篇不进训练和测试）AUC 0.664。零样本能用的两条启发式在随机附近：紧迫词规则 0.508，句长 0.492。0.664 是格式盲方法的上界，作者这么写。</p>
+</section>
+
+<section id="ex">
+  <h2><span>3</span>红字的 I-9，字还在</h2>
+  <p>附录 S15 给了一个入职 SOP 的解析示例，不是 76 篇计分集里的一条。示例里红字句带 WARNING 和 immediately，按入池规则这篇进不了计分集：已标记句不能是唯一带紧迫词的句子。Word 里两段挨着：</p>
+  <p>一段正常正文，把试用期加粗：试用期是雇佣的前 90 天，其间任一方可提前 5 天书面通知终止。另一段整段红字加粗：WARNING：雇员未在 3 个工作日内提交 I-9 表，将立即停薪停职。</p>
+  <p>作者的解析把加粗写成 Markdown <code>**试用期**</code>，红字写成 <code>[COLOR:#FF0000]...[/COLOR]</code>，并在块上标 <code>CRITICAL_WARNING</code>。附录没有给出 docling 或纯文本在这一段上的输出。字还在；run 上的颜色如果不进表示，模型就看不到作者标过哪一句。</p>
+  <figure>
+    <svg viewBox="0 0 920 430" width="100%" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="同一份入职 SOP，红字警告在 Word 里看得见，作者的解析把它写成颜色标签">
+      <rect width="920" height="430" fill="#ffffff"/>
+      <text x="24" y="32" font-size="18" font-weight="700" fill="#0f172a">附录 S15：作者写了红，解析写成标签</text>
+      <rect x="24" y="52" width="420" height="168" rx="8" fill="#eff6ff" stroke="#1d4ed8" stroke-width="2"/>
+      <text x="40" y="80" font-size="15" font-weight="700" fill="#1d4ed8">Word 里两段</text>
+      <text x="40" y="108" font-size="15" fill="#0f172a">加粗：试用期 = 雇佣的前 90 天</text>
+      <text x="40" y="134" font-size="15" fill="#0f172a">任一方可提前 5 天书面终止</text>
+      <text x="40" y="168" font-size="15" font-weight="700" fill="#be123c">整段红字：3 个工作日内交 I-9</text>
+      <text x="40" y="194" font-size="15" fill="#be123c">否则立即停薪停职</text>
+      <rect x="476" y="52" width="420" height="168" rx="8" fill="#ecfdf5" stroke="#047857" stroke-width="2"/>
+      <text x="492" y="80" font-size="15" font-weight="700" fill="#047857">作者解析交出去的</text>
+      <text x="492" y="108" font-size="15" fill="#0f172a">**试用期** 写成 Markdown</text>
+      <text x="492" y="134" font-size="15" fill="#0f172a">红字写成 [COLOR:#FF0000]</text>
+      <text x="492" y="168" font-size="15" fill="#0f172a">块上 roles=CRITICAL_WARNING</text>
+      <text x="492" y="194" font-size="15" fill="#475569">附录没给 docling 这一段的输出</text>
+      <rect x="24" y="240" width="420" height="110" rx="8" fill="#fffbeb" stroke="#b45309" stroke-width="2"/>
+      <text x="40" y="268" font-size="15" font-weight="700" fill="#b45309">计分题在问的</text>
+      <text x="40" y="296" font-size="15" fill="#0f172a">列出作者标过、提高优先级的要求</text>
+      <text x="40" y="324" font-size="15" fill="#0f172a">金标 = OOXML 里那组红 / 高亮句</text>
+      <rect x="476" y="240" width="420" height="110" rx="8" fill="#fff1f2" stroke="#be123c" stroke-width="2"/>
+      <text x="492" y="268" font-size="15" font-weight="700" fill="#be123c">这篇示例进不了 76 篇</text>
+      <text x="492" y="296" font-size="15" fill="#0f172a">红字句自己带 WARNING</text>
+      <text x="492" y="324" font-size="15" fill="#0f172a">入池规则会把这类篇剔掉</text>
+      <text x="24" y="380" font-size="14" fill="#475569">左栏是附录示例的排版。雇佣的前 90 天对应原文 the first 90 days of employment。</text>
+      <text x="24" y="404" font-size="14" fill="#0f172a">底行：示例只说明红怎么进标签；0.150 不从这一段来。</text>
+    </svg>
+    <figcaption>图 1. 附录 S15 的入职 SOP。红字 I-9 是作者的标记。示例不满足入池条件，不是 76 篇里的计分题。</figcaption>
+  </figure>
+</section>
+
+<section id="cue">
+  <h2><span>4</span>留一：高亮和颜色</h2>
+  <p>作者在自己那套表示上做了按标记类别的留一：每次只去掉一类 span 上的标记，再重算语义角色，文档正文跨臂字节相同。高亮贡献 +0.302（Holm 后 p &lt; 10<sup>−5</sup>），颜色 +0.262（p = 2×10<sup>−5</sup>）。加粗、斜体、等宽、删除线都在 ±0.003 以内，区间跨零。金标本身就是红字或高亮标出的要求，所以去掉加粗对这道题没有信息量，这是构造决定的。作者另外写，加粗太常见，标不出「这一条被单独点名」；单篇可以有一千多个加粗标记。这一条留一不能外推到「加粗没有用」。</p>
+  <p>原文没有报两类标记都去掉之后的 F1，也没有拆 docling、纯文本的输出里还剩没有颜色和高亮。对照臂和作者那套的差别还包括结构标签和类型角色。第 1 节的 0.150 是格式盲臂的总分，原因链停在「换了解析」；「丢掉的是高亮和颜色」是我对留一的读法。</p>
+  <p>去掉颜色，带颜色标记的文档 micro F1 从 0.699 掉到 0.214，带高亮的文档停在 0.694。去掉高亮是镜像：0.659 掉到 0.128，带颜色的文档停在 0.670。每次去掉只伤用了那一类的文档，其余最多动 0.011。</p>
+  <p>另一套题上有一条直接对着高亮的行。Microsoft OCB Word File-Fidelity 的 Highlight 特征 9 题：docx2python 1.000，作者那套 0.889，docling 和纯文本都是 0.333。这是 docling 在别人出的题上丢掉高亮的读数，n = 9，和表 1 的 F1 不是同一列。</p>
+  <figure>
+    <svg viewBox="0 0 920 400" width="100%" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="表 1 四条臂的 micro F1，以及作者表示上留一实验里高亮和颜色的负荷">
+      <rect width="920" height="400" fill="#ffffff"/>
+      <text x="24" y="32" font-size="18" font-weight="700" fill="#0f172a">表 1：同一题，只换解析（76 篇，Opus 4.6）</text>
+      <text x="24" y="70" font-size="16" font-weight="700" fill="#047857">作者那套</text>
+      <rect x="200" y="52" width="483" height="28" fill="#047857"/>
+      <text x="692" y="72" font-size="16" fill="#0f172a">0.690</text>
+      <text x="24" y="114" font-size="16" font-weight="700" fill="#1d4ed8">docx2python</text>
+      <rect x="200" y="96" width="410" height="28" fill="#1d4ed8"/>
+      <text x="620" y="116" font-size="16" fill="#0f172a">0.586</text>
+      <text x="24" y="158" font-size="16" font-weight="700" fill="#be123c">docling</text>
+      <rect x="200" y="140" width="105" height="28" fill="#be123c"/>
+      <text x="318" y="160" font-size="16" fill="#0f172a">0.150</text>
+      <text x="24" y="202" font-size="16" font-weight="700" fill="#b45309">纯文本</text>
+      <rect x="200" y="184" width="52" height="28" fill="#b45309"/>
+      <text x="264" y="204" font-size="16" fill="#0f172a">0.075</text>
+      <text x="24" y="248" font-size="16" font-weight="700" fill="#0f172a">论文图 1：作者表示上去掉一类标记，篇均 macro F1 掉多少</text>
+      <text x="24" y="280" font-size="15" fill="#be123c">高亮 +0.302　　颜色 +0.262</text>
+      <text x="24" y="308" font-size="15" fill="#475569">加粗 / 斜体 / 等宽 / 删除线　各在 ±0.003，区间跨零；金标就是红 / 高亮</text>
+      <text x="24" y="344" font-size="14" fill="#475569">柱宽按 micro F1，700 对应 1.00。docx2python 保住格式，macro Δ 仍是 +0.110。留一不是对 docling 输出做的。</text>
+      <text x="24" y="372" font-size="14" fill="#0f172a">底行：0.150 是换解析的总分；高亮和颜色是作者表示上的负荷。</text>
+    </svg>
+    <figcaption>图 2. 表 1 上方面板的 micro F1，加上论文图 1 留一的两类负荷。Δ 用篇均 macro F1，和这张柱不是同一列。</figcaption>
+  </figure>
+</section>
+
+<section id="guess">
+  <h2><span>5</span>同一缺口，有的多列有的少列</h2>
+  <p>格式盲的答案不只是少列。在 Opus 4.6 上，docling 对着同一篇里未标记的真实要求，假阳性 0.043，作者那套 0.011，原文写大约四倍。原文把这解释成看不见标记就猜。纯文本同一臂假阳性 0.005，比作者那套还低，micro F1 却只有 0.075：列得少，也找不回金标。多列还是少列，在这一列上先跟着解析臂走。docling 只在 Opus 4.6 上跑过。</p>
+  <p>换作答模型，纯文本的 micro F1 都塌在 0.007 到 0.075（论文图 2 / 表 6；论文图 2 没有 docling，因为它没在每个模型下重跑）。「几乎不答」原文写的是 Claude Sonnet 5 召回 0.09、精确率 0.96，没有写是哪一臂。</p>
+  <div class="tw">
+    <table>
+      <thead>
+        <tr><th>臂（表 1，76 篇，3 次重复，Opus 4.6）</th><th>micro F1</th><th>精确率</th><th>假阳性</th><th>Δ macro F1</th><th>pHolm</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>作者那套</td><td>0.690</td><td>0.824</td><td>0.011</td><td>—</td><td>—</td></tr>
+        <tr><td>作者那套，显著角色</td><td>0.687</td><td>0.834</td><td>0.010</td><td>−0.005</td><td>1.00</td></tr>
+        <tr><td>作者那套，无类型标记</td><td>0.605</td><td>0.811</td><td>0.010</td><td>+0.092</td><td>0.025</td></tr>
+        <tr><td>docx2python</td><td>0.586</td><td>0.797</td><td>0.010</td><td>+0.110</td><td>0.022</td></tr>
+        <tr><td>docling</td><td>0.150</td><td>0.196</td><td>0.043</td><td>+0.578</td><td>&lt; 10<sup>−4</sup></td></tr>
+        <tr><td>纯文本</td><td>0.075</td><td>0.437</td><td>0.005</td><td>+0.689</td><td>&lt; 10<sup>−4</sup></td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p>辅线，不当主判断。给已经保住的标记再写上类型角色，预注册确认实验（79 篇、6 次重复、1,422 次调用；假设写进版本库再跑，不是外部登记）比只展示同样标记多 +0.085 macro F1（区间 +0.035 至 +0.145，pHolm = 0.049，13 赢 / 4 输 / 62 平）。探索性运行里这个效应不稳定，76 篇里只有 16 对不一致。修掉表格单元格里的假黑色标记之后，效应大小几乎没动，p 从 0.005 变差到 0.049。原文：类型角色三个模型上重复得出，五个上点估计为正，没有显著为负。表 6 的 macro Δ 六行都为正；micro F1 上 Sonnet 5 的 typed 0.164 低于 untyped 0.173。原文写没有收益的是几乎不答题的那两个，没有点名。</p>
+</section>
+
+<section id="yours">
+  <h2><span>6</span>你的文档进 agent 之前过哪一层</h2>
+  <p>读完要看的是自己的运行位。政策、工单、合规问答如果先经过 Docling，或「转成纯文本再塞进上下文」，问一下：这道「作者标过哪几条」在你那一层还答不答得上。docx2python 把字符格式保成 HTML，表 1 上已经是最强基线：micro F1 0.586；篇均 macro F1 仍比作者那套低 0.110。</p>
+  <p>作者自己的修法是代码解析，零次 LLM 调用。这套表示大约是纯文本的两倍 token。40 篇上 IMPLICIT_HEADING 2,136 次、EMPHASIS 1,338 次、CRITICAL_WARNING 1,004、WARNING 452；原文写大约 62% 的角色 token 不说明作者有没有单独点名这段，分母是全部角色 token，不单是这四项。</p>
+  <p>OCB Word File-Fidelity 是另一套题：326 题、59 篇，加权断言分。修过页眉页脚、脚注、文档属性之后，作者那套总分 0.959，docx2python 0.810，docling 0.720，纯文本 0.634。38 道依赖格式的题，作者 0.816、docx2python 0.750；288 道不依赖格式的，作者 0.977、docx2python 0.818。Highlight 9 题上作者 0.889，低于 docx2python 的 1.000。不能和表 1 的 F1 做倍数。</p>
+  <p>PDF 没有 run 属性。ParseBench 表 5 的 126 条原生数字格式规则（高亮、加粗、斜体、删除线）上，作者和 pymupdf4llm 都找回 65/126 条标记；纯文本定位到 107/126 个目标，标记 0/126。能分开的只有高亮：11/18 对 4/18（McNemar p = 0.039，四类里未做 Holm）。作者的文本定位落后，75 对 82。正文另写 ParseBench 规则覆盖加粗、斜体、上标、删除线，和表 5 的四类不一致；上面用表 5。扫描件没有文字层，作者没做 OCR。</p>
+</section>
+
+<section id="limit">
+  <h2><span>7</span>这篇没测到的</h2>
+  <ul>
+    <li><strong>0.150 是筛过的 76 篇。</strong>6,462 篇里 84 篇入池（约 1.3%，我算的），计分 76 篇。入池就要「靠标记才能答」。整包上三分之一带故意的颜色或高亮，10.3% 落在义务句上，和这 76 篇的 F1 不是同一分母。更严模式（标记 run 自己带义务）是 5.6%，作者单独报。</li>
+    <li><strong>留一只对这道金标成立。</strong>金标是红字或高亮。加粗在 ±0.003 不能外推到别的任务。原文没报两类都去掉之后的 F1，也没拆 docling 输出。</li>
+    <li><strong>金标还没有人工标注。</strong>从 run 属性自动派生，用渲染页图做了跨模态核对，κ = 0.72。作者把人工标注写成最值钱的补。</li>
+    <li><strong>召回停在约 0.60。</strong>作者写这是题难，计分器结构上限是 0.997。绝对 micro F1 跨配置大约只稳到 ±0.08，所有主张都靠成对的篇级检验。</li>
+    <li><strong>类型角色不是六模型都成立。</strong>三个模型上重复得出。资格筛是格式免费对照文档上 macro F1 ≥ 0.80、假阳性 ≤ 0.05。Mistral Large 3 对照 0.558 / 0.133，精确率 0.480，附录 S10 另报，不进正文六模型。</li>
+    <li><strong>token 大约两倍。</strong>作者写成用上下文换事实性。正文还写，渐进披露没有降低 token 成本。</li>
+    <li><strong>默认作答是 Opus 4.6。</strong>docling 没有在每个模型下重跑，论文图 2 去掉了它。表 3 把同一套抽取和渲染接到三种解析上，68 篇，那是下游管道，不是表 1 的主对照。</li>
+  </ul>
+</section>
+
+<section id="src">
+  <h2><span>8</span>出处</h2>
+  <p>数字来自预印本 PDF 全文（<a href="https://arxiv.org/pdf/2610.30026">arxiv.org/pdf/2610.30026</a>，<a href="https://arxiv.org/html/2610.30026">html</a>，<a href="https://arxiv.org/abs/2610.30026">abs</a>，2026-10-21，未经同行评审）。表 1、论文图 1、论文图 2、表 2、表 3、表 5、表 6、表 7，以及第 4.1–4.8 节、第 5 节、附录 S1 / S8 / S10 / S15。export.arxiv.org 的 Atom 里 published 为 2026-10-21T16:51:25Z。实验性 HTML 页本轮 200。</p>
+  <p><a href="https://openai.com/news/">OpenAI 新闻页</a>直连返回 403，本轮未作为数字来源。用 r.jina.ai 读到的副本未写入评审抓取目录。<a href="https://www.anthropic.com/news">Anthropic 新闻页</a>本轮打开过，没有带这一组分母的 ingestion 测量。Hacker News、Product Hunt、GitHub 当日可见条目未作为数字来源。X、Reddit 今日未覆盖：本机没有可用登录态。</p>
+  <p>谱系和增量层分别在 <a href="/frontier/rsi-llm-agent-self-evolution.html">递归自改进前世今生</a> 和 <a href="/frontier/llm-agent-tech-landscape.html">冻底座、改脚手架</a>。这篇只加一条：格式盲的 ingestion 在这道「作者标过哪几条」上塌掉；76 篇、Opus 4.6 上 docling 的 micro F1 是 0.150，纯文本 0.075。</p>
+</section>
+</main>
+</div>
+</body>
+</html>
