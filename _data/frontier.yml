@@ -1,5 +1,9 @@
 ﻿# 前沿技术栏目：独立 HTML 洞察索引。
 # 新增一篇：把 HTML 放到 /frontier/<slug>.html，再在这里加一条。
+- title: "文档不够 k 条时，展示的 minItems 把超计从 34.5% 抬到 55.4%"
+  date: "2026-10-23"
+  url: /frontier/2026-10-23-minitems-pads-lists.html
+  summary: "一篇预印本只改 JSON Schema 里的最少条数。558 篇、八个开源权重模型。文档真条目少于 k 时，schema 写出但不强制的 minItems，把超过真值条数的列表从 34.5% 抬到 55.4%（k = 3 和 5，每列 7,272 条）。强制解码 90.1%。匹配器把 62.9% 的额外条目标成原文里种类不对的字，子串源检查 46.6% 能对上。"
 - title: "格式盲转换，76 篇上 docling 的 F1 是 0.150"
   date: "2026-10-22"
   url: /frontier/2026-10-22-ingestion-drops-cues.html

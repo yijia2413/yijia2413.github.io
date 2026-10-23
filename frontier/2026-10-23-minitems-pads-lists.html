@@ -1,0 +1,234 @@
+﻿<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>文档不够 k 条时，展示的 minItems 把超计从 34.5% 抬到 55.4%</title>
+  <style>
+    :root { --ink:#0f172a; --muted:#475569; --line:#e2e8f0; --bg:#f8fafc; --blue:#1d4ed8; --blue-bg:#eff6ff; --amber:#b45309; --green:#047857; --rose:#be123c; }
+    * { box-sizing: border-box; }
+    body { margin:0; font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Noto Sans SC",sans-serif; background:var(--bg); color:var(--ink); line-height:1.75; font-size:17px; }
+    header { background:#0f172a; color:#f8fafc; padding:36px 24px 28px; border-bottom:4px solid #2563eb; }
+    header .inner { max-width:1080px; margin:0 auto; }
+    .badge { display:inline-block; border:1px solid #93c5fd; color:#bfdbfe; border-radius:999px; padding:2px 12px; font-size:13px; }
+    h1 { font-size:2rem; line-height:1.3; margin:12px 0; }
+    header p { color:#cbd5e1; margin:0; max-width:760px; }
+    .layout { max-width:1080px; margin:28px auto 64px; padding:0 20px; display:grid; grid-template-columns:220px minmax(0,1fr); gap:28px; }
+    aside { position:sticky; top:52px; align-self:start; background:#fff; border:1px solid var(--line); border-radius:12px; padding:14px; }
+    aside p { font-size:12px; letter-spacing:.06em; color:var(--muted); margin:0 0 8px; }
+    aside a { display:block; color:var(--ink); text-decoration:none; font-size:14px; padding:6px 8px; border-radius:6px; }
+    aside a:hover { background:var(--blue-bg); color:var(--blue); }
+    h2 { font-size:1.35rem; margin:0 0 12px; }
+    h2 span { display:inline-block; background:var(--blue); color:#fff; border-radius:6px; font-size:13px; padding:2px 8px; margin-right:8px; }
+    h3 { font-size:1.08rem; margin:20px 0 10px; }
+    section { background:#fff; border:1px solid var(--line); border-radius:14px; padding:26px 28px; margin-bottom:22px; }
+    p { margin:0 0 14px; }
+    a { color:var(--blue); overflow-wrap:anywhere; }
+    code { background:#f1f5f9; border-radius:4px; padding:1px 5px; font-size:15px; overflow-wrap:anywhere; }
+    main { min-width:0; }
+    figure { margin:16px 0; background:#fff; border:1px solid var(--line); border-radius:12px; padding:10px; overflow-x:auto; }
+    figure svg { display:block; min-width:700px; }
+    figcaption { color:var(--muted); font-size:14px; margin-top:6px; }
+    .tw { overflow-x:auto; margin:0 0 14px; }
+    .tw table { min-width:620px; }
+    table { width:100%; border-collapse:collapse; font-size:15px; }
+    th, td { border:1px solid var(--line); padding:8px 10px; text-align:left; vertical-align:top; }
+    th { background:#f1f5f9; }
+    ul { margin:0 0 14px; padding-left:22px; }
+    li { margin-bottom:6px; }
+    .note { background:#f1f5f9; border-left:4px solid var(--muted); padding:12px 16px; border-radius:0 8px 8px 0; font-size:16px; margin:0 0 14px; }
+    .quote { background:#fffbeb; border-left:4px solid var(--amber); padding:12px 16px; border-radius:0 8px 8px 0; font-size:15px; overflow-wrap:anywhere; margin:0 0 14px; }
+    svg text { font-family:-apple-system,"PingFang SC","Noto Sans SC",sans-serif; }
+    @media (max-width:860px) { .layout { grid-template-columns:minmax(0,1fr); } aside { position:static; } h1 { font-size:1.55rem; } section { padding:18px 16px; } }
+  </style>
+</head>
+<body>
+<nav style="position:sticky;top:0;z-index:50;background:#0f172a;border-bottom:1px solid #1e293b;padding:10px 24px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;">
+  <a href="/frontier" style="color:#93c5fd;text-decoration:none;font-size:14px;margin-right:16px;">← Frontier</a>
+  <a href="/" style="color:#cbd5e1;text-decoration:none;font-size:14px;">@xixi003</a>
+</nav>
+
+<header>
+  <div class="inner">
+    <span class="badge">FRONTIER · 2026-10-23 · 结构化抽取</span>
+    <h1>文档不够 k 条时，展示的 minItems 把超计从 34.5% 抬到 55.4%</h1>
+    <p>一篇 10 月 22 日的预印本只改 JSON Schema 里的最少条数。558 篇真实文档、八个开源权重模型。文档里的真条目少于 k 时，schema 写出但不强制的 minItems，把超过真值条数的列表从 34.5% 抬到 55.4%（k = 3 和 5 合在一起，每列 7,272 条输出）。强制解码到 90.1%。匹配器把 62.9%† 的额外条目标成原文里种类不对的字，子串源检查只有 46.6%† 能对上。</p>
+  </div>
+</header>
+<div class="layout">
+<aside>
+  <p>目录</p>
+  <a href="#what">1 34.5% 到 55.4%</a>
+  <a href="#how">2 文档条数少于 k</a>
+  <a href="#ex">3 一封邮件，三条都在原文</a>
+  <a href="#pad">4 补进去的约一半过得了源检查</a>
+  <a href="#fix">5 常见修法只修一半</a>
+  <a href="#yours">6 你的 schema 里有没有最少条数</a>
+  <a href="#limit">7 这篇没测到的</a>
+  <a href="#src">8 出处</a>
+</aside>
+<main>
+<section id="what">
+  <h2><span>1</span>34.5% 到 55.4%</h2>
+  <p>2026 年 10 月 22 日，arXiv 收到 <a href="https://arxiv.org/abs/2610.30997">Padding to k: A Minimum Count in the Schema Makes Open-Weight Models Pad Their Extraction Lists</a>（arXiv:2610.30997v1，cs.CL，作者 Abhishek Barali、Aayush Paudel，单位署尼泊尔圣泽维尔学院 / 特里布文大学）。预印本，未经同行评审。本轮读的是 PDF 全文。</p>
+  <p>抽取流水线向模型要一份跟 JSON Schema 走的对象。schema 可以写 <code>minItems: 3</code>。文档里只有一条请求时，三条真请求凑不齐。模型仍把列表写到三条。</p>
+  <div class="note">
+    <p style="margin:0">这篇只论证一个判断。判断是我的，依据是论文表 16 和表 2 的 C2。八个 GPU 上的开源权重模型合在一起，文档真条目 n 少于请求条数 k，k = 3 和 5：schema 里展示、解码器不强制的 minItems，把超过 n 的列表从 34.5% 抬到 55.4%。同一对照下，实质性条目平均多 0.62 条（95% 区间 0.46 至 0.78），超计多 20.9 个点（19.5 至 22.3）。表 18、表 19 上无计数和展示下限两列都是每个型号 909 条（每列八个型号合计 7,272 条）。第 4 节的源检查、第 5 节的修法用来定位补进去的是什么、常见修法还剩多少，不当另一条主判断。</p>
+  </div>
+  <p>34.5% 已经含没有计数时的抽取误差。C2 是同一篇、同一模型上，展示下限减去无计数，模型自己本来就会多列的那一截被减掉了。无计数和展示下限不要拿去跟强制解码的 90.1% 做倍数：强制臂几乎不允许短于 k 的列表，填进去的是什么，和「写在提示里」不是同一问。注册的主度量是长度变化（+0.62 条）；34.5% 到 55.4% 是第二条度量，依赖作者把超计算失败。</p>
+</section>
+
+<section id="how">
+  <h2><span>2</span>文档条数少于 k</h2>
+  <p>558 篇来自九个带人工标注的集合：会议待办、邮件请求、收据商品、招聘广告技能、招聘广告知识、病案用药、评论特征、维基人名、小说直接引语。真条目 n 从 0 到 6。作者定计数规则，AI 助手套到 1,446 份候选列表上，作者 B 逐条手核，遗留情形两人裁定。清过的计数和原标注在 423 / 558 篇上相同（76%）。盲测：各人单独数 40 篇，分别对上 35 篇（87.5%）和 38 篇（95.0%）；40 篇里 15 篇被标成不好数。招聘广告技能最不稳（5 篇里对上 2 篇和 3 篇）。盲测量的是和书面规则是否一致。</p>
+  <p>提示是一条用户消息：指令、按 LangChain <code>JsonOutputParser</code> 的方式贴进去的 schema、然后是文档。展示下限和强制下限送同一份提示，只换解码器（XGrammar）。温度 0、seed 0、思考关掉；gpt-oss-20b 关不掉推理，跑低力度。八个 GPU 模型：Qwen3.5 的 0.8B / 2B / 9B / 27B、Gemma 4 31B、Olmo 3.1 32B、Ministral 3 14B、gpt-oss-20b。另外六个托管开源权重模型只作参照，从不和 GPU 八个合在一起。</p>
+  <p>计划先冻一版，再在 60 篇上做预实验，然后把终版注册到 OSF（<a href="https://osf.io/e4r9f">osf.io/e4r9f</a>；本轮页面没打开，顺序按论文转述）。五条验证对照一起做 Holm 校正。主度量是长度变化，不靠条目匹配；超计是第二条度量。带 † 的数字靠冻结的条目匹配器。</p>
+</section>
+
+<section id="ex">
+  <h2><span>3</span>一封邮件，三条都在原文</h2>
+  <p>论文图 1 不是随机抽的，用来把形状说清楚。一封 Enron 邮件，答案列表里只有 1 条请求。提示写「列出全部请求」，schema 的 requests 数组写 <code>minItems: 3</code>，写在提示里、不强制。Qwen3.5-9B 全文跑出来的三条：</p>
+  <ol>
+    <li>「就 2002 年法律费用分摊，你估计自己会在 EGM 事项上花多少比例的时间？」——这一条是请求。</li>
+    <li>「来要这个数的会计组知道你是在估。」——原文，不是请求。</li>
+    <li>「谢谢，Alan」——落款。</li>
+  </ol>
+  <p>三条都在邮件里。没有一条是编的。按「每条都在源文档出现」的检查，三条都会过。n &lt; k 时，「列出全部请求」和 schema 的 minItems 不能同时用真条目满足。注册计划选听指令：正确输出是列出 n 条然后停，或者用占位、N/A、附注标明列表不够。用不是真条目的文字把列表补长，算失败，从文档里抄来的也算。论文第 5 节写，模型在一定程度上是在听 schema，不听「列出全部」。把超计算失败，靠的是这个选择；+0.62 条的长度变化不靠它。</p>
+</section>
+
+<section id="pad">
+  <h2><span>4</span>补进去的约一半过得了源检查</h2>
+  <p>表 16，八个 GPU 模型合在一起，n &lt; k，k = 3 和 5：</p>
+  <div class="tw">
+    <table>
+      <thead>
+        <tr><th>条件</th><th>超计 %</th><th>刚好 k 条 %</th><th>看不懂 %</th><th>真条目漏掉 % †</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>无计数</td><td>34.5</td><td>5.6</td><td>6.9</td><td>17.0</td></tr>
+        <tr><td>展示上限 maxItems</td><td>35.7</td><td>15.5</td><td>7.3</td><td>20.9</td></tr>
+        <tr><td>展示下限 minItems</td><td>55.4</td><td>35.5</td><td>10.5</td><td>18.2</td></tr>
+        <tr><td>「少一点也行」</td><td>31.0</td><td>15.0</td><td>7.3</td><td>24.3</td></tr>
+        <tr><td>强制下限</td><td>90.1</td><td>71.8</td><td>0.2</td><td>8.6</td></tr>
+        <tr><td>强制下限加 N/A</td><td>51.0</td><td>78.5</td><td>0.1</td><td>13.6</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p>漏掉一列的分母是 n ≥ 1 的文档上的真条目。展示下限几乎没把漏掉压下去（18.2 对 17.0），多出来的不是无计数时漏掉的真条目。刚好 k 条从 5.6% 到 35.5%。强制下限把短于 k 的列表压到 0.6%，90.1% 超计，这一截主要是解码器不许短列表。</p>
+  <figure>
+    <svg viewBox="0 0 760 400" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="五种条件下超过真值条数的输出占比">
+      <rect width="760" height="400" fill="#ffffff"/>
+      <text x="24" y="32" font-size="16" font-weight="700" fill="#0f172a">表 16 · 超计占比 · 八个 GPU 模型合在一起</text>
+      <text x="24" y="54" font-size="14" fill="#475569">n &lt; k，k = 3 和 5。柱高按超计百分比。强制下限和展示下限不是同一问。</text>
+      <line x1="70" y1="80" x2="70" y2="310" stroke="#94a3b8" stroke-width="1"/>
+      <line x1="70" y1="310" x2="730" y2="310" stroke="#94a3b8" stroke-width="1"/>
+      <text x="28" y="314" font-size="14" fill="#475569">0</text>
+      <text x="20" y="199" font-size="14" fill="#475569">50</text>
+      <text x="12" y="84" font-size="14" fill="#475569">100</text>
+      <line x1="70" y1="195" x2="730" y2="195" stroke="#e2e8f0" stroke-width="1"/>
+      <rect x="90" y="231" width="88" height="79" fill="#eff6ff" stroke="#1d4ed8" stroke-width="2"/>
+      <text x="108" y="221" font-size="16" font-weight="700" fill="#1d4ed8">34.5</text>
+      <text x="96" y="334" font-size="14" fill="#0f172a">无计数</text>
+      <rect x="210" y="228" width="88" height="82" fill="#ecfdf5" stroke="#047857" stroke-width="2"/>
+      <text x="228" y="218" font-size="16" font-weight="700" fill="#047857">35.7</text>
+      <text x="216" y="334" font-size="14" fill="#0f172a">展示上限</text>
+      <rect x="330" y="183" width="88" height="127" fill="#fff7ed" stroke="#c2410c" stroke-width="2"/>
+      <text x="348" y="173" font-size="16" font-weight="700" fill="#c2410c">55.4</text>
+      <text x="336" y="334" font-size="14" fill="#0f172a">展示下限</text>
+      <rect x="450" y="103" width="88" height="207" fill="#fff1f2" stroke="#be123c" stroke-width="2"/>
+      <text x="468" y="93" font-size="16" font-weight="700" fill="#be123c">90.1</text>
+      <text x="456" y="334" font-size="14" fill="#0f172a">强制下限</text>
+      <rect x="570" y="193" width="88" height="117" fill="#fef3c7" stroke="#b45309" stroke-width="2"/>
+      <text x="588" y="183" font-size="16" font-weight="700" fill="#b45309">51.0</text>
+      <text x="582" y="334" font-size="14" fill="#0f172a">加 N/A</text>
+      <text x="24" y="368" font-size="14" fill="#475569">加 N/A 是强制下限上的逃生，不要拿 51.0 去减 34.5。</text>
+      <text x="24" y="388" font-size="14" fill="#475569">「少一点也行」超计 31.0%，图上没画，见第 5 节。</text>
+    </svg>
+    <figcaption>图 1. 表 16：超过真值条数的输出占比。注册的主对照是 C2；超计是第二度量，分母每列 7,272 条。</figcaption>
+  </figure>
+  <p>表 2 的 C2 按模型拆开。六个模型区间整段在 0 以上，从 Olmo 3.1 32B 的 +0.26 到 Gemma 4 31B 的 +1.68。Qwen3.5-2B 是 +0.60，区间跨 0。Qwen3.5-0.8B 是 −0.59：表 22 全条件合计 36.6% 看不懂，展示下限这一列是 67.4%（表 18）。冻结规则把看不懂记成 0 条，把合在一起的数往下拉。去掉它之后，作者事后算过，C2 变成 +0.80 条（0.63 至 0.96），超计从 35.0% 到 59.8%。注册报告仍用含 0.8B 的 +0.62 和 20.9 个点。</p>
+  <figure>
+    <svg viewBox="0 0 760 440" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="八个模型展示下限相对无计数多出来的条目数">
+      <rect width="760" height="440" fill="#ffffff"/>
+      <text x="24" y="32" font-size="16" font-weight="700" fill="#0f172a">表 2 · C2：展示下限减去无计数 · 实质性条目</text>
+      <text x="24" y="54" font-size="14" fill="#475569">同一篇、同一模型。合在一起 +0.62（0.46 至 0.78）。单位是条，不要和超计百分点横比。</text>
+      <line x1="250" y1="70" x2="250" y2="390" stroke="#94a3b8" stroke-width="1.5"/>
+      <text x="250" y="410" font-size="14" fill="#475569" text-anchor="middle">0</text>
+      <text x="170" y="410" font-size="14" fill="#475569" text-anchor="middle">−0.8</text>
+      <text x="330" y="410" font-size="14" fill="#475569" text-anchor="middle">+0.8</text>
+      <text x="410" y="410" font-size="14" fill="#475569" text-anchor="middle">+1.6</text>
+      <text x="24" y="96" font-size="14" fill="#0f172a">Qwen3.5-0.8B</text>
+      <rect x="191" y="80" width="59" height="22" fill="#fff1f2" stroke="#be123c" stroke-width="2"/>
+      <text x="183" y="96" font-size="14" font-weight="700" fill="#be123c" text-anchor="end">−0.59</text>
+      <text x="24" y="130" font-size="14" fill="#0f172a">Qwen3.5-2B</text>
+      <rect x="250" y="114" width="60" height="22" fill="#f1f5f9" stroke="#64748b" stroke-width="2"/>
+      <text x="318" y="130" font-size="14" font-weight="700" fill="#64748b">+0.60</text>
+      <text x="24" y="164" font-size="14" fill="#0f172a">Qwen3.5-9B</text>
+      <rect x="250" y="148" width="62" height="22" fill="#eff6ff" stroke="#1d4ed8" stroke-width="2"/>
+      <text x="320" y="164" font-size="14" font-weight="700" fill="#1d4ed8">+0.62</text>
+      <text x="24" y="198" font-size="14" fill="#0f172a">Qwen3.5-27B</text>
+      <rect x="250" y="182" width="124" height="22" fill="#eff6ff" stroke="#1d4ed8" stroke-width="2"/>
+      <text x="382" y="198" font-size="14" font-weight="700" fill="#1d4ed8">+1.24</text>
+      <text x="24" y="232" font-size="14" fill="#0f172a">Gemma 4 31B</text>
+      <rect x="250" y="216" width="168" height="22" fill="#fff7ed" stroke="#c2410c" stroke-width="2"/>
+      <text x="426" y="232" font-size="14" font-weight="700" fill="#c2410c">+1.68</text>
+      <text x="24" y="266" font-size="14" fill="#0f172a">Olmo 3.1 32B</text>
+      <rect x="250" y="250" width="26" height="22" fill="#ecfdf5" stroke="#047857" stroke-width="2"/>
+      <text x="284" y="266" font-size="14" font-weight="700" fill="#047857">+0.26</text>
+      <text x="24" y="300" font-size="14" fill="#0f172a">Ministral 3 14B</text>
+      <rect x="250" y="284" width="30" height="22" fill="#ecfdf5" stroke="#047857" stroke-width="2"/>
+      <text x="288" y="300" font-size="14" font-weight="700" fill="#047857">+0.30</text>
+      <text x="24" y="334" font-size="14" fill="#0f172a">gpt-oss-20b</text>
+      <rect x="250" y="318" width="87" height="22" fill="#eff6ff" stroke="#1d4ed8" stroke-width="2"/>
+      <text x="345" y="334" font-size="14" font-weight="700" fill="#1d4ed8">+0.87</text>
+      <text x="24" y="368" font-size="14" fill="#0f172a">八个合在一起</text>
+      <rect x="250" y="352" width="62" height="22" fill="#1d4ed8"/>
+      <text x="320" y="368" font-size="14" font-weight="700" fill="#1d4ed8">+0.62</text>
+      <text x="24" y="430" font-size="14" fill="#475569">灰柱 Qwen3.5-2B 区间跨 0。红柱 0.8B 看不懂的输出记成 0 条。刻度：100 像素 = 1 条，零点在 x = 250。</text>
+    </svg>
+    <figcaption>图 2. 表 2 列 C2。合在一起的 +0.62 含 0.8B。Qwen3.5-2B 的区间跨 0，论文不当成成立的加长。</figcaption>
+  </figure>
+  <p>表 23：展示下限多出来的 22,665 条额外条目里，匹配器标成「种类不对」的 62.9%†，编造 29.5%†。事后源检查（表 31）：这些额外条目里 46.6%† 能在源文档里按规范化子串对上。摘要写「大约一半过源检查」，指这一列。分母都是匹配器判出的额外条目，一个按匹配器标签，一个按子串，不要合成一个「原文比例」。</p>
+</section>
+
+<section id="fix">
+  <h2><span>5</span>常见修法只修一半</h2>
+  <p>文档里已经有至少 k 条时，展示下限不加长列表（−0.15 条，区间 −0.30 至 −0.02；这一格含 k = 1、3 和 5）。效应来自填不上的空位：n &lt; k 上的变化比 n ≥ k 上的变化多 0.93 条（k = 3 和 5）。</p>
+  <p>加一句「如果文档里不够 k 条，把有的都列出来」（论文从 ScrapeGraphAI-100k 的真实抽取提示改来的）：相对无计数，列表短 0.77 条，超计低 3.5 个点，落到 31.0%。八个里七个相对纯展示下限缩短；Qwen3.5-27B 仍比无计数多 0.46 条。代价是真条目漏掉从 17.0%† 到 24.3%†。</p>
+  <p>强制下限上允许 N/A：每个被迫空位上的超额条目少 0.54（表 2 的 C5，区间 −0.58 至 −0.50）。超计仍有 51.0%（表 16，与 34.5% 同一口径）。两个最小的型号几乎不用它：Qwen3.5-0.8B 仍超计 89.6%（908 条），2B 仍 83.0%（907 条）。</p>
+  <p>校验失败后把报错原样送回去再问一次，是探索臂。报错把最低条数再说一遍，听它是预期行为。Qwen3.5-9B 在被重问、且 n &lt; k 的回复上，超计从 10.0% 到 69.0%（表 28，639 条）。五个跑次是四个模型，Ministral 3 14B 在 GPU 和 Bedrock 各一次，其中两个是托管。这些本来短于 k 的列表，重问之后有 44.0% 到 81.6% 变成超计（n &lt; k 回复数 405 到 639）。没有测过重问时再加「少一点也行」。</p>
+</section>
+
+<section id="yours">
+  <h2><span>6</span>你的 schema 里有没有最少条数</h2>
+  <p>读完要看的是自己的运行位。抽取、工具调用、表单填空，只要 schema 或提示里写了列表最少几条，文档又经常不够，就会落到 n &lt; k 这一格。JSONSchemaBench 的 9,542 份真实 schema 里，7.7% 给字符串或对象的开放数组写了 minItems ≥ 1；minItems ≥ 2 是 0.3%（事后，表 34，分母都是 9,542）。公开 schema 里列表最小值几乎都是 1，k = 3 和 5 更少见。k = 1 的实测在空文档上：105 篇没有真条目，无计数时 34.9% 的输出至少有一条实质性条目，展示 minItems: 1 抬到 42.3%，多 7.4 个点（区间 5.6 至 9.2；表 3）。这是「有没有列出东西」，和标题里的超计不是同一列。</p>
+  <p>过源检查挡不住落款和「会计组知道你是在估」这种原文。无计数时列表已经刚好 n 条的那些单元上，展示下限仍让 35.2% 变成超计（区间 33.0 至 37.5；表 33，事后；2,275 个模型×文档对，k = 3 或 5 共 3,884 个单元）。校验重试会把最低条数再说一遍。</p>
+  <p><a href="/frontier/2026-10-11-option-labels-are-input.html">10-11</a> 写过，护栏的选项名也是输入。<a href="/frontier/2026-10-19-visible-tools-are-input.html">10-19</a> 写过，可见工具列表也是输入。这一篇补的是第三段表面：schema 里的最少条数。论文给 schema 作者的第一条是：文档自己决定长度的列表，不要写 minItems。这条是他们在测到的开源权重模型上的建议，没有在生产流水线上做对照。</p>
+  <p>下面是我的推断，论文没有在 LangChain 默认重试或托管闭源 API 上做主实验。编辑起点如果是「输出必须合法 JSON」，合法列表仍可以是三条原文拼出来的超计。要看见 20.9 个点那一列，看的是这一次请求里写了多少 minItems、文档够不够，仓库里 schema 文件的总数对不上这一列。</p>
+</section>
+
+<section id="limit">
+  <h2><span>7</span>这篇没测到的</h2>
+  <ul>
+    <li><strong>闭源 API 没跑。</strong>作者写成主要缺口。<a href="https://arxiv.org/abs/2607.20492">PhantomFill</a> 是另一篇预印本。本文转述：GPT-5.5 在 20 次里有 3 次用编造内容填最少条数数组；那套输入按构造不含真条目，和这篇的 558 篇不是同一分布。</li>
+    <li><strong>0.8B 把合在一起的数往下拉。</strong>注册结论用含它的 +0.62 / 20.9。去掉它是事后算法。</li>
+    <li><strong>每条都是一个字符串。</strong>带多个字段的记录没测。一种语法引擎（XGrammar）；预研究里第二种引擎给出过不同输出。</li>
+    <li><strong>托管六个从不和 GPU 八个合池。</strong>九次托管跑都在展示下限下加长，从 Ministral 3 14B（Bedrock）的 +0.28 到 DeepSeek V3.2 的 +2.39。四个托管型号上，「少一点也行」相对无计数仍多 0.30 到 0.53 条。</li>
+    <li><strong>思考是探索臂，用厂商推荐采样，不是贪心。</strong>Qwen3.5-9B 三个请求种子上，思考打开让 C2 再大约多 1.1 到 1.2 条，展示下限超计从 43–47% 到 81–83%。Gemma 4 31B 长度几乎不动（−0.11，区间 −0.23 至 0.01），超计从 61.8% 到 66.1%。Kimi K3 在 60 篇预实验文档上 +0.58 条，那一对温度也不同。88–89% 是短语搜索，覆盖所有带条数的条件，不单是展示下限。</li>
+    <li><strong>没有 Claude。</strong>一个 Claude 型号帮过准备答案列表。</li>
+    <li><strong>maxItems 不是中性对照。</strong>相对无计数短 0.49 条，超计几乎不动（35.7% 对 34.5%），真条目漏掉更多。</li>
+    <li><strong>n &lt; k 在真实流水线里有多常见，这篇没测。</strong>文档按每个集合、每个真条数最多 15 篇的格子来填；没有单一正确条数的文档被丢掉。公开 schema 里列表最小值几乎都是 1，所以 k = 1 更接近常见情形，k = 3 和 5 更少见。</li>
+    <li><strong>答案列表是一种读法。</strong>盲测量的是和书面规则是否一致。招聘广告技能最不稳。</li>
+  </ul>
+</section>
+
+<section id="src">
+  <h2><span>8</span>出处</h2>
+  <p>数字来自预印本 PDF 全文（<a href="https://arxiv.org/pdf/2610.30997">arxiv.org/pdf/2610.30997</a>，<a href="https://arxiv.org/abs/2610.30997">abs</a>，2026-10-22，未经同行评审）。表 1 至表 4、表 16、表 2、表 3、表 18、表 19、表 22、表 23、表 28、表 30、表 31、表 33、表 34，以及第 3–6 节、附录 M。export.arxiv.org 的 Atom 里 published 为 2026-10-22T09:38:58Z。代码和跑次记录在 <a href="https://github.com/AbhishekBarali/padding-to-k">github.com/AbhishekBarali/padding-to-k</a>。计划页 <a href="https://osf.io/e4r9f">osf.io/e4r9f</a> 本轮抓取失败，计划内容按论文转述。</p>
+  <p><a href="https://openai.com/news/">OpenAI 新闻页</a>直连 403，本轮经 r.jina.ai 打开过，列出标题为「Build more responsive apps with the Decisions API」的 10 月 22 日条目，没有带这一组分母的抽取测量，未写入数字。<a href="https://www.anthropic.com/news">Anthropic 新闻页</a>本轮打开过，10 月 22 日有把 Agent Skills 捐给 Agentic AI Foundation，同样未写入数字。Hacker News、Product Hunt、GitHub 当日可见条目未作为数字来源。X、Reddit 今日未覆盖：本机没有可用登录态。</p>
+  <p>谱系和增量层分别在 <a href="/frontier/rsi-llm-agent-self-evolution.html">递归自改进前世今生</a> 和 <a href="/frontier/llm-agent-tech-landscape.html">冻底座、改脚手架</a>。这篇只加一条：schema 里展示的最少条数，在文档不够的时候，会把抽取列表往 k 上凑；八个开源权重模型、n &lt; k、k = 3 和 5 上，超计从 34.5% 到 55.4%。</p>
+</section>
+</main>
+</div>
+</body>
+</html>
