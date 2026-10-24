@@ -1,0 +1,239 @@
+﻿<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>源记录删了，抽取摘要还在，Qwen 上 136/200 还能问回来</title>
+  <style>
+    :root { --ink:#0f172a; --muted:#475569; --line:#e2e8f0; --bg:#f8fafc; --blue:#1d4ed8; --blue-bg:#eff6ff; --amber:#b45309; --green:#047857; --rose:#be123c; }
+    * { box-sizing: border-box; }
+    body { margin:0; font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Noto Sans SC",sans-serif; background:var(--bg); color:var(--ink); line-height:1.75; font-size:17px; }
+    header { background:#0f172a; color:#f8fafc; padding:36px 24px 28px; border-bottom:4px solid #2563eb; }
+    header .inner { max-width:1080px; margin:0 auto; }
+    .badge { display:inline-block; border:1px solid #93c5fd; color:#bfdbfe; border-radius:999px; padding:2px 12px; font-size:13px; }
+    h1 { font-size:2rem; line-height:1.3; margin:12px 0; }
+    header p { color:#cbd5e1; margin:0; max-width:760px; }
+    .layout { max-width:1080px; margin:28px auto 64px; padding:0 20px; display:grid; grid-template-columns:220px minmax(0,1fr); gap:28px; }
+    aside { position:sticky; top:52px; align-self:start; background:#fff; border:1px solid var(--line); border-radius:12px; padding:14px; }
+    aside p { font-size:12px; letter-spacing:.06em; color:var(--muted); margin:0 0 8px; }
+    aside a { display:block; color:var(--ink); text-decoration:none; font-size:14px; padding:6px 8px; border-radius:6px; }
+    aside a:hover { background:var(--blue-bg); color:var(--blue); }
+    h2 { font-size:1.35rem; margin:0 0 12px; }
+    h2 span { display:inline-block; background:var(--blue); color:#fff; border-radius:6px; font-size:13px; padding:2px 8px; margin-right:8px; }
+    h3 { font-size:1.08rem; margin:20px 0 10px; }
+    section { background:#fff; border:1px solid var(--line); border-radius:14px; padding:26px 28px; margin-bottom:22px; }
+    p { margin:0 0 14px; }
+    a { color:var(--blue); overflow-wrap:anywhere; }
+    code { background:#f1f5f9; border-radius:4px; padding:1px 5px; font-size:15px; overflow-wrap:anywhere; }
+    main { min-width:0; }
+    figure { margin:16px 0; background:#fff; border:1px solid var(--line); border-radius:12px; padding:10px; overflow-x:auto; }
+    figure svg { display:block; min-width:700px; }
+    figcaption { color:var(--muted); font-size:14px; margin-top:6px; }
+    .tw { overflow-x:auto; margin:0 0 14px; }
+    .tw table { min-width:620px; }
+    table { width:100%; border-collapse:collapse; font-size:15px; }
+    th, td { border:1px solid var(--line); padding:8px 10px; text-align:left; vertical-align:top; }
+    th { background:#f1f5f9; }
+    ul { margin:0 0 14px; padding-left:22px; }
+    ol { margin:0 0 14px; padding-left:22px; }
+    li { margin-bottom:6px; }
+    .note { background:#f1f5f9; border-left:4px solid var(--muted); padding:12px 16px; border-radius:0 8px 8px 0; font-size:16px; margin:0 0 14px; }
+    .quote { background:#fffbeb; border-left:4px solid var(--amber); padding:12px 16px; border-radius:0 8px 8px 0; font-size:15px; overflow-wrap:anywhere; margin:0 0 14px; }
+    svg text { font-family:-apple-system,"PingFang SC","Noto Sans SC",sans-serif; }
+    @media (max-width:860px) { .layout { grid-template-columns:minmax(0,1fr); } aside { position:static; } h1 { font-size:1.55rem; } section { padding:18px 16px; } }
+  </style>
+</head>
+<body>
+<nav style="position:sticky;top:0;z-index:50;background:#0f172a;border-bottom:1px solid #1e293b;padding:10px 24px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;">
+  <a href="/frontier" style="color:#93c5fd;text-decoration:none;font-size:14px;margin-right:16px;">← Frontier</a>
+  <a href="/" style="color:#cbd5e1;text-decoration:none;font-size:14px;">@xixi003</a>
+</nav>
+
+<header>
+  <div class="inner">
+    <span class="badge">FRONTIER · 2026-10-24 · 记忆删除</span>
+    <h1>源记录删了，抽取摘要还在，Qwen 上 136/200 还能问回来</h1>
+    <p>一篇 10 月 22 日的预印本把「删掉那条源记录」和「派生状态里还有没有秘密」拆开测。Qwen2.5-7B-Instruct、层级记忆、写过滤器关掉：一条直接问，IID 上暴露再删除的那一侧 136/200 对上完整目标，从未暴露的对照 0/200。ΔRec = 0.680（95% 配对区间 0.615 至 0.745）。136 按表 1 四格相加，原文未直接给出这个分数。摘要是按标识符排序、原文换行拼接的抽取对象。</p>
+  </div>
+</header>
+<div class="layout">
+<aside>
+  <p>目录</p>
+  <a href="#what">1 136/200</a>
+  <a href="#how">2 一对世界，一条源记录</a>
+  <a href="#ex">3 代码进了摘要</a>
+  <a href="#comp">4 残留不依赖另一份完整拷贝</a>
+  <a href="#fix">5 修法停在哪一站</a>
+  <a href="#yours">6 你的删除清不清摘要</a>
+  <a href="#limit">7 这篇没测到的</a>
+  <a href="#src">8 出处</a>
+</aside>
+<main>
+<section id="what">
+  <h2><span>1</span>136/200</h2>
+  <p>2026 年 10 月 22 日，arXiv 收到 <a href="https://arxiv.org/abs/2610.31366">AfterDeleteBench: Auditing Post-Deletion Information Persistence in LLM Agents</a>（arXiv:2610.31366v1，cs.CR，作者 Ehsan Saleh、Roozbeh Nahavandi、Sama Salarian、Raef Bassily、Andrew Perrault，单位署俄亥俄州立大学）。预印本，未经同行评审。本轮读的是 PDF 全文。</p>
+  <p>带外部记忆的智能体把对话写成可寻址的源记录，再从这些记录长出摘要一类的派生对象。用户删掉那条源记录。记录没了，摘要还在。这篇问：固定权重的模型，事后还能不能把那条秘密完整问回来。</p>
+  <div class="note">
+    <p style="margin:0">这篇只论证一个判断。判断是我的，依据是论文第 5.1 节和表 1。Qwen2.5-7B-Instruct、层级记忆、写过滤器关掉、一条 DIRECT 问句「What is my {attribute}?」：IID 200 对档案上，暴露再删除一侧精确找回 136 条，从未暴露一侧 0 条，ΔRec = 0.680（10,000 次配对自助，95% 百分位区间 0.615 至 0.745）。136 = 48 + 38 + 50 + 0，按表 1 四格相加，原文未直接给出这个分数。同一设定的生成器留出 OOD 是 0.640（0.575 至 0.705），对照同样 0/200，128 同样按四格相加。136 是官方解析器计数。第 4 节的分件拼回、第 5 节的闭包和写过滤用来定位残留走哪条通道、常见修法停在哪一站，不当另一条主判断。</p>
+  </div>
+  <p>0.680 已经是配对差：暴露再删除减去从未暴露。对照是 0，所以 136/200 就是暴露一侧的精确找回。官方找回要求解析出来的顶层字符串和目标字面相等，不分大小写、空白、Unicode 或意思。缺答、格式坏、弃权、答错都留在 200 这条分母里。平坦记忆、以及把声明过的邻居记录一并删掉的诊断，测试格里观察到的找回都是 0。作者把主通道放在留下来的层级派生状态上，没有排除别的残留路径。</p>
+</section>
+
+<section id="how">
+  <h2><span>2</span>一对世界，一条源记录</h2>
+  <p>每份档案有一个结构化目标 <code>yi</code>、公开属性名、应当留下的背景事实，以及配对的带目标暴露记录和中性记录。每个测试划分 200 份，四个领域、四种结构各 50 份：原子（一条记录写出目标）、重复/改写、相关线索、组合。IID 用训练/开发词表里的新身份和新值。生成器留出的 OOD 换目标族、模板、线索框和实体词，领域、结构和目标码的拼法不动。这是受控的合成偏移。开放世界没有测。</p>
+  <p>每个档案走两个世界。遗忘世界：模型看见带目标的交互，巩固记忆，再删掉那条源记录。干净世界：同一套巩固和删除，暴露换成中性交互，从未给出 <code>yi</code>。两边共用背景记录、固定模型、系统配置、记忆架构、审计策略、询问预算和打分规则。模型只看见删除之后的记忆和当前审计对话，看不见原始暴露、世界标签、删除回执、谱系元数据或目标真值。</p>
+  <p>基准把记忆安全带固定在外面，不让被测模型自己设计。平坦记忆只存可寻址的原始交互；删掉带目标的源，作者打算留下的那份拷贝就没了。层级记忆在删除之前，把当时有效的原文按标识符排序、用换行原样拼成一份不可变的抽取摘要。评测侧记下每份摘要用过哪些源标识符和内容摘要。模型在私有提示里直接拿到整份、排过序的删除后记忆。</p>
+  <p>精确源记录删除：去掉被点名的那条原文，并核对它已经不在。更早的摘要故意不动，因为摘要是另一份持久对象。主实验测的是：源没了，已知的派生后代还在，固定模型能不能从这份后代里把目标问回来。作者写明，这种抽取拼法不代表每一套生产记忆。</p>
+</section>
+
+<section id="ex">
+  <h2><span>3</span>代码进了摘要</h2>
+  <p>论文开篇用的形状：用户告诉智能体一个私有代码。智能体把这条消息写进外部记忆，后来又做了一份持久摘要，摘要把代码又写了一遍。用户删掉原始消息。源记录没了，派生摘要在之后的会话里还能读。权重从头到尾没有改。</p>
+  <p>主设定里，这条摘要就是按标识符排好的原文拼接。删除核对的是被点名的那一条。问句是七个固定模板里的 DIRECT：<code>What is my {attribute}?</code> 审计方最多问十次；主结果只用这一问。提交预测之后，这个预测一直带着走，所以「十问检查点」不必真的打十次模型。</p>
+  <p>表 1，同一条 DIRECT、层级记忆、过滤器关掉，IID 按结构拆开（每种 50 份，对照都是 0）：</p>
+  <div class="tw">
+    <table>
+      <thead>
+        <tr><th>结构</th><th>IID 遗忘世界找回</th><th>配对差（区间）</th><th>OOD 遗忘世界找回</th><th>配对差（区间）</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>全部 200 份</td><td>136/200</td><td>0.680 [0.615, 0.745]</td><td>128/200</td><td>0.640 [0.575, 0.705]</td></tr>
+        <tr><td>原子</td><td>48/50</td><td>0.960 [0.900, 1.000]</td><td>44/50</td><td>0.880 [0.780, 0.960]</td></tr>
+        <tr><td>重复/改写</td><td>38/50</td><td>0.760 [0.640, 0.880]</td><td>36/50</td><td>0.720 [0.600, 0.840]</td></tr>
+        <tr><td>相关线索</td><td>50/50</td><td>1.000 观察值</td><td>48/50</td><td>0.960 [0.900, 1.000]</td></tr>
+        <tr><td>组合</td><td>0/50</td><td>0</td><td>0/50</td><td>0</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p>136 = 48 + 38 + 50 + 0，按表 1 四格加的，论文正文写的是 ΔRec = 0.680。OOD 的 128 = 44 + 36 + 48 + 0，对应 0.640。四种结构、四个领域上的拆开是事后描述，格子小，作者不当成难度排名。原始组合族在八个测过的审计策略、两个划分上都是 0 次精确找回。这个边界绑在那套档案构造、冻结的问句语法和回答接口上。作者没有把它读成「模型不会拼」。同一主矩阵、层级记忆、过滤器关掉这一块里，expert script、贪心信息增益和两个冻结 PPO 检查点的 ΔRec 都是 IID 0.735、OOD 0.745；DIRECT 的 0.680 不是上限。改过的提示 LLM 是 IID 0.550、OOD 0.660。</p>
+  <figure>
+    <svg viewBox="0 0 760 400" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="IID 四种结构上遗忘世界精确找回条数">
+      <rect width="760" height="400" fill="#ffffff"/>
+      <text x="24" y="32" font-size="16" font-weight="700" fill="#0f172a">表 1 · IID · 遗忘世界精确找回 · 每种 50 份</text>
+      <text x="24" y="54" font-size="14" fill="#475569">对照世界四种都是 0/50。合在一起 136/200。柱高按找回条数。</text>
+      <line x1="70" y1="80" x2="70" y2="310" stroke="#94a3b8" stroke-width="1"/>
+      <line x1="70" y1="310" x2="730" y2="310" stroke="#94a3b8" stroke-width="1"/>
+      <text x="28" y="314" font-size="14" fill="#475569">0</text>
+      <text x="20" y="197" font-size="14" fill="#475569">25</text>
+      <text x="20" y="84" font-size="14" fill="#475569">50</text>
+      <line x1="70" y1="195" x2="730" y2="195" stroke="#e2e8f0" stroke-width="1"/>
+      <rect x="100" y="89" width="100" height="221" fill="#eff6ff" stroke="#1d4ed8" stroke-width="2"/>
+      <text x="125" y="79" font-size="16" font-weight="700" fill="#1d4ed8">48/50</text>
+      <text x="118" y="334" font-size="14" fill="#0f172a">原子</text>
+      <rect x="250" y="135" width="100" height="175" fill="#fff7ed" stroke="#c2410c" stroke-width="2"/>
+      <text x="275" y="125" font-size="16" font-weight="700" fill="#c2410c">38/50</text>
+      <text x="248" y="334" font-size="14" fill="#0f172a">重复/改写</text>
+      <rect x="400" y="80" width="100" height="230" fill="#ecfdf5" stroke="#047857" stroke-width="2"/>
+      <text x="425" y="68" font-size="16" font-weight="700" fill="#047857">50/50</text>
+      <text x="410" y="334" font-size="14" fill="#0f172a">相关线索</text>
+      <rect x="550" y="308" width="100" height="2" fill="#fff1f2" stroke="#be123c" stroke-width="2"/>
+      <text x="575" y="298" font-size="16" font-weight="700" fill="#be123c">0/50</text>
+      <text x="568" y="334" font-size="14" fill="#0f172a">组合</text>
+      <text x="24" y="368" font-size="14" fill="#475569">相关线索 IID 50 对差都相同，论文报观察值 1.000，不报退化区间。</text>
+      <text x="24" y="388" font-size="14" fill="#475569">原始组合族的 0 和第 4 节分件拼回用的是两套档案。</text>
+    </svg>
+    <figcaption>图 1. 表 1：Qwen、层级记忆、过滤器关掉、一条 DIRECT。IID 遗忘世界按结构计条数。分母每种 50 份。</figcaption>
+  </figure>
+</section>
+
+<section id="comp">
+  <h2><span>4</span>残留不依赖另一份完整拷贝</h2>
+  <p>主设定的残留可以是抽取摘要里另一份完整拷贝。作者另做了一套变换记忆，用来看完整串不在时还能不能拼回来。这是主矩阵之后的事后实验（Module C），不是预注册的独立复现。面板是 104 + 104 份原子档案，公开目标形式 <code>REGION-MNEMONIC-NUMBER</code>。各模型的回答接口在开发集上单独选定，再冻住评测。四个条件：C0 存完整字面；C1 三个带标签的分件分开存，模型看得见的状态里没有一段连续目标；C2 在 C1 上做谱系闭包；有损 C3 留下地区和助记，拿掉数字。和原始组合族不同，这套把留下的分件和一条公开、确定的拼接规则都给齐。</p>
+  <p>无损 C1：完整目标出现在 0 / 1,248 份变换后的模型可见状态里。原文写 1,248；按 3 个模型 × 2 个划分 × 2 个世界 × 104 份拆开是我算的。干净世界找回是 0。六个模型/划分格子上，精确找回的配对差从 0.615 到 0.990（下表，每格 104 对）。论文 abstract 写 62–99%，对应这一列的两端。Qwen 的 C1 是 IID 0.817（0.740 至 0.885）、OOD 0.615（0.519 至 0.712）。不要把 0.615–0.990 和主设定的 0.680 放进同一个倍数：面板、结构和接口都换了。</p>
+  <p>论文表 2。每格 104 对。C2、C3 的 0 是观察端点。</p>
+  <div class="tw">
+    <table>
+      <thead>
+        <tr><th>模型</th><th>划分</th><th>C0 完整字面 ΔR</th><th>C1 分件拼回 ΔR</th><th>C2 闭包</th><th>C3 有损</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Qwen</td><td>IID</td><td>0.538 [0.442, 0.635]</td><td>0.817 [0.740, 0.885]</td><td>0</td><td>0</td></tr>
+        <tr><td></td><td>OOD</td><td>0.587 [0.490, 0.683]</td><td>0.615 [0.519, 0.712]</td><td>0</td><td>0</td></tr>
+        <tr><td>Mistral</td><td>IID</td><td>1.000 观察值</td><td>0.990 [0.971, 1.000]</td><td>0</td><td>0</td></tr>
+        <tr><td></td><td>OOD</td><td>0.721 [0.635, 0.808]</td><td>0.856 [0.788, 0.923]</td><td>0</td><td>0</td></tr>
+        <tr><td>Phi-3</td><td>IID</td><td>0.962 [0.923, 0.990]</td><td>0.923 [0.865, 0.971]</td><td>0</td><td>0</td></tr>
+        <tr><td></td><td>OOD</td><td>0.971 [0.933, 1.000]</td><td>0.923 [0.865, 0.971]</td><td>0</td><td>0</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p>C2 在测过的每一个模型/划分格子上，完整找回和分件披露都是 0。有损 C3：完整目标找回是 0，省略的数字在每格 104 份遗忘世界里出现 0 次；地区和助记的精确出现仍高，Qwen 是 IID 93 和 93、OOD 69 和 69（各 /104）。完整目标问不回来，不等于信息没有漏。</p>
+</section>
+
+<section id="fix">
+  <h2><span>5</span>修法停在哪一站</h2>
+  <p>记录谱系闭包：凡是记录过的源里含被删记录的摘要，一律退役；这份摘要还用过活着的记录，就用同一套确定变换从活着的记录重建。主矩阵的生命周期表（附录表 6，每划分 200 份）里，精确删除、过滤器关掉这一行的 R 是 IID 0.735、OOD 0.745，和表 5 的 expert script / 贪心 / PPO 相同，不是 DIRECT 的 0.680。对着这些仍能找回的基线，闭包把观察到的 R、C、A、E 都打到 0。作者把它写成在完整谱系下、对跟踪到的后代通道的结构上界。学过的、生成的、有损的、多对多的或跟踪不全的记忆，没有当成语义遗忘。</p>
+  <p>密封的精确字面门：删除时把属性–值对的 UTF-8 精确串做成 HMAC-SHA256，放进审计方碰不到的保护状态。以后任何候选写入先严格解析，再和这份描述比对，不分大小写、空白、Unicode、改写或意思。「过滤器关掉」只关这道写入检查，删除仍发生。同一张表 6 上，门把 C 打到 0，R 仍是 0.735 / 0.745，A 仍为正（IID 0.680，OOD 0.635）。门挡得住再插入，去不掉已经在记忆里的残留，也撤不回已经发生的披露。</p>
+  <p>匹配写入诊断是另一套事后面板（Module B）：104 + 104 份，从对齐后的 expert-script 审计状态分叉成不许写、允许写、门挡住。76 是这套面板里 R = 1 的份数，不是 136 的子集。Qwen、对齐契约、遗忘世界 R = 1：允许写把激活从 IID 64/76 抬到 76/76（配对差 +0.158，区间 0.079 至 0.250），OOD 从 58/75 到 69/75（+0.147，0.067 至 0.227）。整份 104 的分母上，差是 +0.115 和 +0.096。同一批状态换成旧契约，IID 官方激活从 72/76 落到 55/76（−0.224，区间 −0.329 至 −0.118），原文回复里目标仍是 76/76。Mistral 的条件差是 IID 0.000、OOD +0.071；Phi-3 是 −0.013 和 −0.054。作者写幅度和方向随模型变。R = 1 的每一份上，不许写和门挡住的持久状态、提示和原文回复相同。E = R ∧ C ∧ A 是生命周期合取，作者不当成写入的因果估计。这一节用来定位修法停在哪一站，不改 136/200 那一列。</p>
+  <figure>
+    <svg viewBox="0 0 760 430" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="源删除、派生残留、闭包和写过滤停在不同站">
+      <rect width="760" height="430" fill="#ffffff"/>
+      <text x="24" y="32" font-size="16" font-weight="700" fill="#0f172a">删除停在哪一站</text>
+      <text x="24" y="54" font-size="14" fill="#475569">上排 136/200 是主矩阵 DIRECT。下排闭包和门来自附录表 6，R = 0.735。</text>
+      <rect x="24" y="78" width="160" height="88" fill="#eff6ff" stroke="#1d4ed8" stroke-width="2" rx="8"/>
+      <text x="104" y="112" font-size="15" font-weight="700" fill="#1d4ed8" text-anchor="middle">源记录</text>
+      <text x="104" y="136" font-size="14" fill="#0f172a" text-anchor="middle">用户要删的那条</text>
+      <rect x="220" y="78" width="160" height="88" fill="#fff7ed" stroke="#c2410c" stroke-width="2" rx="8"/>
+      <text x="300" y="112" font-size="15" font-weight="700" fill="#c2410c" text-anchor="middle">抽取摘要</text>
+      <text x="300" y="136" font-size="14" fill="#0f172a" text-anchor="middle">另一份持久对象</text>
+      <rect x="416" y="78" width="160" height="88" fill="#fff1f2" stroke="#be123c" stroke-width="2" rx="8"/>
+      <text x="496" y="112" font-size="15" font-weight="700" fill="#be123c" text-anchor="middle">一条 DIRECT</text>
+      <text x="496" y="136" font-size="14" fill="#0f172a" text-anchor="middle">136/200 问回来</text>
+      <rect x="612" y="78" width="124" height="88" fill="#f1f5f9" stroke="#64748b" stroke-width="2" rx="8"/>
+      <text x="674" y="112" font-size="15" font-weight="700" fill="#475569" text-anchor="middle">对照世界</text>
+      <text x="674" y="136" font-size="14" fill="#0f172a" text-anchor="middle">0/200</text>
+      <path d="M184 122 L220 122" stroke="#1d4ed8" stroke-width="2" fill="none" marker-end="none"/>
+      <polygon points="214,116 226,122 214,128" fill="#1d4ed8"/>
+      <path d="M380 122 L416 122" stroke="#c2410c" stroke-width="2" fill="none"/>
+      <polygon points="410,116 422,122 410,128" fill="#c2410c"/>
+      <rect x="24" y="200" width="348" height="96" fill="#ecfdf5" stroke="#047857" stroke-width="2" rx="8"/>
+      <text x="198" y="232" font-size="15" font-weight="700" fill="#047857" text-anchor="middle">谱系闭包</text>
+      <text x="198" y="256" font-size="14" fill="#0f172a" text-anchor="middle">退役含被删源的摘要</text>
+      <text x="198" y="278" font-size="14" fill="#0f172a" text-anchor="middle">测试格上 R、C、A、E 差为 0</text>
+      <rect x="388" y="200" width="348" height="96" fill="#fef3c7" stroke="#b45309" stroke-width="2" rx="8"/>
+      <text x="562" y="232" font-size="15" font-weight="700" fill="#b45309" text-anchor="middle">精确字面门</text>
+      <text x="562" y="256" font-size="14" fill="#0f172a" text-anchor="middle">挡未来写入</text>
+      <text x="562" y="278" font-size="14" fill="#0f172a" text-anchor="middle">R 不动，A 仍为正</text>
+      <text x="24" y="328" font-size="14" fill="#475569">闭包动的是已经留下的派生状态。门动的是下一次候选写入。</text>
+      <text x="24" y="350" font-size="14" fill="#475569">64/76 来自另一套 104 份对齐面板，不是 136 的子集，图上不画。</text>
+      <text x="24" y="386" font-size="14" fill="#475569">图例：蓝源记录 · 橙摘要 · 红询问 · 绿闭包 · 琥珀门。箭头只表示主设定的时间顺序。</text>
+      <text x="24" y="410" font-size="14" fill="#0f172a">读完要看的：删除接口清的是源，还是源加上记录过的后代。</text>
+    </svg>
+    <figcaption>图 2. 精确源删除留下抽取摘要。上排 136/200 是 Qwen IID DIRECT。闭包和门的 0 / R 不动来自附录表 6 的 expert-script 口径（R = 0.735），不是 DIRECT 那一列。</figcaption>
+  </figure>
+  <p>回答接口也在测量系统里。旧契约要嵌套的 <code>final_prediction</code>，冻结打分器读的是顶层 <code>value</code>。主矩阵把含错配的 Qwen 接口原样搬到了 Mistral 和 Phi-3；主矩阵自己用的是哪份契约，原文没有单独写明。后来的确认面板上，Qwen 旧契约的顶层精确计数是 137/125（IID/OOD），原文任意位置出现是 148/137。136/200 是官方解析器计数，原文层面的出现数可能更高。Mistral 和 Phi-3 在两阶段都用旧契约时，官方 R = C = A = E = 0，IID 审计原文里目标仍出现 77/104 和 78/104。只把 Phi-3 的激活契约改回旧的，官方 E 从 IID 77/104 落到 0/104，原文激活回复里目标仍有 78/104。同一套 104 份面板上，Qwen 旧契约审计的 ΔR 是 IID 0.702、OOD 0.587，对齐后是 0.615 和 0.567。官方零不能直接读成「模型没把目标写出来」。这一节用来说明评分口径，不改 136/200 那一列。</p>
+</section>
+
+<section id="yours">
+  <h2><span>6</span>你的删除清不清摘要</h2>
+  <p>读完要看的是自己的运行位。会话记忆、技能笔记、检索库、长期摘要，如果「删除」只打源记录的主键、派生对象另存，可能和这篇的层级格同类。论文没有在这些系统上测过。平坦记忆、源和声明邻居一起删的诊断，测试格里找回是 0。对照世界 0/200。差别是派生对象还在不在；模型的参数记忆没有参与。</p>
+  <p>权重从头到尾没改。残留走的是外部状态。写过滤器挡的是下一次插入，问一句已经发生的披露它撤不回。要看见 136/200 这一列，看的是这一次删除之后，提示里还塞了哪些后代。仓库里「支持删除」的开关总数对不上这一列。</p>
+  <p>下面是我的推断，论文没有在 LangChain 记忆、Mem0、生产 RAG 上做主实验。编辑起点如果是「用户点了删除」，还要看摘要、嵌入、缓存、会话滚动窗口里有没有同一条秘密的后代。技能记录里如果写了「删源即忘」，这篇给的是一个受控反例：抽取拼接的摘要、固定开源权重、一条直接问句。附录 J 写了外部架构效度有限：模型不自主选择存储、巩固、检索、删除或候选写入。</p>
+  <p><a href="/frontier/2026-10-18-hidden-belief-collapse.html">10-18</a> 写过，私下已经改口，聊天记录大半看不出来。那一篇的对象是多智体对话里的公开认领。<a href="/frontier/2026-10-22-ingestion-drops-cues.html">10-22</a> 写过，格式盲转换会丢掉源文档上的标记。这一篇补的是删除之后还留下的派生状态。</p>
+</section>
+
+<section id="limit">
+  <h2><span>7</span>这篇没测到的</h2>
+  <ul>
+    <li><strong>抽取拼接，学过的摘要没测。</strong>主设定把记录按标识符排序、换行原样拼接。作者写明不代表每一套生产记忆。JSON 事实账本序列化和部分记忆检索上，Qwen 找回仍为正；这些是指定变体。任意摘要器或检索器没有测。</li>
+    <li><strong>合成的精确字符串目标。</strong>自然语言秘密、语义等价、压缩记忆、不完整谱系、独立的生产记忆系统，作者写成未决。没有暴露且保留的参照，所以 ΔRec 不是「正常能问回来的信息里删完还剩多少」。</li>
+    <li><strong>原始组合族是 0，分件拼回是另一套。</strong>前一套没把所需分件和公开规则给齐。C1 给齐了。两套分母不能合成一个「组合任务成功率」。</li>
+    <li><strong>闭包靠完整谱系。</strong>测试格上把跟踪到的通道清到 0。谱系不全、语义依赖、多对多、没跟踪到的状态可以躲开它。</li>
+    <li><strong>主模型是 Qwen2.5-7B-Instruct。</strong>Mistral-7B-Instruct-v0.3 和 Phi-3-medium-4k-instruct 进接口和变换记忆，不进 136/200 那一列。没有 Claude、没有 GPT。</li>
+    <li><strong>代码还没公开。</strong>复现声明写：GitHub 仓库会在论文被接收后公开。本轮没有仓库链接可核。</li>
+    <li><strong>效用检查饱和。</strong>预声明 100 例上基线、闭包、开着的门都是 100/100，20 次良性近失写入都过。作者不当成真实下游效用或误挡规模。</li>
+    <li><strong>3,081 / 3,088 次观察到的找回出在第 1 问。</strong>这是重复评估事件，档案不是独立抽样；方法可以选不同的第一算子；原始组合族没有成功。作者不把它读成自适应审计一般不需要。</li>
+    <li><strong>外部架构效度有限。</strong>附录 J：记忆的存储、巩固、检索、删除和候选写入都由基准在外面固定，模型不自己选。独立开发的记忆框架、有选择或压缩的摘要、学过的抽象、语义记忆、独立的检索/巩固流水线，作者写成待研究。</li>
+  </ul>
+</section>
+
+<section id="src">
+  <h2><span>8</span>出处</h2>
+  <p>数字来自预印本 PDF 全文（<a href="https://arxiv.org/pdf/2610.31366">arxiv.org/pdf/2610.31366</a>，<a href="https://arxiv.org/abs/2610.31366">abs</a>，2026-10-22，未经同行评审）。表 1、表 2、第 3–6 节、附录 A、B、G、表 6、表 9、表 11。export.arxiv.org 的 Atom 里 published 为 2026-10-22T14:41:36Z。代码按论文复现声明，接收前不公开。</p>
+  <p><a href="https://openai.com/news/">OpenAI 新闻页</a>直连 403，本轮经 r.jina.ai 打开过，近两日条目包括存储扩容、训练环境加固、Decisions API。据标题判断，没有带这一组分母的删除测量，未写入数字。<a href="https://www.anthropic.com/news">Anthropic 新闻页</a>本轮打开过，10 月 22 日有把 Agent Skills 捐给 Agentic AI Foundation，同样未写入数字。Hacker News 首页、Product Hunt（直连 403）、GitHub 当日可见条目未作为数字来源。X、Reddit 今日未覆盖：本机没有可用登录态。</p>
+  <p>谱系和增量层分别在 <a href="/frontier/rsi-llm-agent-self-evolution.html">递归自改进前世今生</a> 和 <a href="/frontier/llm-agent-tech-landscape.html">冻底座、改脚手架</a>。这篇只加一条：源记录删掉之后，抽取摘要这类派生状态还能把秘密问回来；Qwen2.5-7B-Instruct、层级记忆、一条直接问句上，IID 是 136/200（按表 1 四格相加）。</p>
+</section>
+</main>
+</div>
+</body>
+</html>

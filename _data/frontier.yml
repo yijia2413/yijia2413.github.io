@@ -1,5 +1,9 @@
 ﻿# 前沿技术栏目：独立 HTML 洞察索引。
 # 新增一篇：把 HTML 放到 /frontier/<slug>.html，再在这里加一条。
+- title: "源记录删了，抽取摘要还在，Qwen 上 136/200 还能问回来"
+  date: "2026-10-24"
+  url: /frontier/2026-10-24-source-delete-leaves-summary.html
+  summary: "一篇预印本把删掉源记录和派生状态里还有没有秘密拆开测。Qwen2.5-7B-Instruct、层级记忆、写过滤器关掉：一条直接问，IID 200 对上暴露再删除一侧 136 条完整找回（按表 1 四格相加），从未暴露对照 0 条，ΔRec = 0.680（区间 0.615 至 0.745）。摘要是按标识符排序、原文换行拼接的抽取对象。"
 - title: "文档不够 k 条时，展示的 minItems 把超计从 34.5% 抬到 55.4%"
   date: "2026-10-23"
   url: /frontier/2026-10-23-minitems-pads-lists.html
