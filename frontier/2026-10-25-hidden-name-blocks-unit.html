@@ -1,0 +1,215 @@
+﻿<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>规格没写的名字，测试仍要，挡住的单元失败 80.6%，对照 48.4%</title>
+  <style>
+    :root { --ink:#0f172a; --muted:#475569; --line:#e2e8f0; --bg:#f8fafc; --blue:#1d4ed8; --blue-bg:#eff6ff; --amber:#b45309; --green:#047857; --rose:#be123c; }
+    * { box-sizing: border-box; }
+    body { margin:0; font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Noto Sans SC",sans-serif; background:var(--bg); color:var(--ink); line-height:1.75; font-size:17px; }
+    header { background:#0f172a; color:#f8fafc; padding:36px 24px 28px; border-bottom:4px solid #2563eb; }
+    header .inner { max-width:1080px; margin:0 auto; }
+    .badge { display:inline-block; border:1px solid #93c5fd; color:#bfdbfe; border-radius:999px; padding:2px 12px; font-size:13px; }
+    h1 { font-size:2rem; line-height:1.3; margin:12px 0; }
+    header p { color:#cbd5e1; margin:0; max-width:760px; }
+    .layout { max-width:1080px; margin:28px auto 64px; padding:0 20px; display:grid; grid-template-columns:220px minmax(0,1fr); gap:28px; }
+    aside { position:sticky; top:52px; align-self:start; background:#fff; border:1px solid var(--line); border-radius:12px; padding:14px; }
+    aside p { font-size:12px; letter-spacing:.06em; color:var(--muted); margin:0 0 8px; }
+    aside a { display:block; color:var(--ink); text-decoration:none; font-size:14px; padding:6px 8px; border-radius:6px; }
+    aside a:hover { background:var(--blue-bg); color:var(--blue); }
+    h2 { font-size:1.35rem; margin:0 0 12px; }
+    h2 span { display:inline-block; background:var(--blue); color:#fff; border-radius:6px; font-size:13px; padding:2px 8px; margin-right:8px; }
+    h3 { font-size:1.08rem; margin:20px 0 10px; }
+    section { background:#fff; border:1px solid var(--line); border-radius:14px; padding:26px 28px; margin-bottom:22px; }
+    p { margin:0 0 14px; }
+    a { color:var(--blue); overflow-wrap:anywhere; }
+    code { background:#f1f5f9; border-radius:4px; padding:1px 5px; font-size:15px; overflow-wrap:anywhere; }
+    main { min-width:0; }
+    figure { margin:16px 0; background:#fff; border:1px solid var(--line); border-radius:12px; padding:10px; overflow-x:auto; }
+    figure svg { display:block; min-width:700px; }
+    figcaption { color:var(--muted); font-size:14px; margin-top:6px; }
+    .tw { overflow-x:auto; margin:0 0 14px; }
+    .tw table { min-width:620px; }
+    table { width:100%; border-collapse:collapse; font-size:15px; }
+    th, td { border:1px solid var(--line); padding:8px 10px; text-align:left; vertical-align:top; }
+    th { background:#f1f5f9; }
+    ul { margin:0 0 14px; padding-left:22px; }
+    ol { margin:0 0 14px; padding-left:22px; }
+    li { margin-bottom:6px; }
+    .note { background:#f1f5f9; border-left:4px solid var(--muted); padding:12px 16px; border-radius:0 8px 8px 0; font-size:16px; margin:0 0 14px; }
+    .quote { background:#fffbeb; border-left:4px solid var(--amber); padding:12px 16px; border-radius:0 8px 8px 0; font-size:15px; overflow-wrap:anywhere; margin:0 0 14px; }
+    svg text { font-family:-apple-system,"PingFang SC","Noto Sans SC",sans-serif; }
+    @media (max-width:860px) { .layout { grid-template-columns:minmax(0,1fr); } aside { position:static; } h1 { font-size:1.55rem; } section { padding:18px 16px; } }
+  </style>
+</head>
+<body>
+<nav style="position:sticky;top:0;z-index:50;background:#0f172a;border-bottom:1px solid #1e293b;padding:10px 24px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;">
+  <a href="/frontier" style="color:#93c5fd;text-decoration:none;font-size:14px;margin-right:16px;">← Frontier</a>
+  <a href="/" style="color:#cbd5e1;text-decoration:none;font-size:14px;">@xixi003</a>
+</nav>
+
+<header>
+  <div class="inner">
+    <span class="badge">FRONTIER · 2026-10-25 · 规格–金标缺口</span>
+    <h1>规格没写的名字，测试仍要，挡住的单元失败 80.6%，对照 48.4%</h1>
+    <p>一篇 10 月 22 日的预印本把自然语言规格和上游测试拆开查。SWE-Milestone v1.0.2 的 98 个计分里程碑里，25 个含一条依赖未写明、推不出来的名字或路径的测试。被这类依赖挡住的构建单元，在 35 次公开跑里失败 80.6%；同一批里程碑里带着新测试、没有新依赖的单元失败 48.4%。倍数 1.67（自助区间 1.32 至 2.04）。附录 B 写拟合用了 72 个挡住单元对 27 个对照单元。原文没给 80.6% 和 48.4% 各自的（单元，跑次）对数。排行榜名次几乎不动。go-zero 的分数会动。</p>
+  </div>
+</header>
+<div class="layout">
+<aside>
+  <p>目录</p>
+  <a href="#what">1 80.6% 对 48.4%</a>
+  <a href="#how">2 规格写行为，测试要名字</a>
+  <a href="#ex">3 M019：行为对了，84 条全挂</a>
+  <a href="#prev">4 25 / 98，风险集中</a>
+  <a href="#real">5 改一个名字就编不过</a>
+  <a href="#yours">6 你的评测有没有这条缝</a>
+  <a href="#limit">7 这篇没测到的</a>
+  <a href="#src">8 出处</a>
+</aside>
+<main>
+<section id="what">
+  <h2><span>1</span>80.6% 对 48.4%</h2>
+  <p>2026 年 10 月 22 日，arXiv 收到 <a href="https://arxiv.org/abs/2610.30635">What the Specification Did Not Say: Specification–Oracle Gaps in Test-Graded Coding-Agent Benchmarks</a>（arXiv:2610.30635v1，cs.CL，作者 Fei Ding，单位署 Alibaba Group）。预印本，未经同行评审。本轮读的是 HTML 全文。</p>
+  <p>编码 Agent 的长程基准常常用大模型从提交里写出一份规格，再用上游项目自己的测试来打分。规格写的是行为。测试调用的是常量名、模块路径、精确报文。名字规格里没有，测试里有。作者把这种错位叫规格–金标缺口（specification–oracle gap）。有缺口时，基准还在量：Agent 有没有把上游实现细节再写一遍。</p>
+  <div class="note">
+    <p style="margin:0">这篇只论证一个判断。判断是我的，依据是论文第 6.1–6.2 节、表 2 和第 3 节。SWE-Milestone v1.0.2、98 个计分里程碑、580,039 条必测、35 次公开端到端跑：25 个里程碑含硬隐藏依赖（规格没点名、起始树里没有、按作者规则推不出来的名字或路径）。被它挡住的构建单元在（单元，跑次）上失败 80.6%；同一批里程碑里带着 fail-to-pass 或 none-to-pass、没有任何新依赖的单元失败 48.4%。挡住的一侧是对照的 1.67 倍（按里程碑自助，95% 区间 1.32 至 2.04）。附录 B 写回归拟合在含挡住单元的 25 个里程碑上，72 个挡住单元对 27 个对照单元。原文没给 80.6% 和 48.4% 各自的（单元，跑次）对数。80.6 不要和全部其余单元的 15.1% 放进同一个倍数：其余多半只扛 pass-to-pass。这是观测比较。第 3 节的 M019、第 6.3 节的重打分、第 6.5 节的另外四套基准用来定位缺口走哪条通道、排行榜动不动、别的造法密不密，不当另一条主判断。</p>
+  </div>
+  <p>一个里程碑要算解决，全部必测都得过。Agent 没碰巧写出隐藏项，这 25 个过不了。风险测试整体只有必测的 0.6%，挤在少数仓库里。go-zero 15/23 个里程碑中招，表 2 的 Tests at risk 是 7.1%：被挡住的单元里的必测，加上带隐藏字面量或测试级名字的必测。25/98 按里程碑计。审计精度 58/65 按构建单元计，对照作者自己标注是 56/65；七个假阳性是规格暗示但没写明，落在「可推」边界上。</p>
+</section>
+
+<section id="how">
+  <h2><span>2</span>规格写行为，测试要名字</h2>
+  <p>SWE-Milestone 把一段发布历史收成有向无环的里程碑。v1.0.2 覆盖七个仓库、五种语言：go-zero（Go）、navidrome（Go 和 TypeScript）、nushell 和 ripgrep（Rust）、scikit-learn（Python）、element-web（TypeScript）、dubbo（Java）。排行榜用的端到端模式：Agent 从试验起点出发，在同一棵工作树里做完全部里程碑。每个里程碑拿到一份软件需求规格，由大模型流水线从该里程碑的提交生成。</p>
+  <p>打分把上游金标状态末尾的测试代码拷到 Agent 的树上再跑。按金标前后的结果分类：fail-to-pass 和 none-to-pass 是这个里程碑必须交出的新行为；pass-to-pass 必须继续过；pass-to-none 不计分。再扣掉维护者标过无效的过滤表，剩下的是必测。每个里程碑的召回是必测新测试过了多少，精确率是 (f+1)/(f+b+1)，分数是两者的 F1。排行榜先按仓库的计分里程碑平均，再按仓库平均。公开配置里最好的解决率是 98 个计分里程碑上的 29.75%。</p>
+  <p>缺口的形式化：测试 o 依赖一组制品 D(o)——它引用的标识符、导入或 mock 的路径、拿来比输出的字面量。任务已经钉死的集合 F_t 是起始树里有的、规格里点过名的、再加上作者认定能从现有惯例推出来的。G(o)=D(o)∖F_t。G(o) 非空时，行为按规格做对、名字或路径换了，测试仍可能挂。名字或路径缺口会挡住整个构建单元：Go 的包、Rust 的测试目标、Maven 模块，语言是整单元编译或收集的。只有字面量时，挂的是这一条测试。</p>
+  <p>作者把依赖分成可见、规格写明、A1（本里程碑金标改动、规格没写）、A2（祖先金标改动、两边规格都没写）、B1（非祖先里程碑引入）、B2（不属于任何里程碑的上游提交）、B3（本里程碑金标末状态自己都没定义）。A1、A2 是欠规格。B 是链条不一致。B3 连参考实现都编不过；基准把这类测试记成 pass-to-none，从必测里拿掉了。</p>
+</section>
+
+<section id="ex">
+  <h2><span>3</span>M019：行为对了，84 条全挂</h2>
+  <p>go-zero 的里程碑 M019 加 Server-Sent Events。规格把行为写清楚了：用 <code>Accept: text/event-stream</code> 认出 SSE 请求，绕过超时处理器。它没写出参考实现为这件事引入的两个名字：<code>headerAccept</code> 和 <code>valueSSE</code>。rest/handler 包的参考测试两个都用。Go 把一个包的测试一起编。行为做对、常量名换了，这个包的必测全没：M019 里 84 条，另外五个继承这些测试的里程碑里每份 88 到 108 条。</p>
+  <p>公开跑的源快照（35 次里去掉一次发布名标明见过泄漏信息的，剩 34）：32 次实现了规格要的绕过。9 次还把值写成 <code>valueSSE</code>，其中 4 次过完全部 84 条必测，另外 5 次缺别的名字。其余 23 次写成 <code>valueEventStream</code>（17）、<code>valueTextEventStream</code>（2）、<code>valueSse</code>（1），或者把字符串内联进去，一条都没过。这 23 次里有 13 次，评测日志在这个包里报出的未定义名字只剩 <code>valueSSE</code> 和 <code>headerAccept</code>。</p>
+  <figure>
+    <svg viewBox="0 0 760 420" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="M019 三十四次跑从实现行为到过测试的漏斗">
+      <rect width="760" height="420" fill="#ffffff"/>
+      <text x="24" y="32" font-size="16" font-weight="700" fill="#0f172a">第 3 节 · go-zero M019 · 34 次跑（去掉泄漏那一次）</text>
+      <text x="24" y="54" font-size="14" fill="#475569">规格要绕过超时。测试要 valueSSE。柱高按次数，分母都是 34。</text>
+      <line x1="70" y1="80" x2="70" y2="330" stroke="#94a3b8" stroke-width="1"/>
+      <line x1="70" y1="330" x2="730" y2="330" stroke="#94a3b8" stroke-width="1"/>
+      <text x="28" y="334" font-size="14" fill="#475569">0</text>
+      <text x="16" y="207" font-size="14" fill="#475569">17</text>
+      <text x="16" y="84" font-size="14" fill="#475569">34</text>
+      <line x1="70" y1="205" x2="730" y2="205" stroke="#e2e8f0" stroke-width="1"/>
+      <rect x="95" y="95" width="110" height="235" fill="#eff6ff" stroke="#1d4ed8" stroke-width="2"/>
+      <text x="118" y="85" font-size="16" font-weight="700" fill="#1d4ed8">32/34</text>
+      <text x="108" y="354" font-size="14" fill="#0f172a">实现绕过</text>
+      <rect x="255" y="264" width="110" height="66" fill="#fff7ed" stroke="#c2410c" stroke-width="2"/>
+      <text x="280" y="254" font-size="16" font-weight="700" fill="#c2410c">9/34</text>
+      <text x="258" y="354" font-size="14" fill="#0f172a">写成 valueSSE</text>
+      <rect x="415" y="301" width="110" height="29" fill="#ecfdf5" stroke="#047857" stroke-width="2"/>
+      <text x="440" y="291" font-size="16" font-weight="700" fill="#047857">4/34</text>
+      <text x="428" y="354" font-size="14" fill="#0f172a">过完全部 84</text>
+      <rect x="575" y="161" width="110" height="169" fill="#fff1f2" stroke="#be123c" stroke-width="2"/>
+      <text x="598" y="151" font-size="16" font-weight="700" fill="#be123c">23/34</text>
+      <text x="590" y="354" font-size="14" fill="#0f172a">名字不对，0 条</text>
+      <text x="24" y="388" font-size="14" fill="#475569">9 次里另 5 次写对了 valueSSE，还缺别的名字，84 条没全过。</text>
+      <text x="24" y="408" font-size="14" fill="#475569">23 次里 13 次日志只报 valueSSE 和 headerAccept。2 次没实现绕过，图上没单列。</text>
+    </svg>
+    <figcaption>图 1. 第 3 节：M019 的 rest/handler 包。行为对了不够。过 84 条必测的 4 次，都写了规格没给的 <code>valueSSE</code>。</figcaption>
+  </figure>
+</section>
+
+<section id="prev">
+  <h2><span>4</span>25 / 98，风险集中</h2>
+  <p>静态审计给 Go、Python、Rust、TypeScript、Java 各做提取器，给每条必测的名字、路径、字面量依赖分类。惯例能定的不算硬缺口：起始树里已有的词加仓库里成套的词缀（go-zero 里 Allow → AllowCtx，227 对）、规格点了名再按现成目录放下的新文件、对得上起始树或规格里接口签名的方法。开发集上定规则，留出集再标。留出两轮里被标上的 65 个单元，精度 58/65（89.2%，Wilson 区间 79.4 至 94.7）；对照作者自己标注是 56/65。第二轮召回 13/14（92.9%，68.5 至 98.7）。58/65 按构建单元计，25/98 按里程碑计。七个仓库从冷缓存做完 28.1 分钟，内存最多 1,333 MiB，不调模型。</p>
+  <p>论文表 2。Hidden 是硬隐藏名字按里程碑加总。Tests at risk 是被挡住的单元里的必测，加上带隐藏字面量或测试级名字的必测，占该仓库必测的比例。</p>
+  <div class="tw">
+    <table>
+      <thead>
+        <tr><th>仓库</th><th>计分里程碑</th><th>必测</th><th>硬隐藏名（加总）</th><th>风险测试</th><th>含硬缺口的里程碑</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>go-zero（Go）</td><td>23</td><td>43,253</td><td>132</td><td>7.1%</td><td>15/23</td></tr>
+        <tr><td>navidrome（Go+TS）</td><td>9</td><td>13,642</td><td>2</td><td>0.3%</td><td>2/9</td></tr>
+        <tr><td>element-web（TS）</td><td>18</td><td>94,114</td><td>7</td><td>0.1%</td><td>7/18</td></tr>
+        <tr><td>nushell（Rust）</td><td>13</td><td>67,504</td><td>0</td><td>0.0%</td><td>0/13</td></tr>
+        <tr><td>dubbo（Java）</td><td>12</td><td>82,863</td><td>1</td><td>0.0%</td><td>1/12</td></tr>
+        <tr><td>ripgrep（Rust）</td><td>11</td><td>11,964</td><td>0</td><td>0.0%</td><td>0/11</td></tr>
+        <tr><td>scikit-learn（Py）</td><td>12</td><td>266,699</td><td>0</td><td>0.0%</td><td>0/12</td></tr>
+        <tr><td>合计</td><td>98</td><td>580,039</td><td>142</td><td>0.6%</td><td>25/98</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p>硬项多半是 A2：祖先里程碑引入、规格没写，后面的测试还在用。把惯例路径算可推、把祖先规格也读进去之后，受影响里程碑从 34 降到 25。测试走公共接口的仓库（scikit-learn、ripgrep）和 nushell 这一列是 0。nushell 另有链条问题：G05_be6e868 的参考测试初始化结构体时没有 G01_48bca0a 加上的字段 <code>custom_completion</code>，没有一次公开跑编过这个里程碑的 5,339 条必测。</p>
+</section>
+
+<section id="real">
+  <h2><span>5</span>改一个名字就编不过</h2>
+  <p>一个单元是（里程碑，构建单元）对。一次跑里，该单元有必测失败或缺失，就算失败。35 次跑上，被硬隐藏依赖挡住的单元失败 80.6% 的（单元，跑次）；其余单元 15.1%。其余多半只扛 pass-to-pass。作者拿同一批里程碑里带着新测试、没有新依赖的单元做对照，失败 48.4%；新名字规格写明了的单元失败 52.2%。挡住的一侧是前一个对照的 1.67 倍（区间 1.32 至 2.04）。规格写明的名字几乎没差（1.08，区间 0.83 至 1.41）。原文没给 80.6% 和 48.4% 各自的（单元，跑次）对数。1.67 含那次发布名标明见过泄漏信息的跑；去掉它，倍数 1.66，优势比 4.75。带单元大小和仓库的逻辑回归，优势比 4.64（区间 2.92 至 7.37，按里程碑和模型家族聚类；附录 B 写拟合在含挡住单元的 25 个里程碑上，72 个挡住单元对 27 个对照单元，3,379 对，35 次跑）。日志：挡住单元的失败里，27.1% 报出的缺失名字只有隐藏项，另 13.6% 隐藏项在其中；其余多半一个名字都不报。</p>
+  <p>反事实不经过 Agent。在参考实现的非测试代码里改掉一个隐藏标识符，模拟行为对、名字换了：128 个 Go 案例里 126 个，该单元的测试编不过。随后失败的测试是审计预测的 99.5%。覆盖只到 Go。</p>
+  <figure>
+    <svg viewBox="0 0 760 400" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="挡住单元与对照单元的失败率">
+      <rect width="760" height="400" fill="#ffffff"/>
+      <text x="24" y="32" font-size="16" font-weight="700" fill="#0f172a">第 6.2 节 · 单元失败率</text>
+      <text x="24" y="54" font-size="14" fill="#475569">分母是（单元，跑次）。80.6 对 48.4 是主对照。15.1 是其余全部，不当倍数的底。</text>
+      <line x1="70" y1="80" x2="70" y2="310" stroke="#94a3b8" stroke-width="1"/>
+      <line x1="70" y1="310" x2="730" y2="310" stroke="#94a3b8" stroke-width="1"/>
+      <text x="20" y="314" font-size="14" fill="#475569">0%</text>
+      <text x="12" y="197" font-size="14" fill="#475569">50%</text>
+      <text x="6" y="84" font-size="14" fill="#475569">100%</text>
+      <line x1="70" y1="195" x2="730" y2="195" stroke="#e2e8f0" stroke-width="1"/>
+      <rect x="100" y="125" width="120" height="185" fill="#fff1f2" stroke="#be123c" stroke-width="2"/>
+      <text x="125" y="115" font-size="16" font-weight="700" fill="#be123c">80.6%</text>
+      <text x="108" y="334" font-size="14" fill="#0f172a">硬缺口挡住</text>
+      <rect x="280" y="199" width="120" height="111" fill="#eff6ff" stroke="#1d4ed8" stroke-width="2"/>
+      <text x="308" y="189" font-size="16" font-weight="700" fill="#1d4ed8">48.4%</text>
+      <text x="286" y="334" font-size="14" fill="#0f172a">新测试、无新依赖</text>
+      <rect x="460" y="190" width="120" height="120" fill="#ecfdf5" stroke="#047857" stroke-width="2"/>
+      <text x="488" y="180" font-size="16" font-weight="700" fill="#047857">52.2%</text>
+      <text x="468" y="334" font-size="14" fill="#0f172a">新名字规格写明</text>
+      <rect x="640" y="275" width="70" height="35" fill="#f8fafc" stroke="#64748b" stroke-width="2"/>
+      <text x="648" y="265" font-size="14" font-weight="700" fill="#475569">15.1%</text>
+      <text x="638" y="334" font-size="14" fill="#0f172a">其余</text>
+      <text x="24" y="368" font-size="14" fill="#475569">1.67 倍只用红柱对蓝柱。灰柱含大量 pass-to-pass，作者不当主对照。</text>
+      <text x="24" y="388" font-size="14" fill="#475569">绿柱 1.08 倍，区间含 1。实现是观测比较，反事实只覆盖 Go 的 126/128。</text>
+    </svg>
+    <figcaption>图 2. 第 6.2 节：挡住的单元失败更勤。倍数 1.67 的分母是同一批里程碑里带着新测试、没有新依赖的单元。</figcaption>
+  </figure>
+  <p>拿掉受影响测试，排行榜名次几乎不动。完整变体下 28 次上榜跑平均分数 +0.84 点（−0.26 至 +2.89），解决率 +0.47 点（最多 +2.78）。和原排名的 Kendall τ-b：分数 0.984，解决率 0.942。35 次全部跑是 0.980 和 0.960。随机抽同样多、同样大小的单元来删，中位 τ 是 0.990 和 0.980；35 次这组 τ 这么低或更低的比例是 24.9% 和 9.5%。再按仓库、里程碑、单元类型和基线失败率匹配后，比例是 13.3% 和 52.8%。按里程碑自助，35 次里 34 对相邻跑的 95% 名次区间都重叠。缺口挤在 go-zero：完整变体下 35 次平均分数从 38.33 到 42.08，平均解决率从 4.35% 到 5.71%。原文写，报单仓库结果或只在一个仓库上做消融的研究会继承这截差。</p>
+  <p>去掉泄漏那一次，评测给得出证据的（硬项，跑次）对上，复现 45.2%（2,056 对）；可推项 79.0%（1,064 对）。go-zero 是 34.4% 对 49.9%。TypeScript 前端多半是模块路径，90% 到 100%。同一模型两种配置写哪些隐藏名，中位 Cohen κ = 0.81（8 对），跨模型 0.63（553 对）。同模型对太少，作者标成探索性。训练截止是否晚于上游代码，附录 G 没看到关联：仓内硬项差 −11.9 点（置换 p = 0.24）；有截止的跑次上，暴露份额和复现率在控制官方分数后的偏相关 −0.01（p = 0.98）。相关、功效低。引言贡献列表写「unrelated to its training cutoff」，比附录 G 的正文强。</p>
+</section>
+
+<section id="yours">
+  <h2><span>6</span>你的评测有没有这条缝</h2>
+  <p>读完要看的是自己的运行位。任务文本是大模型摘要或发布说明，金标是上游测试原样接上，构建失败会抹掉整个单元，评测又不把未解析名字打回给 Agent：和这篇的主设定同类。论文没有在你的仓库上测过。</p>
+  <p>第 6.5 节把同一套审计接到另外四套基准，作者写成探索性，审查单元和样本量都不一样，不当主判断的外推。表 4 各行标记口径不同：SWE-Milestone 计硬名字或路径（另有 31 个带字面量），SWE-Chain 只计 A1。单位也不同：SWE-EVO 是发布任务 17/48，复核 24/40（60.0%）；SWE-Chain 是 step 64/155，复核 28/40（70.0%）；SWE-bench Verified 是 instance，标上 3/500，确认 2 个；DeepSWE 标上 7/113，复核 1/23，正文写审过只剩一条。附录 I：其他基准的初判由大模型起草、作者核对。规格是发布说明或被要求不要写「精确报文」「内部标识符」的大模型摘要时，标上的更多；议题经过人工筛选或说明按测试写时，隐藏名几乎没有。SWE-Chain 标上的步对未标上的步，失败 lift 1.12（区间 1.04 至 1.28）。1.12 和主设定的 1.67 基线不同，不可比。附录 F 把 1.12 读成 harness 反馈：它把 Agent 的树拷到参考镜像上，缺的模块会被补上；失败的导入变成占位，只有用到那个名字的测试挂；失败导入会打回给 Agent 修一轮。构建报告在 55.9% 的系统跑里点出了隐藏名，80.9% 的跑最后把那个名字写上了。这是作者的解读，没有对照实验。SWE-Milestone 把参考测试接到 Agent 的树上，整单元失败，没有这轮反馈。</p>
+  <p>下面是我的推断，论文没有在别的评测台上做主实验。编辑起点如果是「测试过了就是规格做对了」，还要看测试引用的名字、路径、报文有没有写进 Agent 看得见的那份规格。技能记录里如果写了「用上游测试给长程任务打分」，这篇给的是观测证据，外加一个不经过 Agent 的 Go 反事实：LLM 写的 SRS、原样接上的测试、整包编译。作者的修法是两份名单（保守 3,321 条，完整 3,964 条）和 25 个里程碑的规格补记，一共 153 条接口约定，例如「包 rest/handler 必须声明 valueSSE（84 条必测依赖）」。补记还没拿新的 Agent 跑过。</p>
+  <p><a href="/frontier/2026-10-14-reproduction-is-not-validation.html">10-14</a> 写过，整池口径下复现成功撑不起联合验收。那一篇的对象是 Agent 自己生成的测试，回放到官方对错标签上。<a href="/frontier/2026-10-15-gap-remains-after-fix.html">10-15</a> 写过，隐藏测试判修好的任务，报告仍差一截。这一篇补的是：官方测试自己也可能在要规格没给的名字。</p>
+</section>
+
+<section id="limit">
+  <h2><span>7</span>这篇没测到的</h2>
+  <ul>
+    <li><strong>排行榜名次几乎不动。</strong>完整变体删掉受影响测试，τ 落在同等规模随机删除的分布里。原文写 ranking is robust，而且本来就比看起来粗。动的是 go-zero 这种单仓库分数。</li>
+    <li><strong>实现是观测比较。</strong>挡住的单元和带着新测试的对照仍可能难度不同。反事实只覆盖 Go 的 126/128。优势比和失败率倍数分母不同，不要合成一个「难四倍」。</li>
+    <li><strong>隐藏依赖是风险。</strong>有证据的 2,056 对里复现 45.2%。审计标上的是规格扣住了依赖。</li>
+    <li><strong>匹配是词面。</strong>规格用别的词描述同一个名字会多报；点到一个标识符但不是当接口会少报。提取器不走类型检查：同单元里已有同名、不同类型上的新方法会漏；外部库要求的接口方法会多报。</li>
+    <li><strong>行为缺口大多不在计数里。</strong>测试要逃逸规则、加权方案、但不引入新名字，只靠文本启发式另报。SWE-bench Verified 上作者复查的顽固失败，多半是议题没钉死的行为，所以 25/98 是下界。</li>
+    <li><strong>另外四套基准是探索性。</strong>精度、审查单位不能跨行比。DeepSWE 参与过定规则，不是样本外。</li>
+    <li><strong>一条主基准、七个仓库。</strong>语言、测试风格、规格造法会改密度，在这七个仓库和五套基准里混在一起，没有分开。</li>
+    <li><strong>补记的效果没测。</strong>新的 Agent 跑次还没有。过滤表通过了 harness 自己的校验，作者说可以换上。</li>
+  </ul>
+</section>
+
+<section id="src">
+  <h2><span>8</span>出处</h2>
+  <p>数字来自预印本 HTML 全文（<a href="https://arxiv.org/html/2610.30635v1">arxiv.org/html/2610.30635v1</a>，<a href="https://arxiv.org/abs/2610.30635">abs</a>，2026-10-22，未经同行评审）。表 2、表 3、表 4、第 2–7 节、附录 B、C、F、G、H。export.arxiv.org 的 Atom 里 published 为 2026-10-22T02:56:44Z。文中点到的其他基准：<a href="https://arxiv.org/abs/2603.13428">SWE-Milestone</a>（ICML 2026，arXiv:2603.13428）、<a href="https://arxiv.org/abs/2512.18470">SWE-EVO</a>（预印本 arXiv:2512.18470）、<a href="https://arxiv.org/abs/2605.14415">SWE-Chain</a>（预印本 arXiv:2605.14415）、<a href="https://openai.com/index/introducing-swe-bench-verified/">SWE-bench Verified</a>（OpenAI，2024）、<a href="https://arxiv.org/abs/2607.07946">DeepSWE</a>（预印本 arXiv:2607.07946）。本轮没有再打开这些页面核对数字。</p>
+  <p><a href="https://openai.com/news/">OpenAI 新闻页</a>本轮经 r.jina.ai 打开过，近两日条目包括存储扩容、训练环境加固、Decisions API。据标题判断，没有带这一组分母的规格–金标测量，未写入数字。<a href="https://www.anthropic.com/news">Anthropic 新闻页</a>本轮打开过，10 月 22 日有把 Agent Skills 捐给 Agentic AI Foundation，同样未写入数字。Hacker News 首页、Product Hunt（直连验证页）、GitHub 当日可见条目未作为数字来源。X、Reddit 今日未覆盖：本机没有可用登录态。</p>
+  <p>谱系和增量层分别在 <a href="/frontier/rsi-llm-agent-self-evolution.html">递归自改进前世今生</a> 和 <a href="/frontier/llm-agent-tech-landscape.html">冻底座、改脚手架</a>。这篇只加一条：自然语言规格和上游测试之间可以隔着未写明的名字；SWE-Milestone v1.0.2 上，被硬隐藏依赖挡住的构建单元失败 80.6%，对照 48.4%。</p>
+</section>
+</main>
+</div>
+</body>
+</html>
