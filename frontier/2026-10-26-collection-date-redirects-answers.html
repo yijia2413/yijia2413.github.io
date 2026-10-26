@@ -1,0 +1,245 @@
+﻿<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>五个开源权重模型上，只换采集日期，后期答案掉 37.6 至 51.4 个点</title>
+  <style>
+    :root { --ink:#0f172a; --muted:#475569; --line:#e2e8f0; --bg:#f8fafc; --blue:#1d4ed8; --blue-bg:#eff6ff; --amber:#b45309; --green:#047857; --rose:#be123c; }
+    * { box-sizing: border-box; }
+    body { margin:0; font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Noto Sans SC",sans-serif; background:var(--bg); color:var(--ink); line-height:1.75; font-size:17px; }
+    header { background:#0f172a; color:#f8fafc; padding:36px 24px 28px; border-bottom:4px solid #2563eb; }
+    header .inner { max-width:1080px; margin:0 auto; }
+    .badge { display:inline-block; border:1px solid #93c5fd; color:#bfdbfe; border-radius:999px; padding:2px 12px; font-size:13px; }
+    h1 { font-size:2rem; line-height:1.3; margin:12px 0; }
+    header p { color:#cbd5e1; margin:0; max-width:760px; }
+    .layout { max-width:1080px; margin:28px auto 64px; padding:0 20px; display:grid; grid-template-columns:220px minmax(0,1fr); gap:28px; }
+    aside { position:sticky; top:52px; align-self:start; background:#fff; border:1px solid var(--line); border-radius:12px; padding:14px; }
+    aside p { font-size:12px; letter-spacing:.06em; color:var(--muted); margin:0 0 8px; }
+    aside a { display:block; color:var(--ink); text-decoration:none; font-size:14px; padding:6px 8px; border-radius:6px; }
+    aside a:hover { background:var(--blue-bg); color:var(--blue); }
+    h2 { font-size:1.35rem; margin:0 0 12px; }
+    h2 span { display:inline-block; background:var(--blue); color:#fff; border-radius:6px; font-size:13px; padding:2px 8px; margin-right:8px; }
+    h3 { font-size:1.08rem; margin:20px 0 10px; }
+    section { background:#fff; border:1px solid var(--line); border-radius:14px; padding:26px 28px; margin-bottom:22px; }
+    p { margin:0 0 14px; }
+    a { color:var(--blue); overflow-wrap:anywhere; }
+    code { background:#f1f5f9; border-radius:4px; padding:1px 5px; font-size:15px; overflow-wrap:anywhere; }
+    main { min-width:0; }
+    figure { margin:16px 0; background:#fff; border:1px solid var(--line); border-radius:12px; padding:10px; overflow-x:auto; }
+    figure svg { display:block; min-width:700px; }
+    figcaption { color:var(--muted); font-size:14px; margin-top:6px; }
+    .tw { overflow-x:auto; margin:0 0 14px; }
+    .tw table { min-width:620px; }
+    table { width:100%; border-collapse:collapse; font-size:15px; }
+    th, td { border:1px solid var(--line); padding:8px 10px; text-align:left; vertical-align:top; }
+    th { background:#f1f5f9; }
+    ul { margin:0 0 14px; padding-left:22px; }
+    ol { margin:0 0 14px; padding-left:22px; }
+    li { margin-bottom:6px; }
+    .note { background:#f1f5f9; border-left:4px solid var(--muted); padding:12px 16px; border-radius:0 8px 8px 0; font-size:16px; margin:0 0 14px; }
+    .quote { background:#fffbeb; border-left:4px solid var(--amber); padding:12px 16px; border-radius:0 8px 8px 0; font-size:15px; overflow-wrap:anywhere; margin:0 0 14px; }
+    svg text { font-family:-apple-system,"PingFang SC","Noto Sans SC",sans-serif; }
+    @media (max-width:860px) { .layout { grid-template-columns:minmax(0,1fr); } aside { position:static; } h1 { font-size:1.55rem; } section { padding:18px 16px; } }
+  </style>
+</head>
+<body>
+<nav style="position:sticky;top:0;z-index:50;background:#0f172a;border-bottom:1px solid #1e293b;padding:10px 24px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;">
+  <a href="/frontier" style="color:#93c5fd;text-decoration:none;font-size:14px;margin-right:16px;">← Frontier</a>
+  <a href="/" style="color:#cbd5e1;text-decoration:none;font-size:14px;">@xixi003</a>
+</nav>
+
+<header>
+  <div class="inner">
+    <span class="badge">FRONTIER · 2026-10-26 · 采集日期</span>
+    <h1>五个开源权重模型上，只换采集日期，后期答案掉 37.6 至 51.4 个点</h1>
+    <p>一篇预印本把两份修订的正文和修订时间钉死，只对调采集日期。595 个维基百科页、五个开源权重模型：问句当天的采集日期给旧修订、第二天给新修订，相对另一种赋值，后期参考的精确匹配掉 37.6 至 51.4 个点。Qwen2.5-72B 从 77.1% 到 28.3%。497 页上前一天对调仍掉 29.0 至 39.6 个点。两个闭源接口模型在维基上几乎不动。</p>
+  </div>
+</header>
+<div class="layout">
+<aside>
+  <p>目录</p>
+  <a href="#what">1 37.6 至 51.4 个点</a>
+  <a href="#how">2 三个时间，两份修订</a>
+  <a href="#ex">3 队名没动，采集日对调</a>
+  <a href="#ctrl">4 问句前后、七条提示还掉</a>
+  <a href="#scope">5 Qwen3.5 思考能削，接口模型几乎不动</a>
+  <a href="#yours">6 你的工具结果里有没有采集日</a>
+  <a href="#limit">7 这篇没测到的</a>
+  <a href="#src">8 出处</a>
+</aside>
+<main>
+<section id="what">
+  <h2><span>1</span>37.6 至 51.4 个点</h2>
+  <p>2026 年 10 月 23 日，arXiv 收到 <a href="https://arxiv.org/abs/2610.32191">Collection-Date Assignment Redirects Answers in Temporal QA</a>（arXiv:2610.32191v1，cs.CL，作者 Minsu Oh、Seunghui Jwa、Soo Kyun Kim、Yeo-Chan Yoon，单位署济州国立大学）。预印本，未经同行评审。本轮读的是 HTML 全文和 PDF 表。</p>
+  <p>时间问答把两份修订一起塞进上下文之后，模型还要选答哪一版。修订正文、修订时间戳、问句都钉死。动的是采集日期：这份快照是哪天抓到的。Diffbot 的 <code>crawlTimestamp</code>、Firecrawl 变更跟踪里的 <code>previousScrapeAt</code>，原文用来说明这类字段在工具模式里存在，没有测它们多常进到提示词。</p>
+  <div class="note">
+    <p style="margin:0">这篇只论证一个判断。判断是我的，依据是论文第 4 节、表 2 和图 2。595 个维基百科页、113 个谓词组、原始维基标记、五个开源权重模型、贪心短答、Qwen3.5 关掉思考：问句当天 <code>t1</code> 给旧修订、第二天给新修订，相对对调后的赋值，后期参考的精确匹配（EM）掉 37.6 至 51.4 个点。Qwen2.5-72B 从 77.1% 到 28.3%；Phi-4 从 51.0% 到 3.7%。前期参考 EM 涨 37.6 至 49.8 个点。分数按页对两个展示顺序取平均。区间是谓词簇自助、名义 95%。128 页复现、497 页前一天对调、七条提示、虚构记录用来排除别的解释，不当另一条主判断。两个闭源接口模型在维基上的对调几乎不动，第 6 节单列。</p>
+  </div>
+  <p>EM 对齐的是 DynaQuest 在该日期上的参考别名，不是另行裁定的史实。后期参考对应较新那份修订。正文写：找回这份参考，不保证历史上为真。</p>
+</section>
+
+<section id="how">
+  <h2><span>2</span>三个时间，两份修订</h2>
+  <p>问句日期是问的那个时刻，不是查询执行时刻。修订时间戳是源版本何时改过。采集日期是这份版本何时被拿到；晚拿一份旧修订，正文不会跟着更新。时间顺序钉成 <code>v0 ≤ t0 &lt; v1 ≤ t1</code>：较早问句 <code>t0</code> 时只有旧修订；较晚问句 <code>t1</code> 时两份都在，新修订是当时最新的。</p>
+  <p>主实验从 DynaQuest 先抽 600 页、不放回、不按答案是否出现过滤。11,441 对合格配对里去掉一份缺修订、三对时间不向前、一个先前用过的身份，剩 595 页。证据用 BM25 按问句（不用参考答案）每份修订最多取四段、每段 1,000 字符，拼起来最多 4,003 字符。不要求答案出现在摘录里。五个模型：Qwen2.5-7B、Phi-4、Mistral-Small-24B-2501、Qwen3.5-35B-A3B（思考关）、Qwen2.5-72B。</p>
+  <p>问句日期匹配对调比较 <code>(0, 1)</code> 和 <code>(1, 0)</code>：旧/新修订的采集日相对 <code>t1</code> 的偏移。1 月 10 日的问句，就是把 10 日和 11 日在两份修订之间对调。邻近对调比较 <code>(1, 7)</code> 和 <code>(7, 1)</code>，没有精确匹配到问句当天。赋值是控制条件，不是观察到的抓取日志。</p>
+</section>
+
+<section id="ex">
+  <h2><span>3</span>队名没动，采集日对调</h2>
+  <p>论文表 1 拿 595 页里检索长度最短的一条球队字段做输入样例，挑选时没有看模型输出。问句：Jordan Harris（冰球）为哪支球队效力。旧修订 2024-08-30，队名 Columbus Blue Jackets；新修订 2025-07-08，队名 Boston Bruins。问句日期 <code>t0 = 2024-09-01</code>，<code>t1 = 2025-07-16</code>。匹配对调的一侧：旧修订采集日写成 2025-07-16，新修订写成 2025-07-17；另一侧对调这两天。问句、两段球队正文、两个修订时间戳都不动。8 月 2024 和 7 月 2025 的官方转会通告被作者用来核对队名变化，不进模型输入。</p>
+  <p>这是输入构造，不是该页的逐条输出。595 页上测到的是整池 EM。</p>
+  <figure>
+    <svg viewBox="0 0 880 460" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="采集日期对调后后期答案下降">
+      <rect width="880" height="460" fill="#ffffff"/>
+      <text x="24" y="32" font-size="16" font-weight="700" fill="#0f172a">钉死正文和修订时间，只对调采集日</text>
+      <text x="24" y="54" font-size="14" fill="#475569">问句日期 t1 = 2025-07-16。柱高是 Qwen2.5-72B 在 595 页上的后期 EM（论文图 2）。</text>
+      <rect x="24" y="76" width="250" height="150" fill="#eff6ff" stroke="#1d4ed8" stroke-width="2"/>
+      <text x="40" y="102" font-size="15" font-weight="700" fill="#1d4ed8">旧修订</text>
+      <text x="40" y="126" font-size="14" fill="#0f172a">修订 2024-08-30</text>
+      <text x="40" y="148" font-size="14" fill="#0f172a">队名 Columbus</text>
+      <text x="40" y="170" font-size="14" fill="#0f172a">正文不动</text>
+      <text x="40" y="204" font-size="14" fill="#475569">采集日被赋值</text>
+      <rect x="314" y="76" width="250" height="150" fill="#ecfdf5" stroke="#047857" stroke-width="2"/>
+      <text x="330" y="102" font-size="15" font-weight="700" fill="#047857">新修订</text>
+      <text x="330" y="126" font-size="14" fill="#0f172a">修订 2025-07-08</text>
+      <text x="330" y="148" font-size="14" fill="#0f172a">队名 Boston Bruins</text>
+      <text x="330" y="170" font-size="14" fill="#0f172a">正文不动</text>
+      <text x="330" y="204" font-size="14" fill="#475569">采集日被赋值</text>
+      <rect x="604" y="76" width="252" height="150" fill="#fff7ed" stroke="#c2410c" stroke-width="2"/>
+      <text x="620" y="102" font-size="15" font-weight="700" fill="#c2410c">问句</text>
+      <text x="620" y="126" font-size="14" fill="#0f172a">哪支球队？</text>
+      <text x="620" y="148" font-size="14" fill="#0f172a">日期 2025-07-16</text>
+      <text x="620" y="170" font-size="14" fill="#0f172a">两份都在上下文</text>
+      <text x="620" y="204" font-size="14" fill="#475569">参考：较新修订</text>
+      <line x1="80" y1="250" x2="80" y2="400" stroke="#94a3b8" stroke-width="1"/>
+      <line x1="80" y1="400" x2="850" y2="400" stroke="#94a3b8" stroke-width="1"/>
+      <text x="28" y="404" font-size="14" fill="#475569">0</text>
+      <text x="20" y="328" font-size="14" fill="#475569">40</text>
+      <text x="20" y="256" font-size="14" fill="#475569">80</text>
+      <rect x="160" y="261" width="220" height="139" fill="#ecfdf5" stroke="#047857" stroke-width="2"/>
+      <text x="198" y="251" font-size="16" font-weight="700" fill="#047857">77.1%</text>
+      <text x="168" y="424" font-size="14" fill="#0f172a">新修订拿到 t1</text>
+      <text x="186" y="444" font-size="14" fill="#475569">(1, 0) · 595 页</text>
+      <rect x="500" y="349" width="220" height="51" fill="#fff1f2" stroke="#be123c" stroke-width="2"/>
+      <text x="548" y="339" font-size="16" font-weight="700" fill="#be123c">28.3%</text>
+      <text x="508" y="424" font-size="14" fill="#0f172a">旧修订拿到 t1</text>
+      <text x="526" y="444" font-size="14" fill="#475569">(0, 1) · 同一 595 页</text>
+    </svg>
+    <figcaption>图 1. 论文表 1 的输入构造，加上论文图 2 里 Qwen2.5-72B 的后期 EM。77.1% 对 28.3% 是 595 页、原始标记、两个展示顺序的平均，不是 Harris 这一页的逐条输出。</figcaption>
+  </figure>
+  <div class="tw">
+    <table>
+      <thead>
+        <tr>
+          <th>模型</th>
+          <th>后期 EM 变化（点）</th>
+          <th>前期 EM 变化（点）</th>
+          <th>只含前期答案（点）</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td>Qwen2.5-7B</td><td>−40.1 [−49.4, −30.6]</td><td>+38.7 [+29.9, +47.0]</td><td>+41.9 [+34.8, +48.9]</td></tr>
+        <tr><td>Phi-4</td><td>−47.3 [−62.2, −32.0]</td><td>+45.1 [+31.6, +58.3]</td><td>+65.2 [+56.8, +73.5]</td></tr>
+        <tr><td>Mistral-24B</td><td>−51.4 [−62.6, −39.9]</td><td>+49.8 [+39.0, +60.2]</td><td>+51.3 [+40.9, +61.2]</td></tr>
+        <tr><td>Qwen3.5-35B</td><td>−37.6 [−44.1, −30.9]</td><td>+37.6 [+30.6, +44.4]</td><td>+39.5 [+33.5, +45.2]</td></tr>
+        <tr><td>Qwen2.5-72B</td><td>−48.7 [−60.2, −36.9]</td><td>+44.9 [+34.0, +57.4]</td><td>+48.3 [+39.2, +59.4]</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p>表内是论文表 2：<code>(0, 1) − (1, 0)</code>，595 页、113 个谓词组、原始标记。括号是名义 95% 谓词簇区间。只含前期答案用和 EM 同一套文本归一化，查的是词面别名在不在回复里，原文写不构成蕴涵。</p>
+</section>
+
+<section id="ctrl">
+  <h2><span>4</span>问句前后、七条提示还掉</h2>
+  <p>595 页里 497 页两份修订时间戳都不晚于 <code>t1 − 1</code> 的午夜。在这 497 页上，把问句当天和前一天对调，问句匹配的那份采集得更晚。五个模型的后期 EM 仍掉 29.0 至 39.6 个点（论文表 3：Phi-4 −29.0，Mistral-24B −39.6）。前期 EM 涨 22.5 至 37.1 个点。单靠「更早采集的那份」解释不了。方向仍有影响：相对同一执行里问句后一天的对照，Phi-4、Mistral-24B、Qwen2.5-72B 的掉幅分别小 17.9、12.4、17.4 个点。</p>
+  <p>另外 128 页来自不相交的 596 页队列，纯文本显示。问句当天匹配对调掉 38.3 至 53.1 个点。论文表 12 同一次执行的绝对水平：Qwen2.5-72B 在 <code>(1, 0)</code> 为 73.4%，<code>(0, 1)</code> 为 20.3%。595 页的 77.1% / 28.3% 是原始标记，不要和这列纯文本读数放进同一个倍数。</p>
+  <figure>
+    <svg viewBox="0 0 880 420" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="五个模型后期 EM 掉幅">
+      <rect width="880" height="420" fill="#ffffff"/>
+      <text x="24" y="32" font-size="16" font-weight="700" fill="#0f172a">论文表 2 · 595 页后期 EM 掉幅（点）</text>
+      <text x="24" y="54" font-size="14" fill="#475569">旧修订拿到 t1 减去新修订拿到 t1。须线是名义 95% 谓词簇区间。分母 595 页。</text>
+      <line x1="220" y1="78" x2="220" y2="360" stroke="#94a3b8" stroke-width="1"/>
+      <line x1="220" y1="360" x2="840" y2="360" stroke="#94a3b8" stroke-width="1"/>
+      <text x="214" y="378" font-size="14" fill="#475569" text-anchor="end">0</text>
+      <text x="430" y="378" font-size="14" fill="#475569">30</text>
+      <text x="640" y="378" font-size="14" fill="#475569">60</text>
+      <line x1="430" y1="78" x2="430" y2="360" stroke="#e2e8f0" stroke-width="1"/>
+      <line x1="640" y1="78" x2="640" y2="360" stroke="#e2e8f0" stroke-width="1"/>
+      <text x="24" y="118" font-size="14" fill="#0f172a">Qwen2.5-7B</text>
+      <rect x="220" y="98" width="281" height="28" fill="#eff6ff" stroke="#1d4ed8" stroke-width="2"/>
+      <line x1="434" y1="112" x2="566" y2="112" stroke="#1d4ed8" stroke-width="2"/>
+      <circle cx="501" cy="112" r="4" fill="#1d4ed8"/>
+      <text x="580" y="118" font-size="14" font-weight="700" fill="#1d4ed8">40.1</text>
+      <text x="24" y="168" font-size="14" fill="#0f172a">Phi-4</text>
+      <rect x="220" y="148" width="331" height="28" fill="#fff7ed" stroke="#c2410c" stroke-width="2"/>
+      <line x1="444" y1="162" x2="655" y2="162" stroke="#c2410c" stroke-width="2"/>
+      <circle cx="551" cy="162" r="4" fill="#c2410c"/>
+      <text x="668" y="168" font-size="14" font-weight="700" fill="#c2410c">47.3</text>
+      <text x="24" y="218" font-size="14" fill="#0f172a">Mistral-24B</text>
+      <rect x="220" y="198" width="360" height="28" fill="#fff1f2" stroke="#be123c" stroke-width="2"/>
+      <line x1="499" y1="212" x2="658" y2="212" stroke="#be123c" stroke-width="2"/>
+      <circle cx="580" cy="212" r="4" fill="#be123c"/>
+      <text x="670" y="218" font-size="14" font-weight="700" fill="#be123c">51.4</text>
+      <text x="24" y="268" font-size="14" fill="#0f172a">Qwen3.5-35B</text>
+      <rect x="220" y="248" width="263" height="28" fill="#ecfdf5" stroke="#047857" stroke-width="2"/>
+      <line x1="436" y1="262" x2="529" y2="262" stroke="#047857" stroke-width="2"/>
+      <circle cx="483" cy="262" r="4" fill="#047857"/>
+      <text x="542" y="268" font-size="14" font-weight="700" fill="#047857">37.6</text>
+      <text x="24" y="318" font-size="14" fill="#0f172a">Qwen2.5-72B</text>
+      <rect x="220" y="298" width="341" height="28" fill="#eff6ff" stroke="#1d4ed8" stroke-width="2"/>
+      <line x1="478" y1="312" x2="641" y2="312" stroke="#1d4ed8" stroke-width="2"/>
+      <circle cx="561" cy="312" r="4" fill="#1d4ed8"/>
+      <text x="654" y="318" font-size="14" font-weight="700" fill="#1d4ed8">48.7</text>
+      <text x="24" y="404" font-size="14" fill="#475569">柱从 x=220 起，每点 7 像素。须线是表 2 区间：7B 30.6–49.4，Phi 32.0–62.2，Mistral 39.9–62.6，35B 30.9–44.1，72B 36.9–60.2。</text>
+    </svg>
+    <figcaption>图 2. 五个模型在 595 页上的后期 EM 掉幅。区间都不含 0。Phi-4 的区间最宽。</figcaption>
+  </figure>
+  <p>邻近对调（问句后 1 天对 7 天）在 Phi-4、Mistral-24B、Qwen3.5-35B、Qwen2.5-72B 上掉 28.2 至 38.9 个点。Qwen2.5-7B 是 +1.2（区间 −0.5 至 +2.8），尽管匹配对调掉了 40.1。远处日期对调小得多：采集日在两个问句之后数月，<code>(c, c+7)</code> 对 <code>(c+7, c)</code> 在 <code>t0</code> 问句上 0.0 至 6.2 个点，<code>t1</code> 上 0.0 至 2.7 个点。262 页 Temporal Wiki 上三个模型、两个问句年份，邻近效应 −0.2 至 +0.8。大掉幅集中在问句附近的采集日。</p>
+  <p>同一 128 页、七条提示变体，匹配对调的后期掉幅都还在。原文写「不要按采集时间选版本」之后，掉 37.9 至 50.8 个点；写明摘录是归档修订之后，掉 42.2 至 57.8 个点。改字段名、挪位置、换两套等价定义，五个模型仍掉。归档来源把 Mistral 的掉幅加大 10.2 个点。七条提示不是提示词总体。</p>
+  <p>128 条虚构记录（总部、教练、维护者、运营者 × 散文/键值 × 16 条）上，后期 EM 掉 92.2 至 95.7 个点，前期涨 91.4 至 96.1。去掉采集字段后，两版本 EM 96.9% 至 100.0%。近天花板的对照让绝对掉幅可以比维基更大，不要和 37.6–51.4 放进同一个倍数。问句日期改成英文月份名（元数据仍是 ISO），128 维基页上仍掉 31.6 至 53.1 个点。</p>
+</section>
+
+<section id="scope">
+  <h2><span>5</span>Qwen3.5 上思考能削，接口模型几乎不动</h2>
+  <p>同一 128 页、两个种子、共享采样和输出上限：Qwen3.5-35B 关掉思考的匹配对调掉 30.1 个点（59.6% 对 29.5%），打开思考掉 11.1 个点（72.1% 对 60.9%）。交互 +18.9，区间 11.1 至 26.5。贪心同一 128 页掉 40.6 个点，和采样不是同一对照。Ministral-3-14B 思考模式掉 13.1，Nemotron-3-Nano 掉 51.8。思考不是统一解药。跨模型比较隔离不了推理。</p>
+  <p>GPT-6 Astra 和 Claude Fable 5.1 在同一 128 页上各跑高/低力度，2,560 次独立接口请求，作者不加系统消息、不加当前日期、不给历史、不用工具。高力度闭卷 EM：Astra 21.9%，Fable 7.8%。全部 128 页的对调：Astra 高/低 −1.2 / −0.8，Fable −0.4 / −2.3，区间建立不了损失，也建立不了力度交互。区间不含大损失，原文不把它当作等价或在别的设置下稳健。虚构 128 条上两个模型高力度两种赋值都是 100% EM。低力度 Claude 掉 14.1 个点；256 条较低 EM 赋值的回复里，99.6% 仍含后期答案，只含前期的 0.4%（1 条）。这和本地模型改口到前期答案不是同一件事。</p>
+  <p>128 页上展示观察到的同一采集日 <code>(c, c)</code>，相对去掉字段，后期 EM 低 3.5 至 15.2 个点。这一天距 <code>t1</code> 178 至 755 天。扩展校正后，省略对照还留在 Phi-4、Mistral-24B、Qwen2.5-72B。这是字段、定义和日期值一起改，不是单独的「有没有字段」。</p>
+</section>
+
+<section id="yours">
+  <h2><span>6</span>你的工具结果里有没有采集日</h2>
+  <p>读完要看的是自己的运行位。检索或抓取工具把 <code>retrieved_at</code>、<code>crawlTimestamp</code>、<code>previousScrapeAt</code> 和正文一起交给模型，两份修订同时在上下文里，问句日期又写在提示里：和这篇的主设定同类。论文没有在你的流水线上测过。赋值对调不估计线上差错率。</p>
+  <p>原文给的审计：正文和修订时间戳不动，按时间上合法的采集日对调，两个顺序都跑，同时记同意率和前期答案含量。问句当天两侧、归档来源都测。相关修订已经在上下文里，元数据仍能改答案。先按修订时间戳挑最新合法版本再生成，595 页、纯文本显示上相对两份修订都给、但不含采集字段，<code>t0</code> 问句 EM 高 15.0 至 30.9 个点（论文表 18）。这条规则假定源身份已知，也可能丢掉后来的更正。</p>
+  <p>下面是我的推断，论文没有做这步。编辑起点如果把抓取时间戳当成无害书目，还要看它会不会和问句日期撞上。技能记录里如果写了「把工具返回的元数据原样拼进上下文」，这篇给的是开源权重模型上的对调证据。接口模型在维基对调上几乎不动，不能拿来当本地 7B–72B 的对照。</p>
+  <p><a href="/frontier/2026-10-11-option-labels-are-input.html">10-11</a> 写过，护栏选项名也是输入。<a href="/frontier/2026-10-19-visible-tools-are-input.html">10-19</a> 写过，可见工具列表也是输入。这一篇补的是：采集日期也是输入。证据正文可以一字不改。</p>
+</section>
+
+<section id="limit">
+  <h2><span>7</span>这篇没测到的</h2>
+  <ul>
+    <li><strong>EM 对的是基准参考。</strong>编辑可能在记事件，也可能在改错。两种比例原文没给。别名包含查的是词面，不是蕴涵。</li>
+    <li><strong>主实验是英文维基、每页两份修订、每份最多 4,003 字符。</strong>赋值掉幅和镜像/缓存故事不估计线上差错率。观察到的采集日只有一天。</li>
+    <li><strong>问句日期匹配对调没有在第二套自然问答数据上做。</strong>Temporal Wiki 的年份级问句和更晚修订，做不成时间上合法的精确匹配。</li>
+    <li><strong>虚构记录只有八个固定模板。</strong>区间以这些模板为条件。近天花板让绝对掉幅偏大。</li>
+    <li><strong>问句前的邻近对调 <code>(−1, −7)</code> 没跑。</strong>问句后的邻近对调把「更近」和「更早采集」叠在一起。</li>
+    <li><strong>七条提示不是提示词总体。</strong>显式指令和归档来源消不掉测过的对调，原文不排除别的提示写法。</li>
+    <li><strong>匹配对调没有和去掉修订时间戳交叉。</strong>线索竞争是行为描述，不是内部权重。</li>
+    <li><strong>三个主队列页不相交，后续会复用页，并受前面结果影响。</strong>本地计划在各自输出之前，不是公开预注册。32 页思考对照嵌在 128 页扩展里。</li>
+    <li><strong>配对思考只有 Qwen3.5 一个家族、两个种子。</strong>Ministral-3-14B 和 Nemotron-3-Nano 是原生推理配置，没有关掉思考的对照。</li>
+    <li><strong>贪心重跑不保证位运算重现。</strong>附录 A 写，分批执行的水平最多差 1.6 个点，对调差最多差 2.3 个点。37.6 至 51.4 是单次执行。</li>
+    <li><strong>接口比较隔离不了模型身份和推理是否打开。</strong>Astra 没有关推理的设置；Fable 一直开着自适应思考。每个顺序/力度一次执行。两个力度设置上的小效应不构成等价。</li>
+  </ul>
+</section>
+
+<section id="src">
+  <h2><span>8</span>出处</h2>
+  <p>数字来自预印本 HTML 与 PDF（<a href="https://arxiv.org/html/2610.32191v1">arxiv.org/html/2610.32191v1</a>，<a href="https://arxiv.org/pdf/2610.32191">pdf</a>，<a href="https://arxiv.org/abs/2610.32191">abs</a>，2026-10-23，未经同行评审）。论文表 1–7、表 12–14、表 18、第 2–6 节、局限、附录 A–D。export.arxiv.org 的 Atom 里 published 为 2026-10-23T05:37:24Z。文中点到的工具文档：<a href="https://www.diffbot.com/docs/dql/reference/dates-and-timestamps">Diffbot 日期字段</a>（原文访问 2026-10-13）、<a href="https://docs.firecrawl.dev/api-reference/endpoint/scrape">Firecrawl scrape 响应</a>（原文访问 2026-10-13）。本轮已核对两页里 <code>crawlTimestamp</code>、<code>previousScrapeAt</code> 字段名存在，没有再核字段名以外的内容。</p>
+  <p><a href="https://openai.com/news/">OpenAI 新闻页</a>本轮经 r.jina.ai 打开过，近几日条目包括在线存储扩容（10-23）、训练环境加固（10-23）、Decisions API（10-22）。据标题判断，没有带这一组分母的采集日期对调，未写入数字。<a href="https://www.anthropic.com/news">Anthropic 新闻页</a>本轮打开过，10 月 22 日有把 Agent Skills 捐给 Agentic AI Foundation，同样未写入数字。Hacker News 首页（含 10-24 一篇上下文工程综述）、Product Hunt 当日列表、GitHub 当日可见新建仓库未作为数字来源。X、Reddit 今日未覆盖：本机没有可用登录态。</p>
+  <p>谱系和增量层分别在 <a href="/frontier/rsi-llm-agent-self-evolution.html">递归自改进前世今生</a> 和 <a href="/frontier/llm-agent-tech-landscape.html">冻底座、改脚手架</a>。这篇只加一条：采集日期也是输入；595 页上只对调它，五个开源权重模型的后期精确匹配掉 37.6 至 51.4 个点。</p>
+</section>
+</main>
+</div>
+</body>
+</html>
