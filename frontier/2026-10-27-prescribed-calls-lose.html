@@ -1,0 +1,267 @@
+﻿<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>同一 90 例上，SQL 和 Codex 比每个模型最强手写流程高 14 至 24 个点</title>
+  <style>
+    :root { --ink:#0f172a; --muted:#475569; --line:#e2e8f0; --bg:#f8fafc; --blue:#1d4ed8; --blue-bg:#eff6ff; --amber:#b45309; --green:#047857; --rose:#be123c; }
+    * { box-sizing: border-box; }
+    body { margin:0; font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Noto Sans SC",sans-serif; background:var(--bg); color:var(--ink); line-height:1.75; font-size:17px; }
+    header { background:#0f172a; color:#f8fafc; padding:36px 24px 28px; border-bottom:4px solid #2563eb; }
+    header .inner { max-width:1080px; margin:0 auto; }
+    .badge { display:inline-block; border:1px solid #93c5fd; color:#bfdbfe; border-radius:999px; padding:2px 12px; font-size:13px; }
+    h1 { font-size:2rem; line-height:1.3; margin:12px 0; }
+    header p { color:#cbd5e1; margin:0; max-width:760px; }
+    .layout { max-width:1080px; margin:28px auto 64px; padding:0 20px; display:grid; grid-template-columns:220px minmax(0,1fr); gap:28px; }
+    aside { position:sticky; top:52px; align-self:start; background:#fff; border:1px solid var(--line); border-radius:12px; padding:14px; }
+    aside p { font-size:12px; letter-spacing:.06em; color:var(--muted); margin:0 0 8px; }
+    aside a { display:block; color:var(--ink); text-decoration:none; font-size:14px; padding:6px 8px; border-radius:6px; }
+    aside a:hover { background:var(--blue-bg); color:var(--blue); }
+    h2 { font-size:1.35rem; margin:0 0 12px; }
+    h2 span { display:inline-block; background:var(--blue); color:#fff; border-radius:6px; font-size:13px; padding:2px 8px; margin-right:8px; }
+    h3 { font-size:1.08rem; margin:20px 0 10px; }
+    section { background:#fff; border:1px solid var(--line); border-radius:14px; padding:26px 28px; margin-bottom:22px; }
+    p { margin:0 0 14px; }
+    a { color:var(--blue); overflow-wrap:anywhere; }
+    code { background:#f1f5f9; border-radius:4px; padding:1px 5px; font-size:15px; overflow-wrap:anywhere; }
+    main { min-width:0; }
+    figure { margin:16px 0; background:#fff; border:1px solid var(--line); border-radius:12px; padding:10px; overflow-x:auto; }
+    figure svg { display:block; min-width:700px; }
+    figcaption { color:var(--muted); font-size:14px; margin-top:6px; }
+    .tw { overflow-x:auto; margin:0 0 14px; }
+    .tw table { min-width:620px; }
+    table { width:100%; border-collapse:collapse; font-size:15px; }
+    th, td { border:1px solid var(--line); padding:8px 10px; text-align:left; vertical-align:top; }
+    th { background:#f1f5f9; }
+    ul { margin:0 0 14px; padding-left:22px; }
+    ol { margin:0 0 14px; padding-left:22px; }
+    li { margin-bottom:6px; }
+    .note { background:#f1f5f9; border-left:4px solid var(--muted); padding:12px 16px; border-radius:0 8px 8px 0; font-size:16px; margin:0 0 14px; }
+    .quote { background:#fffbeb; border-left:4px solid var(--amber); padding:12px 16px; border-radius:0 8px 8px 0; font-size:15px; overflow-wrap:anywhere; margin:0 0 14px; }
+    svg text { font-family:-apple-system,"PingFang SC","Noto Sans SC",sans-serif; }
+    @media (max-width:860px) { .layout { grid-template-columns:minmax(0,1fr); } aside { position:static; } h1 { font-size:1.55rem; } section { padding:18px 16px; } }
+  </style>
+</head>
+<body>
+<nav style="position:sticky;top:0;z-index:50;background:#0f172a;border-bottom:1px solid #1e293b;padding:10px 24px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;">
+  <a href="/frontier" style="color:#93c5fd;text-decoration:none;font-size:14px;margin-right:16px;">← Frontier</a>
+  <a href="/" style="color:#cbd5e1;text-decoration:none;font-size:14px;">@xixi003</a>
+</nav>
+
+<header>
+  <div class="inner">
+    <span class="badge">FRONTIER · 2026-10-27 · 规定调用</span>
+    <h1>同一 90 例上，SQL 和 Codex 比每个模型最强手写流程高 14 至 24 个点</h1>
+    <p>一篇预印本把微服务根因分析放进同一 90 例。三个平均规定调用为 0 的 harness，五个把调查写进 SOP、角色投票或程序筛候选的已发表 Agent。附录 B：SQL agent 和 Codex 在跑过的每个中档模型上，比该模型最强已发表 Agent 高 14 至 24 个点。分母 90 例，成对自助 95%。规定调用占比与此同向，原文未做消融。单次调用在 Luna 上，原文正文写高 5.9 个点，表 5 相减是 6.0，原文写不显著。</p>
+  </div>
+</header>
+<div class="layout">
+<aside>
+  <p>目录</p>
+  <a href="#what">1 14 至 24 个点</a>
+  <a href="#pool">2 90 例从哪来</a>
+  <a href="#who">3 谁决定看什么</a>
+  <a href="#ex">4 inventory 停了，流程停在 cart</a>
+  <a href="#rho">5 规定调用的比例</a>
+  <a href="#scale">6 辅线：档位、力度、成本</a>
+  <a href="#yours">7 你的步骤有没有写死</a>
+  <a href="#limit">8 这篇没测到的</a>
+  <a href="#src">9 出处</a>
+</aside>
+<main>
+<section id="what">
+  <h2><span>1</span>14 至 24 个点</h2>
+  <p>2026 年 10 月 26 日，arXiv 收到 <a href="https://arxiv.org/abs/2610.35767">Free to Look, Free to Reason: Simple LLM Harnesses Outdiagnose Hand-Crafted Root Cause Analysis Agents</a>（arXiv:2610.35767v1，cs.AI，作者 Tingzhu Bi、Xun Zhang、Jinglin Li、Ping Wang、Meng Ma，单位署北京大学、北京邮电大学）。预印本，未经同行评审。本轮读的是 HTML 全文和 PDF。</p>
+  <p>原文把工作分成 RCA 方法、底下的模型、通用 harness。已发表的 RCA Agent 各用各的数据、各比各的基线。这篇把简单 harness、已发表 LLM Agent、非 LLM 方法放进同一 90 例。后面表 3 的三层按这个分，和原文引言那三条不完全同一套名字。</p>
+  <div class="note">
+    <p style="margin:0">这篇只论证一个判断。判断是我的，依据是论文附录 B 和表 4、表 5。RCAtlas 核心集 90 例。SQL agent 和 Codex 在跑过的每个中档模型上，比该模型最强的已发表 RCA Agent 高 14 至 24 个点（90 例成对自助，名义 95%）。Luna 上 SQL 68.5%、Codex 68.9%，对 FoA 54.4%；Haiku 上 SQL 71.1%，对 FoA 46.7%，Codex 没跑；Flash 上 SQL 78.9%、Codex 85.6%，对 RCA-Agent 63.3%。Luna 和 Sol 上 SQL、Codex 是三次平均；表 5 的手写流程没有写三次。规定调用占比与此同向。原文写，这个比例量的是调查被写死了多少，没有把规定从某一个 Agent 上拆掉再测。单次调用（one-shot）在 Luna 上，原文正文写高 5.9 个点，表 5 的 60.4 减 54.4 是 6.0，原文写不显著。表 3 的家族区间 65–77% 对 16–53% 是三层的层，Codex 缺 Haiku、mABC 缺 DeepSeek，不当另一条主判断。</p>
+  </div>
+  <p>指标是 PR@1：90 例里，第一条答案是根因实体的比例。数据集标注粒度不同，答案会先映射到标注层级再比。RR 按原文公式给名次加权，辅线。随机排序的期望 PR@1 是 5.5%。</p>
+</section>
+
+<section id="pool">
+  <h2><span>2</span>90 例从哪来</h2>
+  <p>八个公开数据集合计放出 2,359 例。作者筛了 542 例，348 例通过八条排除规则。最常见的剔除：故障前窗口不干净 69 例，遥测里找不到故障证据 56 例，数据不完整 38 例，故障落在窗口后段 37 例。规则可重叠。从 348 例里再抽 90 例核心集：先保证每个场景有下限，再按故障类、根因层级、数据种类和遥测体量散开。23 个场景、十个故障类。根因是服务 59、pod 20、节点 11。单例遥测行数 37k 到 5.6M。按同一套映射，从清单里均匀抽一个实体命中的概率中位数 3.45%。</p>
+  <p>每个方法拿到同一份材料：告警时段、故障前时段、候选清单、两边的遥测。返回根因实体的有序列表，计前五条。一次生成参数除 Setting 3 的推理力度外不另设。每例一小时，没有答案记零。改方法的规则：跑不起来或实现有错才动，不加能力。</p>
+</section>
+
+<section id="who">
+  <h2><span>3</span>谁决定看什么</h2>
+  <p>三个简单 harness 都不规定模型调用。one-shot：程序按规则打一包证据，模型一次作答、没有工具。SQL agent：对着原始文件用 DuckDB 写查询，最多 100 次调用，按 OpenRCA 2.0 参考 Agent 的路子。Codex：在案例目录里跑 Codex CLI，模型自己写 shell 和 Python，六条规则（只读本目录、无网络无安装、不改数据、不认源数据集、必须写最终报告、最多一小时）。</p>
+  <p>五个已发表 Agent。FoA 按内置 SOP 走。RCAgent 带专家子 Agent。RCA-Agent 的控制器不碰数据，执行器写代码。DecompRCA 程序先筛最多 15 个候选，模型只做一次重排。mABC 角色投票，从程序算出的告警沿调用链往下走。FoA、RCAgent、DecompRCA 没有发布代码，作者按论文重写；DecompRCA 在 RCAEval RE1 上对上了原文数字。RCA-Agent 和 mABC 用发布代码，改时区、补缺失模块。</p>
+  <p>非 LLM：NSigma、BARO、CIRCA、RCD、TORAI 来自 RCAEval；FaultInsight 用作者代码；SimpleRCA 按描述重写。NSigma 的 PR@1 是 38.9%，三层里非 LLM 最高。NSigma 在 pod 层（20 例）55.0%，服务层（59 例）33.9%。原文正文写成全文唯一在 pod 上更高；同一张表 3 里 TORAI 也是 pod 更高（40.0 对 35.6）。原文把 NSigma 的 pod 优势解释为资源故障出现在肇事者自己的指标上，没有另做检验。</p>
+  <figure>
+    <svg viewBox="0 0 880 520" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="90 例上各方法的 PR@1">
+      <rect width="880" height="520" fill="#ffffff"/>
+      <text x="24" y="32" font-size="16" font-weight="700" fill="#0f172a">论文表 3 · 90 例 PR@1（%）</text>
+      <text x="24" y="54" font-size="14" fill="#475569">LLM 方法按 Luna、Flash、Haiku 平均。Codex 缺 Haiku，mABC 缺 DeepSeek。柱从 y=480、x=70 起，每点 4.4 像素。</text>
+      <line x1="70" y1="80" x2="70" y2="480" stroke="#94a3b8" stroke-width="1"/>
+      <line x1="70" y1="480" x2="850" y2="480" stroke="#94a3b8" stroke-width="1"/>
+      <text x="62" y="484" font-size="14" fill="#475569" text-anchor="end">0</text>
+      <text x="62" y="348" font-size="14" fill="#475569" text-anchor="end">30</text>
+      <text x="62" y="216" font-size="14" fill="#475569" text-anchor="end">60</text>
+      <text x="62" y="84" font-size="14" fill="#475569" text-anchor="end">90</text>
+      <line x1="70" y1="348" x2="850" y2="348" stroke="#e2e8f0" stroke-width="1"/>
+      <line x1="70" y1="216" x2="850" y2="216" stroke="#e2e8f0" stroke-width="1"/>
+      <rect x="90" y="141" width="52" height="339" fill="#ecfdf5" stroke="#047857" stroke-width="2"/>
+      <text x="116" y="132" font-size="14" font-weight="700" fill="#047857" text-anchor="middle">77.2</text>
+      <text x="116" y="500" font-size="14" fill="#0f172a" text-anchor="middle">Codex</text>
+      <rect x="160" y="160" width="52" height="320" fill="#ecfdf5" stroke="#047857" stroke-width="2"/>
+      <text x="186" y="151" font-size="14" font-weight="700" fill="#047857" text-anchor="middle">72.8</text>
+      <text x="186" y="500" font-size="14" fill="#0f172a" text-anchor="middle">SQL</text>
+      <rect x="230" y="193" width="52" height="287" fill="#ecfdf5" stroke="#047857" stroke-width="2"/>
+      <text x="256" y="184" font-size="14" font-weight="700" fill="#047857" text-anchor="middle">65.3</text>
+      <text x="256" y="500" font-size="14" fill="#0f172a" text-anchor="middle">一次</text>
+      <rect x="330" y="246" width="52" height="234" fill="#eff6ff" stroke="#1d4ed8" stroke-width="2"/>
+      <text x="356" y="237" font-size="14" font-weight="700" fill="#1d4ed8" text-anchor="middle">53.3</text>
+      <text x="356" y="500" font-size="14" fill="#0f172a" text-anchor="middle">FoA</text>
+      <rect x="400" y="263" width="52" height="217" fill="#eff6ff" stroke="#1d4ed8" stroke-width="2"/>
+      <text x="426" y="254" font-size="14" font-weight="700" fill="#1d4ed8" text-anchor="middle">49.3</text>
+      <text x="426" y="500" font-size="14" fill="#0f172a" text-anchor="middle">RCAg</text>
+      <rect x="470" y="290" width="52" height="190" fill="#eff6ff" stroke="#1d4ed8" stroke-width="2"/>
+      <text x="496" y="281" font-size="14" font-weight="700" fill="#1d4ed8" text-anchor="middle">43.3</text>
+      <text x="496" y="500" font-size="14" fill="#0f172a" text-anchor="middle">RCA-A</text>
+      <rect x="540" y="355" width="52" height="125" fill="#eff6ff" stroke="#1d4ed8" stroke-width="2"/>
+      <text x="566" y="346" font-size="14" font-weight="700" fill="#1d4ed8" text-anchor="middle">28.5</text>
+      <text x="566" y="500" font-size="14" fill="#0f172a" text-anchor="middle">Decomp</text>
+      <rect x="610" y="411" width="52" height="69" fill="#eff6ff" stroke="#1d4ed8" stroke-width="2"/>
+      <text x="636" y="402" font-size="14" font-weight="700" fill="#1d4ed8" text-anchor="middle">15.6</text>
+      <text x="636" y="500" font-size="14" fill="#0f172a" text-anchor="middle">mABC</text>
+      <rect x="710" y="309" width="52" height="171" fill="#fff7ed" stroke="#c2410c" stroke-width="2"/>
+      <text x="736" y="300" font-size="14" font-weight="700" fill="#c2410c" text-anchor="middle">38.9</text>
+      <text x="736" y="500" font-size="14" fill="#0f172a" text-anchor="middle">NSigma</text>
+      <rect x="780" y="456" width="52" height="24" fill="#fff1f2" stroke="#be123c" stroke-width="2"/>
+      <text x="806" y="447" font-size="14" font-weight="700" fill="#be123c" text-anchor="middle">5.5</text>
+      <text x="806" y="500" font-size="14" fill="#0f172a" text-anchor="middle">随机</text>
+    </svg>
+    <figcaption>图 1. 论文表 3 的 PR@1。绿：平均规定调用为 0；蓝：已发表 RCA Agent；橙：非 LLM 最高的 NSigma；红：随机。横轴 RCAg 是 RCAgent，RCA-A 是 RCA-Agent，一次是 one-shot。mABC 的 15.6 来自两个模型的残缺运行（47 和 85 例作答）。77.2 和 15.6 的分母模型数与 65.3、53.3 不同，不要直接减。</figcaption>
+  </figure>
+  <p>表 3 还写：最弱的简单 harness（one-shot 65.3%）仍比最强已发表 Agent（FoA 53.3%）高 12 个点。这两格都是三个中档模型平均，和标题里的 14 至 24 不是同一条对比。从服务层到 pod 层，Codex 掉 9 个点，FoA 和 RCAgent 掉 31 至 38 个点。</p>
+</section>
+
+<section id="ex">
+  <h2><span>4</span>inventory 停了，流程停在 cart</h2>
+  <p>论文跟了一例：RCA-100 的 rca100-main-0104。inventory 服务选不到 pod，cart 打过去被拒。根因自己不报错：请求数塌掉。cart 的错误率从 1.7% 升到 32.5%，日志写 <code>Connection refused (inventory:9090)</code>。下面四条轨迹都用 Luna。</p>
+  <figure>
+    <svg viewBox="0 0 880 430" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="同一例上谁读到拒连日志">
+      <rect width="880" height="430" fill="#ffffff"/>
+      <text x="24" y="32" font-size="16" font-weight="700" fill="#0f172a">同一例 · 谁读到拒连，谁停在 cart</text>
+      <text x="24" y="54" font-size="14" fill="#475569">论文图 4，Luna。绿框排到 inventory，橙框排到 cart。时间含网络等待。</text>
+      <rect x="24" y="76" width="200" height="300" fill="#ecfdf5" stroke="#047857" stroke-width="2"/>
+      <text x="40" y="102" font-size="15" font-weight="700" fill="#047857">SQL agent</text>
+      <text x="40" y="128" font-size="14" fill="#0f172a">31 条查询</text>
+      <text x="40" y="150" font-size="14" fill="#0f172a">22 次模型调用</text>
+      <text x="40" y="172" font-size="14" fill="#0f172a">107 秒</text>
+      <text x="40" y="206" font-size="14" fill="#0f172a">日志里 1,291 条</text>
+      <text x="40" y="228" font-size="14" fill="#0f172a">cart 被 inventory 拒</text>
+      <text x="40" y="262" font-size="14" fill="#0f172a">inventory 请求</text>
+      <text x="40" y="284" font-size="14" fill="#0f172a">1,450/分 → 109</text>
+      <text x="40" y="306" font-size="14" fill="#0f172a">（故障后前 30 秒）→ 0</text>
+      <text x="40" y="330" font-size="16" font-weight="700" fill="#047857">inventory ✓</text>
+      <rect x="236" y="76" width="200" height="300" fill="#ecfdf5" stroke="#047857" stroke-width="2"/>
+      <text x="252" y="102" font-size="15" font-weight="700" fill="#047857">Codex</text>
+      <text x="252" y="128" font-size="14" fill="#0f172a">7 条命令</text>
+      <text x="252" y="150" font-size="14" fill="#0f172a">8 次模型调用</text>
+      <text x="252" y="172" font-size="14" fill="#0f172a">57 秒</text>
+      <text x="252" y="206" font-size="14" fill="#0f172a">自己写对比代码</text>
+      <text x="252" y="228" font-size="14" fill="#0f172a">cart 错误率</text>
+      <text x="252" y="250" font-size="14" fill="#0f172a">0.017 → 0.325</text>
+      <text x="252" y="284" font-size="14" fill="#0f172a">01:59:23 起拒连</text>
+      <text x="252" y="330" font-size="16" font-weight="700" fill="#047857">inventory ✓</text>
+      <rect x="448" y="76" width="200" height="300" fill="#fff7ed" stroke="#c2410c" stroke-width="2"/>
+      <text x="464" y="102" font-size="15" font-weight="700" fill="#c2410c">FoA</text>
+      <text x="464" y="128" font-size="14" fill="#0f172a">4 步 · 11 次调用</text>
+      <text x="464" y="150" font-size="14" fill="#0f172a">51 秒</text>
+      <text x="464" y="184" font-size="14" fill="#0f172a">程序选定 SOP</text>
+      <text x="464" y="206" font-size="14" fill="#0f172a">「microservice</text>
+      <text x="464" y="228" font-size="14" fill="#0f172a">incident」</text>
+      <text x="464" y="262" font-size="14" fill="#0f172a">匹配到的流程</text>
+      <text x="464" y="284" font-size="14" fill="#0f172a">没有读日志这一步</text>
+      <text x="464" y="330" font-size="16" font-weight="700" fill="#c2410c">cart ✗</text>
+      <rect x="660" y="76" width="196" height="300" fill="#fff7ed" stroke="#c2410c" stroke-width="2"/>
+      <text x="676" y="102" font-size="15" font-weight="700" fill="#c2410c">mABC</text>
+      <text x="676" y="128" font-size="14" fill="#0f172a">26 步 · 32 次调用</text>
+      <text x="676" y="150" font-size="14" fill="#0f172a">631 秒</text>
+      <text x="676" y="184" font-size="14" fill="#0f172a">从告警沿调用链</text>
+      <text x="676" y="206" font-size="14" fill="#0f172a">02:03 只有 cart</text>
+      <text x="676" y="228" font-size="14" fill="#0f172a">还在接请求</text>
+      <text x="676" y="262" font-size="14" fill="#0f172a">inventory 在三跳外</text>
+      <text x="676" y="284" font-size="14" fill="#0f172a">接口层没被比较</text>
+      <text x="676" y="330" font-size="16" font-weight="700" fill="#c2410c">cart ✗</text>
+    </svg>
+    <figcaption>图 2. 论文图 4 的四条轨迹。one-shot 的证据包里，cart 的拒连模板从故障前 43 行涨到故障中 609 行，三次都把 inventory 排第一。NSigma 给上升的指标打高分，inventory 的请求数大跌，在 373 列里排倒数第二。</figcaption>
+  </figure>
+  <p>FoA 原文用告警里的故障类型选 SOP。这篇只给异常时段，故障类型会泄答。作者写了 12 份 SOP，四份含读日志，这一例一份都没匹配上。Luna 在 90 例里有 69 例匹配到那份不读日志的通用 SOP。</p>
+  <p>这是机制说明，不是 90 例的另一条主结果。规定调用比例把「程序决定看什么」从这一例扩到全部 90 例。原文写：它量的是调查被写死了多少，没有做拆掉规定之后准确率是否回升的消融。</p>
+</section>
+
+<section id="rho">
+  <h2><span>5</span>规定调用的比例</h2>
+  <p>一条模型调用算规定，当程序在固定位置发出它，不论模型想不想要。三个中档模型、有轨迹的全部 90 例，先按例平均，再按模型平均。Codex 缺 Haiku。</p>
+  <div class="tw">
+    <table>
+      <thead>
+        <tr>
+          <th>方法</th>
+          <th>每例调用</th>
+          <th>规定调用比例</th>
+          <th>固定阶段</th>
+          <th>表 3 的 PR@1</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td>Codex</td><td>8.5</td><td>0.00（0.00–0.00）</td><td>0</td><td>77.2</td></tr>
+        <tr><td>SQL agent</td><td>26.8</td><td>0.00（0.00–0.08）</td><td>1</td><td>72.8</td></tr>
+        <tr><td>One-shot</td><td>1.0</td><td>0.00</td><td>0</td><td>65.3</td></tr>
+        <tr><td>FoA</td><td>36.4</td><td>0.51（0.46–0.55）</td><td>8</td><td>53.3</td></tr>
+        <tr><td>RCAgent</td><td>35.1</td><td>0.35（0.05–0.81）</td><td>4</td><td>49.3</td></tr>
+        <tr><td>RCA-Agent</td><td>50.3</td><td>0.29（0.06–0.33）</td><td>4</td><td>43.3</td></tr>
+        <tr><td>mABC</td><td>41.2</td><td>≥0.10</td><td>3</td><td>15.6</td></tr>
+        <tr><td>DecompRCA</td><td>1.0</td><td>1.00</td><td>2</td><td>28.5</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p>表内调用数、比例来自论文表 6，PR@1 来自表 3，分母口径不同，只并排、不算倍数。Codex 一行的 8.5 与表 8 的 Luna 单模型值相同；表 8 第一遍里 Flash 上 Codex 是 34.0 次，两个模型平均应约 21，原文未说明表 6 这一格怎么平均，已按原文抄录。one-shot 的那一次算主调用，因为模型拿到整件事；DecompRCA 的那一次算规定，因为模型只给程序筛剩的名单打分。程序筛出的最多 15 个候选里，根因只在 57.8% 的例子里（约 52/90）。mABC 的记录分不清角色，比例是下界。已发表 Agent 内部，规定得少的并不更准：RCA-Agent 比 FoA 规定得少，PR@1 更低。简单 harness 的平均规定比例都是 0.00；SQL agent 的每例范围到 0.08，固定阶段为 1，个别例有极少量规定调用。</p>
+  <p>调用次数本身分不开两家。SQL agent 每例 27 次调用，和多步已发表 Agent 的 35–50 同一量级。one-shot 和 DecompRCA 都是一次。</p>
+</section>
+
+<section id="scale">
+  <h2><span>6</span>辅线：档位、力度、成本</h2>
+  <p>下面几句是原文第 6.4–6.6 节的其他发现，不当另一条主判断。按 Artificial Analysis Intelligence Index，简单 harness 在 Luna/Haiku 一档 60–71%，Flash/Sol/Astra 一档 74–87%。Luna 换到 Sol，至少一次做对的例子只多 2 至 7 个点，有的轮次做对、有的没有的例子从 32–36 掉到 7–8。Luna 上 Codex 三次分别是 62%、69%、76%。SQL agent 和 Codex 的第一遍上，推理力度从 medium 拉到 max 或 xhigh，PR@1 涨 2 至 4 个点，墙钟时间乘 1.5 到 4。附录 B 的图 8 把 one-shot 的 max 也算进去，时间乘 1.5 到 7，RR 变 −2 到 +7 个点。超过 NSigma 的 38.9% 才算能用；七次已发表 Agent 的跑次过了线（43–63%），Pareto 线上的每一次都是简单 harness。表 4 三次平均：Luna 加 Codex 68.9%。第 6.6 节用第一遍画 Pareto：Flash 加 Codex 85.6%、大约五分；Sol 加 SQL agent 45 秒、第一遍 85.6%（表 4 三次平均 84.1%）。最准的一次，Sol 在 xhigh 加 Codex，88.9%，大约 26 分、277 秒。表 8 是第一遍；表 3 至表 5 对 Luna、Sol 的 SQL 和 Codex 是三次平均。指数小数值本轮未在方法论页对上，排行榜整数位对得上。</p>
+</section>
+
+<section id="yours">
+  <h2><span>7</span>你的步骤有没有写死</h2>
+  <p>读完要看的是自己的运行位。调查流程写成固定阶段、角色必须按序调用、SOP 匹配之后不能改读哪些文件：和这篇的已发表 Agent 同类。论文没有在你的线上测过。规定调用比例不估计线上差错率。</p>
+  <p>原文给的是同一 90 例、同一套遥测上的并列比较。SQL 和 Codex 在跑过的每个中档模型上高 14 至 24 个点。规定调用占比与此同向。原文没有只改「谁决定看什么」的受控，也没有把规定从某一个 Agent 上拆掉再测。one-shot 在打好的证据包上推理，读哪些序列仍由规则挑；Luna 上对 FoA，原文正文写高 5.9 个点，不显著。</p>
+  <p>下面是我的推断，论文没有做这步。编辑起点如果把「先定位、再修、再验证」写进控制流，还要看匹配不到的案例会不会永远读不到那类证据。技能记录里如果写了「按故障类型选 SOP」，这篇给的是：告警不带故障类型时，Luna 有 69/90 例走进不读日志的通用流程。领域知识原文没说没用；原文结论写，把它写进控制流、案例对不上时会伤。这篇没有证明规定调用造成了那 14 至 24 个点。</p>
+  <p><a href="/frontier/2026-10-07-what-is-a-harness.html">10-07</a> 写过 harness 是模型外面那层程序。<a href="/frontier/2026-10-25-hidden-name-blocks-unit.html">10-25</a> 写过规格没写的名字测试仍要。这一篇补的是：同一 90 例上，SQL 和 Codex 比每个模型最强手写流程高 14 至 24 个点。</p>
+</section>
+
+<section id="limit">
+  <h2><span>8</span>这篇没测到的</h2>
+  <ul>
+    <li><strong>通用编码 harness 只测了 Codex。</strong>Claude Code 原文写可能不同。</li>
+    <li><strong>模型都是 2026 年的。</strong>许多规定流程当初对着更弱的模型写，排序能不能回到那些模型上，这篇没有测。</li>
+    <li><strong>预算没覆盖原文说的当前前沿模型</strong>Fable、Opus、Argon。</li>
+    <li><strong>三个已发表 Agent 是按论文重写的。</strong>尽管改动有清单，仍可能和原实现有差。规定调用比例没有做「拆掉规定」的消融。</li>
+    <li><strong>已发表 Agent 的评测设置和简单 harness 不对称。</strong>故障类型被拿掉，避免泄答；FoA 的 12 份 SOP 是作者按论文示例自写。mABC 是残缺运行（表 5 注：47 和 85 例作答），Luna 上 89 例里 42 例报原因未定。表 4 的 Luna、Sol 上 SQL/Codex 是三次平均，表 5 的已发表 Agent 是单次。附录 C.3：RCAgent 的专家额外读指标和追踪，mABC 的告警取入口服务请求数，都是作者改动。RCA-Agent 的执行器在两次尝试后丢掉超过 16,384 token 的输出，Luna 因此损失 16% 的执行步骤。</li>
+    <li><strong>案例研究只跟了一例。</strong>90 例上的主数字是 PR@1 和规定比例，不是这一例的轨迹。</li>
+    <li><strong>表 3 的家族平均分母不齐。</strong>Codex 缺 Haiku，mABC 缺 DeepSeek。标题用的是附录 B 的按模型对比。</li>
+    <li><strong>one-shot 的证据包仍由规则挑选。</strong>只留变动过的指标序列。模型在这一包上推理，读哪些序列仍由规则挑。</li>
+    <li><strong>ChatGPT 登录的 Codex 按 OpenRouter 标价逐次计价。</strong>超 272k 输入走长提示档。表 8 带星号的美元和表 3 的准确率不要当成同一遍跑次。</li>
+    <li><strong>核心集 90 例来自 348 例合格池。</strong>筛掉「找不到证据」的 56 例。下面是我的推断：统计方法更吃亏的那些故障可能已经少了。随机命中中位数 3.45% 是核心集上的数。筛选时用到 Claude Sonnet 5.5 做评审，Haiku 5.5 是被测模型之一，原文没讨论这条重叠。</li>
+  </ul>
+</section>
+
+<section id="src">
+  <h2><span>9</span>出处</h2>
+  <p>数字来自预印本 HTML 与 PDF（<a href="https://arxiv.org/html/2610.35767v1">arxiv.org/html/2610.35767v1</a>，<a href="https://arxiv.org/pdf/2610.35767">pdf</a>，<a href="https://arxiv.org/abs/2610.35767">abs</a>，2026-10-26，未经同行评审）。论文表 1–8、第 4–7 节、附录 A–C。export.arxiv.org 的 Atom 里 published 为 2026-10-26T17:12:02Z。案例清单与代码入口写在 <a href="https://ufile.io/5ww9iyfb">ufile.io/5ww9iyfb</a>（原文写约 11 GB 转换数据计划发布；该页写文件 30 天后过期）。Codex CLI 按原文引用 <a href="https://github.com/openai/codex">github.com/openai/codex</a>。Artificial Analysis Intelligence Index 按原文引用 <a href="https://artificialanalysis.ai/methodology/intelligence-benchmarking">该页 Version 4.3.2</a>，方法论页不含模型小数值，本轮只在排行榜整数位交叉对过。</p>
+  <p><a href="https://openai.com/news/">OpenAI 新闻页</a>本轮经 r.jina.ai 打开过，近几日条目包括学术合作（10-26）、GPT-6.1 Terra（10-26）、在线存储扩容（10-23）。据标题判断，没有带这一组分母的 RCA harness 对比，未写入数字。<a href="https://www.anthropic.com/news">Anthropic 新闻页</a>本轮打开过，10 月 26 日有 S-1，10 月 22 日有把 Agent Skills 捐给 Agentic AI Foundation，同样未写入数字。Hacker News 首页与 48 小时检索打开过，未作为数字来源。Product Hunt 当日页遇到验证码，未读列表。GitHub 搜索接口返回了 10-25 之后新建的仓库，没有带这一组分母的发布说明，未写入数字。X、Reddit 今日未覆盖：本机没有可用登录态。</p>
+  <p>谱系和增量层分别在 <a href="/frontier/rsi-llm-agent-self-evolution.html">递归自改进前世今生</a> 和 <a href="/frontier/llm-agent-tech-landscape.html">冻底座、改脚手架</a>。这篇只加一条：同一 90 例上，SQL 和 Codex 比每个模型最强手写流程高 14 至 24 个点。</p>
+</section>
+</main>
+</div>
+</body>
+</html>

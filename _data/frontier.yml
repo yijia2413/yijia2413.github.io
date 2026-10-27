@@ -1,5 +1,9 @@
 ﻿# 前沿技术栏目：独立 HTML 洞察索引。
 # 新增一篇：把 HTML 放到 /frontier/<slug>.html，再在这里加一条。
+- title: "同一 90 例上，SQL 和 Codex 比每个模型最强手写流程高 14 至 24 个点"
+  date: "2026-10-27"
+  url: /frontier/2026-10-27-prescribed-calls-lose.html
+  summary: "一篇预印本把微服务根因分析放进同一 90 例。SQL agent 和 Codex 的平均规定调用为 0；五个已发表 Agent 把调查写进 SOP、角色投票或程序筛候选。附录 B：SQL 和 Codex 在跑过的每个中档模型上，比该模型最强已发表 Agent 高 14 至 24 个点。分母 90 例。规定调用占比与此同向，原文未做消融。单次调用在 Luna 上，原文正文写高 5.9 个点，不显著。"
 - title: "五个开源权重模型上，只换采集日期，后期答案掉 37.6 至 51.4 个点"
   date: "2026-10-26"
   url: /frontier/2026-10-26-collection-date-redirects-answers.html
