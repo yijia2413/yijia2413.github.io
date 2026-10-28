@@ -1,0 +1,300 @@
+﻿<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>十个 Agent、73 条特征：第一阶段 62.7%，整条终检 28.5%</title>
+  <style>
+    :root { --ink:#0f172a; --muted:#475569; --line:#e2e8f0; --bg:#f8fafc; --blue:#1d4ed8; --blue-bg:#eff6ff; --amber:#b45309; --green:#047857; --rose:#be123c; }
+    * { box-sizing: border-box; }
+    body { margin:0; font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Noto Sans SC",sans-serif; background:var(--bg); color:var(--ink); line-height:1.75; font-size:17px; }
+    header { background:#0f172a; color:#f8fafc; padding:36px 24px 28px; border-bottom:4px solid #2563eb; }
+    header .inner { max-width:1080px; margin:0 auto; }
+    .badge { display:inline-block; border:1px solid #93c5fd; color:#bfdbfe; border-radius:999px; padding:2px 12px; font-size:13px; }
+    h1 { font-size:2rem; line-height:1.3; margin:12px 0; }
+    header p { color:#cbd5e1; margin:0; max-width:760px; }
+    .layout { max-width:1080px; margin:28px auto 64px; padding:0 20px; display:grid; grid-template-columns:220px minmax(0,1fr); gap:28px; }
+    aside { position:sticky; top:52px; align-self:start; background:#fff; border:1px solid var(--line); border-radius:12px; padding:14px; }
+    aside p { font-size:12px; letter-spacing:.06em; color:var(--muted); margin:0 0 8px; }
+    aside a { display:block; color:var(--ink); text-decoration:none; font-size:14px; padding:6px 8px; border-radius:6px; }
+    aside a:hover { background:var(--blue-bg); color:var(--blue); }
+    h2 { font-size:1.35rem; margin:0 0 12px; }
+    h2 span { display:inline-block; background:var(--blue); color:#fff; border-radius:6px; font-size:13px; padding:2px 8px; margin-right:8px; }
+    h3 { font-size:1.08rem; margin:20px 0 10px; }
+    section { background:#fff; border:1px solid var(--line); border-radius:14px; padding:26px 28px; margin-bottom:22px; }
+    p { margin:0 0 14px; }
+    a { color:var(--blue); overflow-wrap:anywhere; }
+    code { background:#f1f5f9; border-radius:4px; padding:1px 5px; font-size:15px; overflow-wrap:anywhere; }
+    main { min-width:0; }
+    figure { margin:16px 0; background:#fff; border:1px solid var(--line); border-radius:12px; padding:10px; overflow-x:auto; }
+    figure svg { display:block; min-width:700px; }
+    figcaption { color:var(--muted); font-size:14px; margin-top:6px; }
+    .tw { overflow-x:auto; margin:0 0 14px; }
+    .tw table { min-width:620px; }
+    table { width:100%; border-collapse:collapse; font-size:15px; }
+    th, td { border:1px solid var(--line); padding:8px 10px; text-align:left; vertical-align:top; }
+    th { background:#f1f5f9; }
+    ul { margin:0 0 14px; padding-left:22px; }
+    ol { margin:0 0 14px; padding-left:22px; }
+    li { margin-bottom:6px; }
+    .note { background:#f1f5f9; border-left:4px solid var(--muted); padding:12px 16px; border-radius:0 8px 8px 0; font-size:16px; margin:0 0 14px; }
+    .quote { background:#fffbeb; border-left:4px solid var(--amber); padding:12px 16px; border-radius:0 8px 8px 0; font-size:15px; overflow-wrap:anywhere; margin:0 0 14px; }
+    svg text { font-family:-apple-system,"PingFang SC","Noto Sans SC",sans-serif; }
+    @media (max-width:860px) { .layout { grid-template-columns:minmax(0,1fr); } aside { position:static; } h1 { font-size:1.55rem; } section { padding:18px 16px; } }
+  </style>
+</head>
+<body>
+<nav style="position:sticky;top:0;z-index:50;background:#0f172a;border-bottom:1px solid #1e293b;padding:10px 24px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;">
+  <a href="/frontier" style="color:#93c5fd;text-decoration:none;font-size:14px;margin-right:16px;">← Frontier</a>
+  <a href="/" style="color:#cbd5e1;text-decoration:none;font-size:14px;">@xixi003</a>
+</nav>
+
+<header>
+  <div class="inner">
+    <span class="badge">FRONTIER · 2026-10-28 · 演进特征</span>
+    <h1>十个 Agent、73 条特征：第一阶段 62.7%，整条终检 28.5%</h1>
+    <p>一篇预印本把同一条用户可见特征拆成 2 到 10 个阶段，Agent 在自己上一阶段的代码上接着改，隐藏测试的结果不告诉它，也不回滚。十个编码 Agent 的第一阶段通过率（未加权平均）62.7%；整条特征在最终代码上过终检 28.5%。Claude Opus 5.5 点估计最高：第一阶段 83.6%，整条 49.3%，区间本轮未从图 6b 读出。分母 73 条任务、十个 Agent 各一条通过率再平均。</p>
+  </div>
+</header>
+<div class="layout">
+<aside>
+  <p>目录</p>
+  <a href="#what">1 62.7 到 28.5</a>
+  <a href="#pool">2 73 条从哪来</a>
+  <a href="#l4">3 不报分、不回滚</a>
+  <a href="#ex">4 runAndWait 叠在自己写的 run 上</a>
+  <a href="#inherit">5 每个 Agent 都低 26 至 38 个点</a>
+  <a href="#green">6 辅线：失败之后接着写</a>
+  <a href="#yours">7 你的验收停在第几阶段</a>
+  <a href="#limit">8 这篇没测到的</a>
+  <a href="#src">9 出处</a>
+</aside>
+<main>
+<section id="what">
+  <h2><span>1</span>62.7 到 28.5</h2>
+  <p>2026 年 10 月 27 日，arXiv 收到 <a href="https://arxiv.org/abs/2610.37434">FeatureArc: Benchmarking Coding Agents on Evolving Features</a>（arXiv:2610.37434v1，cs.SE，作者 Yunlong Wang、Alyssa Wu、Cuiyun Gao、Jia Feng、Songyuanyi Lu、Zhichao Hu，单位署腾讯混元团队、香港中文大学）。预印本，未经同行评审。本轮读的是 PDF 全文和 HTML 全文。</p>
+  <p>原文问：单次需求写得好的 Agent，能不能在自己写过的代码上把同一条特征接着做对。评测设定叫 L4：用户只给下一阶段的规格，不说上一阶段过没过。十个编码 Agent，每个在同一 73 条任务上跑完整条链。</p>
+  <div class="note">
+    <p style="margin:0">这篇只论证一个判断。判断是我的，依据是论文表 3 和 Finding 1。十个 Agent 的第一阶段通过率未加权平均 62.7%，整条特征终检（chain gate）28.5%。每个 Agent 自己的终检都比第一阶段低：表 3 两列相减是 26.1 至 38.4 个点，Finding 1 写 26.0 至 38.4。Claude Opus 5.5 点估计最高：第一阶段 83.6%、终检 49.3%，整条仍有一半以上没过；它的区间本轮未从图 6b 读出。62.7 和 28.5 的分母都是 73 条任务、十个 Agent 各一条通过率再平均。每个 Agent 都跑这 73 条，十个通过率平均和 730 次合并通过率数值相同；原文没写每个 Agent–任务只跑一次，730 是我用 73×10 乘的。论文给 Hunyuan 4 Preview 终检写了任务自助 95% 区间 23.3% 至 45.2%，其余 Agent 的区间在图 6b，正文没有逐个数。终检要求整条链每一步都过，第一阶段只要一步。下面是我的粗算，论文没做：用平均第一阶段 0.627、论文续写率 0.701、平均链长 3.60（后面 2.60 步），按步独立估 0.627×0.701<sup>2.60</sup>≈0.249。和实测 28.5% 同量级。算法用均值代替分布，只作量级。落差里有「多步都要过」的成分，论文没拆开。</p>
+  </div>
+  <p>第一阶段从仓库初始状态 S0 起步，口径上等价于普通的单阶段任务。终检在最终工作区上跑整条特征的 F2P 和 P2P。两条都过才算整条做成。</p>
+</section>
+
+<section id="pool">
+  <h2><span>2</span>73 条从哪来</h2>
+  <p>任务来自仓库历史里同一条用户可见特征的连续扩展。入选仓库至少 30 star、宽松许可证、可离线 Linux 构建，主语言是 Python、TypeScript、Rust 或 Go。流水线从提交图里挖同一特征的阶段，配参考状态，再按 fail-to-pass（F2P，新行为）和 pass-to-pass（P2P，已有行为）做配对校验。</p>
+  <p>先按语言分层抽 100 条候选，每种语言 25 条，再按链长分层。轨迹筛缺陷去掉 7 条：5 条终检套件要了规格里没有的行为，1 条测试套件有缺陷，1 条仓库钩子会截获提示。人工再查规格、接口契约和隐藏测试是否对齐、后一阶段是否仍在扩同一条特征。评测集：73 条任务、263 个阶段、53 个仓库。后面所有 Agent 对比都用这一集。</p>
+  <p>语言：Python 21、Go 20、TypeScript 18、Rust 14。七个应用域按仓库手标。阶段 2 到 10 个，平均 3.60。后一阶段改动的文件里，平均 54.3% 在更早阶段也改过，任务中位数 59.1%。参考实现每阶段中位 426 行源码、416 行测试；整条特征中位 1,453 行源码；平均 7.71 个源文件。</p>
+  <p>论文还写了腾讯内部 8,881 段 IDE 会话作动机：其中 8,728 段有有效用户轮次，3,797 段（43.5%）有后续交互。那是另一份语料，不是这 73 条的分母。</p>
+</section>
+
+<section id="l4">
+  <h2><span>3</span>不报分、不回滚</h2>
+  <p>L1 到 L4 是论文自己定的委托层级。L1 用户告诉 Agent 这一阶段怎么修；L2 指出失败行为；L3 只说这一阶段过没过；L4 只给下一份规格，对更早阶段什么都不说。隐藏的阶段门跑该阶段的 F2P 和 P2P，两条都过才算该阶段过。失败不回滚、也不告诉 Agent，下一阶段从它刚写出的代码接着做。全部阶段之后，终检再跑整条特征的 F2P 和 P2P。</p>
+  <p>每个 Agent 一条任务共用一个会话和工作区，自己可以看代码、跑自己的检查。参考补丁、隐藏测试和后面的规格不公开。每阶段预算四小时。九个 Agent 跑在 Claude Code 里，GPT-6 Astra 跑官方 Codex CLI。跨 Agent 的分数是模型和 harness 绑在一起的成绩，原文没有把两者拆开。</p>
+  <p>十个 Agent：Claude Opus 5.5、GPT-6 Astra、Hunyuan 4 Preview、GLM-5.3、Grok 4.7、Qwen 3.8、Gemini 3.8 Flash、Doubao 2.1 Pro、Kimi K3、DeepSeek V4 Pro。Hunyuan 4 Preview 是文中的预发布内部模型。比较单位是配好的编码 Agent，含模型和 harness。</p>
+</section>
+
+<section id="ex">
+  <h2><span>4</span>runAndWait 叠在自己写的 run 上</h2>
+  <p>论文图 1 的任务长这样。m0 加 <code>app.run()</code>，启动一次运行并返回任务标识。m1 加 <code>app.runAndWait()</code>，内部要调 <code>app.run()</code> 再等到结束。m2 再接受文件输入，加 <code>files.upload()</code>。后一阶段写在 Agent 自己对前一阶段的实现上。规格分两份：需求文档写行为和验收；接口契约写名字、签名、常量和错误文案。</p>
+  <p>单阶段基准给的是一份固定起点。这里后一阶段的正确性绑在前一阶段有没有把 <code>run()</code> 写成契约要的那个。隐藏测试过没过，Agent 看不见。下面是设想，论文图 1 只画了这三步：若 m0 把返回值或错误类型写偏，m1 仍会按自己那份代码接着加等待逻辑。</p>
+</section>
+
+<section id="inherit">
+  <h2><span>5</span>每个 Agent 都低 26 至 38 个点</h2>
+  <p>表 3 按终检从高到低排。m0 是第一阶段 F2P 和 P2P 都过的任务比例。Gate 是终检。Cont. 是前面阶段都过的条件下，m1 及以后的阶段通过率。F2P 是所有计分阶段里 F2P 套件通过的比例。Depth 是第一次失败前连续通过的阶段数除以链长。P2P↓ 是整条特征的 P2P 套件失败的任务比例，分母比「纯回归」宽，含新行为已经失败的那些次。</p>
+  <div class="tw">
+    <table>
+      <thead>
+        <tr>
+          <th>Agent</th>
+          <th>第一阶段 m0</th>
+          <th>终检 Gate</th>
+          <th>差值（点）</th>
+          <th>续写 Cont.</th>
+          <th>阶段 F2P</th>
+          <th>P2P↓</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td>Claude Opus 5.5</td><td>83.6</td><td>49.3</td><td>34.3</td><td>79.2</td><td>68.4</td><td>5.5</td></tr>
+        <tr><td>GPT-6 Astra</td><td>67.1</td><td>37.0</td><td>30.1</td><td>76.1</td><td>55.5</td><td>20.5</td></tr>
+        <tr><td>Hunyuan 4 Preview</td><td>60.3</td><td>34.2</td><td>26.1</td><td>75.0</td><td>49.4</td><td>8.2</td></tr>
+        <tr><td>GLM-5.3</td><td>64.4</td><td>31.5</td><td>32.9</td><td>72.0</td><td>56.3</td><td>19.2</td></tr>
+        <tr><td>Grok 4.7</td><td>60.3</td><td>26.0</td><td>34.3</td><td>70.9</td><td>50.6</td><td>11.0</td></tr>
+        <tr><td>Qwen 3.8</td><td>61.6</td><td>24.7</td><td>36.9</td><td>65.4</td><td>49.0</td><td>6.8</td></tr>
+        <tr><td>Gemini 3.8 Flash</td><td>61.6</td><td>23.3</td><td>38.3</td><td>66.2</td><td>49.4</td><td>5.5</td></tr>
+        <tr><td>Doubao 2.1 Pro</td><td>60.3</td><td>21.9</td><td>38.4</td><td>60.0</td><td>43.0</td><td>8.2</td></tr>
+        <tr><td>Kimi K3</td><td>56.2</td><td>19.2</td><td>37.0</td><td>64.5</td><td>42.2</td><td>15.1</td></tr>
+        <tr><td>DeepSeek V4 Pro</td><td>52.1</td><td>17.8</td><td>34.3</td><td>61.5</td><td>40.3</td><td>11.0</td></tr>
+        <tr><td>Pooled（论文）</td><td>62.7</td><td>28.5</td><td>34.2</td><td>70.1</td><td>50.4</td><td>11.1</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p>表内百分数来自论文表 3。差值是我用表 3 两列相减，范围 26.1 至 38.4；论文 Finding 1 写 26.0 至 38.4，差 0.1 个点，按表 3 的一位小数相减。Pooled 一行照抄表 3；m0、Gate、F2P、P2P↓ 与十个 Agent 的未加权平均一致（我验算过），Cont. 70.1 是论文的合并值，十个续写率未加权平均是 69.1，分母是各 Agent 前面阶段都过的后续阶段，条数不同。Hunyuan 终检 34.2% 的 95% 区间 23.3% 至 45.2% 写在论文第 VI 节，按任务自助、4,000 次重抽样。名次大体还在（m0 与终检 Spearman ρ = 0.87），第一阶段分数仍高估整条做成的次数。</p>
+  <figure>
+    <svg viewBox="0 0 960 560" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="十个 Agent 第一阶段与终检">
+      <rect width="960" height="560" fill="#ffffff"/>
+      <text x="24" y="32" font-size="16" font-weight="700" fill="#0f172a">论文表 3 · 第一阶段 m0 与终检 Gate（%）</text>
+      <text x="24" y="54" font-size="14" fill="#475569">73 条任务。绿：第一阶段 m0；蓝：终检 Gate。右侧橙色是十个 Agent 未加权平均。</text>
+      <rect x="620" y="18" width="16" height="14" fill="#ecfdf5" stroke="#047857" stroke-width="2"/>
+      <text x="642" y="30" font-size="14" fill="#0f172a">第一阶段 m0</text>
+      <rect x="780" y="18" width="16" height="14" fill="#eff6ff" stroke="#1d4ed8" stroke-width="2"/>
+      <text x="802" y="30" font-size="14" fill="#0f172a">终检 Gate</text>
+      <line x1="70" y1="80" x2="70" y2="500" stroke="#94a3b8" stroke-width="1"/>
+      <line x1="70" y1="500" x2="940" y2="500" stroke="#94a3b8" stroke-width="1"/>
+      <text x="62" y="504" font-size="14" fill="#475569" text-anchor="end">0</text>
+      <text x="62" y="368" font-size="14" fill="#475569" text-anchor="end">30</text>
+      <text x="62" y="236" font-size="14" fill="#475569" text-anchor="end">60</text>
+      <text x="62" y="104" font-size="14" fill="#475569" text-anchor="end">90</text>
+      <line x1="70" y1="368" x2="940" y2="368" stroke="#e2e8f0" stroke-width="1"/>
+      <line x1="70" y1="236" x2="940" y2="236" stroke="#e2e8f0" stroke-width="1"/>
+      <line x1="70" y1="104" x2="940" y2="104" stroke="#e2e8f0" stroke-width="1"/>
+      <rect x="82" y="132.16" width="26" height="367.84" fill="#ecfdf5" stroke="#047857" stroke-width="2"/>
+      <text x="95" y="122" font-size="14" font-weight="700" fill="#047857" text-anchor="middle">83.6</text>
+      <rect x="110" y="283.08" width="26" height="216.92" fill="#eff6ff" stroke="#1d4ed8" stroke-width="2"/>
+      <text x="123" y="273" font-size="14" font-weight="700" fill="#1d4ed8" text-anchor="middle">49.3</text>
+      <text x="109" y="522" font-size="14" fill="#0f172a" text-anchor="middle">Opus</text>
+      <rect x="160" y="204.76" width="26" height="295.24" fill="#ecfdf5" stroke="#047857" stroke-width="2"/>
+      <text x="173" y="195" font-size="14" font-weight="700" fill="#047857" text-anchor="middle">67.1</text>
+      <rect x="188" y="337.2" width="26" height="162.8" fill="#eff6ff" stroke="#1d4ed8" stroke-width="2"/>
+      <text x="201" y="327" font-size="14" font-weight="700" fill="#1d4ed8" text-anchor="middle">37.0</text>
+      <text x="187" y="522" font-size="14" fill="#0f172a" text-anchor="middle">Astra</text>
+      <rect x="238" y="234.68" width="26" height="265.32" fill="#ecfdf5" stroke="#047857" stroke-width="2"/>
+      <text x="251" y="225" font-size="14" font-weight="700" fill="#047857" text-anchor="middle">60.3</text>
+      <rect x="266" y="349.52" width="26" height="150.48" fill="#eff6ff" stroke="#1d4ed8" stroke-width="2"/>
+      <text x="279" y="340" font-size="14" font-weight="700" fill="#1d4ed8" text-anchor="middle">34.2</text>
+      <text x="265" y="522" font-size="14" fill="#0f172a" text-anchor="middle">混元</text>
+      <rect x="316" y="216.64" width="26" height="283.36" fill="#ecfdf5" stroke="#047857" stroke-width="2"/>
+      <text x="329" y="207" font-size="14" font-weight="700" fill="#047857" text-anchor="middle">64.4</text>
+      <rect x="344" y="361.4" width="26" height="138.6" fill="#eff6ff" stroke="#1d4ed8" stroke-width="2"/>
+      <text x="357" y="351" font-size="14" font-weight="700" fill="#1d4ed8" text-anchor="middle">31.5</text>
+      <text x="343" y="522" font-size="14" fill="#0f172a" text-anchor="middle">GLM</text>
+      <rect x="394" y="234.68" width="26" height="265.32" fill="#ecfdf5" stroke="#047857" stroke-width="2"/>
+      <text x="407" y="225" font-size="14" font-weight="700" fill="#047857" text-anchor="middle">60.3</text>
+      <rect x="422" y="385.6" width="26" height="114.4" fill="#eff6ff" stroke="#1d4ed8" stroke-width="2"/>
+      <text x="435" y="376" font-size="14" font-weight="700" fill="#1d4ed8" text-anchor="middle">26.0</text>
+      <text x="421" y="522" font-size="14" fill="#0f172a" text-anchor="middle">Grok</text>
+      <rect x="472" y="228.96" width="26" height="271.04" fill="#ecfdf5" stroke="#047857" stroke-width="2"/>
+      <text x="485" y="219" font-size="14" font-weight="700" fill="#047857" text-anchor="middle">61.6</text>
+      <rect x="500" y="391.32" width="26" height="108.68" fill="#eff6ff" stroke="#1d4ed8" stroke-width="2"/>
+      <text x="513" y="381" font-size="14" font-weight="700" fill="#1d4ed8" text-anchor="middle">24.7</text>
+      <text x="499" y="522" font-size="14" fill="#0f172a" text-anchor="middle">Qwen</text>
+      <rect x="550" y="228.96" width="26" height="271.04" fill="#ecfdf5" stroke="#047857" stroke-width="2"/>
+      <text x="563" y="219" font-size="14" font-weight="700" fill="#047857" text-anchor="middle">61.6</text>
+      <rect x="578" y="397.48" width="26" height="102.52" fill="#eff6ff" stroke="#1d4ed8" stroke-width="2"/>
+      <text x="591" y="387" font-size="14" font-weight="700" fill="#1d4ed8" text-anchor="middle">23.3</text>
+      <text x="577" y="522" font-size="14" fill="#0f172a" text-anchor="middle">Gemini</text>
+      <rect x="628" y="234.68" width="26" height="265.32" fill="#ecfdf5" stroke="#047857" stroke-width="2"/>
+      <text x="641" y="225" font-size="14" font-weight="700" fill="#047857" text-anchor="middle">60.3</text>
+      <rect x="656" y="403.64" width="26" height="96.36" fill="#eff6ff" stroke="#1d4ed8" stroke-width="2"/>
+      <text x="669" y="394" font-size="14" font-weight="700" fill="#1d4ed8" text-anchor="middle">21.9</text>
+      <text x="655" y="522" font-size="14" fill="#0f172a" text-anchor="middle">豆包</text>
+      <rect x="706" y="252.72" width="26" height="247.28" fill="#ecfdf5" stroke="#047857" stroke-width="2"/>
+      <text x="719" y="243" font-size="14" font-weight="700" fill="#047857" text-anchor="middle">56.2</text>
+      <rect x="734" y="415.52" width="26" height="84.48" fill="#eff6ff" stroke="#1d4ed8" stroke-width="2"/>
+      <text x="747" y="406" font-size="14" font-weight="700" fill="#1d4ed8" text-anchor="middle">19.2</text>
+      <text x="733" y="522" font-size="14" fill="#0f172a" text-anchor="middle">Kimi</text>
+      <rect x="784" y="270.76" width="26" height="229.24" fill="#ecfdf5" stroke="#047857" stroke-width="2"/>
+      <text x="797" y="261" font-size="14" font-weight="700" fill="#047857" text-anchor="middle">52.1</text>
+      <rect x="812" y="421.68" width="26" height="78.32" fill="#eff6ff" stroke="#1d4ed8" stroke-width="2"/>
+      <text x="825" y="412" font-size="14" font-weight="700" fill="#1d4ed8" text-anchor="middle">17.8</text>
+      <text x="811" y="522" font-size="14" fill="#0f172a" text-anchor="middle">DS</text>
+      <rect x="864" y="224.12" width="26" height="275.88" fill="#fffbeb" stroke="#b45309" stroke-width="2"/>
+      <text x="877" y="214" font-size="14" font-weight="700" fill="#b45309" text-anchor="middle">62.7</text>
+      <rect x="892" y="374.6" width="26" height="125.4" fill="#fff7ed" stroke="#c2410c" stroke-width="2"/>
+      <text x="905" y="365" font-size="14" font-weight="700" fill="#c2410c" text-anchor="middle">28.5</text>
+      <text x="891" y="522" font-size="14" fill="#0f172a" text-anchor="middle">平均</text>
+      <text x="24" y="548" font-size="14" fill="#475569">DS 是 DeepSeek V4 Pro。混元是 Hunyuan 4 Preview。平均两柱换了橙色，避免看成第十一个模型。每个 Agent 分母 73 条。</text>
+    </svg>
+    <figcaption>图 1. 论文表 3 的 m0 与 Gate。每个 Agent 的分母是 73 条。平均是十个通过率的未加权平均。每个 Agent 都跑这 73 条，和 730 次合并通过率数值相同；730 是我用 73×10 乘的，原文没写每个 Agent–任务只跑一次。</figcaption>
+  </figure>
+  <p>只看最后一阶段也会偏高。最后一阶段的门用的是该阶段自己的 F2P 和 P2P；终检查的是最终代码上的整条特征。过了最后一阶段门的 273 次里，69 次（25.3%）终检没过。至少失败过一个阶段的 525 次里，只有 14 次（2.7%）后来过了终检。</p>
+  <p>图 6a 写从未恢复的那些次第一次失败落在哪：36.2% 的全部次数第一次失败就在 m0；另 20.7% 第一次失败在 m1，也就是第一次叠在自己代码上的阶段；只有 13.2% 第一次失败更靠后。36.2 不是第一阶段失败率。第一阶段失败率按表 3 的 m0 是 100 − 62.7 = 37.3 个点，是我用平均通过率算的。两阶段任务的终检 44.4%；五阶段及以上 1.5%，过的只有两次，都是 Grok 4.7。图 5 在含 m2 的 57 条、含 m3 的 34 条上画存活曲线。</p>
+  <p>已经做成的行为被后改动弄坏，相对少。链内回归：每个阶段自己的 F2P 都过了，最终工作区却没过整条 F2P，占这类次数的 7.3%。纯回归：最终工作区过了整条 F2P、没过整条 P2P，占过了整条 F2P 那些次的 3.3%。表 3 的 P2P↓ 5.5% 至 20.5% 还含新行为已经失败的次数，和 3.3% 不是同一个率。</p>
+</section>
+
+<section id="green">
+  <h2><span>6</span>辅线：失败之后接着写</h2>
+  <p>下面几句是论文 Finding 4、6、7，不当另一条主判断。分母是阶段，十个 Agent 合并。22.6% 和 70.2% 的 n，论文正文没给。</p>
+  <figure>
+    <svg viewBox="0 0 880 500" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="L4 流程与 62.7 到 28.5 从哪掉">
+      <rect width="880" height="500" fill="#ffffff"/>
+      <text x="24" y="32" font-size="16" font-weight="700" fill="#0f172a">L4：规格接着给，对错不告诉 Agent</text>
+      <text x="24" y="54" font-size="14" fill="#475569">左：评测流程。右：62.7 到 28.5 的分解。绿框 Agent 看得见，橙框看不见。</text>
+      <rect x="24" y="78" width="390" height="64" rx="8" fill="#ecfdf5" stroke="#047857" stroke-width="2"/>
+      <text x="219" y="106" font-size="15" font-weight="700" fill="#047857" text-anchor="middle">用户只给下一阶段规格</text>
+      <text x="219" y="128" font-size="14" fill="#0f172a" text-anchor="middle">不说上一阶段过没过</text>
+      <path d="M219 142 L219 166" stroke="#047857" stroke-width="2" fill="none"/>
+      <polygon points="219,174 213,166 225,166" fill="#047857"/>
+      <rect x="24" y="176" width="390" height="64" rx="8" fill="#ecfdf5" stroke="#047857" stroke-width="2"/>
+      <text x="219" y="204" font-size="15" font-weight="700" fill="#047857" text-anchor="middle">Agent 在自己的代码上改</text>
+      <text x="219" y="226" font-size="14" fill="#0f172a" text-anchor="middle">同一会话、同一工作区</text>
+      <path d="M219 240 L219 264" stroke="#c2410c" stroke-width="2" fill="none"/>
+      <polygon points="219,272 213,264 225,264" fill="#c2410c"/>
+      <rect x="24" y="274" width="390" height="64" rx="8" fill="#fff7ed" stroke="#c2410c" stroke-width="2"/>
+      <text x="219" y="302" font-size="15" font-weight="700" fill="#c2410c" text-anchor="middle">隐藏门：F2P + P2P</text>
+      <text x="219" y="324" font-size="14" fill="#0f172a" text-anchor="middle">结果不回报、失败不回滚</text>
+      <path d="M219 338 L219 362" stroke="#c2410c" stroke-width="2" fill="none"/>
+      <polygon points="219,370 213,362 225,362" fill="#c2410c"/>
+      <rect x="24" y="372" width="390" height="64" rx="8" fill="#fff7ed" stroke="#c2410c" stroke-width="2"/>
+      <text x="219" y="400" font-size="15" font-weight="700" fill="#c2410c" text-anchor="middle">全部阶段后的终检</text>
+      <text x="219" y="422" font-size="14" fill="#0f172a" text-anchor="middle">整条特征的 F2P 和 P2P</text>
+      <rect x="446" y="78" width="410" height="86" rx="8" fill="#eff6ff" stroke="#1d4ed8" stroke-width="2"/>
+      <text x="466" y="108" font-size="15" font-weight="700" fill="#1d4ed8">第一阶段 62.7% → 终检 28.5%</text>
+      <text x="466" y="134" font-size="14" fill="#0f172a">分母 73 条 × 十个 Agent 的通过率平均</text>
+      <text x="466" y="154" font-size="14" fill="#475569">每个 Agent 自己低 26.1 至 38.4 个点</text>
+      <rect x="446" y="178" width="410" height="86" rx="8" fill="#fff7ed" stroke="#c2410c" stroke-width="2"/>
+      <text x="466" y="208" font-size="15" font-weight="700" fill="#c2410c">过了最后一阶段门的 273 次</text>
+      <text x="466" y="234" font-size="14" fill="#0f172a">69 次（25.3%）终检没过</text>
+      <text x="466" y="254" font-size="14" fill="#475569">525 次至少失败过一阶段，14 次后来过终检</text>
+      <rect x="446" y="278" width="410" height="86" rx="8" fill="#fffbeb" stroke="#b45309" stroke-width="2"/>
+      <text x="466" y="308" font-size="15" font-weight="700" fill="#b45309">第一次失败落在哪</text>
+      <text x="466" y="334" font-size="14" fill="#0f172a">m0：36.2%；m1：20.7%；更后：13.2%</text>
+      <text x="466" y="354" font-size="14" fill="#475569">两阶段终检 44.4%；五阶段及以上 1.5%</text>
+      <rect x="446" y="378" width="410" height="58" rx="8" fill="#f8fafc" stroke="#475569" stroke-width="2"/>
+      <text x="466" y="404" font-size="14" fill="#0f172a">作者粗算：0.627 × 0.701 的 2.60 次方 ≈ 0.249</text>
+      <text x="466" y="424" font-size="14" fill="#475569">用均值代替分布，论文没做链长校正</text>
+    </svg>
+    <figcaption>图 2. L4 流程，以及 62.7 到 28.5 从哪掉。右侧三个盒子的分母不同：通过率平均、最后一阶段门的次数、全部次数里第一次失败的位置。不要减成同一个差。</figcaption>
+  </figure>
+  <p>前一阶段过了，下一阶段 F2P 70.2%；前一阶段没过，22.6%（图 7）。每个 Agent 都有这个缺口。按任务–阶段成组、两组都有的 109 组等权平均，是 72.6% 对 29.0%。论文写这些差与前一阶段结果相关（associated with），没有做成因。同一程序下 72.6 − 29.0 = 43.6 个点，是我用组内平均减的。全池 70.2 − 22.6 = 47.6 个点是另一分母，上下文压缩（少于 40 次调用 6.2 个点、40–99 次 5.2 个点）和规格变长（6.4 个点）又是别的子集，不和 47.6 比大小。</p>
+  <p>失败的后续阶段里，轨迹标成带继承缺陷的占 72.9%（全因 47.1%，部分 25.9%）。失败之后的阶段上，Agent 完全没注意到更早那个错，占 94.9%（各 Agent 90.2% 至 99.0%）。盲评 60 条里 56 条一致。注意到的 50 个阶段里，修掉了 34 个。九个跑 Claude Code 的 Agent，失败后的工具调用中位数只高 4% 至 18%；Opus 花在测试上的调用占比，失败后 15.0%、通过后 15.3%。</p>
+  <p>73.8% 的阶段以自己的绿测收场，这些阶段的隐藏 F2P 通过率 52.7%，只比全部阶段的 50.4% 高一点。红测收场仍过 45.2%。失败之后仍报绿的 713 个阶段，隐藏 F2P 只过 24.5%。367 个红测收场的阶段里，Agent 说失败无关或早就有的 321 次（87.5%）；这 321 次里 23 次（7.2%）先在该阶段起点代码上跑过同一测试。这些是阶段级隐藏 F2P，不是终检。</p>
+</section>
+
+<section id="yours">
+  <h2><span>7</span>你的验收停在第几阶段</h2>
+  <p>读完要看的是自己的运行位。排行榜、内部评测、技能记录如果停在「这一次请求过了隐藏测试」，和这篇的第一阶段 62.7% 同类。论文测的是：同一条特征再往下写、代码是 Agent 自己留下的、中间没有人报失败，终检剩 28.5%。</p>
+  <p>编辑起点如果在每阶段结束时把失败告诉 Agent 或回滚，那是论文的 L1 到 L3，这篇的 28.5% 不能直接当那个数字。技能记录里如果写了「Agent 自己跑测试就算过」，第 6 节有阶段级隐藏 F2P 的对照，不是终检。</p>
+  <p>下面是我的推断，论文没有在你的线上测过。把「先写、再验收、再写下一段」里的验收省掉，第一阶段分数会高估整条特征。高估幅度不要直接抄 26 至 38 个点：终检要求每一步都过，第一阶段只要一步，第 1 节那条独立粗算已经和 28.5% 同量级。这篇也没有证明 34 个点都来自没注意到继承缺陷：36.2% 的全部次数第一次失败就在 m0，那一截还没继承。继承这条缝出现在已经失败之后的续写上。</p>
+  <p><a href="/frontier/2026-10-07-what-is-a-harness.html">10-07</a> 写过 harness 是模型外面那层程序。这篇九个 Agent 跑 Claude Code、一个跑 Codex CLI，分数没有拆开。<a href="/frontier/2026-10-15-gap-remains-after-fix.html">10-15</a> 写过隐藏测试判为修好之后，报告仍差一截。这一篇补的是：十个 Agent、73 条特征，第一阶段 62.7%，整条终检 28.5%。</p>
+</section>
+
+<section id="limit">
+  <h2><span>8</span>这篇没测到的</h2>
+  <ul>
+    <li><strong>设定是 L4。</strong>中间有人报失败或回滚，数字会变。原文没在 L1 到 L3 上对同一 73 条重跑。</li>
+    <li><strong>模型和 harness 绑在一起。</strong>九个 Claude Code，一个 Codex CLI。原文写跨 Agent 分数是联合成绩，没有只换 harness 的消融。</li>
+    <li><strong>73 条是 100 条分层样本再筛再人工留下的。</strong>轨迹筛掉 7 条。由 100、7、73 推得另外 20 条在人工检查前后离开，作者自算，前提是除这两步外没有别的筛选。四种语言、七个应用域，原文自己写可能盖不住真实特征开发的全部流程。任务筛选用若干模型的轨迹，被筛掉的正是 Agent 易失败的类型。</li>
+    <li><strong>终检区间正文只给了 Hunyuan。</strong>34.2%（23.3% 至 45.2%）。其余 Agent 的任务自助区间在图 6b，本轮没有从矢量图里读数。28.5% 没有单独公布的区间。Opus 是点估计最高，区间未读。</li>
+    <li><strong>标注与构造用的模型和被评模型重叠。</strong>轨迹标签三个模型：Hunyuan 4 Preview、DeepSeek V4.1 Flash、GLM-5.3 Flash，多数表决，第一作者裁决全票不一致的项。Hunyuan 4 Preview 是作者团队的待评预发布模型，同时被评测、又给轨迹打标签。任务构造：GPT-5.5 做步骤 1–3，DeepSeek V4.1 Flash 做步骤 4，Claude Sonnet 5 做步骤 5，两家模型家族与被评 Agent 重合。规格抽查 60 个阶段只由第一作者一人完成。继承 90/90 一致，先验觉察 56/60。72.9% 和 94.9% 跟这些标签走。</li>
+    <li><strong>五阶段及以上终检 1.5%，分母是这类任务上的全部次数，正文没写这类任务有几条。</strong>过的两次都是 Grok 4.7，不要读成 Grok 在长任务上系统更强。</li>
+    <li><strong>绿测、红测的分母随 Agent 变。</strong>Grok 和 Gemini 的红测少于 20 个阶段。这些是第 6 节辅线，不是终检。</li>
+    <li><strong>每阶段四小时、离线容器、依赖预装。</strong>要上网装包、要人补语境的特征，这篇没有。</li>
+    <li><strong>Hunyuan 4 Preview 是预发布内部模型。</strong>论文第 VI 节用它说明内部评测缺 L4，不是另一条主判断。</li>
+    <li><strong>落差没有链长校正。</strong>终检要求每一步都过。第 1 节那条独立粗算是作者自己的，论文没做。</li>
+  </ul>
+</section>
+
+<section id="src">
+  <h2><span>9</span>出处</h2>
+  <p>数字来自预印本 PDF 与 HTML（<a href="https://arxiv.org/html/2610.37434">arxiv.org/html/2610.37434</a>，<a href="https://arxiv.org/pdf/2610.37434">pdf</a>，<a href="https://arxiv.org/abs/2610.37434">abs</a>，2026-10-27，未经同行评审）。论文表 1–4、第 2–6 节、图 1、2、4–8。export.arxiv.org 的 Atom 里 published 为 2026-10-27T15:45:50Z。Claude Code 按原文注 <a href="https://code.claude.com/docs/en/overview">code.claude.com/docs/en/overview</a>。Codex CLI 按原文注 <a href="https://github.com/openai/codex">github.com/openai/codex</a>。表 3 差值、第一阶段失败率 37.3 个点、独立粗算 0.249、组内差 43.6、73×10=730 是我算的，已标明。</p>
+  <p><a href="https://openai.com/news/">OpenAI 新闻页</a>本轮经 r.jina.ai 打开过，近几日条目包括与 Oracle 把应用接到 ChatGPT（10-27）、学术合作（10-26）、GPT-6.1 Sol 与 CodeRabbit（10-26）、GPT-6.1 Terra 系统卡补篇（10-26）。据标题判断，没有带这 73 条分母的演进特征对比，未写入数字。<a href="https://www.anthropic.com/news">Anthropic 新闻页</a>本轮打开过，10 月 28 日页上有 Opus 5.5（9-22）、S-1（10-26）、用药开发进展（10-27），同样未写入数字。Hacker News 首页打开过，Algolia 48 小时检索返回 400，未作为数字来源。Product Hunt 当日页经 r.jina.ai 打开过，未写入数字。GitHub 搜索返回了 10-26 之后更新的仓库，没有带这一组分母的 FeatureArc 发布说明，未写入数字。X、Reddit 今日未覆盖：本机没有可用登录态。</p>
+  <p>谱系和增量层分别在 <a href="/frontier/rsi-llm-agent-self-evolution.html">递归自改进前世今生</a> 和 <a href="/frontier/llm-agent-tech-landscape.html">冻底座、改脚手架</a>。这篇只加一条：十个 Agent、73 条特征，第一阶段 62.7%，整条终检 28.5%。</p>
+</section>
+</main>
+</div>
+</body>
+</html>

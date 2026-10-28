@@ -1,5 +1,9 @@
 ﻿# 前沿技术栏目：独立 HTML 洞察索引。
 # 新增一篇：把 HTML 放到 /frontier/<slug>.html，再在这里加一条。
+- title: "十个 Agent、73 条特征：第一阶段 62.7%，整条终检 28.5%"
+  date: "2026-10-28"
+  url: /frontier/2026-10-28-first-stage-overstates-feature.html
+  summary: "一篇预印本把同一条用户可见特征拆成 2 到 10 个阶段，Agent 在自己上一阶段的代码上接着改，隐藏测试不回报、不回滚。十个编码 Agent 的第一阶段通过率未加权平均 62.7%；整条特征在最终代码上过终检 28.5%。Claude Opus 5.5 点估计最高：第一阶段 83.6%，整条 49.3%。分母 73 条任务、十个 Agent 各一条通过率再平均。"
 - title: "同一 90 例上，SQL 和 Codex 比每个模型最强手写流程高 14 至 24 个点"
   date: "2026-10-27"
   url: /frontier/2026-10-27-prescribed-calls-lose.html
