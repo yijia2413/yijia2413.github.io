@@ -1,0 +1,228 @@
+﻿<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>三个 Agent 最新版第一次请求里，工具定义占字符 63.2% 至 77.4%</title>
+  <style>
+    :root { --ink:#0f172a; --muted:#475569; --line:#e2e8f0; --bg:#f8fafc; --blue:#1d4ed8; --blue-bg:#eff6ff; --amber:#b45309; --green:#047857; --rose:#be123c; }
+    * { box-sizing: border-box; }
+    body { margin:0; font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Noto Sans SC",sans-serif; background:var(--bg); color:var(--ink); line-height:1.75; font-size:17px; }
+    header { background:#0f172a; color:#f8fafc; padding:36px 24px 28px; border-bottom:4px solid #2563eb; }
+    header .inner { max-width:1080px; margin:0 auto; }
+    .badge { display:inline-block; border:1px solid #93c5fd; color:#bfdbfe; border-radius:999px; padding:2px 12px; font-size:13px; }
+    h1 { font-size:2rem; line-height:1.3; margin:12px 0; }
+    header p { color:#cbd5e1; margin:0; max-width:760px; }
+    .layout { max-width:1080px; margin:28px auto 64px; padding:0 20px; display:grid; grid-template-columns:220px minmax(0,1fr); gap:28px; }
+    aside { position:sticky; top:52px; align-self:start; background:#fff; border:1px solid var(--line); border-radius:12px; padding:14px; }
+    aside p { font-size:12px; letter-spacing:.06em; color:var(--muted); margin:0 0 8px; }
+    aside a { display:block; color:var(--ink); text-decoration:none; font-size:14px; padding:6px 8px; border-radius:6px; }
+    aside a:hover { background:var(--blue-bg); color:var(--blue); }
+    h2 { font-size:1.35rem; margin:0 0 12px; }
+    h2 span { display:inline-block; background:var(--blue); color:#fff; border-radius:6px; font-size:13px; padding:2px 8px; margin-right:8px; }
+    h3 { font-size:1.08rem; margin:20px 0 10px; }
+    section { background:#fff; border:1px solid var(--line); border-radius:14px; padding:26px 28px; margin-bottom:22px; }
+    p { margin:0 0 14px; }
+    a { color:var(--blue); overflow-wrap:anywhere; }
+    code { background:#f1f5f9; border-radius:4px; padding:1px 5px; font-size:15px; overflow-wrap:anywhere; }
+    main { min-width:0; }
+    figure { margin:16px 0; background:#fff; border:1px solid var(--line); border-radius:12px; padding:10px; overflow-x:auto; }
+    figure svg { display:block; min-width:700px; }
+    figcaption { color:var(--muted); font-size:14px; margin-top:6px; }
+    .tw { overflow-x:auto; margin:0 0 14px; }
+    .tw table { min-width:620px; }
+    table { width:100%; border-collapse:collapse; font-size:15px; }
+    th, td { border:1px solid var(--line); padding:8px 10px; text-align:left; vertical-align:top; }
+    th { background:#f1f5f9; }
+    ul { margin:0 0 14px; padding-left:22px; }
+    ol { margin:0 0 14px; padding-left:22px; }
+    li { margin-bottom:6px; }
+    .note { background:#f1f5f9; border-left:4px solid var(--muted); padding:12px 16px; border-radius:0 8px 8px 0; font-size:16px; margin:0 0 14px; }
+    .quote { background:#fffbeb; border-left:4px solid var(--amber); padding:12px 16px; border-radius:0 8px 8px 0; font-size:15px; overflow-wrap:anywhere; margin:0 0 14px; }
+    svg text { font-family:-apple-system,"PingFang SC","Noto Sans SC",sans-serif; }
+    @media (max-width:860px) { .layout { grid-template-columns:minmax(0,1fr); } aside { position:static; } h1 { font-size:1.55rem; } section { padding:18px 16px; } }
+  </style>
+</head>
+<body>
+<nav style="position:sticky;top:0;z-index:50;background:#0f172a;border-bottom:1px solid #1e293b;padding:10px 24px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;">
+  <a href="/frontier" style="color:#93c5fd;text-decoration:none;font-size:14px;margin-right:16px;">← Frontier</a>
+  <a href="/" style="color:#cbd5e1;text-decoration:none;font-size:14px;">@xixi003</a>
+</nav>
+
+<header>
+  <div class="inner">
+    <span class="badge">FRONTIER · 2026-10-29 · 指令栈</span>
+    <h1>三个 Agent 最新版第一次请求里，工具定义占字符 63.2% 至 77.4%</h1>
+    <p>一篇预印本拦截五个编码 Agent 共 1,886 次发布的第一次模型请求。各 Agent 最新那一版的第一次请求里，工具定义占 Claude Code 请求字符的 77.4%、Qwen Code 72.3%、OpenCode 63.2%；Codex 40.5%，Gemini CLI 18.9%。Claude Code 2.1.243 那次：74,078 字符里工具定义 57,346，系统提示 9,517（13%）。固定用户提示 21 个字符，占最新请求 0.02% 至 0.07%。</p>
+  </div>
+</header>
+<div class="layout">
+<aside>
+  <p>目录</p>
+  <a href="#what">1 63.2 到 77.4</a>
+  <a href="#pool">2 1,886 次第一次请求</a>
+  <a href="#ex">3 系统提示只是 13%</a>
+  <a href="#burst">4 工具清单会整段换</a>
+  <a href="#yours">5 你的运行位记了哪一层</a>
+  <a href="#limit">6 这篇没测到的</a>
+  <a href="#src">7 出处</a>
+</aside>
+<main>
+<section id="what">
+  <h2><span>1</span>63.2 到 77.4</h2>
+  <p>2026 年 10 月 27 日，arXiv 收到 <a href="https://arxiv.org/abs/2610.37332">Hidden in Plain Sight: an Empirical Study about The Instruction Stacks of Coding Agents</a>（arXiv:2610.37332v1，cs.SE，作者 Felipe de Sant'Anna Paixão、Dhyego Tavares、Eduardo Almeida、Iftekhar Ahmed，单位署巴伊亚联邦大学、加州大学欧文分校）。预印本，未经同行评审。本轮读的是 HTML 全文和 PDF。复制包在原文标成匿名链接，本轮没有打开运行产物。</p>
+  <p>编码 Agent 发给主模型的第一次请求里，除了用户那句话，还有指令正文和工具定义。论文把这两块叫指令栈（instruction stack）。系统提示只是指令正文里的一块：三个协议有顶层 <code>system</code> / <code>systemInstruction</code> / <code>instructions</code> 字段，Chat Completions 没有。工具定义另放在结构化字段里，带名字、自然语言描述和参数 schema。</p>
+  <div class="note">
+    <p style="margin:0">这篇只论证一个判断。判断是我的，依据是论文 Observation 1、第 5.1 节和图 3 底行右侧。五个 Agent 各自最新一次捕获：工具定义占请求字符的 77.4%（Claude Code）、72.3%（Qwen Code）、63.2%（OpenCode）、40.5%（Codex）、18.9%（Gemini CLI）。标题写三个 Agent，因为过半的是前三个。这是最新那一版、空目录下第一次请求的字符份额，不是会话里后来那几轮，也不是历次发布的中位数。Claude Code 2.1.243 那次请求 74,078 字符，20 个工具定义 57,346 字符；系统字段 9,517 字符，原文写成 13%。固定用户提示 <code>I AM THE USER PROMPT</code> 21 个字符，占最新请求 0.02% 至 0.07%；最新请求本身从 OpenCode 的 29,387 字符到 Qwen Code 的 124,873 字符。77.4 是字符份额，不是 token。原文没有测工具定义变长会不会改对错。</p>
+  </div>
+  <p>指令正文里，各 Agent 历次发布的中位数：指令性文字占 89% 至 96%。沟通、工程、工具用法三类合计中位数 73% 至 78%。执行策略（权限和难撤销操作）中位数 2% 至 6%。这些是字符怎么分配，原文写了不代表重要性。</p>
+</section>
+
+<section id="pool">
+  <h2><span>2</span>1,886 次第一次请求</h2>
+  <p>五个 Agent 来自各自官方 npm 包，截止 2026 年 8 月 25 日前的稳定版。表 I：1,911 次合格发布，拦到 1,886 次第一次主模型请求。剩下 25 次没发出请求：15 个 OpenCode 在这篇配置下初始化不了模型提供方，7 个跨三个 Agent 的包或二进制是坏的。15 加 7 是 22，另外 3 次正文没拆开。</p>
+  <div class="tw">
+    <table>
+      <thead>
+        <tr>
+          <th>Agent</th>
+          <th>npm 包</th>
+          <th>协议</th>
+          <th>发布</th>
+          <th>捕获</th>
+          <th>窗口（月/年）</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td>Claude Code</td><td>@anthropic-ai/claude-code</td><td>Anthropic Messages</td><td>494</td><td>493</td><td>02/25–08/26</td></tr>
+        <tr><td>Codex</td><td>@openai/codex</td><td>OpenAI Responses</td><td>175</td><td>174</td><td>04/25–08/26</td></tr>
+        <tr><td>Gemini CLI</td><td>@google/gemini-cli</td><td>Gemini Generate Content</td><td>192</td><td>192</td><td>06/25–08/26</td></tr>
+        <tr><td>OpenCode</td><td>opencode-ai</td><td>OpenAI Responses</td><td>930</td><td>907</td><td>06/25–08/26</td></tr>
+        <tr><td>Qwen Code</td><td>@qwen-code/qwen-code</td><td>OpenAI Chat Completions</td><td>120</td><td>120</td><td>07/25–08/26</td></tr>
+        <tr><td>合计</td><td></td><td></td><td>1,911</td><td>1,886</td><td></td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p>每次发布单独跑在新的 linux/amd64 容器里，空工作目录、新 home。用户提示固定成那 21 个字符。只留第一次发给主模型、并且带这句标记的请求。OpenCode 和部分 Claude Code 会先找辅助模型写会话标题；拦截端把标题请求和主模型请求分开，标题一律回 <code>Controlled capture session</code>。Claude Code 和 Gemini CLI 用各自默认模型；Codex 在 0.19.0 及以前用默认 o4-mini，之后用 gpt-5；OpenCode 用 gpt-5；Qwen Code 用 qwen3-coder-plus。</p>
+  <p>四个协议映射到同一套字段：顶层指令、有序消息、工具定义。映射不改、不合并、不重排正文。1,886 次请求里的角色、内容类型和工具定义都认出来了。指令正文切成 349,404 个片段，多半是句子。功能编码用 12 个码、三组：指令、事实、结构。人工样本 66 次请求、12,862 个片段，两名作者独立标到 Cohen κ 0.75，第三名作者裁决分歧。GLM 5.3 Flash 对裁决标签按片段 93.4% 一致（κ = 0.92，分母 12,862），之后标全集。</p>
+</section>
+
+<section id="ex">
+  <h2><span>3</span>系统提示只是 13%</h2>
+  <p>论文图 1 拆了 Claude Code 2.1.243 的第一次请求。74,078 字符里，20 个工具定义 57,346 字符。系统字段 9,517 字符，原文写成 13%。用户消息 327 字符，里面有日期提醒和那句固定用户提示。系统消息 5,935 字符，放了技能和子 Agent 目录。系统字段加系统消息加用户消息加工具定义是 73,125，和 74,078 差 953；差的那截原文没按字段列出，我不把它派给某一类。</p>
+  <p>工具定义里的自然语言描述，在 Claude Code、Qwen Code、OpenCode 三个最新请求里占了工具定义的大部分，也在下行为指令。Claude Code 的 Workflow 工具描述 19,290 字符，比它整段指令正文还长；描述里把调用限制成用户明确要求多 Agent 编排。这篇的固定提示没有要求这个能力，捕获仍带上了这段。原文写 Claude Code 的工具描述是指令正文的 2.6 倍。2.6 是描述对指令正文，不是对 9,517 那个系统字段；57,346 ÷ 9,517 ≈ 6.0，是我除的，和 2.6 不是同一个比。</p>
+  <figure>
+    <svg viewBox="0 0 960 540" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="五个 Agent 最新请求里工具定义占字符的份额">
+      <rect width="960" height="540" fill="#ffffff"/>
+      <text x="24" y="32" font-size="16" font-weight="700" fill="#0f172a">最新一次捕获：工具定义占请求字符的份额</text>
+      <text x="24" y="54" font-size="14" fill="#475569">分母是该次请求的全部字符。柱高按 3.6 像素 / 百分点。数据来自论文图 3 底行右侧。</text>
+      <rect x="700" y="18" width="16" height="16" fill="#fff7ed" stroke="#be123c" stroke-width="2"/>
+      <text x="722" y="32" font-size="14" fill="#0f172a">工具定义</text>
+      <rect x="820" y="18" width="16" height="16" fill="#eff6ff" stroke="#1d4ed8" stroke-width="2"/>
+      <text x="842" y="32" font-size="14" fill="#0f172a">其余</text>
+      <line x1="70" y1="70" x2="70" y2="430" stroke="#cbd5e1" stroke-width="1"/>
+      <line x1="70" y1="430" x2="900" y2="430" stroke="#cbd5e1" stroke-width="1"/>
+      <text x="62" y="74" font-size="14" fill="#475569" text-anchor="end">100</text>
+      <text x="62" y="254" font-size="14" fill="#475569" text-anchor="end">50</text>
+      <text x="62" y="434" font-size="14" fill="#475569" text-anchor="end">0</text>
+      <rect x="130" y="70" width="52" height="81.36" fill="#eff6ff" stroke="#1d4ed8" stroke-width="2"/>
+      <rect x="130" y="151.36" width="52" height="278.64" fill="#fff7ed" stroke="#be123c" stroke-width="2"/>
+      <text x="156" y="300" font-size="14" font-weight="700" fill="#be123c" text-anchor="middle">77.4</text>
+      <text x="156" y="454" font-size="14" fill="#0f172a" text-anchor="middle">Claude</text>
+      <text x="156" y="474" font-size="14" fill="#475569" text-anchor="middle">Code</text>
+      <rect x="280" y="70" width="52" height="99.72" fill="#eff6ff" stroke="#1d4ed8" stroke-width="2"/>
+      <rect x="280" y="169.72" width="52" height="260.28" fill="#fff7ed" stroke="#be123c" stroke-width="2"/>
+      <text x="306" y="310" font-size="14" font-weight="700" fill="#be123c" text-anchor="middle">72.3</text>
+      <text x="306" y="454" font-size="14" fill="#0f172a" text-anchor="middle">Qwen</text>
+      <text x="306" y="474" font-size="14" fill="#475569" text-anchor="middle">Code</text>
+      <rect x="430" y="70" width="52" height="132.48" fill="#eff6ff" stroke="#1d4ed8" stroke-width="2"/>
+      <rect x="430" y="202.48" width="52" height="227.52" fill="#fff7ed" stroke="#be123c" stroke-width="2"/>
+      <text x="456" y="330" font-size="14" font-weight="700" fill="#be123c" text-anchor="middle">63.2</text>
+      <text x="456" y="454" font-size="14" fill="#0f172a" text-anchor="middle">Open</text>
+      <text x="456" y="474" font-size="14" fill="#475569" text-anchor="middle">Code</text>
+      <rect x="580" y="70" width="52" height="214.2" fill="#eff6ff" stroke="#1d4ed8" stroke-width="2"/>
+      <rect x="580" y="284.2" width="52" height="145.8" fill="#fff7ed" stroke="#be123c" stroke-width="2"/>
+      <text x="606" y="360" font-size="14" font-weight="700" fill="#be123c" text-anchor="middle">40.5</text>
+      <text x="606" y="454" font-size="14" fill="#0f172a" text-anchor="middle">Codex</text>
+      <rect x="730" y="70" width="52" height="291.96" fill="#eff6ff" stroke="#1d4ed8" stroke-width="2"/>
+      <rect x="730" y="361.96" width="52" height="68.04" fill="#fff7ed" stroke="#be123c" stroke-width="2"/>
+      <text x="790" y="398" font-size="14" font-weight="700" fill="#be123c">18.9</text>
+      <text x="756" y="454" font-size="14" fill="#0f172a" text-anchor="middle">Gemini</text>
+      <text x="756" y="474" font-size="14" fill="#475569" text-anchor="middle">CLI</text>
+      <text x="24" y="516" font-size="14" fill="#475569">其余含指令正文和请求里的其它字段。Gemini CLI 的工具定义柱矮，数字写在柱右侧，避免压进 68 像素高的格子。</text>
+    </svg>
+    <figcaption>图 1. 五个 Agent 各自最新一次捕获，工具定义占请求字符的份额。数据来自论文图 3 底行右侧。柱高按 3.6 像素 / 百分点画，作图参数是我的。</figcaption>
+  </figure>
+  <figure>
+    <svg viewBox="0 0 960 500" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Claude Code 2.1.243 第一次请求的字符怎么分">
+      <rect width="960" height="500" fill="#ffffff"/>
+      <text x="24" y="32" font-size="16" font-weight="700" fill="#0f172a">Claude Code 2.1.243：第一次请求 74,078 字符</text>
+      <text x="24" y="54" font-size="14" fill="#475569">数字来自论文图 1。绿框用户提示和系统字段，蓝框系统消息，灰框用户消息，玫红框工具定义，琥珀框角色对不上作者。</text>
+      <rect x="24" y="78" width="280" height="88" rx="8" fill="#ecfdf5" stroke="#047857" stroke-width="2"/>
+      <text x="164" y="112" font-size="15" font-weight="700" fill="#047857" text-anchor="middle">用户提示 21 字符</text>
+      <text x="164" y="136" font-size="14" fill="#0f172a" text-anchor="middle">I AM THE USER PROMPT</text>
+      <rect x="24" y="182" width="280" height="88" rx="8" fill="#ecfdf5" stroke="#047857" stroke-width="2"/>
+      <text x="164" y="216" font-size="15" font-weight="700" fill="#047857" text-anchor="middle">系统字段 9,517</text>
+      <text x="164" y="240" font-size="14" fill="#0f172a" text-anchor="middle">原文写成请求的 13%</text>
+      <rect x="24" y="286" width="280" height="88" rx="8" fill="#eff6ff" stroke="#1d4ed8" stroke-width="2"/>
+      <text x="164" y="320" font-size="15" font-weight="700" fill="#1d4ed8" text-anchor="middle">系统消息 5,935</text>
+      <text x="164" y="344" font-size="14" fill="#0f172a" text-anchor="middle">技能和子 Agent 目录</text>
+      <rect x="24" y="390" width="280" height="72" rx="8" fill="#f8fafc" stroke="#475569" stroke-width="2"/>
+      <text x="164" y="420" font-size="15" font-weight="700" fill="#0f172a" text-anchor="middle">用户消息 327</text>
+      <text x="164" y="444" font-size="14" fill="#475569" text-anchor="middle">含日期提醒和那 21 字</text>
+      <rect x="360" y="78" width="576" height="192" rx="8" fill="#fff7ed" stroke="#be123c" stroke-width="2"/>
+      <text x="380" y="112" font-size="16" font-weight="700" fill="#be123c">工具定义 57,346 字符 · 20 个工具</text>
+      <text x="380" y="140" font-size="14" fill="#0f172a">占这次请求 77.4%（57,346 / 74,078，原文图 3）</text>
+      <text x="380" y="168" font-size="14" fill="#0f172a">Workflow 一个工具的描述 19,290 字符，比整段指令正文长</text>
+      <text x="380" y="196" font-size="14" fill="#0f172a">工具描述是指令正文的 2.6 倍；这篇提示没有要求 Workflow</text>
+      <text x="380" y="224" font-size="14" fill="#475569">9,517 + 5,935 + 327 + 57,346 = 73,125，差 953 原文没拆</text>
+      <rect x="360" y="286" width="576" height="176" rx="8" fill="#fffbeb" stroke="#b45309" stroke-width="2"/>
+      <text x="380" y="320" font-size="15" font-weight="700" fill="#b45309">角色名对不上作者</text>
+      <text x="380" y="348" font-size="14" fill="#0f172a">Gemini CLI 的环境事实 60%、Qwen Code 的 48% 写在用户角色消息里</text>
+      <text x="380" y="376" font-size="14" fill="#0f172a">Qwen Code 最新指令正文的 14% 在用户角色</text>
+      <text x="380" y="404" font-size="14" fill="#0f172a">两个 Agent 会插入助手消息「Got it. Thanks for the context!」</text>
+      <text x="380" y="432" font-size="14" fill="#475569">模型没生成这句。按角色读用户消息，会把 Agent 的字算给用户</text>
+    </svg>
+    <figcaption>图 2. Claude Code 2.1.243 第一次请求怎么分，以及 Gemini CLI / Qwen Code 把事实写进用户角色。73,125 和差 953 是我加的，原文只给了分项。</figcaption>
+  </figure>
+  <p>消息角色对不上作者。Gemini CLI 和 Qwen Code 会往用户角色里塞自己的字：环境事实的 60%（Gemini CLI）和 48%（Qwen Code）在用户角色；Qwen Code 最新指令正文的 14% 在用户角色。两个 Agent 有时插入助手消息「Got it. Thanks for the context!」，模型没生成这句。按角色去读用户消息，会把 Agent 写的算成用户写的。</p>
+</section>
+
+<section id="burst">
+  <h2><span>4</span>工具清单会整段换</h2>
+  <p>工具定义占最新请求的大半，清单本身也会整段换。Claude Code 和 Qwen Code 从最早一次捕获到最新一次，工具定义分别从 21,005 涨到 57,346、从 9,317 涨到 90,317 字符。Claude Code 2.1.69 把 18 个工具定义换成一个按需发现的 ToolSearch，请求从 77,601 降到 20,380 字符；2.1.70 第二天把定义加回去。Qwen Code 0.21.2 一次加上 65,282 字符的工具定义，大约是当时指令正文的两倍。</p>
+  <p>工具描述里也写行为。493 次 Claude Code 捕获里，492 次的 Bash 描述要求提交信息带 <code>Co-Authored-By: Claude</code>；原文写这是 AIDev 用来认 Claude Code 拉取请求的标记。OpenCode 907 次里 312 次有类似要求，2025 年 8 月的 0.4.20 去掉。另外三个 Agent 的捕获里没有指定署名标记。492 / 493 是捕获里有没有这条指令，不是提交里有没有 trailer。</p>
+</section>
+
+<section id="yours">
+  <h2><span>5</span>你的运行位记了哪一层</h2>
+  <p>读完要看的是发给模型的第一次请求里，自己有没有记下工具定义。三个 Agent 最新那一版的第一次请求里，工具定义已经是 63.2% 至 77.4%。</p>
+  <p>技能记录如果把 <code>AGENTS.md</code> / <code>CLAUDE.md</code> 当成模型看见的全部指令，这篇的栈在那些文件外面。原文引用过：开发者写的指引可能重复或顶牛厂商指令，厂商指令自己也会顶牛。这篇没有测顶牛之后谁赢。</p>
+  <p>下面是我的推断，论文没有在你的线上测过。运行位、编辑起点、技能记录如果只留模型名、用户提示和系统提示，覆盖面和这篇 Claude Code 2.1.243 的 13% 同类。原文讨论写：差别若只记到模型能力，也可能夹带 harness 给的指令；这篇暴露了这一层变化，没有做成因。每个 Agent 累计字符编辑的一半来自 5 到 10 次相邻发布，原文没有把这几次叫大改动，也没有量化过它们会把模型差改多少。仓库挖掘如果靠 <code>Co-Authored-By: Claude</code> 认 Claude Code 的拉取请求，493 次捕获里有 1 次没有这条指令。日志里按消息角色把用户角色整段存成「用户输入」，在 Gemini CLI 和 Qwen Code 上会把环境事实算进用户。工具列表默认全开、描述写得很长，第一次请求就会带上用户没点名的能力，Workflow 那 19,290 字符是一个例子。</p>
+  <p><a href="/frontier/2026-10-07-what-is-a-harness.html">10-07</a> 写过 harness 是模型外面那层程序。<a href="/frontier/2026-10-19-visible-tools-are-input.html">10-19</a> 写过可见工具列表也是输入。这一篇补的是：三个 Agent 最新版第一次请求里，工具定义已经占字符 63.2% 至 77.4%。</p>
+</section>
+
+<section id="limit">
+  <h2><span>6</span>这篇没测到的</h2>
+  <ul>
+    <li><strong>只拦第一次主模型请求。</strong>空目录、无交互、无仓库指引。后面几轮会拼上工具结果、动态加载的技能和用户定制，栈会变。</li>
+    <li><strong>五个命令行 npm Agent，窗口停在 2026 年 8 月 25 日。</strong>IDE 插件、别的包管理器、之后的发布，这篇没有。</li>
+    <li><strong>没有因果。</strong>原文写了：暴露了发布之间的这一层变化，没有做成因，没有测对错、工具调用、时延或费用。讨论里把「只报模型和用户提示不够」写成实验配置问题，不是这一组 77.4% 的推论。</li>
+    <li><strong>字符不是 token。</strong>77.4% 是请求字符份额。JSON 括号、schema 关键字和自然语言描述挤在同一个分母里。</li>
+    <li><strong>模型随 Agent 默认走。</strong>Codex 在 0.19.0 切到 gpt-5。图 4 用三角标了改模型名的发布，并标了 Codex 从 TypeScript 换到 Rust。栈和模型绑在一起，原文没有只换其中一个。</li>
+    <li><strong>25 次没发出请求。</strong>15 个 OpenCode 加 7 个坏包是 22，另外 3 次正文没拆。OpenCode 捕获 907 / 930，缺的主要在这一头。</li>
+    <li><strong>片段编码是 LLM。</strong>人工样本 κ 0.75，第三名作者裁决，模型对裁决 κ 0.92。未解决码的中位数和最新份额四舍五入都是 0.0%，原文图 3 没画它。</li>
+    <li><strong>署名 492 / 493 是捕获里有没有这条指令，不是提交里有没有 trailer。</strong></li>
+  </ul>
+</section>
+
+<section id="src">
+  <h2><span>7</span>出处</h2>
+  <p>数字来自预印本 HTML 与 PDF（<a href="https://arxiv.org/html/2610.37332">arxiv.org/html/2610.37332</a>，<a href="https://arxiv.org/pdf/2610.37332">pdf</a>，<a href="https://arxiv.org/abs/2610.37332">abs</a>，2026-10-27，未经同行评审）。论文表 I、第 4–5.2 节、图 1–5。export.arxiv.org 的 Atom 里 published 为 2026-10-27T14:38:25Z。73,125、差 953、57,346 ÷ 9,517 ≈ 6.0、15 + 7 = 22 是我算的，已标明。图 1 柱高按 3.6 像素 / 百分点画，作图参数是我的。</p>
+  <p><a href="https://openai.com/news/">OpenAI 新闻页</a>本轮直接抓取返回 403，未核对当日条目，未写入数字。写稿时经 r.jina.ai 见过 ServiceNow（10-28）、The future of the firm（10-28）、Oracle 应用进 ChatGPT（10-27）的标题，评审未能复核。<a href="https://www.anthropic.com/news">Anthropic 新闻页</a>本轮打开过，10 月 29 日页上有 Opus 5.5（9-22）、AI for Science 扩展（10-28）、用药开发进展（10-27）、S-1（10-26），未写入数字。Hacker News 首页、Product Hunt 当日页、GitHub 搜索本轮打开过，未作为本篇数字来源，评审未复核条目。X、Reddit 今日未覆盖：本机没有可用登录态。</p>
+  <p>谱系和增量层分别在 <a href="/frontier/rsi-llm-agent-self-evolution.html">递归自改进前世今生</a> 和 <a href="/frontier/llm-agent-tech-landscape.html">冻底座、改脚手架</a>。这篇只加一条：三个 Agent 最新版第一次请求里，工具定义占字符 63.2% 至 77.4%。</p>
+</section>
+</main>
+</div>
+</body>
+</html>

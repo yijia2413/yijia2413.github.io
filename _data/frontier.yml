@@ -1,5 +1,9 @@
 ﻿# 前沿技术栏目：独立 HTML 洞察索引。
 # 新增一篇：把 HTML 放到 /frontier/<slug>.html，再在这里加一条。
+- title: "三个 Agent 最新版第一次请求里，工具定义占字符 63.2% 至 77.4%"
+  date: "2026-10-29"
+  url: /frontier/2026-10-29-tools-dominate-first-request.html
+  summary: "一篇预印本拦截五个编码 Agent 共 1,886 次发布的第一次模型请求。各 Agent 最新那一版的第一次请求里，工具定义占 Claude Code 请求字符的 77.4%、Qwen Code 72.3%、OpenCode 63.2%；Codex 40.5%，Gemini CLI 18.9%。Claude Code 2.1.243：74,078 字符里工具定义 57,346，系统提示 9,517（13%）。固定用户提示 21 个字符，占最新请求 0.02% 至 0.07%。"
 - title: "十个 Agent、73 条特征：第一阶段 62.7%，整条终检 28.5%"
   date: "2026-10-28"
   url: /frontier/2026-10-28-first-stage-overstates-feature.html
