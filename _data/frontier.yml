@@ -1,5 +1,9 @@
 ﻿# 前沿技术栏目：独立 HTML 洞察索引。
 # 新增一篇：把 HTML 放到 /frontier/<slug>.html，再在这里加一条。
+- title: "同一 200 例上，未核计划终局 0.94，整条可执行 0.47"
+  date: "2026-10-31"
+  url: /frontier/2026-10-31-unverified-plan-halves-ter.html
+  summary: "一篇预印本在 BFCL v3 的 200 条分层样本上，用 GPT-5.4（high）跑四种工具 Agent。把未核过的计划写进执行：终局成功 0.94，整条工具轨迹可执行 0.47。执行前核过计划的同一套执行器：终局仍是 0.94，整条可执行 0.94。Llama-4 Maverick 上，148 次终局成功里 138 次先走过无效前缀。"
 - title: "同一 2,000 条换一批 25 条，伤害和短答改判 11% 至 22%"
   date: "2026-10-30"
   url: /frontier/2026-10-30-batch-flips-eleven-twenty.html

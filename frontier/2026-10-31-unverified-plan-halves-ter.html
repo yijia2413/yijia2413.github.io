@@ -1,0 +1,214 @@
+﻿<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>同一 200 例上，未核计划终局 0.94，整条可执行 0.47</title>
+  <style>
+    :root { --ink:#0f172a; --muted:#475569; --line:#e2e8f0; --bg:#f8fafc; --blue:#1d4ed8; --blue-bg:#eff6ff; --amber:#b45309; --green:#047857; --rose:#be123c; }
+    * { box-sizing: border-box; }
+    body { margin:0; font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Noto Sans SC",sans-serif; background:var(--bg); color:var(--ink); line-height:1.75; font-size:17px; }
+    header { background:#0f172a; color:#f8fafc; padding:36px 24px 28px; border-bottom:4px solid #2563eb; }
+    header .inner { max-width:1080px; margin:0 auto; }
+    .badge { display:inline-block; border:1px solid #93c5fd; color:#bfdbfe; border-radius:999px; padding:2px 12px; font-size:13px; }
+    h1 { font-size:2rem; line-height:1.3; margin:12px 0; }
+    header p { color:#cbd5e1; margin:0; max-width:760px; }
+    .layout { max-width:1080px; margin:28px auto 64px; padding:0 20px; display:grid; grid-template-columns:220px minmax(0,1fr); gap:28px; }
+    aside { position:sticky; top:52px; align-self:start; background:#fff; border:1px solid var(--line); border-radius:12px; padding:14px; }
+    aside p { font-size:12px; letter-spacing:.06em; color:var(--muted); margin:0 0 8px; }
+    aside a { display:block; color:var(--ink); text-decoration:none; font-size:14px; padding:6px 8px; border-radius:6px; }
+    aside a:hover { background:var(--blue-bg); color:var(--blue); }
+    h2 { font-size:1.35rem; margin:0 0 12px; }
+    h2 span { display:inline-block; background:var(--blue); color:#fff; border-radius:6px; font-size:13px; padding:2px 8px; margin-right:8px; }
+    h3 { font-size:1.08rem; margin:20px 0 10px; }
+    section { background:#fff; border:1px solid var(--line); border-radius:14px; padding:26px 28px; margin-bottom:22px; }
+    p { margin:0 0 14px; }
+    a { color:var(--blue); overflow-wrap:anywhere; }
+    code { background:#f1f5f9; border-radius:4px; padding:1px 5px; font-size:15px; overflow-wrap:anywhere; }
+    main { min-width:0; }
+    figure { margin:16px 0; background:#fff; border:1px solid var(--line); border-radius:12px; padding:10px; overflow-x:auto; }
+    figure svg { display:block; min-width:700px; }
+    figcaption { color:var(--muted); font-size:14px; margin-top:6px; }
+    .tw { overflow-x:auto; margin:0 0 14px; }
+    .tw table { min-width:620px; }
+    table { width:100%; border-collapse:collapse; font-size:15px; }
+    th, td { border:1px solid var(--line); padding:8px 10px; text-align:left; vertical-align:top; }
+    th { background:#f1f5f9; }
+    ul { margin:0 0 14px; padding-left:22px; }
+    ol { margin:0 0 14px; padding-left:22px; }
+    li { margin-bottom:6px; }
+    .note { background:#f1f5f9; border-left:4px solid var(--muted); padding:12px 16px; border-radius:0 8px 8px 0; font-size:16px; margin:0 0 14px; }
+    .quote { background:#fffbeb; border-left:4px solid var(--amber); padding:12px 16px; border-radius:0 8px 8px 0; font-size:15px; overflow-wrap:anywhere; margin:0 0 14px; }
+    svg text { font-family:-apple-system,"PingFang SC","Noto Sans SC",sans-serif; }
+    @media (max-width:860px) { .layout { grid-template-columns:minmax(0,1fr); } aside { position:static; } h1 { font-size:1.55rem; } section { padding:18px 16px; } }
+  </style>
+</head>
+<body>
+<nav style="position:sticky;top:0;z-index:50;background:#0f172a;border-bottom:1px solid #1e293b;padding:10px 24px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;">
+  <a href="/frontier" style="color:#93c5fd;text-decoration:none;font-size:14px;margin-right:16px;">← Frontier</a>
+  <a href="/" style="color:#cbd5e1;text-decoration:none;font-size:14px;">@xixi003</a>
+</nav>
+
+<header>
+  <div class="inner">
+    <span class="badge">FRONTIER · 2026-10-31 · 前缀可执行</span>
+    <h1>同一 200 例上，未核计划终局 0.94，整条可执行 0.47</h1>
+    <p>一篇预印本在 BFCL v3 的 200 条分层样本上，用 GPT-5.4（high）跑四种工具 Agent。把未核过的计划写进执行：终局成功 0.94，整条工具轨迹可执行 0.47。执行前核过计划的同一套执行器：终局仍是 0.94，整条可执行 0.94。Llama-4 Maverick 上，148 次终局成功里 138 次先走过无效前缀。</p>
+  </div>
+</header>
+<div class="layout">
+<aside>
+  <p>目录</p>
+  <a href="#what">1 0.94 和 0.47</a>
+  <a href="#setup">2 同一 200 例、四种做法</a>
+  <a href="#recover">3 终局从哪来</a>
+  <a href="#bound">4 Dual-Loop 抬的是整条</a>
+  <a href="#yours">5 你的运行位有没有未核计划</a>
+  <a href="#limit">6 这篇没测到的</a>
+  <a href="#src">7 出处</a>
+</aside>
+<main>
+<section id="what">
+  <h2><span>1</span>0.94 和 0.47</h2>
+  <p>2026 年 10 月 29 日，arXiv 收到 <a href="https://arxiv.org/abs/2610.40444">Prefix Executability: Evaluating Tool-Using Agents Beyond Final Success</a>（arXiv:2610.40444v1，cs.AI，作者 Amir H. Rezaeian、Weiyi Sun、Yassine Benajiba、Dan Roth，单位署 Oracle AI）。预印本，未经同行评审。本轮读的是 HTML 全文。GitHub 上有 <a href="https://github.com/amirrezaeian/prefix-executability">amirrezaeian/prefix-executability</a> 标成参考实现，本轮没有打开运行产物。</p>
+  <p>工具评测通常只看终局成功。论文量另一件事：发出去的每一步工具调用，在 schema、前置条件和数据依赖下能不能执行。第一条失败的深度叫 FED。整条都可执行叫 TER。走过至少一次无效前缀之后仍成功的比例，叫 RR。</p>
+  <div class="note">
+    <p style="margin:0">这篇只论证一个判断。判断是我的，依据是论文第 3.1 节和表 2。BFCL v3 多层对话、分层抽 200 例、GPT-5.4（reasoning.effort=high）：Plan-Conditioned ReAct 终局成功 0.94（区间 0.90 至 0.96），TER 0.47（0.40 至 0.54）。同一套执行器前面加 Dual-Loop 计划核验：终局 0.94（0.90 至 0.97），TER 0.94（0.91 至 0.97）。区间是 10,000 次任务级百分位 bootstrap。标题不写 ToolSandbox：同一模型上 Plan-Conditioned 终局 0.69、TER 0.48，终局数字和 0.94 不在同一张表的同一列。也不写 τ<sup>3</sup>-bench：那里 Dual-Loop 没有同样的整条优势。</p>
+  </div>
+  <p>论文附录 C.2 给了一条联系人删除。第一步用电话号码去删，被拒，因为标识符对不上。第二步按号码查出存储的标识符。第三步用查到的标识符删掉。终局可以过。FED 钉在第一步。</p>
+</section>
+
+<section id="setup">
+  <h2><span>2</span>同一 200 例、四种做法</h2>
+  <p>BFCL v3 四个多层类别各抽 50 例：<code>multi_turn_base</code>、<code>multi_turn_miss_func</code>、<code>multi_turn_miss_param</code>、<code>multi_turn_long_context</code>。任务 ID 在模型和方法之间共用。计分器是确定性的，不用 LLM 评审：查暴露的工具、参数绑定、引用是否还在、前置条件、基准接不接受这次状态转移。第一次拒绝钉住 FED，前缀回放停，整条轨迹留下看终局和恢复。</p>
+  <p>四种做法是嵌套的梯子。ReAct：边想边调，没有显式计划核验。Prompt Planning：先写计划，执行时不强制。Plan-Conditioned ReAct：把写出的计划当作执行时的控制信号。Dual-Loop：同一套计划条件执行器，前面加一轮执行前核验。规划器和核验器的消息算方法成本，不进工具步数 <code>T<sub>i</sub></code>。ReAct 风格的环境循环上限 <code>K<sub>exec</sub>=10</code>。Dual-Loop 另有执行前预算 <code>K<sub>val</sub>=5</code>。</p>
+  <p>三个模型条件：GPT-5.4（reasoning.effort=high）、GPT-4.1、Llama-4-Maverick-Instruct。GPT-4.1 和 Llama 温度 0。所有规划、核验、执行调用的回复上限 4,000 token。</p>
+  <div class="tw">
+    <table>
+      <thead>
+        <tr>
+          <th>做法</th>
+          <th>TER</th>
+          <th>AUC-PEC</th>
+          <th>RR 分母</th>
+          <th>RR</th>
+          <th>终局成功</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td>ReAct</td><td>0.69 [0.63, 0.76]</td><td>0.83 [0.79, 0.87]</td><td>61</td><td>0.00 [0.00, 0.06]</td><td>0.61 [0.55, 0.68]</td></tr>
+        <tr><td>Prompt Planning</td><td>0.78 [0.72, 0.83]</td><td>0.85 [0.81, 0.89]</td><td>44</td><td>0.00 [0.00, 0.08]</td><td>0.78 [0.72, 0.83]</td></tr>
+        <tr><td>Plan-Cond. ReAct</td><td>0.47 [0.40, 0.54]</td><td>0.54 [0.48, 0.60]</td><td>106</td><td>0.88 [0.80, 0.93]</td><td>0.94 [0.90, 0.96]</td></tr>
+        <tr><td>Dual-Loop</td><td>0.94 [0.91, 0.97]</td><td>0.96 [0.93, 0.98]</td><td>12</td><td>0.00 [0.00, 0.24]</td><td>0.94 [0.90, 0.97]</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p>表是 BFCL、GPT-5.4（high），分母 200。数据来自论文表 2。RR 分母是走过至少一次无效前缀的条数，论文写作 RR-Eligible，等于 <code>N(1−TER)</code>：Plan-Cond. 200×(1−0.47)=106，Dual-Loop 200×(1−0.94)=12。RR 区间用 Wilson，其余用任务级 bootstrap。Prompt Planning 的 TER 和终局都是 0.78。计划一旦当成执行控制信号，终局升到 0.94，TER 掉到 0.47。</p>
+  <figure>
+    <svg viewBox="0 0 960 540" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="BFCL 200 例 GPT-5.4 上四种做法的终局成功和整条可执行">
+      <rect width="960" height="540" fill="#ffffff"/>
+      <text x="24" y="32" font-size="16" font-weight="700" fill="#0f172a">同一 200 例：终局成功，和整条还能否执行</text>
+      <text x="24" y="54" font-size="14" fill="#475569">BFCL v3，GPT-5.4（high）。柱高按 3.5 像素 / 0.01。数据来自论文表 2。</text>
+      <rect x="620" y="16" width="16" height="16" fill="#fff7ed" stroke="#be123c" stroke-width="2"/>
+      <text x="642" y="30" font-size="14" fill="#0f172a">终局成功</text>
+      <rect x="760" y="16" width="16" height="16" fill="#eff6ff" stroke="#1d4ed8" stroke-width="2"/>
+      <text x="782" y="30" font-size="14" fill="#0f172a">TER</text>
+      <line x1="80" y1="80" x2="80" y2="430" stroke="#cbd5e1" stroke-width="1"/>
+      <line x1="80" y1="430" x2="920" y2="430" stroke="#cbd5e1" stroke-width="1"/>
+      <line x1="80" y1="255" x2="920" y2="255" stroke="#e2e8f0" stroke-width="1" stroke-dasharray="4 4"/>
+      <text x="72" y="84" font-size="14" fill="#475569" text-anchor="end">1.00</text>
+      <text x="72" y="259" font-size="14" fill="#475569" text-anchor="end">0.50</text>
+      <text x="72" y="434" font-size="14" fill="#475569" text-anchor="end">0</text>
+      <rect x="130" y="216.5" width="48" height="213.5" fill="#fff7ed" stroke="#be123c" stroke-width="2"/>
+      <text x="154" y="207" font-size="14" font-weight="700" fill="#be123c" text-anchor="middle">0.61</text>
+      <rect x="186" y="188.5" width="48" height="241.5" fill="#eff6ff" stroke="#1d4ed8" stroke-width="2"/>
+      <text x="210" y="179" font-size="14" font-weight="700" fill="#1d4ed8" text-anchor="middle">0.69</text>
+      <text x="182" y="454" font-size="14" fill="#0f172a" text-anchor="middle">ReAct</text>
+      <rect x="330" y="157" width="48" height="273" fill="#fff7ed" stroke="#be123c" stroke-width="2"/>
+      <text x="354" y="148" font-size="14" font-weight="700" fill="#be123c" text-anchor="middle">0.78</text>
+      <rect x="386" y="157" width="48" height="273" fill="#eff6ff" stroke="#1d4ed8" stroke-width="2"/>
+      <text x="410" y="148" font-size="14" font-weight="700" fill="#1d4ed8" text-anchor="middle">0.78</text>
+      <text x="382" y="454" font-size="14" fill="#0f172a" text-anchor="middle">Prompt</text>
+      <rect x="530" y="101" width="48" height="329" fill="#fff7ed" stroke="#be123c" stroke-width="2"/>
+      <text x="554" y="92" font-size="14" font-weight="700" fill="#be123c" text-anchor="middle">0.94</text>
+      <rect x="586" y="265.5" width="48" height="164.5" fill="#eff6ff" stroke="#1d4ed8" stroke-width="2"/>
+      <text x="610" y="256" font-size="14" font-weight="700" fill="#1d4ed8" text-anchor="middle">0.47</text>
+      <text x="582" y="454" font-size="14" fill="#0f172a" text-anchor="middle">Plan-Cond.</text>
+      <rect x="730" y="101" width="48" height="329" fill="#fff7ed" stroke="#be123c" stroke-width="2"/>
+      <text x="754" y="92" font-size="14" font-weight="700" fill="#be123c" text-anchor="middle">0.94</text>
+      <rect x="786" y="101" width="48" height="329" fill="#eff6ff" stroke="#1d4ed8" stroke-width="2"/>
+      <text x="810" y="92" font-size="14" font-weight="700" fill="#1d4ed8" text-anchor="middle">0.94</text>
+      <text x="782" y="454" font-size="14" fill="#0f172a" text-anchor="middle">Dual-Loop</text>
+      <text x="24" y="500" font-size="14" fill="#475569">虚线标 0.50。Plan-Cond. 终局最高档，TER 掉到虚线以下。柱高按 3.5 像素 / 0.01 画，作图参数是我的。</text>
+      <text x="24" y="522" font-size="14" fill="#475569">Prompt 的两根柱一样高。Dual-Loop 两根也一样高。</text>
+    </svg>
+    <figcaption>图 1. BFCL v3 200 例、GPT-5.4（high）：四种做法的终局成功和 TER。数据来自论文表 2。柱高按 3.5 像素 / 0.01。</figcaption>
+  </figure>
+</section>
+
+<section id="recover">
+  <h2><span>3</span>终局从哪来</h2>
+  <p>论文把终局成功拆成两项：整条可执行且成功，加上走过无效前缀之后仍成功。Llama-4 Maverick、Plan-Conditioned ReAct、同一 200 例把式子填满。整条可执行 10 条，10 条都成功。走过无效前缀 190 条，其中 138 条仍成功。TER = 10/200 = 0.05。RR = 138/190 ≈ 0.7263，表 2 写作 0.73（0.66 至 0.79）。终局 = (10+138)/200 = 0.74。成功的 148 条里，138/148 = 93.2% 先走过无效前缀。</p>
+  <p>表 2 同一行：TER 0.05（0.02 至 0.08），AUC-PEC 0.15（0.12 至 0.18），平均 FED 1.96（1.78 至 2.13）。环境循环上限 10 步，第一次失败平均落在第 2 步附近。</p>
+  <figure>
+    <svg viewBox="0 0 960 520" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Llama-4 Plan-Conditioned 200 例拆成整条可执行和修回来的终局">
+      <rect width="960" height="520" fill="#ffffff"/>
+      <text x="24" y="32" font-size="16" font-weight="700" fill="#0f172a">200 例里，终局 0.74 是怎么凑出来的</text>
+      <text x="24" y="54" font-size="14" fill="#475569">Llama-4 Maverick，Plan-Conditioned ReAct，BFCL。格子按条数：3.6 像素 / 条。</text>
+      <rect x="80" y="90" width="36" height="300" fill="#dcfce7" stroke="#047857" stroke-width="2"/>
+      <text x="98" y="80" font-size="14" font-weight="700" fill="#047857" text-anchor="middle">10</text>
+      <text x="98" y="410" font-size="14" fill="#0f172a" text-anchor="middle">整条</text>
+      <text x="98" y="430" font-size="14" fill="#0f172a" text-anchor="middle">可执行</text>
+      <text x="98" y="450" font-size="14" fill="#047857" text-anchor="middle">且成功</text>
+      <rect x="140" y="90" width="496.8" height="300" fill="#fff7ed" stroke="#be123c" stroke-width="2"/>
+      <text x="388" y="230" font-size="28" font-weight="700" fill="#be123c" text-anchor="middle">138</text>
+      <text x="388" y="258" font-size="16" fill="#0f172a" text-anchor="middle">先无效，后成功</text>
+      <text x="388" y="282" font-size="14" fill="#475569" text-anchor="middle">占成功 138/148 = 93.2%</text>
+      <rect x="636.8" y="90" width="187.2" height="300" fill="#f1f5f9" stroke="#475569" stroke-width="2"/>
+      <text x="730" y="230" font-size="22" font-weight="700" fill="#475569" text-anchor="middle">52</text>
+      <text x="730" y="258" font-size="16" fill="#0f172a" text-anchor="middle">无效且失败</text>
+      <text x="24" y="484" font-size="14" fill="#475569">10 + 138 + 52 = 200。整条可执行且失败的是 0 条。RR = 138/190。格子宽度按条数，高度不表示概率。</text>
+      <text x="24" y="506" font-size="14" fill="#475569">数字来自论文第 3.1 节「Success after a prefix failure」。93.2% 是原文 138/148 的写法。</text>
+    </svg>
+    <figcaption>图 2. Llama-4 Maverick、Plan-Conditioned ReAct、BFCL 200 例：终局成功的 148 条里 138 条先走过无效前缀。格子宽度按条数，3.6 像素 / 条。</figcaption>
+  </figure>
+  <p>GPT-5.4 上同一做法：106 条走过无效前缀，RR 0.88（0.80 至 0.93）。ReAct 走过 61 条，RR 0.00（0.00 至 0.06）。未核计划把终局抬上去的那截，主要来自修回来。</p>
+</section>
+
+<section id="bound">
+  <h2><span>4</span>Dual-Loop 抬的是整条</h2>
+  <p>Dual-Loop 是论文用来压协议的探针。论文没有把它写成主架构主张。规划器给出结构化计划，核验器查工具是否存在、schema、前置条件、变量绑定；失败就按反馈改计划，通过之后才交给执行器。环境只看见执行器发出的调用。</p>
+  <p>BFCL 上 Dual-Loop 相对 Plan-Cond. 的 TER：GPT-5.4 0.94 对 0.47，GPT-4.1 0.96 对 0.35（差 0.61），Llama-4 0.88 对 0.05（差 0.83）。ToolSandbox 上 GPT-4.1 差 0.61，Llama-4 差 0.71。第 3.2 节 PEC@4：Plan-Cond. 三个模型 0.42、0.33、0.05，Dual-Loop 0.82、0.82、0.78。分母仍是 200，含没走到第 4 步就结束的轨迹。</p>
+  <p>Airline/Retail 没有同样的整条优势。τ<sup>3</sup>-bench 文本半双工、记录版本 v1.0.1，Airline 50 例加 Retail 114 例，共 164，每种模型–方法一条。GPT-5.4：Plan-Cond. 终局点估计最高 0.51，ReAct 的 TER/AUC-PEC 最高，0.95 / 0.95。GPT-4.1：Prompt Planning 终局 0.51，ReAct TER/AUC-PEC 0.84 / 0.91。Llama-4 三种做法终局都是 0.18，TER 从 0.52 到 0.60。论文写这是点估计排序，没有配成对显著性。一种解释是 BFCL 强调事先写好的组合，τ<sup>3</sup> 里用户反馈和状态会让提前写的计划过期。论文标明这是可检验的解释。因果机制没有识别出来。</p>
+  <p>核验器敏感性：固定初始计划和 GPT-5.4-high 的规划器/执行器，改核验模型和预算。TER 和 AUC-PEC 的成对 95% 区间都含 0。GPT-5.4 核验器 <code>K<sub>val</sub>=5</code> 相对成对的 Plan-Cond. 重跑，TER +0.006（−0.018 至 0.030），多 40.7k token、176.9 秒。</p>
+</section>
+
+<section id="yours">
+  <h2><span>5</span>你的运行位有没有未核计划</h2>
+  <p>读完要看的是：自己的工具 Agent 排行、回归、上线门槛，有没有只留下终局成功。BFCL 200 例、GPT-5.4 上，未核计划终局 0.94，整条可执行 0.47。同一终局数字，核过计划的 TER 是 0.94。</p>
+  <p>技能记录如果只留「先写计划再执行，终局更高」，没有记下计划有没有进执行、有没有执行前核验、无效前缀出现在第几步、终局是不是修回来的，和这篇测到的缝是同一条。</p>
+  <p>下面是我的推断，论文没有在你的线上测过。支付、删除、改权限这类调用，第一次拒绝已经改了外部状态。FED 落在第 2 步，后面修回来的终局，账上已经付过一次。评测如果只回放终态，会把 Plan-Cond. 排到 Dual-Loop 前面。运行位如果在每一步调用前查 schema 和对象是否还在，查的是这篇的前缀谓词。</p>
+  <p><a href="/frontier/2026-10-14-reproduction-is-not-validation.html">10-14</a> 写过复现成功撑不起联合验收。<a href="/frontier/2026-10-15-gap-remains-after-fix.html">10-15</a> 写过隐藏测试判修好之后，报告仍差一截。<a href="/frontier/2026-10-28-first-stage-overstates-feature.html">10-28</a> 写过第一阶段通过率高于整条终检。那三篇动的是测试池、报告、阶段。这篇动的是工具前缀还能不能执行。</p>
+</section>
+
+<section id="limit">
+  <h2><span>6</span>这篇没测到的</h2>
+  <ul>
+    <li><strong>标题的 0.94 / 0.47 是 BFCL 200 例、GPT-5.4（high）、Plan-Cond. 对 Dual-Loop。</strong>ToolSandbox 同一模型 Plan-Cond. 终局 0.69、TER 0.48，终局和 TER 不要和 0.94 / 0.47 并进同一个范围。τ<sup>3</sup> Airline/Retail 上 Dual-Loop 没有同样的整条优势。</li>
+    <li><strong>200 是分层样本。BFCL 全量没有评。</strong>四个多层类别各 50。ToolSandbox 200 是受支持的本地工具场景，贪心多标签分层。任务级区间不覆盖同一任务反复跑的种子。主表给的是边际区间。</li>
+    <li><strong>可执行不等于语义正确、安全、隐私。</strong>计分器要显式 schema、前置条件和基准能看见的状态。部分可观察的网页或 GUI 需要另估状态。论文没有配约束解码基线。</li>
+    <li><strong>Dual-Loop 把核验/改写和多出来的推理绑在一起。</strong>敏感性实验改了核验容量和预算，接受包装同时改了执行器指导。BFCL/ToolSandbox 只有合计墙钟，约 72 小时、16 个异步 API worker；分方法的 token 账在 τ<sup>3</sup> 审计里。</li>
+    <li><strong>三种 LLM 条件、四种做法、每任务一条。</strong>三个基准合计 564 个任务 × 每种模型–方法条件，6,768 条轨迹。GPT-5.4 是 hosted API，reasoning.effort=high，本机编排 16 vCPU / 64 GB，没有本地 GPU。</li>
+  </ul>
+</section>
+
+<section id="src">
+  <h2><span>7</span>出处</h2>
+  <p>数字来自预印本 HTML（<a href="https://arxiv.org/html/2610.40444">arxiv.org/html/2610.40444</a>，<a href="https://arxiv.org/pdf/2610.40444">pdf</a>，<a href="https://arxiv.org/abs/2610.40444">abs</a>，2026-10-29，未经同行评审）。论文摘要、第 2.5–2.7 节、第 3.1–3.3 节、第 4 节、局限、表 2、图 1、附录 C.2、D、E、表 F.1–F.3、表 G.1。HTML 页眉写 arXiv:2610.40444v1 [cs.AI] 29 Oct 2026。图 1 柱高按 3.5 像素 / 0.01 画，作图参数是我的。图 2 格子宽度按条数，3.6 像素 / 条。</p>
+  <p><a href="https://openai.com/news/">OpenAI 新闻页</a>本轮经 r.jina.ai 打开过，10 月 30 日有网站训练偏好、社区安全报告，10 月 29 日有更新 Model Spec、检测前沿模型偏离对齐；专题页直接请求返回 403，未写入数字。<a href="https://www.anthropic.com/news">Anthropic 新闻页</a>本轮打开过，页上仍挂 Opus 5.5（9-22）、S-1（10-26）、用药开发进展（10-27），未写入数字。Hacker News 首页本轮打开过，未作为本篇数字来源。Product Hunt 当日页返回验证码，未读条目。GitHub 搜索本轮打开过，看到参考实现仓库，未跑产物。X、Reddit 今日未覆盖：本机没有可用登录态。</p>
+  <p>谱系和增量层分别在 <a href="/frontier/rsi-llm-agent-self-evolution.html">递归自改进前世今生</a> 和 <a href="/frontier/llm-agent-tech-landscape.html">冻底座、改脚手架</a>。这篇只加一条：同一 200 例上，未核计划终局 0.94，整条可执行 0.47。</p>
+</section>
+</main>
+</div>
+</body>
+</html>
