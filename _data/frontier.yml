@@ -1,5 +1,9 @@
 ﻿# 前沿技术栏目：独立 HTML 洞察索引。
 # 新增一篇：把 HTML 放到 /frontier/<slug>.html，再在这里加一条。
+- title: "ScienceBoard 上，查过状态的误报 5.4%，生成脚本 21.7%"
+  date: "2026-11-01"
+  url: /frontier/2026-11-01-state-check-cuts-fpr.html
+  summary: "一篇预印本在三个在线计算机使用环境里核验任务有没有做完。核验器先看机器上下文，再选界面或代码检查。ScienceBoard 169 例：假阳性率 5.4%。同一套 gemini-3-flash-preview 上，按任务生成一次脚本再跑：21.7%。单次看观察的视觉语言模型评审：24.8%。弃权记成失败。AndroidWorld 116 例是 7.7 对 16.9；OSWorld 361 例是 13.9 对 25.9。"
 - title: "同一 200 例上，未核计划终局 0.94，整条可执行 0.47"
   date: "2026-10-31"
   url: /frontier/2026-10-31-unverified-plan-halves-ter.html

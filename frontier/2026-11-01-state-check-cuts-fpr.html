@@ -1,0 +1,242 @@
+﻿<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ScienceBoard 上，查过状态的误报 5.4%，生成脚本 21.7%</title>
+  <style>
+    :root { --ink:#0f172a; --muted:#475569; --line:#e2e8f0; --bg:#f8fafc; --blue:#1d4ed8; --blue-bg:#eff6ff; --amber:#b45309; --green:#047857; --rose:#be123c; }
+    * { box-sizing: border-box; }
+    body { margin:0; font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Noto Sans SC",sans-serif; background:var(--bg); color:var(--ink); line-height:1.75; font-size:17px; }
+    header { background:#0f172a; color:#f8fafc; padding:36px 24px 28px; border-bottom:4px solid #2563eb; }
+    header .inner { max-width:1080px; margin:0 auto; }
+    .badge { display:inline-block; border:1px solid #93c5fd; color:#bfdbfe; border-radius:999px; padding:2px 12px; font-size:13px; }
+    h1 { font-size:2rem; line-height:1.3; margin:12px 0; }
+    header p { color:#cbd5e1; margin:0; max-width:760px; }
+    .layout { max-width:1080px; margin:28px auto 64px; padding:0 20px; display:grid; grid-template-columns:220px minmax(0,1fr); gap:28px; }
+    aside { position:sticky; top:52px; align-self:start; background:#fff; border:1px solid var(--line); border-radius:12px; padding:14px; }
+    aside p { font-size:12px; letter-spacing:.06em; color:var(--muted); margin:0 0 8px; }
+    aside a { display:block; color:var(--ink); text-decoration:none; font-size:14px; padding:6px 8px; border-radius:6px; }
+    aside a:hover { background:var(--blue-bg); color:var(--blue); }
+    h2 { font-size:1.35rem; margin:0 0 12px; }
+    h2 span { display:inline-block; background:var(--blue); color:#fff; border-radius:6px; font-size:13px; padding:2px 8px; margin-right:8px; }
+    h3 { font-size:1.08rem; margin:20px 0 10px; }
+    section { background:#fff; border:1px solid var(--line); border-radius:14px; padding:26px 28px; margin-bottom:22px; }
+    p { margin:0 0 14px; }
+    a { color:var(--blue); overflow-wrap:anywhere; }
+    code { background:#f1f5f9; border-radius:4px; padding:1px 5px; font-size:15px; overflow-wrap:anywhere; }
+    main { min-width:0; }
+    figure { margin:16px 0; background:#fff; border:1px solid var(--line); border-radius:12px; padding:10px; overflow-x:auto; }
+    figure svg { display:block; min-width:700px; }
+    figcaption { color:var(--muted); font-size:14px; margin-top:6px; }
+    .tw { overflow-x:auto; margin:0 0 14px; }
+    .tw table { min-width:620px; }
+    table { width:100%; border-collapse:collapse; font-size:15px; }
+    th, td { border:1px solid var(--line); padding:8px 10px; text-align:left; vertical-align:top; }
+    th { background:#f1f5f9; }
+    ul { margin:0 0 14px; padding-left:22px; }
+    ol { margin:0 0 14px; padding-left:22px; }
+    li { margin-bottom:6px; }
+    .note { background:#f1f5f9; border-left:4px solid var(--muted); padding:12px 16px; border-radius:0 8px 8px 0; font-size:16px; margin:0 0 14px; }
+    .quote { background:#fffbeb; border-left:4px solid var(--amber); padding:12px 16px; border-radius:0 8px 8px 0; font-size:15px; overflow-wrap:anywhere; margin:0 0 14px; }
+    svg text { font-family:-apple-system,"PingFang SC","Noto Sans SC",sans-serif; }
+    @media (max-width:860px) { .layout { grid-template-columns:minmax(0,1fr); } aside { position:static; } h1 { font-size:1.55rem; } section { padding:18px 16px; } }
+  </style>
+</head>
+<body>
+<nav style="position:sticky;top:0;z-index:50;background:#0f172a;border-bottom:1px solid #1e293b;padding:10px 24px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;">
+  <a href="/frontier" style="color:#93c5fd;text-decoration:none;font-size:14px;margin-right:16px;">← Frontier</a>
+  <a href="/" style="color:#cbd5e1;text-decoration:none;font-size:14px;">@xixi003</a>
+</nav>
+
+<header>
+  <div class="inner">
+    <span class="badge">FRONTIER · 2026-11-01 · 完成核验</span>
+    <h1>ScienceBoard 上，查过状态的误报 5.4%，生成脚本 21.7%</h1>
+    <p>一篇预印本在三个在线计算机使用环境里核验任务有没有做完。核验器先看机器上下文，再选界面或代码检查。ScienceBoard 169 例：假阳性率 5.4%。同一套 gemini-3-flash-preview 上，按任务生成一次脚本再跑：21.7%。单次看观察的视觉语言模型评审：24.8%。弃权记成失败。标题不写 AndroidWorld 和 OSWorld：那两列也是查过状态更低，数字和 5.4 / 21.7 不在同一列。</p>
+  </div>
+</header>
+<div class="layout">
+<aside>
+  <p>目录</p>
+  <a href="#what">1 5.4 和 21.7</a>
+  <a href="#setup">2 三个在线环境</a>
+  <a href="#abstain">3 弃权不当成功</a>
+  <a href="#gui">4 只看屏幕，决定率 45%</a>
+  <a href="#yours">5 你的核验位查不查状态</a>
+  <a href="#limit">6 这篇没测到的</a>
+  <a href="#src">7 出处</a>
+</aside>
+<main>
+<section id="what">
+  <h2><span>1</span>5.4 和 21.7</h2>
+  <p>2026 年 10 月 29 日，arXiv 收到 <a href="https://arxiv.org/abs/2610.40578">VeriCUA: Verification as Agentic Exploration for Computer-Using Agents</a>（arXiv:2610.40578v1，cs.AI，作者 Qiushi Sun、Da Yu、Alexander Knop、Amer Sinha、Lingpeng Kong、Ben Kao、Ravi Kumar、Pritish Kamath；单位署 Google 与香港大学）。预印本，未经同行评审。本轮读的是 HTML 全文。文内没有给出 VeriCUA 自己的代码仓库。</p>
+  <p>计算机使用 Agent 跑完一条，常见核验是：把截图或轨迹交给视觉语言模型打一次分，或者按任务生成一段检查脚本对着机器跑一次。两条路都只看见当时给到的观察，或脚本猜到的状态位置。编辑没保存、操作失败没有提示、Agent 自己报完成，都可能被写成成功。</p>
+  <div class="note">
+    <p style="margin:0">这篇只论证一个判断。判断是我的，依据是论文表 1 和附录 B.4。ScienceBoard 在线、169 例、官方评测器做金标、执行 Agent 和核验器都跑 gemini-3-flash-preview：VeriCUA 假阳性率 5.4%，自动生成核验器 21.7%，单次视觉语言模型评审 24.8%。成功是正类。弃权记成失败，不记成成功，所以弃权不加假阳性、会压召回。标题只写 ScienceBoard：论文写这里生成检查和目标科学软件对不齐的缺口最大，5.4 大约是生成脚本的四分之一。AndroidWorld 116 例是 7.7 对 16.9；OSWorld 361 例是 13.9 对 25.9。三列不要并进同一个范围。</p>
+  </div>
+  <p>附录 D.1 给了一条 AndroidWorld。指令要恰好一段新视频。媒体库读到开局之后多了三行，目录里三份文件，间隔一分钟。四次核验里三次判失败，一次弃权。Agent 报完成。单次评审和生成脚本都判成功。</p>
+</section>
+
+<section id="setup">
+  <h2><span>2</span>三个在线环境</h2>
+  <p>在线核验发生在回合结束之后，对着还在的机器状态。AndroidWorld 跑模拟器，OSWorld 跑虚拟机，ScienceBoard 跑科学桌面。每条由该基准自己的脚手架执行。金标是各基准官方评测器。OSWorld 执行成功率 44.3%，ScienceBoard 23.7%。AndroidWorld 116 例写的是 M3A Agents，表 B.1 没有给执行成功率。</p>
+  <p>对照三条。视觉语言模型评审：一次调用，看给到的观察，出裁决或分数。自动生成核验器：每个任务生成一段评测脚本，对机器跑一次，二元裁决。VeriCUA：先看应用上下文，写出任务量表，再对还没落实的条目选界面检查或代码检查，按证据规则汇总。后两条只在在线设置里比；离线设置另有 CUAJudge 和 OS-Themis，不进标题。</p>
+  <p>主表 backbone 是 gemini-3-flash-preview。backbone 对照另跑 gemini-3.1-pro-preview，那一列不和 5.4 / 21.7 比。</p>
+  <div class="tw">
+    <table>
+      <thead>
+        <tr>
+          <th>环境</th>
+          <th>例数</th>
+          <th>方法</th>
+          <th>准确率</th>
+          <th>假阳性率</th>
+          <th>已决定</th>
+          <th>已决定准确率</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td>AndroidWorld</td><td>116</td><td>视觉语言模型评审</td><td>78.4</td><td>15.4</td><td>100%</td><td>78.4%</td></tr>
+        <tr><td>AndroidWorld</td><td>116</td><td>生成脚本</td><td>82.4</td><td>16.9</td><td>100%</td><td>82.4%</td></tr>
+        <tr><td>AndroidWorld</td><td>116</td><td>VeriCUA</td><td>90.5</td><td>7.7</td><td>82%</td><td>95.1%</td></tr>
+        <tr><td>OSWorld</td><td>361</td><td>视觉语言模型评审</td><td>73.4</td><td>27.9</td><td>100%</td><td>73.4%</td></tr>
+        <tr><td>OSWorld</td><td>361</td><td>生成脚本</td><td>75.9</td><td>25.9</td><td>100%</td><td>75.9%</td></tr>
+        <tr><td>OSWorld</td><td>361</td><td>VeriCUA</td><td>79.5</td><td>13.9</td><td>78%</td><td>88.7%</td></tr>
+        <tr><td>ScienceBoard</td><td>169</td><td>视觉语言模型评审</td><td>71.6</td><td>24.8</td><td>100%</td><td>71.6%</td></tr>
+        <tr><td>ScienceBoard</td><td>169</td><td>生成脚本</td><td>76.9</td><td>21.7</td><td>100%</td><td>76.9%</td></tr>
+        <tr><td>ScienceBoard</td><td>169</td><td>VeriCUA</td><td>86.4</td><td>5.4</td><td>70%</td><td>91.6%</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p>表是论文表 1 加附录表 B.1 的例数。准确率、假阳性率是百分数，原文没给百分号。两条对照每条都出裁决，已决定准确率等于总准确率。VeriCUA 在 ScienceBoard 上已决定 70%，已决定准确率 91.6，总准确率 86.4：弃权记失败，分母仍是 169。</p>
+  <figure>
+    <svg viewBox="0 0 960 540" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="三个在线环境里三种核验的假阳性率">
+      <rect width="960" height="540" fill="#ffffff"/>
+      <text x="24" y="32" font-size="16" font-weight="700" fill="#0f172a">同一套 flash：假阳性率，查过状态的那根更矮</text>
+      <text x="24" y="54" font-size="14" fill="#475569">在线环境，gemini-3-flash-preview。柱高按 12 像素 / 1 个点。数据来自论文表 1。</text>
+      <rect x="520" y="16" width="16" height="16" fill="#fff7ed" stroke="#be123c" stroke-width="2"/>
+      <text x="542" y="30" font-size="14" fill="#0f172a">视觉语言模型评审</text>
+      <rect x="700" y="16" width="16" height="16" fill="#fffbeb" stroke="#b45309" stroke-width="2"/>
+      <text x="722" y="30" font-size="14" fill="#0f172a">生成脚本</text>
+      <rect x="820" y="16" width="16" height="16" fill="#eff6ff" stroke="#1d4ed8" stroke-width="2"/>
+      <text x="842" y="30" font-size="14" fill="#0f172a">VeriCUA</text>
+      <line x1="80" y1="80" x2="80" y2="430" stroke="#cbd5e1" stroke-width="1"/>
+      <line x1="80" y1="430" x2="920" y2="430" stroke="#cbd5e1" stroke-width="1"/>
+      <line x1="80" y1="190" x2="920" y2="190" stroke="#e2e8f0" stroke-width="1" stroke-dasharray="4 4"/>
+      <text x="72" y="84" font-size="14" fill="#475569" text-anchor="end">30</text>
+      <text x="72" y="194" font-size="14" fill="#475569" text-anchor="end">20</text>
+      <text x="72" y="314" font-size="14" fill="#475569" text-anchor="end">10</text>
+      <text x="72" y="434" font-size="14" fill="#475569" text-anchor="end">0</text>
+      <rect x="120" y="245.2" width="40" height="184.8" fill="#fff7ed" stroke="#be123c" stroke-width="2"/>
+      <text x="140" y="236" font-size="14" font-weight="700" fill="#be123c" text-anchor="middle">15.4</text>
+      <rect x="168" y="227.2" width="40" height="202.8" fill="#fffbeb" stroke="#b45309" stroke-width="2"/>
+      <text x="188" y="218" font-size="14" font-weight="700" fill="#b45309" text-anchor="middle">16.9</text>
+      <rect x="216" y="337.6" width="40" height="92.4" fill="#eff6ff" stroke="#1d4ed8" stroke-width="2"/>
+      <text x="236" y="328" font-size="14" font-weight="700" fill="#1d4ed8" text-anchor="middle">7.7</text>
+      <text x="188" y="454" font-size="14" fill="#0f172a" text-anchor="middle">AndroidWorld</text>
+      <text x="188" y="474" font-size="14" fill="#475569" text-anchor="middle">116 例</text>
+      <rect x="400" y="95.2" width="40" height="334.8" fill="#fff7ed" stroke="#be123c" stroke-width="2"/>
+      <text x="420" y="86" font-size="14" font-weight="700" fill="#be123c" text-anchor="middle">27.9</text>
+      <rect x="448" y="119.2" width="40" height="310.8" fill="#fffbeb" stroke="#b45309" stroke-width="2"/>
+      <text x="468" y="110" font-size="14" font-weight="700" fill="#b45309" text-anchor="middle">25.9</text>
+      <rect x="496" y="263.2" width="40" height="166.8" fill="#eff6ff" stroke="#1d4ed8" stroke-width="2"/>
+      <text x="516" y="254" font-size="14" font-weight="700" fill="#1d4ed8" text-anchor="middle">13.9</text>
+      <text x="468" y="454" font-size="14" fill="#0f172a" text-anchor="middle">OSWorld</text>
+      <text x="468" y="474" font-size="14" fill="#475569" text-anchor="middle">361 例</text>
+      <rect x="680" y="132.4" width="40" height="297.6" fill="#fff7ed" stroke="#be123c" stroke-width="2"/>
+      <text x="700" y="123" font-size="14" font-weight="700" fill="#be123c" text-anchor="middle">24.8</text>
+      <rect x="728" y="169.6" width="40" height="260.4" fill="#fffbeb" stroke="#b45309" stroke-width="2"/>
+      <text x="748" y="160" font-size="14" font-weight="700" fill="#b45309" text-anchor="middle">21.7</text>
+      <rect x="776" y="365.2" width="40" height="64.8" fill="#eff6ff" stroke="#1d4ed8" stroke-width="2"/>
+      <text x="796" y="356" font-size="14" font-weight="700" fill="#1d4ed8" text-anchor="middle">5.4</text>
+      <text x="748" y="454" font-size="14" fill="#0f172a" text-anchor="middle">ScienceBoard</text>
+      <text x="748" y="474" font-size="14" fill="#475569" text-anchor="middle">169 例</text>
+      <text x="24" y="508" font-size="14" fill="#475569">虚线标 20。ScienceBoard 上蓝柱大约是橙柱的四分之一。柱高按 12 像素 / 1 个点画，作图参数是我的。</text>
+      <text x="24" y="528" font-size="14" fill="#475569">假阳性率是表 1 百分数。原文没把失败例数写成整数分母。</text>
+    </svg>
+    <figcaption>图 1. 三个在线环境、gemini-3-flash-preview：三种核验的假阳性率。数据来自论文表 1。柱高按 12 像素 / 1 个点。</figcaption>
+  </figure>
+  <p>OSWorld 和 ScienceBoard 上，生成脚本的召回更高：OSWorld 78.1 对 VeriCUA 71.3，ScienceBoard 72.5 对 60.0。VeriCUA 的精确率和准确率更高。ScienceBoard 精确率 77.4 对 50.9。论文写：不先看上下文就构造的脚本，会查到错误的状态位置。</p>
+</section>
+
+<section id="abstain">
+  <h2><span>3</span>弃权不当成功</h2>
+  <p>两条对照每条都给裁决。VeriCUA 在发现落不定任务、或者已经决定的几次核验互相打架时弃权。附录 B.4：弃权在一致率、精确率、召回、F1、假阳性率里都记成失败。已决定准确率另报。</p>
+  <p>ScienceBoard 已决定 70%，已决定准确率 91.6，总准确率 86.4。少掉的那截是弃权进了失败。假阳性率 5.4 不含把不确定写成成功。论文写这套口径偏向保守挑成功轨迹，用在数据筛选和奖励赋值。</p>
+  <p>第 5.3 节另写：三个在线环境里的虚假完成报告，AndroidWorld 用了一个子集，VeriCUA 拒掉约 80%。原文是 about 80%，没有条数分母，不进标题。差距在 ScienceBoard 最大：生成脚本很少拒掉错误的完成声明。</p>
+</section>
+
+<section id="gui">
+  <h2><span>4</span>只看屏幕，决定率 45%</h2>
+  <p>附录表 C.1 是在线 AndroidWorld 的动作空间消融，对应正文图 3。只保留图形界面动作：决定率 45%，召回 57.6，准确率 77.0，假阳性 3/41，已决定准确率 87.9%。默认混合空间加上代码读状态：决定率 82%，召回 87.9，准确率 90.5，假阳性仍是 3/41，已决定准确率 95.1%。</p>
+  <p>论文写配对分析里，代码通道多出来的每条正确决定，都有文件或应用存储读取撑着。界面观察落不定的条目，存下来的状态能定。假阳性条数没有跟着涨。</p>
+  <figure>
+    <svg viewBox="0 0 960 520" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="AndroidWorld 只看界面和混合检查的决定率与召回">
+      <rect width="960" height="520" fill="#ffffff"/>
+      <text x="24" y="32" font-size="16" font-weight="700" fill="#0f172a">同一 3/41 假阳性：加上读状态，决定率和召回抬上去</text>
+      <text x="24" y="54" font-size="14" fill="#475569">在线 AndroidWorld。柱高按 3.5 像素 / 1 个点。数据来自论文表 C.1。</text>
+      <rect x="620" y="16" width="16" height="16" fill="#f1f5f9" stroke="#475569" stroke-width="2"/>
+      <text x="642" y="30" font-size="14" fill="#0f172a">只看界面</text>
+      <rect x="760" y="16" width="16" height="16" fill="#dcfce7" stroke="#047857" stroke-width="2"/>
+      <text x="782" y="30" font-size="14" fill="#0f172a">混合（默认）</text>
+      <line x1="80" y1="80" x2="80" y2="400" stroke="#cbd5e1" stroke-width="1"/>
+      <line x1="80" y1="400" x2="920" y2="400" stroke="#cbd5e1" stroke-width="1"/>
+      <line x1="80" y1="225" x2="920" y2="225" stroke="#e2e8f0" stroke-width="1" stroke-dasharray="4 4"/>
+      <text x="72" y="84" font-size="14" fill="#475569" text-anchor="end">100</text>
+      <text x="72" y="229" font-size="14" fill="#475569" text-anchor="end">50</text>
+      <text x="72" y="404" font-size="14" fill="#475569" text-anchor="end">0</text>
+      <rect x="150" y="242.5" width="52" height="157.5" fill="#f1f5f9" stroke="#475569" stroke-width="2"/>
+      <text x="176" y="233" font-size="14" font-weight="700" fill="#475569" text-anchor="middle">45</text>
+      <rect x="214" y="113" width="52" height="287" fill="#dcfce7" stroke="#047857" stroke-width="2"/>
+      <text x="240" y="104" font-size="14" font-weight="700" fill="#047857" text-anchor="middle">82</text>
+      <text x="208" y="424" font-size="14" fill="#0f172a" text-anchor="middle">已决定 %</text>
+      <rect x="430" y="198.4" width="52" height="201.6" fill="#f1f5f9" stroke="#475569" stroke-width="2"/>
+      <text x="456" y="189" font-size="14" font-weight="700" fill="#475569" text-anchor="middle">57.6</text>
+      <rect x="494" y="92.35" width="52" height="307.65" fill="#dcfce7" stroke="#047857" stroke-width="2"/>
+      <text x="520" y="83" font-size="14" font-weight="700" fill="#047857" text-anchor="middle">87.9</text>
+      <text x="488" y="424" font-size="14" fill="#0f172a" text-anchor="middle">召回</text>
+      <rect x="710" y="130.5" width="52" height="269.5" fill="#f1f5f9" stroke="#475569" stroke-width="2"/>
+      <text x="736" y="121" font-size="14" font-weight="700" fill="#475569" text-anchor="middle">77.0</text>
+      <rect x="774" y="83.25" width="52" height="316.75" fill="#dcfce7" stroke="#047857" stroke-width="2"/>
+      <text x="800" y="74" font-size="14" font-weight="700" fill="#047857" text-anchor="middle">90.5</text>
+      <text x="768" y="424" font-size="14" fill="#0f172a" text-anchor="middle">准确率</text>
+      <text x="24" y="464" font-size="14" fill="#475569">假阳性两边都是 3/41，图上不画柱，避免和百分数柱用同一根轴。虚线标 50。</text>
+      <text x="24" y="486" font-size="14" fill="#475569">C.1 的 3/41 不要当成表 1 AndroidWorld 假阳性率 7.7 的分母。两张表原文没有写成同一列。</text>
+      <text x="24" y="508" font-size="14" fill="#475569">柱高按 3.5 像素 / 1 个点，作图参数是我的。</text>
+    </svg>
+    <figcaption>图 2. 在线 AndroidWorld：只看界面和混合动作空间。数据来自论文表 C.1。假阳性两边都是 3/41。柱高按 3.5 像素 / 1 个点。</figcaption>
+  </figure>
+  <p>离线核验是辅线。记录轨迹上 VeriCUA 仍高于对照，OSReward-Hard 284 条人工标签：准确率 70.4，对 OS-Themis 65.7、CUAJudge 63.4、TRM 57.4。WebArena 715 条里，记录解决不了任务时走初始判断回退，原文写发生在 23% 的轨迹。那一列没有机器可探，不支撑标题里的 5.4。</p>
+</section>
+
+<section id="yours">
+  <h2><span>5</span>你的核验位查不查状态</h2>
+  <p>读完要看的是：自己的计算机使用 Agent、浏览器 Agent、桌面 Agent，完成核验是一次看截图、一次生成脚本，还是回合结束后读文件、数据库、设置。ScienceBoard 169 例上，先看上下文再探状态的假阳性率 5.4，生成脚本 21.7。</p>
+  <p>技能记录如果只留「加一个完成评审」或「给任务写一段 checker」，没有记下评审看见的是不是回合后的持久状态、脚本生成前有没有看应用上下文、不确定时是弃权还是写成成功，和这篇测到的缝是同一条。</p>
+  <p>下面是我的推断，论文没有在你的线上测过。数据筛选和奖励赋值如果把 Agent 自报完成、或单次看图的成功，直接写进正例，假阳性会进训练集。支付、发邮件、改配置这类动作，界面上看起来做完、存储里没有对应行，和附录 D.1 的三段视频是同一类证据。运行位如果在回合结束后读权威存储，读的是这篇的持久证据。</p>
+  <p><a href="/frontier/2026-10-14-reproduction-is-not-validation.html">10-14</a> 写过复现成功撑不起联合验收。<a href="/frontier/2026-10-28-first-stage-overstates-feature.html">10-28</a> 写过第一阶段通过率高于整条终检。<a href="/frontier/2026-10-31-unverified-plan-halves-ter.html">10-31</a> 写过未核计划终局 0.94、整条可执行 0.47。那三篇动的是测试池、阶段、工具前缀。这篇动的是完成声明有没有对着机器状态查过。</p>
+</section>
+
+<section id="limit">
+  <h2><span>6</span>这篇没测到的</h2>
+  <ul>
+    <li><strong>标题的 5.4 / 21.7 是 ScienceBoard 在线、169 例、flash backbone、弃权记失败。</strong>AndroidWorld 7.7 / 16.9，OSWorld 13.9 / 25.9，不要和 5.4 / 21.7 并进同一个范围。表 1 假阳性率没有整数分母。表 C.1 的 3/41 只挂 AndroidWorld 动作消融。</li>
+    <li><strong>虚假完成「约 80%」没有条数。</strong>第 5.3 节写 about 80%，AndroidWorld 用子集，图 5b。不和 5.4 比大小。</li>
+    <li><strong>生成脚本在 OSWorld、ScienceBoard 上召回更高。</strong>总准确率和假阳性率是另一列。挑成功轨迹和追全成功，口径不同。</li>
+    <li><strong>代价按数量级写。</strong>附录 E：一次核验对每条轨迹发出数十次工具调用和模型调用，比单次评审高一个数量级。表 C.9：在线第一套 VeriCUA 39.2K token、97 秒，生成脚本 16.2K、60 秒。离线 OSReward 上 VeriCUA 345K–378K，三个单次评审合计 33K–35K。论文写更适合筛选和奖励赋值，不适合交互使用。</li>
+    <li><strong>金标也会错。</strong>附录 C.6：814 条记录轨迹里，已决定的 VeriCUA 和金标打架 81 条；换一家模型的盲审支持 VeriCUA 51 条、反对 20、不确定 10，不确定留在分母，51/81 ≈ 63%。在线 OSWorld：VeriCUA 的 28 次假阳性里，约 18 次是官方评测器把失败标错。63% 和约 18 不进标题。</li>
+    <li><strong>只读。</strong>论文写 VeriCUA 从不写入被核验的环境。不能回放到不能插桩的机器上。随机核验要把多次抽样的离散写在每次比较旁边。</li>
+  </ul>
+</section>
+
+<section id="src">
+  <h2><span>7</span>出处</h2>
+  <p>数字来自预印本 HTML（<a href="https://arxiv.org/html/2610.40578">arxiv.org/html/2610.40578</a>，<a href="https://arxiv.org/pdf/2610.40578">pdf</a>，<a href="https://arxiv.org/abs/2610.40578">abs</a>，2026-10-29，未经同行评审）。论文摘要、第 4.1–4.3 节、第 5.1 节、第 5.3 节、第 5.5 节、结论、附录 B.1、B.4、C.1、C.6、C.9、D.1、E，表 1、表 C.1、表 C.9、表 C.10。HTML 页眉写 arXiv:2610.40578v1 [cs.AI] 29 Oct 2026。图 1 柱高按 12 像素 / 1 个点画，图 2 按 3.5 像素 / 1 个点，作图参数是我的。</p>
+  <p><a href="https://openai.com/news/">OpenAI 新闻页</a>本轮直接请求返回 403，未打开，未写入数字。<a href="https://www.anthropic.com/news">Anthropic 新闻页</a>本轮打开过，页上仍挂 Opus 5.5（9-22）、S-1（10-26）、用药开发进展（10-27），未写入数字。Hacker News 首页与 Algolia 本轮打开过，未作为本篇数字来源。Product Hunt Atom 源本轮打开过，未写入数字。GitHub 搜索本轮打开过，文内没有 VeriCUA 仓库。X、Reddit 今日未覆盖：本机没有可用登录态。</p>
+  <p>谱系和增量层分别在 <a href="/frontier/rsi-llm-agent-self-evolution.html">递归自改进前世今生</a> 和 <a href="/frontier/llm-agent-tech-landscape.html">冻底座、改脚手架</a>。这篇只加一条：ScienceBoard 上，查过状态的误报 5.4%，生成脚本 21.7%。</p>
+</section>
+</main>
+</div>
+</body>
+</html>
