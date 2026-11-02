@@ -1,5 +1,9 @@
 ﻿# 前沿技术栏目：独立 HTML 洞察索引。
 # 新增一篇：把 HTML 放到 /frontier/<slug>.html，再在这里加一条。
+- title: "未训且至多一次调用，AppWorld 完整集过不了一成"
+  date: "2026-11-02"
+  url: /frontier/2026-11-02-one-call-max-ten.html
+  summary: "一篇预印本比较六种工具检索结构。AppWorld 345 条、每条至少两个 API、截到前 16：没在测试池上训练、每条查询至多一次模型调用的结构，摘要写完整集不超过 10%。主表最高 9.6%（依赖图 33/345）；消融的确定性 GoS 是 11.9%，未进主表。训过的 COLT 是 32.8%，层级导航 AnyTool 是 30.1%、中位 31 次调用。"
 - title: "ScienceBoard 上，查过状态的误报 5.4%，生成脚本 21.7%"
   date: "2026-11-01"
   url: /frontier/2026-11-01-state-check-cuts-fpr.html

@@ -1,0 +1,279 @@
+﻿<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>未训且至多一次调用，AppWorld 完整集过不了一成</title>
+  <style>
+    :root { --ink:#0f172a; --muted:#475569; --line:#e2e8f0; --bg:#f8fafc; --blue:#1d4ed8; --blue-bg:#eff6ff; --amber:#b45309; --green:#047857; --rose:#be123c; }
+    * { box-sizing: border-box; }
+    body { margin:0; font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Noto Sans SC",sans-serif; background:var(--bg); color:var(--ink); line-height:1.75; font-size:17px; }
+    header { background:#0f172a; color:#f8fafc; padding:36px 24px 28px; border-bottom:4px solid #2563eb; }
+    header .inner { max-width:1080px; margin:0 auto; }
+    .badge { display:inline-block; border:1px solid #93c5fd; color:#bfdbfe; border-radius:999px; padding:2px 12px; font-size:13px; }
+    h1 { font-size:2rem; line-height:1.3; margin:12px 0; }
+    header p { color:#cbd5e1; margin:0; max-width:760px; }
+    .layout { max-width:1080px; margin:28px auto 64px; padding:0 20px; display:grid; grid-template-columns:220px minmax(0,1fr); gap:28px; }
+    aside { position:sticky; top:52px; align-self:start; background:#fff; border:1px solid var(--line); border-radius:12px; padding:14px; }
+    aside p { font-size:12px; letter-spacing:.06em; color:var(--muted); margin:0 0 8px; }
+    aside a { display:block; color:var(--ink); text-decoration:none; font-size:14px; padding:6px 8px; border-radius:6px; }
+    aside a:hover { background:var(--blue-bg); color:var(--blue); }
+    h2 { font-size:1.35rem; margin:0 0 12px; }
+    h2 span { display:inline-block; background:var(--blue); color:#fff; border-radius:6px; font-size:13px; padding:2px 8px; margin-right:8px; }
+    h3 { font-size:1.08rem; margin:20px 0 10px; }
+    section { background:#fff; border:1px solid var(--line); border-radius:14px; padding:26px 28px; margin-bottom:22px; }
+    p { margin:0 0 14px; }
+    a { color:var(--blue); overflow-wrap:anywhere; }
+    code { background:#f1f5f9; border-radius:4px; padding:1px 5px; font-size:15px; overflow-wrap:anywhere; }
+    main { min-width:0; }
+    figure { margin:16px 0; background:#fff; border:1px solid var(--line); border-radius:12px; padding:10px; overflow-x:auto; }
+    figure svg { display:block; min-width:700px; }
+    figcaption { color:var(--muted); font-size:14px; margin-top:6px; }
+    .tw { overflow-x:auto; margin:0 0 14px; }
+    .tw table { min-width:620px; }
+    table { width:100%; border-collapse:collapse; font-size:15px; }
+    th, td { border:1px solid var(--line); padding:8px 10px; text-align:left; vertical-align:top; }
+    th { background:#f1f5f9; }
+    ul { margin:0 0 14px; padding-left:22px; }
+    ol { margin:0 0 14px; padding-left:22px; }
+    li { margin-bottom:6px; }
+    .note { background:#f1f5f9; border-left:4px solid var(--muted); padding:12px 16px; border-radius:0 8px 8px 0; font-size:16px; margin:0 0 14px; }
+    .quote { background:#fffbeb; border-left:4px solid var(--amber); padding:12px 16px; border-radius:0 8px 8px 0; font-size:15px; overflow-wrap:anywhere; margin:0 0 14px; }
+    svg text { font-family:-apple-system,"PingFang SC","Noto Sans SC",sans-serif; }
+    @media (max-width:860px) { .layout { grid-template-columns:minmax(0,1fr); } aside { position:static; } h1 { font-size:1.55rem; } section { padding:18px 16px; } }
+  </style>
+</head>
+<body>
+<nav style="position:sticky;top:0;z-index:50;background:#0f172a;border-bottom:1px solid #1e293b;padding:10px 24px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;">
+  <a href="/frontier" style="color:#93c5fd;text-decoration:none;font-size:14px;margin-right:16px;">← Frontier</a>
+  <a href="/" style="color:#cbd5e1;text-decoration:none;font-size:14px;">@xixi003</a>
+</nav>
+
+<header>
+  <div class="inner">
+    <span class="badge">FRONTIER · 2026-11-02 · 工具检索</span>
+    <h1>未训且至多一次调用，AppWorld 完整集过不了一成</h1>
+    <p>一篇预印本比较六种工具检索结构。AppWorld 345 条、每条至少两个 API、截到前 16：没在测试池上训练、每条查询至多一次模型调用的结构，摘要写完整集不超过 10%。主表最高 9.6%。标题不写 MCP-Bench：那一列完整集更高，分母和这一截不在同一列。</p>
+  </div>
+</header>
+<div class="layout">
+<aside>
+  <p>目录</p>
+  <a href="#what">1 过不了一成</a>
+  <a href="#mix">2 合计分数为什么不看</a>
+  <a href="#setup">3 六种结构、两套池</a>
+  <a href="#down">4 完整性对不对得上任务</a>
+  <a href="#yours">5 你的检索位交不交整套</a>
+  <a href="#limit">6 这篇没测到的</a>
+  <a href="#src">7 出处</a>
+</aside>
+<main>
+<section id="what">
+  <h2><span>1</span>过不了一成</h2>
+  <p>2026 年 10 月 30 日，arXiv 收到 <a href="https://arxiv.org/abs/2610.41905">Completeness and Cost of Retrieval Structures for Multi-Tool Requests in LLM Agents</a>（arXiv:2610.41905v1，cs.IR，作者 Shuyang Zhang，单位署香港理工大学）。预印本，未经同行评审。本轮读的是 HTML 全文。文内没有给出作者自己的代码仓库，比较用的是各结构已发布的代码。</p>
+  <p>工具目录放不进每次提示时，检索器先决定 Agent 看见哪些工具。一条请求要几个工具，缺一个，那一步就做不成。评测常用召回：所需工具里找回了多少。这篇用完整性：整套所需工具是否都在截断的前 k 个里。</p>
+  <div class="note">
+    <p style="margin:0">这篇只论证一个判断。判断是我的，依据是论文摘要、第 5.1 节和表 2（<a href="https://arxiv.org/html/2610.41905">HTML</a>）。AppWorld 官方测试 345 条，每条所需 API 至少 2 个、中位 6 个，k = 16。摘要写：未在该测试池上训练、每条查询至多一次模型调用的结构，完整集不超过 10%。主表七个代表臂里最高 0.096（依赖图 Graph-of-Skills，按表 4 的 312 条不完整反推，完整 33/345）。附录表 A1 有一个消融：只保留确定性边、建图也不调模型的 GoS，完整性 0.119。论文写它和 0.096 相近，配对区间含 0，未进主表。0.096 是主表最大值，不是结构族被测出的上限。BM25、MCP-Zero 是 0。分解加一次调用是 0.035。简化 HYSET 也是 0，但在测试池训练查询上训过，不进「未训」。训过的 COLT 是 0.328（113/345），层级导航 AnyTool 是 0.301（104/345），后者中位 31 次调用、约五分钟，不进「至多一次调用」。</p>
+  </div>
+  <p>MCP-Bench 103 条任务、257 个工具：同一截断下 COLT 完整性 0.583，AnyTool 0.398，未训一次调用那一组最高到分解的 0.359。和 AppWorld 这一截不要并进同一个范围。</p>
+</section>
+
+<section id="mix">
+  <h2><span>2</span>合计分数为什么不看</h2>
+  <p>这一节不是本篇判断。它只说明：为什么后面用 AppWorld 这种每条都要几个工具的池，而不是看 ToolRet 合计。</p>
+  <p>ToolRet 放出 7,961 条查询、44,453 个工具、35 个池（<a href="https://arxiv.org/html/2610.41905">论文第 3 节、表 1</a>）。论文按放出的数据计；原文论文写约 7.6 千条、43 千个工具。55% 只有一个目标工具。单目标上，完整性等于命中。作者在子数据集内检索、只用查询文本、不写指令。这条设置和 ToolRet 全文表不同，绝对值不能和已发表的 ToolRet 表对读。按目标数分层：1 个 4,402 条，2 个 1,937，3 个 1,089，4 个及以上 533。</p>
+  <div class="tw">
+    <table>
+      <thead>
+        <tr>
+          <th>检索器</th>
+          <th>1 个（n=4,402）</th>
+          <th>2 个（n=1,937）</th>
+          <th>3 个（n=1,089）</th>
+          <th>4+（n=533）</th>
+          <th>多目标（n=3,559）</th>
+          <th>全部（n=7,961）</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td>bge-base</td><td>.672</td><td>.426</td><td>.169</td><td>.129</td><td>.303</td><td>.507</td></tr>
+        <tr><td>e5-base</td><td>.635</td><td>.405</td><td>.174</td><td>.118</td><td>.291</td><td>.481</td></tr>
+        <tr><td>COLT 第一阶段</td><td>.642</td><td>.525</td><td>.234</td><td>.129</td><td>.377</td><td>.523</td></tr>
+        <tr><td>分解</td><td>.664</td><td>.450</td><td>.233</td><td>.169</td><td>.341</td><td>.520</td></tr>
+        <tr><td>GoS（确定性）</td><td>.583</td><td>.255</td><td>.092</td><td>.079</td><td>.178</td><td>.402</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p>表是论文表 1，完整性@10。表里的 COLT 第一阶段是已发布的 Contriever，在 ToolBench 上微调过，集合级第二阶段没有放出；和后文在 AppWorld 上重训的 COLT 不是同一个检查点。bge 的合计 .507，是 4,402 条单目标 .672 和 3,559 条多目标 .303 的加权。多目标上四个嵌入臂召回@10 在 .53 到 .61，GoS 是 .41：嵌入臂多数所需工具找回来了，整套很少齐。</p>
+  <p>论文写名次跟着目标数换。单目标上 bge 最好或并列最好；两个及以上目标时，ToolBench 上训过的 COLT 第一阶段和分解会超过它。去掉三个 ToolBench 派生池还剩 6,350 条，方向不变。这些数不进标题：截断是 10，池是 ToolRet，和 AppWorld 的一成不是同一列。</p>
+</section>
+
+<section id="setup">
+  <h2><span>3</span>六种结构、两套池</h2>
+  <p>AppWorld：官方测试 345 条（test-normal 129、test-challenge 216），In-N-Out 池 456 个 API。所需集合是查询会调用的 API，加上能产出其参数的生产者。六个 supervisor API 始终交给 Agent，评分前从排名和所需集合里拿掉。剩下每条 2 到 12 个 API，中位 6。258 条是单链，87 条是多连通块。没有单 API、也没有全独立 API 的测试条。</p>
+  <p>MCP-Bench：28 个服务器、257 个工具、103 条任务。所需集合从任务详述和依赖分析里点名的工具来，限制在该任务的服务器上。一条只靠转述、没点名，剔除。六条单服务器任务只点一个工具，另外 97 条要几个。论文写这些是生成器计划里的参考集，不是唯一金标。</p>
+  <p>六个结构各选代表。能固定的共享件固定：稠密、分解、先服务器后工具、图这几臂用 bge-base-en-v1.5；所有模型步骤用 DeepSeek-V3.2、温度 0。COLT 和简化 HYSET 按作者协议在测试池的训练查询上训；其余按设计不训。</p>
+  <div class="tw">
+    <table>
+      <thead>
+        <tr>
+          <th>结构</th>
+          <th>代表</th>
+          <th>AppWorld C@16</th>
+          <th>召回@16</th>
+          <th>每条查询模型调用（中位）</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td>扁平词法</td><td>BM25</td><td>.000（0/345）</td><td>.188</td><td>0</td></tr>
+        <tr><td>扁平稠密</td><td>bge-base</td><td>.020（7/345）</td><td>.190</td><td>0</td></tr>
+        <tr><td>扁平稠密</td><td>e5-base</td><td>.064（22/345）</td><td>.336</td><td>0</td></tr>
+        <tr><td>分解</td><td>一次拆分 + bge</td><td>.035（12/345）</td><td>.417</td><td>1</td></tr>
+        <tr><td>先服务器后工具</td><td>MCP-Zero（改造）</td><td>.000（0/345）</td><td>.234</td><td>1</td></tr>
+        <tr><td>依赖图</td><td>GoS</td><td>.096（33/345）</td><td>.366</td><td>0（建图时调用）</td></tr>
+        <tr><td>层级导航</td><td>AnyTool</td><td>.301（104/345）</td><td>.757</td><td>31</td></tr>
+        <tr><td>集合级（训过）</td><td>COLT</td><td>.328（113/345）</td><td>.702</td><td>0（90 条训练查询）</td></tr>
+        <tr><td>集合级（训过，简化）</td><td>HYSET</td><td>.000（0/345）</td><td>.213</td><td>0（同 COLT 的训练查询）</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p>表里完整性来自论文表 2（<a href="https://arxiv.org/html/2610.41905">HTML</a>），条数按表 4 的不完整条数从 345 反推。MCP-Zero 在 AppWorld 上列表最多 12 个 API，完整性@16 被构造截住。附录 B 还写了三处改造：嵌入换成 bge；服务器文本是占位句「The &lt;app&gt; app.」，和 AnyTool 同一句；原本执行期逐个请求工具，改成一次调用里按所需工具各写一块再 round-robin 合并。0/345 是这次改造后的数，不代表「先服务器后工具」这类结构的能力。HYSET 是去掉执行奖励、放大最大集合的简化臂，在测试池训练查询上训过，不代表完整方法。附录表 A1 的确定性 GoS 消融 C@16 是 .119，未进主表。</p>
+  <figure>
+    <svg viewBox="0 0 960 590" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="AppWorld 各臂完整性@16">
+      <rect width="960" height="590" fill="#ffffff"/>
+      <text x="24" y="28" font-size="16" font-weight="700" fill="#0f172a">AppWorld 345 条：主表未训且至多一次调用，柱子过不了虚线</text>
+      <text x="24" y="50" font-size="14" fill="#475569">完整性@16。柱高按 10 像素 / 1 个百分点。数据来自论文表 2，条数按表 4 反推。</text>
+      <rect x="24" y="64" width="16" height="16" fill="#f1f5f9" stroke="#475569" stroke-width="2"/>
+      <text x="46" y="77" font-size="14" fill="#0f172a">未训，至多一次调用</text>
+      <rect x="220" y="64" width="16" height="16" fill="#fffbeb" stroke="#b45309" stroke-width="2"/>
+      <text x="242" y="77" font-size="14" fill="#0f172a">AnyTool（31 次）</text>
+      <rect x="410" y="64" width="16" height="16" fill="#eff6ff" stroke="#1d4ed8" stroke-width="2"/>
+      <text x="432" y="77" font-size="14" fill="#0f172a">COLT（训过）</text>
+      <line x1="70" y1="100" x2="70" y2="500" stroke="#cbd5e1" stroke-width="1"/>
+      <line x1="70" y1="500" x2="900" y2="500" stroke="#cbd5e1" stroke-width="1"/>
+      <line x1="70" y1="400" x2="900" y2="400" stroke="#be123c" stroke-width="1.5" stroke-dasharray="6 4"/>
+      <text x="908" y="404" font-size="14" fill="#be123c">10%</text>
+      <text x="62" y="104" font-size="14" fill="#475569" text-anchor="end">40</text>
+      <text x="62" y="204" font-size="14" fill="#475569" text-anchor="end">30</text>
+      <text x="62" y="304" font-size="14" fill="#475569" text-anchor="end">20</text>
+      <text x="62" y="404" font-size="14" fill="#475569" text-anchor="end">10</text>
+      <text x="62" y="504" font-size="14" fill="#475569" text-anchor="end">0</text>
+      <line x1="66" y1="500" x2="74" y2="500" stroke="#cbd5e1"/>
+      <rect x="90" y="498" width="36" height="2" fill="#f1f5f9" stroke="#475569" stroke-width="2"/>
+      <text x="108" y="488" font-size="14" font-weight="700" fill="#475569" text-anchor="middle">0</text>
+      <text x="108" y="524" font-size="14" fill="#0f172a" text-anchor="middle">BM25</text>
+      <text x="108" y="542" font-size="13" fill="#475569" text-anchor="middle">0/345</text>
+      <rect x="186" y="498" width="36" height="2" fill="#f1f5f9" stroke="#475569" stroke-width="2"/>
+      <text x="204" y="488" font-size="14" font-weight="700" fill="#475569" text-anchor="middle">0</text>
+      <text x="204" y="524" font-size="14" fill="#0f172a" text-anchor="middle">MCP-0</text>
+      <text x="204" y="542" font-size="13" fill="#475569" text-anchor="middle">0/345</text>
+      <rect x="282" y="480" width="36" height="20" fill="#f1f5f9" stroke="#475569" stroke-width="2"/>
+      <text x="300" y="472" font-size="14" font-weight="700" fill="#475569" text-anchor="middle">2.0</text>
+      <text x="300" y="524" font-size="14" fill="#0f172a" text-anchor="middle">bge</text>
+      <text x="300" y="542" font-size="13" fill="#475569" text-anchor="middle">7/345</text>
+      <rect x="378" y="465" width="36" height="35" fill="#f1f5f9" stroke="#475569" stroke-width="2"/>
+      <text x="396" y="457" font-size="14" font-weight="700" fill="#475569" text-anchor="middle">3.5</text>
+      <text x="396" y="524" font-size="14" fill="#0f172a" text-anchor="middle">分解</text>
+      <text x="396" y="542" font-size="13" fill="#475569" text-anchor="middle">12/345</text>
+      <rect x="474" y="436" width="36" height="64" fill="#f1f5f9" stroke="#475569" stroke-width="2"/>
+      <text x="492" y="428" font-size="14" font-weight="700" fill="#475569" text-anchor="middle">6.4</text>
+      <text x="492" y="524" font-size="14" fill="#0f172a" text-anchor="middle">e5</text>
+      <text x="492" y="542" font-size="13" fill="#475569" text-anchor="middle">22/345</text>
+      <rect x="570" y="404" width="36" height="96" fill="#f1f5f9" stroke="#475569" stroke-width="2"/>
+      <text x="588" y="396" font-size="14" font-weight="700" fill="#475569" text-anchor="middle">9.6</text>
+      <text x="588" y="524" font-size="14" fill="#0f172a" text-anchor="middle">GoS</text>
+      <text x="588" y="542" font-size="13" fill="#475569" text-anchor="middle">33/345</text>
+      <rect x="700" y="199" width="44" height="301" fill="#fffbeb" stroke="#b45309" stroke-width="2"/>
+      <text x="722" y="190" font-size="14" font-weight="700" fill="#b45309" text-anchor="middle">30.1</text>
+      <text x="722" y="524" font-size="14" fill="#0f172a" text-anchor="middle">AnyTool</text>
+      <text x="722" y="542" font-size="13" fill="#475569" text-anchor="middle">104/345</text>
+      <rect x="800" y="172" width="44" height="328" fill="#eff6ff" stroke="#1d4ed8" stroke-width="2"/>
+      <text x="822" y="163" font-size="14" font-weight="700" fill="#1d4ed8" text-anchor="middle">32.8</text>
+      <text x="822" y="524" font-size="14" fill="#0f172a" text-anchor="middle">COLT</text>
+      <text x="822" y="542" font-size="13" fill="#475569" text-anchor="middle">113/345</text>
+      <text x="24" y="566" font-size="14" fill="#475569">虚线标 10%。AnyTool 和 COLT 不进「未训且至多一次调用」。柱高按 10 像素 / 1 个百分点，作图参数是我的。</text>
+      <text x="24" y="584" font-size="14" fill="#475569">简化 HYSET 完整性 0，图上没画，避免和 BM25、MCP-Zero 叠在零线上。</text>
+    </svg>
+    <figcaption>图 1. AppWorld 345 条、完整性@16。数据来自论文表 2，条数按表 4 反推。柱高按 10 像素 / 1 个百分点。</figcaption>
+  </figure>
+  <p>分解把 AppWorld 召回@16 从 bge 的 .190 抬到 .417，完整性只从 .020 到 .035。缺一个，整套仍不算完整。</p>
+  <p>过了 10% 的两臂花钱的地方不同。COLT 查询时不再调模型，要同一工具池上的标注请求：AppWorld 90 条训练、57 条开发选检查点；MCP-Bench 按服务器数分层五折，每折 75 条。AnyTool 不用训练，AppWorld 中位 31 次调用、99,739 token、307 秒；MCP-Bench 中位 38 次、90,479 token、311 秒。分解和 MCP-Zero 一次调用，AppWorld 完整性不超过 .035。</p>
+  <p>失败也不一样。COLT 缺的 API 里 58%（404/698）排在 17 到 50，主要是截断深度。AnyTool 241 条不完整里，162 条主因是已经找到请求点名的 API，没把产出其输入的前置 API 收齐；538 个缺的 API 里 317 个是这一类。扁平、图、简化 HYSET 多半连目标 API 都没排进前 16。</p>
+</section>
+
+<section id="down">
+  <h2><span>4</span>完整性对不对得上任务</h2>
+  <p>这一节不是本篇判断。它只回答：完整性这个指标，在官方 Agent 上值不值得看。数字来自论文第 5.5 节（<a href="https://arxiv.org/html/2610.41905">HTML</a>）。</p>
+  <p>官方 AppWorld 简化 ReAct 代码 Agent，提示和 DeepSeek-V3.2 配置（温度 0，最多 50 步），从两个官方测试切片里随机抽 60 条（normal 20、challenge 40）。两种暴露：金标所需 API（A），COLT 前 16（C）。只有暴露的 API 加 supervisor 能被文档化和调用，其它调用走 AppWorld 自己的错误。</p>
+  <p>A 成功 46/60，C 成功 23/60。只在 A 成功 25 条，只在 C 成功 2 条。精确 McNemar p = 5.6×10⁻⁶。论文写差几乎全来自不完整检索。完整和不完整是观察分组，完整任务可能更容易；限制写在图注和段末。</p>
+  <figure>
+    <svg viewBox="0 0 960 560" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="COLT 前16完整与不完整时的任务成功">
+      <rect width="960" height="560" fill="#ffffff"/>
+      <text x="24" y="28" font-size="16" font-weight="700" fill="#0f172a">同一 60 条：完整的 21 条全过，不完整的 39 条过 2 条</text>
+      <text x="24" y="50" font-size="14" fill="#475569">官方 AppWorld Agent。柱高按 3.2 像素 / 1 个百分点。数据来自论文第 5.5 节。</text>
+      <rect x="24" y="64" width="16" height="16" fill="#dcfce7" stroke="#047857" stroke-width="2"/>
+      <text x="46" y="77" font-size="14" fill="#0f172a">COLT 前 16</text>
+      <rect x="160" y="64" width="16" height="16" fill="#eff6ff" stroke="#1d4ed8" stroke-width="2"/>
+      <text x="182" y="77" font-size="14" fill="#0f172a">金标所需 API</text>
+      <line x1="80" y1="110" x2="80" y2="430" stroke="#cbd5e1" stroke-width="1"/>
+      <line x1="80" y1="430" x2="920" y2="430" stroke="#cbd5e1" stroke-width="1"/>
+      <line x1="80" y1="270" x2="920" y2="270" stroke="#e2e8f0" stroke-width="1" stroke-dasharray="4 4"/>
+      <text x="72" y="114" font-size="14" fill="#475569" text-anchor="end">100</text>
+      <text x="72" y="274" font-size="14" fill="#475569" text-anchor="end">50</text>
+      <text x="72" y="434" font-size="14" fill="#475569" text-anchor="end">0</text>
+      <rect x="160" y="110" width="56" height="320" fill="#dcfce7" stroke="#047857" stroke-width="2"/>
+      <text x="188" y="102" font-size="14" font-weight="700" fill="#047857" text-anchor="middle">21/21</text>
+      <rect x="228" y="125.2" width="56" height="304.8" fill="#eff6ff" stroke="#1d4ed8" stroke-width="2"/>
+      <text x="256" y="117" font-size="14" font-weight="700" fill="#1d4ed8" text-anchor="middle">20/21</text>
+      <text x="222" y="454" font-size="14" fill="#0f172a" text-anchor="middle">完整（n=21）</text>
+      <rect x="430" y="413.6" width="56" height="16.4" fill="#dcfce7" stroke="#047857" stroke-width="2"/>
+      <text x="458" y="405" font-size="14" font-weight="700" fill="#047857" text-anchor="middle">2/39</text>
+      <rect x="498" y="216.7" width="56" height="213.3" fill="#eff6ff" stroke="#1d4ed8" stroke-width="2"/>
+      <text x="526" y="208" font-size="14" font-weight="700" fill="#1d4ed8" text-anchor="middle">26/39</text>
+      <text x="492" y="454" font-size="14" fill="#0f172a" text-anchor="middle">不完整（n=39）</text>
+      <rect x="720" y="307.3" width="70" height="122.7" fill="#dcfce7" stroke="#047857" stroke-width="2"/>
+      <text x="755" y="298" font-size="14" font-weight="700" fill="#047857" text-anchor="middle">23/60</text>
+      <rect x="802" y="184.7" width="70" height="245.3" fill="#eff6ff" stroke="#1d4ed8" stroke-width="2"/>
+      <text x="837" y="176" font-size="14" font-weight="700" fill="#1d4ed8" text-anchor="middle">46/60</text>
+      <text x="796" y="454" font-size="14" fill="#0f172a" text-anchor="middle">全部（n=60）</text>
+      <text x="24" y="494" font-size="14" fill="#475569">完整 / 不完整是观察分组：完整任务可能更容易。同一批 39 条不完整上，金标暴露成功 26 条，论文写缺口不能单用难度解释。</text>
+      <text x="24" y="516" font-size="14" fill="#475569">三组的分母不同，不要把 21/21 和 2/39 收成同一个倍数。柱高按 3.2 像素 / 1 个百分点，作图参数是我的。</text>
+      <text x="24" y="538" font-size="14" fill="#475569">虚线标 50%。23/60 和 46/60 是整组，含完整和不完整。</text>
+    </svg>
+    <figcaption>图 2. 官方 AppWorld Agent，60 条。数据来自论文第 5.5 节。柱高按 3.2 像素 / 1 个百分点。</figcaption>
+  </figure>
+  <p>COLT 前 16 完整的 21 条：C 全成功，A 成功 20。不完整的 39 条：C 成功 2，A 成功 26。C 中位步数 32，A 是 19；碰到未暴露 API 错误 30 次对 8 次；提示 token 约 15.1 百万对 7.4 百万。完整和不完整的比较是观察性的。同一批不完整任务上金标暴露过了三分之二，论文把缺口从「任务更难」里拆开一截。</p>
+</section>
+
+<section id="yours">
+  <h2><span>5</span>你的检索位交不交整套</h2>
+  <p>读完要看的是：自己的运行位、技能记录、MCP 网关，工具检索报的是召回、命中、nDCG，还是整套所需工具有没有进截断。AppWorld 345 条上，未训且至多一次调用，摘要写完整集不超过 10%。召回可以到 .417，完整性仍是 .035。</p>
+  <p>技能记录如果只留「加一层工具检索」或「按相似度 top-k」，没有记下请求是不是多工具、k 截在哪、缺的是目标还是前置 API、有没有同一池上的标注请求可训集合级检索，和这篇测到的缝是同一条。</p>
+  <p>下面是我的推断，论文没有在你的线上测过。目录已经大到每次提示塞不下时，扁平检索加一次拆分，会把召回做上去、把缺一件的失败留下来。有标注请求就训集合级；没有标注、能等几分钟，才轮到层级导航那 31 次调用。完整曝光在这两套池上仍塞得进上下文（AppWorld 目录 64,874 token，MCP-Bench 59,278，DeepSeek-V3.2 分词），代价记在每一步执行，不记在一次检索。</p>
+  <p><a href="/frontier/2026-10-19-visible-tools-are-input.html">10-19</a> 写过可见工具列表也是输入。<a href="/frontier/2026-10-29-tools-dominate-first-request.html">10-29</a> 写过第一次请求里工具定义占字符 63.2% 至 77.4%。那两篇动的是已经放进提示的工具清单。这篇动的是清单由检索截出来之后，整套还齐不齐。</p>
+</section>
+
+<section id="limit">
+  <h2><span>6</span>这篇没测到的</h2>
+  <ul>
+    <li><strong>标题的「一成」是 AppWorld、345 条、k = 16、未在测试池上训练、每条查询至多一次模型调用。</strong>摘要写不超过 10%。主表最高 0.096（33/345）。附录表 A1 确定性 GoS 消融是 0.119，论文写与 0.096 相近、区间含 0，未进主表。GoS 主臂建图时调过模型，查询时 0 次，仍进这一截。COLT 0.328 和 AnyTool 0.301 要标注或几十次调用，不进标题。MCP-Bench 上分解 0.359、COLT 0.583，不要和这一截并进同一个范围。</li>
+    <li><strong>10% 上限挂的是 base 尺寸编码器。</strong>第 7 节写稠密、分解、先服务器后工具、图这几臂用 bge-base 和 e5-base。更大的通用和工具专用编码器在 ToolRet 上更高，换编码器是后续工作。</li>
+    <li><strong>所有模型步骤都是 DeepSeek-V3.2。</strong>层级导航相对 COLT 的位置绑在导航模型上。论文转引 GatewayBench：GPT-5.4 换成 GPT-5.1，层级网关任务成功平均掉 37.6 个点，扁平网关掉 11.9。37.6 和 11.9 是别人的基准，不和 9.6 比。</li>
+    <li><strong>下游 21/21 对 2/39 是 60 条抽样、一个 Agent、COLT 的前 16。</strong>完整任务可能更容易。金标暴露在同一 39 条不完整上成功 26 条。没有对其它检索臂做同样的下游检查。金标暴露最多给 12 个 API，COLT 前 16 给 16 个，菜单大小不同。这一条是我的看法，论文没把它列为局限。</li>
+    <li><strong>MCP-Bench 的所需集合是参考集。</strong>来自生成器计划，不是唯一金标。六条单工具任务留在 103 里。</li>
+    <li><strong>HYSET 是简化臂，且训过。</strong>没有执行奖励，最大集合放到 13 和 20。AppWorld 完整性 0 不代表完整 HYSET，也不进「未训」。</li>
+    <li><strong>分解是通用重实现。</strong>没有已训练分解方法的公开代码。AnyTool 只跑搜索阶段，下游求解和自反思没跑。AnyTool 345 个池里 258 个不足 16 个 API，完整性@16 和固定长度列表不好直接比。</li>
+    <li><strong>MCP-Zero 的 0 是改造后的数。</strong>服务器文本是占位句，调用从逐步请求改成单次，嵌入换成 bge。不代表「先服务器后工具」这类结构。</li>
+  </ul>
+</section>
+
+<section id="src">
+  <h2><span>7</span>出处</h2>
+  <p>数字来自预印本 HTML（<a href="https://arxiv.org/html/2610.41905">arxiv.org/html/2610.41905</a>，<a href="https://arxiv.org/pdf/2610.41905">pdf</a>，<a href="https://arxiv.org/abs/2610.41905">abs</a>，2026-10-30，未经同行评审）。论文摘要、第 1 节、第 3 节、第 4.1–4.3 节、第 5.1–5.5 节、第 6–8 节、附录 A 表 A1、附录 B、表 1–4。HTML 页眉写 arXiv:2610.41905v1 [cs.IR] 30 Oct 2026。abs 页 Comments：17 pages, 3 figures, 9 tables。图 1 柱高按 10 像素 / 1 个百分点画，图 2 按 3.2 像素 / 1 个百分点，作图参数是我的。表 2 的分数乘 345 得到的完整条数，与表 4 的不完整条数相加都是 345。GatewayBench 的 37.6 和 11.9 是论文转引，本轮没有打开 GatewayBench 原文。</p>
+  <p><a href="https://openai.com/news/">OpenAI 新闻页</a>本轮直接请求返回 403，未打开，未写入数字。<a href="https://www.anthropic.com/news">Anthropic 新闻页</a>本轮打开过，精选区仍挂 Opus 5.5（9-22）、S-1（10-26）、用药开发进展（10-27），列表另有 10-28 的 AI for Science 条目，未写入数字。Hacker News 首页本轮打开过，未作为本篇数字来源。Product Hunt Atom 源本轮打开过，未写入数字。GitHub 搜索本轮打开过，文内没有作者仓库。X、Reddit 今日未覆盖：本机没有可用登录态。</p>
+  <p>谱系和增量层分别在 <a href="/frontier/rsi-llm-agent-self-evolution.html">递归自改进前世今生</a> 和 <a href="/frontier/llm-agent-tech-landscape.html">冻底座、改脚手架</a>。这篇只加一条：未训且至多一次调用，AppWorld 完整集过不了一成。</p>
+</section>
+</main>
+</div>
+</body>
+</html>
