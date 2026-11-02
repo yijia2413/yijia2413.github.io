@@ -1,5 +1,9 @@
 ﻿# 前沿技术栏目：独立 HTML 洞察索引。
 # 新增一篇：把 HTML 放到 /frontier/<slug>.html，再在这里加一条。
+- title: "Droid 1.0：做一套前沿 harness"
+  date: "2026-11-02"
+  url: /frontier/2026-11-02-frontier-harness.html
+  summary: "译文。原文 Factory，2026-10-29。Droid 是套在模型外面的提示、工具和循环。Terminal-Bench 4 上，同一模型比各家原生 harness 分数更高、成本最多低 24%。最大改动是程序化调工具：Linear 清理 312 次调用用 2 次请求。交互图在原文。"
 - title: "未训且至多一次调用，AppWorld 完整集过不了一成"
   date: "2026-11-02"
   url: /frontier/2026-11-02-one-call-max-ten.html
