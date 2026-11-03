@@ -1,5 +1,9 @@
 ﻿# 前沿技术栏目：独立 HTML 洞察索引。
 # 新增一篇：把 HTML 放到 /frontier/<slug>.html，再在这里加一条。
+- title: "Hermes 压缩后规则还在，保留一侧违规仍是完整历史的 2.6 倍"
+  date: "2026-11-03"
+  url: /frontier/2026-11-03-kept-rule-still-violates.html
+  summary: "一篇预印本在 pi harness 里看压缩之后还守不守操作规则。S1 用 Hermes、四个 Flash 档、有效 135 组：压缩后约 284/405 跑次规则仍保留，这些跑次里约 60 条仍违规（21.1%），完整历史约 33/405（8.1%），论文写 2.6 倍。策略池里 Pi 和 Pi + RP 的保留一侧不高于完整历史。按案例计的 violation@3 从 9.6%（13/135）到 37.8%（51/135），不和 2.6 进同一列。"
 - title: "Droid 1.0：做一套前沿 harness"
   date: "2026-11-02"
   url: /frontier/2026-11-02-frontier-harness.html
