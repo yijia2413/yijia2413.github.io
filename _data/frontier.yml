@@ -1,5 +1,9 @@
 ﻿# 前沿技术栏目：独立 HTML 洞察索引。
 # 新增一篇：把 HTML 放到 /frontier/<slug>.html，再在这里加一条。
+- title: "条件写法相对规定和解释跟得少，Opus 上 64.2% 对 78.0%"
+  date: "2026-11-04"
+  url: /frontier/2026-11-04-conditional-wording-loses.html
+  summary: "一篇预印本把同一条可机械核验的政策，用四种写法贴进仓库已有的 ACF。Claude Code 2.1.227 配 claude-opus-5、有效 82 个任务：规定写法遵守率 78.0%，解释 77.2%，条件 64.2%。对照面是规定和解释。sonnet-5 上禁止 17.3%，低于该行条件 35.6%，分母 81，不和 64.2 进同一列。"
 - title: "Hermes 压缩后规则还在，保留一侧违规仍是完整历史的 2.6 倍"
   date: "2026-11-03"
   url: /frontier/2026-11-03-kept-rule-still-violates.html
