@@ -1,5 +1,9 @@
 ﻿# 前沿技术栏目：独立 HTML 洞察索引。
 # 新增一篇：把 HTML 放到 /frontier/<slug>.html，再在这里加一条。
+- title: "固定模型换脚手架，Qwen 正确率差 11.5 个点"
+  date: "2026-11-05"
+  url: /frontier/2026-11-05-harness-spreads-eleven.html
+  summary: "一篇预印本把四个开源权重模型各自放进五种脚手架，在同一套 156 个预注册银行行为案例上计正确率。qwen3.8-flash-next 最好一档 93.6%，最差一档 82.1%，差 11.5 个点。deepseek-v4.1-flash 五种差 1.9 个点，Cochran 检验不显著。四种合在一起只从 87.3% 到 92.1%，不和 11.5 进同一列。"
 - title: "条件写法相对规定和解释跟得少，Opus 上 64.2% 对 78.0%"
   date: "2026-11-04"
   url: /frontier/2026-11-04-conditional-wording-loses.html
