@@ -1,5 +1,9 @@
 ﻿# 前沿技术栏目：独立 HTML 洞察索引。
 # 新增一篇：把 HTML 放到 /frontier/<slug>.html，再在这里加一条。
+- title: "405 片段菜单上，典型测试放行 0.410 的隐藏错误程序"
+  date: "2026-11-06"
+  url: /frontier/2026-11-06-typical-tests-release-wrong.html
+  summary: "一篇预印本在 CPython、Node.js、SQLite 的 52 个受影响测试任务上计发布门。作者构造的 405 片段菜单里，全断言门在典型输入上放行 0.410 的隐藏错误程序；作者按发布说明写的一条边沿输入把份额降到 0.065。假拒绝 0.010。大菜单是 0.278，加硬干扰后是 0.337，不和 0.410 进同一列。Qwen3-8B 每次尝试错误放行 0.233 到 0.057，每臂 456 次，修订后计数。"
 - title: "固定模型换脚手架，Qwen 正确率差 11.5 个点"
   date: "2026-11-05"
   url: /frontier/2026-11-05-harness-spreads-eleven.html
