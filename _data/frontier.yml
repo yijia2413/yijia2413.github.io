@@ -1,5 +1,9 @@
 ﻿# 前沿技术栏目：独立 HTML 洞察索引。
 # 新增一篇：把 HTML 放到 /frontier/<slug>.html，再在这里加一条。
+- title: "Agent 记忆由哪些部分组成"
+  date: "2026-11-07"
+  url: /frontier/2026-11-07-components-of-agent-memory.html
+  summary: "译文。原文 Anthropic，2026-11-06。会话里写笔记，空闲时对着日志做梦：改错、建 wiki、把笔记抬进下一会话。Pokémon 上 Fable 5 写 9 个文件拿 4 枚徽章，Sonnet 3.7 写 413 个文件拿 1 枚。Stainless 语料上做梦 128 次，wiki 从 13% 到 48%。"
 - title: "405 片段菜单上，典型测试放行 0.410 的隐藏错误程序"
   date: "2026-11-06"
   url: /frontier/2026-11-06-typical-tests-release-wrong.html
