@@ -1,5 +1,9 @@
 ﻿# 前沿技术栏目：独立 HTML 洞察索引。
 # 新增一篇：把 HTML 放到 /frontier/<slug>.html，再在这里加一条。
+- title: "题目难度对照 0.92，仿 Fail-Fast 的轨迹预测约 0.62"
+  date: "2026-11-08"
+  url: /frontier/2026-11-08-difficulty-beats-trajectory.html
+  summary: "一篇预印本在 SWE-bench Verified 公开排行榜轨迹上计失败预测。每个模型每题一次。预测器看不到题目正文和模型名。题目难度对照 D_ext 的分数是另外 16 个模型在该题上失败的比例，合并 AUROC 0.92；仿 Fail-Fast 的 TF-IDF 轨迹预测约 0.62。表 I 在仍跑到第 20 步的 2,840 次上：难度 0.924，最近 8 步 0.624，全前缀 0.630。18 个配置把轨迹分数加进难度和模型身份之后，增量的 90% 区间落在 ±0.02 里。同题内模型身份 0.72，轨迹 0.60 至 0.61，不和 0.92 进同一句倍数。"
 - title: "Agent 记忆由哪些部分组成"
   date: "2026-11-07"
   url: /frontier/2026-11-07-components-of-agent-memory.html

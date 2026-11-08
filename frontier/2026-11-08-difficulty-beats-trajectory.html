@@ -1,0 +1,226 @@
+﻿<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>题目难度对照 0.92，仿 Fail-Fast 的轨迹预测约 0.62</title>
+  <style>
+    :root { --ink:#0f172a; --muted:#475569; --line:#e2e8f0; --bg:#f8fafc; --blue:#1d4ed8; --blue-bg:#eff6ff; --amber:#b45309; --green:#047857; --rose:#be123c; }
+    * { box-sizing: border-box; }
+    body { margin:0; font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Noto Sans SC",sans-serif; background:var(--bg); color:var(--ink); line-height:1.75; font-size:17px; }
+    header { background:#0f172a; color:#f8fafc; padding:36px 24px 28px; border-bottom:4px solid #2563eb; }
+    header .inner { max-width:1080px; margin:0 auto; }
+    .badge { display:inline-block; border:1px solid #93c5fd; color:#bfdbfe; border-radius:999px; padding:2px 12px; font-size:13px; }
+    h1 { font-size:2rem; line-height:1.3; margin:12px 0; }
+    header p { color:#cbd5e1; margin:0; max-width:760px; }
+    .layout { max-width:1080px; margin:28px auto 64px; padding:0 20px; display:grid; grid-template-columns:220px minmax(0,1fr); gap:28px; }
+    aside { position:sticky; top:52px; align-self:start; background:#fff; border:1px solid var(--line); border-radius:12px; padding:14px; }
+    aside p { font-size:12px; letter-spacing:.06em; color:var(--muted); margin:0 0 8px; }
+    aside a { display:block; color:var(--ink); text-decoration:none; font-size:14px; padding:6px 8px; border-radius:6px; }
+    aside a:hover { background:var(--blue-bg); color:var(--blue); }
+    h2 { font-size:1.35rem; margin:0 0 12px; }
+    h2 span { display:inline-block; background:var(--blue); color:#fff; border-radius:6px; font-size:13px; padding:2px 8px; margin-right:8px; }
+    h3 { font-size:1.08rem; margin:20px 0 10px; }
+    section { background:#fff; border:1px solid var(--line); border-radius:14px; padding:26px 28px; margin-bottom:22px; }
+    p { margin:0 0 14px; }
+    a { color:var(--blue); overflow-wrap:anywhere; }
+    code { background:#f1f5f9; border-radius:4px; padding:1px 5px; font-size:15px; overflow-wrap:anywhere; }
+    main { min-width:0; }
+    figure { margin:16px 0; background:#fff; border:1px solid var(--line); border-radius:12px; padding:10px; overflow-x:auto; }
+    figure svg { display:block; min-width:700px; }
+    figcaption { color:var(--muted); font-size:14px; margin-top:6px; }
+    .tw { overflow-x:auto; margin:0 0 14px; }
+    .tw table { min-width:620px; }
+    table { width:100%; border-collapse:collapse; font-size:15px; }
+    th, td { border:1px solid var(--line); padding:8px 10px; text-align:left; vertical-align:top; }
+    th { background:#f1f5f9; }
+    ul { margin:0 0 14px; padding-left:22px; }
+    ol { margin:0 0 14px; padding-left:22px; }
+    li { margin-bottom:6px; }
+    .note { background:#f1f5f9; border-left:4px solid var(--muted); padding:12px 16px; border-radius:0 8px 8px 0; font-size:16px; margin:0 0 14px; }
+    .quote { background:#fffbeb; border-left:4px solid var(--amber); padding:12px 16px; border-radius:0 8px 8px 0; font-size:15px; overflow-wrap:anywhere; margin:0 0 14px; }
+    svg text { font-family:-apple-system,"PingFang SC","Noto Sans SC",sans-serif; }
+    @media (max-width:860px) { .layout { grid-template-columns:minmax(0,1fr); } aside { position:static; } h1 { font-size:1.55rem; } section { padding:18px 16px; } }
+  </style>
+</head>
+<body>
+<nav style="position:sticky;top:0;z-index:50;background:#0f172a;border-bottom:1px solid #1e293b;padding:10px 24px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;">
+  <a href="/frontier" style="color:#93c5fd;text-decoration:none;font-size:14px;margin-right:16px;">← Frontier</a>
+  <a href="/" style="color:#cbd5e1;text-decoration:none;font-size:14px;">@xixi003</a>
+</nav>
+
+<header>
+  <div class="inner">
+    <span class="badge">FRONTIER · 2026-11-08 · Agent Eval</span>
+    <h1>题目难度对照 0.92，仿 Fail-Fast 的轨迹预测约 0.62</h1>
+    <p>一篇预印本在 SWE-bench Verified 的公开排行榜轨迹上，问仿 Fail-Fast 的 TF-IDF 轨迹失败预测有没有读到这一跑。每个模型每题一次。预测器看不到题目正文，也看不到模型名。题目难度对照 D<sub>ext</sub> 的分数是另外 16 个模型在这题上失败的比例，合并 AUROC 0.92；轨迹预测约 0.62。表 I 在仍跑到第 20 步的 2,840 次上：难度 0.924，最近 8 步 0.624，全前缀 0.630。18 个配置把轨迹分数加进难度和模型身份之后，合并 AUROC 增量的 90% 区间落在预先指定的 ±0.02 里，论文写成等价于零。同题内模型身份 0.72，轨迹预测 0.60 至 0.61，不和 0.92 进同一句倍数。</p>
+  </div>
+</header>
+<div class="layout">
+<aside>
+  <p>目录</p>
+  <a href="#what">1 0.92 对约 0.62</a>
+  <a href="#setup">2 怎么计</a>
+  <a href="#gain">3 轨迹没多出可测的增量</a>
+  <a href="#aux">4 坏跑在另一套语料</a>
+  <a href="#yours">5 你的失败预测</a>
+  <a href="#limit">6 这篇没测到的</a>
+  <a href="#src">7 出处</a>
+</aside>
+<main>
+<section id="what">
+  <h2><span>1</span>0.92 对约 0.62</h2>
+  <p>2026 年 11 月 5 日，arXiv 收到 <a href="https://arxiv.org/abs/2611.08285">Hard Issue, Weak Model, or Bad Run? Rethinking Failure Prediction for Coding Agents</a>（arXiv:2611.08285v1，cs.SE；作者 Xingyue Shi、Wesley K. G. Assunção；单位署北卡罗来纳州立大学）。预印本，未经同行评审。abs 页 Comments 写 5 页、2 图、2 表。正文第 III 节标题是 Preliminary Findings。本轮读的是 HTML 全文。许可是 arXiv.org perpetual non-exclusive license。</p>
+  <p>编码 Agent 的一次跑会失败。失败预测读到中途的推理、命令和工具输出，再决定停、换模型、或同一模型再跑一次。三种动作对应三种原因：题难，多数模型都过不了；模型弱，它在许多题上过不了；这一跑坏了，同一模型同一题在别的尝试上能过。公开排行榜轨迹里，每个模型每题只跑一次，三种原因叠在一个标签上。</p>
+  <div class="note">
+    <p style="margin:0">这篇只论证一个判断。判断是我的，依据是论文摘要和表 I（<a href="https://arxiv.org/html/2611.08285">HTML</a>）。判断是：在仍跑到第 20 步的 2,840 次上，题目难度对照的合并 AUROC 是 0.92，仿 Fail-Fast、看不到题目正文和模型名的 TF-IDF 轨迹预测约 0.62。摘要写 0.92 对 about 0.62。表 I：难度 0.924，最近 8 步 0.624，全前缀 0.630。D<sub>ext</sub> 的分数是另外 16 个模型在该题上失败的比例，同一题的每次跑分数相同；部署时拿不到这些结果，论文写成诊断，不当作实用预测器。AUROC 的分母是失败–成功对：测试折里 494,109 对，99.66% 跨题。0.92 和 0.62 是这些对里排对的比例。同题内模型身份 0.72、轨迹 0.60 至 0.61，分母是同一题不同模型的对，不和 0.92 进同一句倍数。</p>
+  </div>
+  <p>论文把「坏跑」留给同一模型同一题在别的尝试上能过的那一次。单次排行榜轨迹分不出这一类。重复跑试点在另一套语料上，不进标题。</p>
+</section>
+
+<section id="setup">
+  <h2><span>2</span>怎么计</h2>
+  <p>主数据是 mini-swe-agent 在 SWE-bench Verified 500 题上的公开轨迹，每个模型每题一次。七个模型：Claude Haiku 4.5、Claude Opus 4.5 和 4.6、Gemini 3 Flash、GLM-5、GPT-5-mini、MiniMax-M2.5。已知结局 3,492 次，其中失败 994 次。失败标签用发布的 resolved。两份 GPT-5.2 来源转录相同、标签冲突，剔除。配套发布覆盖同一批题的 25 个模型；同样剔除之后是 23 个模型，用来看结论是否还站得住。另外 16 个不在这七个里的模型，只用来估题目难度。</p>
+  <p>预测器仿 Fail-Fast 的设计。一次跑完成 t ∈ {10, 20, 40} 步之后读轨迹，窗口是最近 8 步（R8）或到该步为止的全前缀（ALL），输出失败分数。和 Fail-Fast 不同：这里看不到题目正文，也看不到模型名；学到的东西只来自轨迹，轨迹仍可能把题和模型露出来。TF-IDF 逻辑回归，按题分组的五折交叉验证。另在一折上 LoRA 微调 Qwen3-0.6B，每个神经预测器配一个同一截断文本上的逻辑回归。一共 18 个配置：十个 TF-IDF 变体，四个神经预测器加它们配对的逻辑回归。表 I 展示两个代表。除非另写，报告仍跑到第 20 步的 2,840 次（t20）：预测器只能在还没停的跑上动作。</p>
+  <p>三个不看这一跑的对照。题目难度 D<sub>ext</sub>：另外 16 个模型在该题上失败的比例，同一题每次跑同一个分数。模型身份 M：该模型在训练题上的失败率，也就是总体能力。长度 + M：在 M 上只加前缀长度。AUROC 是失败–成功对里把失败那次排得更高的比例。对拆成跨题对和同题对（同一题、不同模型）。同题对里，失败来自总体更弱的模型叫一致对，反过来叫 upset。</p>
+  <div class="tw">
+    <table>
+      <thead>
+        <tr>
+          <th>分数</th>
+          <th>合并 AUROC</th>
+          <th>同题全部</th>
+          <th>同题一致</th>
+          <th>同题 upset</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td>题目难度 D<sub>ext</sub></td><td>0.924</td><td>0.500</td><td>0.500</td><td>0.500</td></tr>
+        <tr><td>模型身份 M</td><td>0.567</td><td>0.724</td><td>1.000</td><td>0.000</td></tr>
+        <tr><td>D<sub>ext</sub> + M</td><td>0.929</td><td>0.718</td><td>0.869</td><td>0.317</td></tr>
+        <tr><td>长度 + M</td><td>0.607</td><td>0.648</td><td>0.756</td><td>0.373</td></tr>
+        <tr><td>TF-IDF，最近 8 步（R8）</td><td>0.624</td><td>0.604</td><td>0.678</td><td>0.415</td></tr>
+        <tr><td>TF-IDF，全前缀（ALL）</td><td>0.630</td><td>0.610</td><td>0.687</td><td>0.416</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p>表是论文表 I。分母是仍跑到第 20 步的 2,840 次上的失败–成功对。D<sub>ext</sub> 按构造在同题内是 0.5；M 在一致对上是 1、upset 上是 0。轨迹预测没被告知模型名。</p>
+  <figure>
+    <svg viewBox="0 0 960 580" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="合并 AUROC：题目难度 0.924，轨迹预测 0.624 至 0.630">
+      <rect width="960" height="580" fill="#ffffff"/>
+      <text x="24" y="32" font-size="16" font-weight="700" fill="#0f172a">合并 AUROC：难度对照 0.924，轨迹 0.624 与 0.630</text>
+      <text x="24" y="54" font-size="14" fill="#475569">2,840 次仍跑到第 20 步。纵轴从 0.50 到 1.00。柱高按 700 像素 / 1.00。数据来自论文表 I。</text>
+      <line x1="80" y1="80" x2="80" y2="430" stroke="#cbd5e1" stroke-width="1"/>
+      <line x1="80" y1="430" x2="920" y2="430" stroke="#cbd5e1" stroke-width="1"/>
+      <line x1="80" y1="150" x2="920" y2="150" stroke="#e2e8f0" stroke-width="1" stroke-dasharray="4 4"/>
+      <line x1="80" y1="220" x2="920" y2="220" stroke="#e2e8f0" stroke-width="1" stroke-dasharray="4 4"/>
+      <line x1="80" y1="290" x2="920" y2="290" stroke="#e2e8f0" stroke-width="1" stroke-dasharray="4 4"/>
+      <line x1="80" y1="360" x2="920" y2="360" stroke="#e2e8f0" stroke-width="1" stroke-dasharray="4 4"/>
+      <text x="72" y="84" font-size="14" fill="#475569" text-anchor="end">1.00</text>
+      <text x="72" y="154" font-size="14" fill="#475569" text-anchor="end">0.90</text>
+      <text x="72" y="224" font-size="14" fill="#475569" text-anchor="end">0.80</text>
+      <text x="72" y="294" font-size="14" fill="#475569" text-anchor="end">0.70</text>
+      <text x="72" y="364" font-size="14" fill="#475569" text-anchor="end">0.60</text>
+      <text x="72" y="434" font-size="14" fill="#475569" text-anchor="end">0.50</text>
+      <rect x="120" y="133.2" width="130" height="296.8" fill="#fff1f2" stroke="#be123c" stroke-width="2"/>
+      <text x="185" y="121" font-size="14" font-weight="700" fill="#be123c" text-anchor="middle">0.924</text>
+      <text x="185" y="454" font-size="14" fill="#0f172a" text-anchor="middle">题目难度</text>
+      <rect x="320" y="355.1" width="130" height="74.9" fill="#fffbeb" stroke="#b45309" stroke-width="2"/>
+      <text x="385" y="343" font-size="14" font-weight="700" fill="#b45309" text-anchor="middle">0.607</text>
+      <text x="385" y="454" font-size="14" fill="#0f172a" text-anchor="middle">长度 + M</text>
+      <rect x="520" y="343.2" width="130" height="86.8" fill="#ecfdf5" stroke="#047857" stroke-width="2"/>
+      <text x="585" y="331" font-size="14" font-weight="700" fill="#047857" text-anchor="middle">0.624</text>
+      <text x="585" y="454" font-size="14" fill="#0f172a" text-anchor="middle">最近 8 步</text>
+      <rect x="720" y="339" width="130" height="91" fill="#eff6ff" stroke="#1d4ed8" stroke-width="2"/>
+      <text x="785" y="327" font-size="14" font-weight="700" fill="#1d4ed8" text-anchor="middle">0.630</text>
+      <text x="785" y="454" font-size="14" fill="#0f172a" text-anchor="middle">全前缀</text>
+      <text x="24" y="500" font-size="14" fill="#475569">虚线标 0.90、0.80、0.70、0.60。纵轴从 0.50 起，0.50 以下没画。</text>
+      <text x="24" y="522" font-size="14" fill="#475569">D_ext+M 的 0.929 未画，和难度柱几乎重叠。轨迹两柱相对长度 + M，十个 95% 区间都含 0。</text>
+      <text x="24" y="544" font-size="14" fill="#475569">摘要写 0.92 对 about 0.62。柱上是表 I 三位小数。作图参数是我的。</text>
+    </svg>
+    <figcaption>图 1. 合并 AUROC。数据来自论文表 I。2,840 次仍跑到第 20 步。纵轴从 0.50 起。</figcaption>
+  </figure>
+</section>
+
+<section id="gain">
+  <h2><span>3</span>轨迹没多出可测的增量</h2>
+  <p>合并 AUROC 几乎全是跨题比较。测试折里 494,109 个失败–成功对，99.66% 比较的是不同的题。认出难题就能把合并 AUROC 拉高，不必看这一跑。难度分数到 0.92；轨迹预测 0.62 至 0.63，相对长度 + M 没有显著更好（十个 95% 区间都含 0）。</p>
+  <p>同一题里，问题变成哪个模型的那次失败了。模型身份同题 AUROC 0.72，高于两个代表预测器的 0.60 至 0.61；23 个模型的数据上模型身份是 0.82。预测器没被告知模型名，模式弱一些：一致对 0.68 至 0.69，upset 0.42，十个不同的 TF-IDF 配置在 upset 上都低于 0.5。论文写：跟着跑走的预测器，两类同题对都该超过 0.5。能力在模型差得更大时占的结局方差更多：七个模型 2.5%，约 10% 在 23 个模型上。2.5% 和约 10% 是结局方差份额，不和 AUROC 进同一列。</p>
+  <p>把预测器分数加进 D<sub>ext</sub> 和 M，18 个配置的合并 AUROC 增量都等价于零。全前缀那一个例子：−0.001，90% 区间 [−0.003, 0.000]。等价检验要求增量的 90% 区间落在预先指定的 ±0.02 里，Holm 校正 50 次比较。同题内，固定题目难度的条件 logit：把分数加进 M，任何一个配置都帮不上认出哪几次失败。同一全前缀例子：同题 AUROC −0.011，95% 区间 [−0.024, 0.002]。</p>
+  <figure>
+    <svg viewBox="0 0 960 580" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="同题 AUROC：模型身份 0.724，轨迹 0.604 至 0.610，upset 低于 0.5">
+      <rect width="960" height="580" fill="#ffffff"/>
+      <text x="24" y="32" font-size="16" font-weight="700" fill="#0f172a">同题内：模型身份 0.724，轨迹 0.60 档；upset 低于 0.5</text>
+      <text x="24" y="54" font-size="14" fill="#475569">分母是同一题、不同模型的失败–成功对。纵轴 0 到 1.00。柱高按 350 像素 / 1.00。数据来自论文表 I。</text>
+      <rect x="520" y="16" width="16" height="16" fill="#fff1f2" stroke="#be123c" stroke-width="2"/>
+      <text x="542" y="30" font-size="14" fill="#0f172a">模型身份</text>
+      <rect x="650" y="16" width="16" height="16" fill="#ecfdf5" stroke="#047857" stroke-width="2"/>
+      <text x="672" y="30" font-size="14" fill="#0f172a">最近 8 步</text>
+      <rect x="780" y="16" width="16" height="16" fill="#eff6ff" stroke="#1d4ed8" stroke-width="2"/>
+      <text x="802" y="30" font-size="14" fill="#0f172a">全前缀</text>
+      <line x1="80" y1="80" x2="80" y2="430" stroke="#cbd5e1" stroke-width="1"/>
+      <line x1="80" y1="430" x2="920" y2="430" stroke="#cbd5e1" stroke-width="1"/>
+      <line x1="80" y1="255" x2="920" y2="255" stroke="#e2e8f0" stroke-width="1" stroke-dasharray="4 4"/>
+      <text x="72" y="84" font-size="14" fill="#475569" text-anchor="end">1.00</text>
+      <text x="72" y="259" font-size="14" fill="#475569" text-anchor="end">0.50</text>
+      <text x="72" y="434" font-size="14" fill="#475569" text-anchor="end">0</text>
+      <rect x="150" y="176.6" width="52" height="253.4" fill="#fff1f2" stroke="#be123c" stroke-width="2"/>
+      <text x="176" y="164" font-size="14" font-weight="700" fill="#be123c" text-anchor="middle">0.724</text>
+      <rect x="210" y="218.6" width="52" height="211.4" fill="#ecfdf5" stroke="#047857" stroke-width="2"/>
+      <text x="236" y="206" font-size="14" font-weight="700" fill="#047857" text-anchor="middle">0.604</text>
+      <rect x="270" y="216.5" width="52" height="213.5" fill="#eff6ff" stroke="#1d4ed8" stroke-width="2"/>
+      <text x="296" y="204" font-size="14" font-weight="700" fill="#1d4ed8" text-anchor="middle">0.610</text>
+      <text x="236" y="454" font-size="14" fill="#0f172a" text-anchor="middle">同题全部</text>
+      <rect x="430" y="80" width="52" height="350" fill="#fff1f2" stroke="#be123c" stroke-width="2"/>
+      <text x="456" y="68" font-size="14" font-weight="700" fill="#be123c" text-anchor="middle">1.000</text>
+      <rect x="490" y="192.7" width="52" height="237.3" fill="#ecfdf5" stroke="#047857" stroke-width="2"/>
+      <text x="516" y="180" font-size="14" font-weight="700" fill="#047857" text-anchor="middle">0.678</text>
+      <rect x="550" y="189.55" width="52" height="240.45" fill="#eff6ff" stroke="#1d4ed8" stroke-width="2"/>
+      <text x="576" y="177" font-size="14" font-weight="700" fill="#1d4ed8" text-anchor="middle">0.687</text>
+      <text x="516" y="454" font-size="14" fill="#0f172a" text-anchor="middle">同题一致</text>
+      <rect x="710" y="430" width="52" height="0" fill="#fff1f2" stroke="#be123c" stroke-width="2"/>
+      <text x="736" y="418" font-size="14" font-weight="700" fill="#be123c" text-anchor="middle">0</text>
+      <rect x="770" y="284.75" width="52" height="145.25" fill="#ecfdf5" stroke="#047857" stroke-width="2"/>
+      <text x="796" y="272" font-size="14" font-weight="700" fill="#047857" text-anchor="middle">0.415</text>
+      <rect x="830" y="284.4" width="52" height="145.6" fill="#eff6ff" stroke="#1d4ed8" stroke-width="2"/>
+      <text x="856" y="272" font-size="14" font-weight="700" fill="#1d4ed8" text-anchor="middle">0.416</text>
+      <text x="796" y="454" font-size="14" fill="#0f172a" text-anchor="middle">同题 upset</text>
+      <text x="24" y="500" font-size="14" fill="#475569">虚线标 0.50。模型身份按构造：一致对 1、upset 0。轨迹两柱在 upset 上都低于 0.50。十个 TF-IDF 配置都如此。</text>
+      <text x="24" y="522" font-size="14" fill="#475569">同题 0.72 不和合并 0.92 比倍数。作图参数是我的。</text>
+    </svg>
+    <figcaption>图 2. 同题 AUROC，拆成全部、一致对、upset。数据来自论文表 I。分母与图 1 的合并 AUROC 不同。</figcaption>
+  </figure>
+</section>
+
+<section id="aux">
+  <h2><span>4</span>坏跑在另一套语料</h2>
+  <p>标题的 0.92 对约 0.62 只挂仍跑到第 20 步的 2,840 次。公开排行榜每个模型每题一次，分不出「这一跑坏了」。论文另用一套公开 SWE-agent 重复跑来看坏跑有没有房间：两套 Llama（70B 和 8B），SWE-bench-extra 和 SWE-bench dev 的 522 题，每题至少四次。同一模型常在某题的一部分跑次上解、另一部分上失败；跑间变异占这套语料结局方差的 42%，特化 4.6%，题目难度 53%。这种失败论文叫坏跑：同一模型同一题在别的尝试上能过。42% 不和 2,840 次混用。</p>
+  <p>被测的轨迹预测器分数，在 2,840 次上没有超出题目难度和模型身份的可测量增量（第 3 节）；分数方差的 64% 至 82% 在题与题之间，不在同一题的各次跑之间。论文据此推断，高分标的是难题或弱模型，再跑更不容易成功；类比是图 1(c) 的玩具难度分数。原文没有在这套 Llama 重复跑上跑过轨迹预测器的报警，也没有测报警之后再跑的成功率。论文写这和 Fail-Fast 一致：由其预测器触发的冷启动只加 0.2 个点。0.2 是这篇对 Fail-Fast 的转述，本轮没有打开 Fail-Fast 原文。</p>
+  <p>换模型、oracle 缺口、表 II 的 +0.09 / +0.41 / +6.91 是同一篇文章里的其他结果，分母和 2,840 次不同，不进本篇判断。</p>
+</section>
+
+<section id="yours">
+  <h2><span>5</span>你的失败预测</h2>
+  <p>读完要核对的是运行位上的中途失败预测。Agent 跑到一半，你用轨迹分数决定停、换模型、或同一模型再来一次。这篇里，仍跑到第 20 步的 2,840 次上，题目难度对照合并 AUROC 0.92；仿 Fail-Fast、看不到题目正文和模型名的 TF-IDF 轨迹预测约 0.62。18 个配置把轨迹加进难度和模型身份之后，增量的 90% 区间落在 ±0.02 里。被测预测器主要在跟题和模型走。</p>
+  <p>下面是我的推断，原文没测你仓库里的调度器。如果你的失败预测 AUROC 是在许多题、许多模型上合并算的，而且输入里有题目正文或模型名，0.62 不能直接套。这篇测到的是去掉这两样之后的轨迹窗口。带上题目或模型名，分数可以更高，那一档原文没报。题难、模型弱、这一跑坏了，三种动作不同；公开排行榜每个模型每题一次，这篇的预测器分不开。重复跑里坏跑有房间，但报警后重试成不成，原文没在同一套数据上测。</p>
+</section>
+
+<section id="limit">
+  <h2><span>6</span>这篇没测到的</h2>
+  <p>被测预测器刻意看不到题目正文和模型名，和 Fail-Fast 不同。0.62 只挂这一设置。表 I 展示的是两个 TF-IDF 代表；另有 Qwen3-0.6B 在一折上 LoRA 微调。读者手上的预测器若带 issue 文本或模型名，不能直接套 0.62。</p>
+  <p>证据主要来自一个基准、一套脚手架上的已发布标签。D<sub>ext</sub> 要用到部署时拿不到的外部模型结局。等价于零的声明覆盖 18 个配置，表上没有把 18 个增量逐行列出。主实验每个模型每题一次，分不出坏跑。坏跑的房间来自另一套 522 题、两套更早的 Llama、每题至少四次的语料，不和 2,840 次 t20 混用。Fail-Fast 的 0.2 个点是转述。作者还没测量无特化对照能检出多少特化，不拒绝不等于特化不存在。作者计划下一步收集更新模型、更多基准和脚手架上的重复跑，再在同等预算的闭环里评预测器，这一步还没做。</p>
+</section>
+
+<section id="src">
+  <h2><span>7</span>出处</h2>
+  <ul>
+    <li>预印本 abs：<a href="https://arxiv.org/abs/2611.08285">arXiv:2611.08285</a>。HTML 全文：<a href="https://arxiv.org/html/2611.08285">arxiv.org/html/2611.08285</a>。Comments：5 页、2 图、2 表。提交 2026-11-05。科目 cs.SE。许可 arXiv.org perpetual non-exclusive license。</li>
+    <li>表 I、0.924 / 0.624 / 0.630、2,840、3,492 / 994、494,109 的 99.66%、−0.001、0.72、4.6% / 53% / 42%、64% 至 82%，都从 HTML 全文抄。摘要的 0.92 对 about 0.62 来自 abs / HTML 摘要。</li>
+    <li>OpenAI 新闻页本轮经 r.jina.ai 打开（<a href="https://openai.com/news/">openai.com/news</a>），近 48 小时条目包括 11-06 的 Hacktron 合作、11-05 的 GPT-6 Cyber，未写入本篇数字。直连 openai.com/index/ 若干页返回 403。Anthropic 新闻页（<a href="https://www.anthropic.com/news">anthropic.com/news</a>）本轮打开，页面日期 2026-11-08，置顶仍是 Sep 22 的 Opus 5.5，未写入本篇数字。Hacker News 首页本轮打开，未见本篇预印本。Product Hunt 首页返回人机验证页，未打开。GitHub 当天新建仓库和 Codex / Claude Code / OpenCode 的近期发布说明扫过，没有与本篇数字相关的条目。X / Reddit 今日未覆盖。这些过程条目未写入本篇数字。</li>
+  </ul>
+  <p><a href="/frontier/rsi-llm-agent-self-evolution.html">09-26 RSI</a> 是谱系，<a href="/frontier/llm-agent-tech-landscape.html">09-27 全景</a> 是增量在哪一层。这篇落在运行位的失败预测：题目难度对照已经 0.92，轨迹分数还在约 0.62，加进对照之后增量等价于零。</p>
+</section>
+</main>
+</div>
+</body>
+</html>
