@@ -1,5 +1,9 @@
 ﻿# 前沿技术栏目：独立 HTML 洞察索引。
 # 新增一篇：把 HTML 放到 /frontier/<slug>.html，再在这里加一条。
+- title: "Sonnet 过期测试命令多约两拍（探索性）"
+  date: "2026-11-09"
+  url: /frontier/2026-11-09-sonnet-extra-calls.html
+  summary: "一篇预印本在三条真实过期指令上，用 Claude Code 2.1.316 配 Haiku 5.5 和 Sonnet 5.5 修 22 个维护任务。过期、改对、删掉各跑一遍，代码和任务钉死，732 次。Claude Sonnet 5.5 在过期测试命令上，每任务中位数再平均 7.8 次工具调用，改对同一行是 5.8，大约多两拍、多三分之一。论文写 95% 区间不含零；按估计条数校正之后不再排除零。标成探索性。Haiku 和另外两个案例检测不到调用差。"
 - title: "题目难度对照 0.92，仿 Fail-Fast 的轨迹预测约 0.62"
   date: "2026-11-08"
   url: /frontier/2026-11-08-difficulty-beats-trajectory.html
