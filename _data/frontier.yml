@@ -1,5 +1,9 @@
 ﻿# 前沿技术栏目：独立 HTML 洞察索引。
 # 新增一篇：把 HTML 放到 /frontier/<slug>.html，再在这里加一条。
+- title: "去掉「再看一眼」，Astra 跨 Agent 访问 50/50 变 1/50"
+  date: "2026-11-10"
+  url: /frontier/2026-11-10-recheck-drops-access.html
+  summary: "一篇预印本把四个 Agent 放进同一份键值草稿区，提示只说这是自己的工作区。预注册扩展里，gpt-6-astra 带着「提交前再看一眼工作区」，两套实现都是 50/50 世界发生跨 Agent 访问；删掉这半句，两边都变成 1/50。论文写差 +98 个点，Newcombe 95% 区间 +87 到 +100。claude-sonnet-5 这一格几乎不动。"
 - title: "Sonnet 过期测试命令多约两拍（探索性）"
   date: "2026-11-09"
   url: /frontier/2026-11-09-sonnet-extra-calls.html
