@@ -1,0 +1,219 @@
+﻿<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>可核指令 86% 以上全跟或从不</title>
+  <style>
+    :root { --ink:#0f172a; --muted:#475569; --line:#e2e8f0; --bg:#f8fafc; --blue:#1d4ed8; --blue-bg:#eff6ff; --amber:#b45309; --green:#047857; --rose:#be123c; }
+    * { box-sizing: border-box; }
+    body { margin:0; font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Noto Sans SC",sans-serif; background:var(--bg); color:var(--ink); line-height:1.75; font-size:17px; }
+    header { background:#0f172a; color:#f8fafc; padding:36px 24px 28px; border-bottom:4px solid #2563eb; }
+    header .inner { max-width:1080px; margin:0 auto; }
+    .badge { display:inline-block; border:1px solid #93c5fd; color:#bfdbfe; border-radius:999px; padding:2px 12px; font-size:13px; }
+    h1 { font-size:2rem; line-height:1.3; margin:12px 0; }
+    header p { color:#cbd5e1; margin:0; max-width:760px; }
+    .layout { max-width:1080px; margin:28px auto 64px; padding:0 20px; display:grid; grid-template-columns:220px minmax(0,1fr); gap:28px; }
+    aside { position:sticky; top:52px; align-self:start; background:#fff; border:1px solid var(--line); border-radius:12px; padding:14px; }
+    aside p { font-size:12px; letter-spacing:.06em; color:var(--muted); margin:0 0 8px; }
+    aside a { display:block; color:var(--ink); text-decoration:none; font-size:14px; padding:6px 8px; border-radius:6px; }
+    aside a:hover { background:var(--blue-bg); color:var(--blue); }
+    h2 { font-size:1.35rem; margin:0 0 12px; }
+    h2 span { display:inline-block; background:var(--blue); color:#fff; border-radius:6px; font-size:13px; padding:2px 8px; margin-right:8px; }
+    h3 { font-size:1.08rem; margin:20px 0 10px; }
+    section { background:#fff; border:1px solid var(--line); border-radius:14px; padding:26px 28px; margin-bottom:22px; }
+    p { margin:0 0 14px; }
+    a { color:var(--blue); overflow-wrap:anywhere; }
+    code { background:#f1f5f9; border-radius:4px; padding:1px 5px; font-size:15px; overflow-wrap:anywhere; }
+    main { min-width:0; }
+    figure { margin:16px 0; background:#fff; border:1px solid var(--line); border-radius:12px; padding:10px; overflow-x:auto; }
+    figure svg { display:block; min-width:700px; }
+    figcaption { color:var(--muted); font-size:14px; margin-top:6px; }
+    .tw { overflow-x:auto; margin:0 0 14px; }
+    .tw table { min-width:620px; }
+    table { width:100%; border-collapse:collapse; font-size:15px; }
+    th, td { border:1px solid var(--line); padding:8px 10px; text-align:left; vertical-align:top; }
+    th { background:#f1f5f9; }
+    ul { margin:0 0 14px; padding-left:22px; }
+    ol { margin:0 0 14px; padding-left:22px; }
+    li { margin-bottom:6px; }
+    .note { background:#f1f5f9; border-left:4px solid var(--muted); padding:12px 16px; border-radius:0 8px 8px 0; font-size:16px; margin:0 0 14px; }
+    .quote { background:#fffbeb; border-left:4px solid var(--amber); padding:12px 16px; border-radius:0 8px 8px 0; font-size:15px; overflow-wrap:anywhere; margin:0 0 14px; }
+    svg text { font-family:-apple-system,"PingFang SC","Noto Sans SC",sans-serif; }
+    @media (max-width:860px) { .layout { grid-template-columns:minmax(0,1fr); } aside { position:static; } h1 { font-size:1.55rem; } section { padding:18px 16px; } }
+  </style>
+</head>
+<body>
+<nav style="position:sticky;top:0;z-index:50;background:#0f172a;border-bottom:1px solid #1e293b;padding:10px 24px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;">
+  <a href="/frontier" style="color:#93c5fd;text-decoration:none;font-size:14px;margin-right:16px;">← Frontier</a>
+  <a href="/" style="color:#cbd5e1;text-decoration:none;font-size:14px;">@xixi003</a>
+</nav>
+
+<header>
+  <div class="inner">
+    <span class="badge">FRONTIER · 2026-11-11 · Agent Runtime</span>
+    <h1>可核指令 86% 以上全跟或从不</h1>
+    <p>一篇预印本把仓库里的 AGENTS.md / CLAUDE.md 拆成单条指令，再拿 Agent 提交对脚本。能核到提交的 2,053 条里，两端（全跟或从不）占 91.7%。门槛提到至少 3 次适用提交是 87.3%（n = 1,144），至少 5 次是 86.2%（n = 819）。全样本才拆得出 1,116 条（54.4%）每次都跟、766 条（37.3%）一次都不跟；≥3 和 ≥5 原文没再拆这两格。均值 59.8%，中位数 100%。</p>
+  </div>
+</header>
+<div class="layout">
+<aside>
+  <p>目录</p>
+  <a href="#what">1 两端合计</a>
+  <a href="#funnel">2 漏斗停在 2,053</a>
+  <a href="#split">3 中间 8.3%</a>
+  <a href="#aux">4 类别和 Agent</a>
+  <a href="#yours">5 你的 AGENTS.md</a>
+  <a href="#limit">6 这篇没测到的</a>
+  <a href="#src">7 出处</a>
+</aside>
+<main>
+<section id="what">
+  <h2><span>1</span>86% 以上全跟或从不</h2>
+  <p>2026 年 11 月 10 日，arXiv 收到 <a href="https://arxiv.org/abs/2611.13709">Do They Do as They Are Told? Investigating Coding Agents' Adherence to Explicit Instructions in Context Files</a>（arXiv:2611.13709v1，cs.SE；作者 Gianmario Voria、Yutaro Kashiwa、Gemma Catolino、Fabio Palomba；单位署萨勒诺大学、奈良先端科学技术大学院大学）。预印本，未经同行评审。abs 页写 PDF 141 KB，没有 Comments 行。HTML 页眉套了 TOSEM 模板和占位 DOI <code>10.1145/XXXXXXX.XXXXXXX</code>，当排版，不写成已发表。本轮读的是 HTML 全文。许可 CC BY 4.0。HTML 写复制包在 <a href="https://github.com/gianwario/Agents-Context-Files-Analysis">github.com/gianwario/Agents-Context-Files-Analysis</a>，本轮打开 404。</p>
+  <p>编码 Agent 开会先读仓库根上的上下文文件。论文把这类文件叫 agent context files（ACF）：<code>AGENTS.md</code>、<code>CLAUDE.md</code>、<code>copilot-instructions.md</code>。作者问的是单条指令有没有落到提交上，不把整份文件当成一次处理。</p>
+  <div class="note">
+    <p style="margin:0">这篇只论证一个判断。判断是我的，依据是论文第 4.3.2–4.3.3 节（<a href="https://arxiv.org/html/2611.13709">HTML</a>）。判断是：能核到至少一次适用提交的 2,053 条指令里，两端合计 91.7%；门槛收到至少 3 次适用提交是 87.3%（n = 1,144），至少 5 次是 86.2%（n = 819）。全样本才拆得出 1,116 条（54.4%）每次都跟、766 条（37.3%）一次都不跟、171 条（8.3%）夹在中间。分母是指令条数，不是 14,902 条候选，也不是 6,541 次提交。均值 59.8% 是这 2,053 条各自遵从率再平均；中位数 100%。遵从是提交产物上的脚本判定，看不到推理，也没有「没有这条指令」的对照。</p>
+  </div>
+  <p>论文把遵从率按指令汇总，一条指令无论碰上 1 次还是几十次提交，只贡献一个率。标题挂三档都能站住的两端合计，不挂全样本才有的 54.4 / 37.3，也不挂均值。</p>
+</section>
+
+<section id="funnel">
+  <h2><span>2</span>漏斗停在 2,053</h2>
+  <p>ACF 来自先前按官方文件名从 GitHub 挖的语料，只留 Copilot、Claude Code、OpenAI Codex 三个 Agent。上下文快照按内容去重：676 个快照、10,763 次提交、307 个仓库。提交来自 AIDev，只用严格 Agent 子集：机器人账号或明确的作者元数据。两个集合按仓库对齐之后，分析集是 6,541 次提交、268 个仓库。表 1：改源码 4,067，改测试 1,381，改文档 1,072；中位每次改 1 个文件，均值 3.95。分类用的是这 676 个快照去掉空的和格式坏的之后剩下的 621 个。</p>
+  <p>指令要同时过三道门：写在文件里（显式）、规定一件改动时能做的事（可执行）、提交产物上能核（可观察）。「跑一遍 linter」过前两道，过不了第三道：改完的文件看不出跑过没有。标注器是本地 Qwen 3.5 9B。621 个快照抽出 14,902 条候选，平均每个快照 24.0 条。显式 10,324（69.3%），再加可执行 8,726（58.6%），再加可观察 6,552（44.0%）。论文写可观察这一层是上限：84 个快照、2,113 条确认指令上，可观察标签准确率 85.0%，分歧里九成以上是模型多算进去。</p>
+  <p>6,552 条里，4,123 条（62.9%）生出了测量脚本。生成器另采十个脚本、十个夹具，过最低正确门槛，还要有独立脚本互相印证。抽查 94 条被接受的脚本，67 条（71.3%）实现了对上行为描述；常见错法是把 ACF 里的例子文件名写成硬条件，脚本比原文更严。2,569 / 4,123（62.3%）在没碰到相关文件时仍返回 True，所以后面加了适用过滤。4,123 条里只有 2,053 条（49.8%）至少碰上一次适用提交，共 18,594 对指令–提交。从 6,552 往下是 31.3%；从 14,902 候选往下是 13.8%。</p>
+  <figure>
+    <svg viewBox="0 0 960 520" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="从 14902 条候选收到 2053 条可核指令">
+      <rect width="960" height="520" fill="#ffffff"/>
+      <text x="24" y="32" font-size="16" font-weight="700" fill="#0f172a">能核到提交的，是漏斗最窄的那一层</text>
+      <text x="24" y="54" font-size="14" fill="#475569">条数来自论文表 2、表 6、表 8。宽度只示意变窄，不按条数比例。</text>
+      <rect x="70" y="80" width="820" height="70" fill="#eff6ff" stroke="#1d4ed8" stroke-width="2" rx="8"/>
+      <text x="480" y="108" font-size="16" font-weight="700" fill="#1d4ed8" text-anchor="middle">14,902 条候选</text>
+      <text x="480" y="132" font-size="14" fill="#0f172a" text-anchor="middle">621 个快照 · 平均 24.0 条</text>
+      <rect x="175" y="170" width="610" height="70" fill="#ecfdf5" stroke="#047857" stroke-width="2" rx="8"/>
+      <text x="480" y="198" font-size="16" font-weight="700" fill="#047857" text-anchor="middle">6,552 条显式 + 可执行 + 可观察</text>
+      <text x="480" y="222" font-size="14" fill="#0f172a" text-anchor="middle">44.0% · 论文写可观察是上限</text>
+      <rect x="246" y="260" width="468" height="70" fill="#fffbeb" stroke="#b45309" stroke-width="2" rx="8"/>
+      <text x="480" y="288" font-size="16" font-weight="700" fill="#b45309" text-anchor="middle">4,123 条有测量脚本</text>
+      <text x="480" y="312" font-size="14" fill="#0f172a" text-anchor="middle">62.9% 的 6,552 · 抽查 67/94 实现对上</text>
+      <rect x="357" y="350" width="246" height="70" fill="#fff1f2" stroke="#be123c" stroke-width="2" rx="8"/>
+      <text x="480" y="378" font-size="16" font-weight="700" fill="#be123c" text-anchor="middle">2,053 条可核</text>
+      <text x="480" y="402" font-size="14" fill="#0f172a" text-anchor="middle">2,053 条 · 18,594 对观察</text>
+      <text x="24" y="460" font-size="14" fill="#475569">作图参数是我的。从候选到可核是 2,053/14,902 = 13.8%。</text>
+      <text x="24" y="484" font-size="14" fill="#475569">676 个快照、10,763 次提交是对齐前的快照复用；分析提交是 6,541，不和 2,053 进同一句倍数。</text>
+    </svg>
+    <figcaption>图 1. 指令漏斗。数据来自论文表 2、表 6、表 8。最窄一层才进标题。</figcaption>
+  </figure>
+  <div class="tw">
+    <table>
+      <thead>
+        <tr>
+          <th>层</th>
+          <th>条数</th>
+          <th>相对上一层</th>
+          <th>相对 14,902</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td>候选（621 个快照）</td><td>14,902</td><td>—</td><td>100%</td></tr>
+        <tr><td>显式</td><td>10,324</td><td>69.3%</td><td>69.3%</td></tr>
+        <tr><td>显式 + 可执行</td><td>8,726</td><td>84.5% 的显式</td><td>58.6%</td></tr>
+        <tr><td>再加可观察</td><td>6,552</td><td>75.1% 的显式可执行</td><td>44.0%</td></tr>
+        <tr><td>有测量脚本</td><td>4,123</td><td>62.9% 的 6,552</td><td>27.7%</td></tr>
+        <tr><td>至少一次适用提交</td><td>2,053</td><td>49.8% 的 4,123</td><td>13.8%</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p>表里「相对 14,902」的 27.7% 和 13.8% 是我用原文条数除的：4,123/14,902、2,053/14,902。其余百分比原文表 2、表 6、表 8 已写。84.5%、75.1% 也是我除的：8,726/10,324、6,552/8,726。论文另写显式且可执行里，可观察切掉 24.9%。</p>
+</section>
+
+<section id="split">
+  <h2><span>3</span>中间那 8.3%</h2>
+  <p>2,053 条可核指令，每条一个遵从率：适用提交里脚本判跟的比例。均值 59.8%，中位数 100%。1,116 条（54.4%）全是 100%，766 条（37.3%）全是 0%，171 条（8.3%）落在开区间里。两端合计 1,882 条，91.7%。</p>
+  <p>中位每条只有 3 次适用提交；540 条（26.3%）恰好 1 次，那一条的率只能是 0 或 100。论文把门槛收到至少 3 次（n = 1,144）和至少 5 次（n = 819）。两端占比从 91.7% 降到 87.3%、再降到 86.2%；中间从 8.3% 升到 12.7%、13.8%。最严一档，多半指令仍是每次都跟或一次都不跟。</p>
+  <figure>
+    <svg viewBox="0 0 960 540" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="2053 条可核指令：1116 全跟，171 部分跟，766 从不">
+      <rect width="960" height="540" fill="#ffffff"/>
+      <text x="24" y="32" font-size="16" font-weight="700" fill="#0f172a">可核指令按单条遵从率切开</text>
+      <text x="24" y="54" font-size="14" fill="#475569">分母 2,053 条。柱高 320 像素对应 1,116 条。数据来自论文第 4.3.2 节。</text>
+      <line x1="90" y1="80" x2="90" y2="400" stroke="#cbd5e1" stroke-width="1"/>
+      <line x1="90" y1="400" x2="920" y2="400" stroke="#cbd5e1" stroke-width="1"/>
+      <line x1="90" y1="240" x2="920" y2="240" stroke="#e2e8f0" stroke-width="1" stroke-dasharray="4 4"/>
+      <text x="82" y="84" font-size="14" fill="#475569" text-anchor="end">1116</text>
+      <text x="82" y="244" font-size="14" fill="#475569" text-anchor="end">558</text>
+      <text x="82" y="404" font-size="14" fill="#475569" text-anchor="end">0</text>
+      <rect x="180" y="80" width="140" height="320" fill="#ecfdf5" stroke="#047857" stroke-width="2"/>
+      <text x="250" y="112" font-size="16" font-weight="700" fill="#047857" text-anchor="middle">1,116</text>
+      <text x="250" y="424" font-size="14" fill="#0f172a" text-anchor="middle">全跟</text>
+      <text x="250" y="444" font-size="14" fill="#475569" text-anchor="middle">54.4%</text>
+      <rect x="410" y="351" width="140" height="49" fill="#fffbeb" stroke="#b45309" stroke-width="2"/>
+      <text x="480" y="341" font-size="16" font-weight="700" fill="#b45309" text-anchor="middle">171</text>
+      <text x="480" y="424" font-size="14" fill="#0f172a" text-anchor="middle">部分跟</text>
+      <text x="480" y="444" font-size="14" fill="#475569" text-anchor="middle">8.3%</text>
+      <rect x="640" y="180.4" width="140" height="219.6" fill="#fff1f2" stroke="#be123c" stroke-width="2"/>
+      <text x="710" y="170" font-size="16" font-weight="700" fill="#be123c" text-anchor="middle">766</text>
+      <text x="710" y="424" font-size="14" fill="#0f172a" text-anchor="middle">从不</text>
+      <text x="710" y="444" font-size="14" fill="#475569" text-anchor="middle">37.3%</text>
+      <rect x="140" y="478" width="14" height="14" fill="#ecfdf5" stroke="#047857" stroke-width="2"/>
+      <text x="160" y="490" font-size="14" fill="#0f172a">每次适用提交都跟</text>
+      <rect x="360" y="478" width="14" height="14" fill="#fffbeb" stroke="#b45309" stroke-width="2"/>
+      <text x="380" y="490" font-size="14" fill="#0f172a">0% 与 100% 之间</text>
+      <rect x="560" y="478" width="14" height="14" fill="#fff1f2" stroke="#be123c" stroke-width="2"/>
+      <text x="580" y="490" font-size="14" fill="#0f172a">一次都不跟</text>
+      <text x="24" y="524" font-size="14" fill="#475569">均值 59.8% 是 2,053 条各自的率再平均。中位数 100%。柱高按 1,116 条 = 320 像素。</text>
+    </svg>
+    <figcaption>图 2. 2,053 条可核指令的遵从率分布。数据来自论文第 4.3.2 节。作图参数是我的。</figcaption>
+  </figure>
+  <div class="tw">
+    <table>
+      <thead>
+        <tr>
+          <th>门槛</th>
+          <th>指令数</th>
+          <th>两端（0% 或 100%）</th>
+          <th>中间</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td>全样本</td><td>2,053</td><td>91.7%（1,882 条）</td><td>8.3%（171 条）</td></tr>
+        <tr><td>至少 3 次适用提交</td><td>1,144</td><td>87.3%</td><td>12.7%</td></tr>
+        <tr><td>至少 5 次适用提交</td><td>819</td><td>86.2%</td><td>13.8%</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p>全样本两端 1,882 是 1,116 + 766，百分比 91.7%、8.3% 原文已写。≥3 和 ≥5 原文只给两端合计和中间占比，没有再拆全跟 / 从不，表里也不拆。论文写：非遵从集中在从不跟的那些指令上，抽几条已经会跟的规则，看不住其余 37.3%。</p>
+  <p>数字还要往乐观一侧读。适用过滤漏过去的指令–提交对会记成跟，不会记成不跟；报告的非遵从是下限。抽查 94 条被接受的脚本里，67 条实现对上，27 条没有忠实实现指令；最常见的错法是把 ACF 里的例子写成硬条件，使脚本偏严，实现 bug 原文写成 comparatively rare。两股偏差方向相反，论文没有给出净值。</p>
+</section>
+
+<section id="aux">
+  <h2><span>4</span>类别和 Agent</h2>
+  <p>这一节不进标题。Implementation Details 比 Testing 跟得更勤，这一对在至少 3 次、至少 5 次门槛下仍显著。Development Process 全样本均值 34.0%、中位数 0；收到至少 3 次之后，它和另外三类的成对差异不再过校正。Copilot 可核 1,137 条，均值 66.0%；Claude Code 799 条，52.2%。Copilot 对 Claude Code 的差距在三个门槛下都显著，Cliff’s δ 在 0.12 到 0.15。论文没按类别配平 Agent，写成关联，不写成身份因果。这些数不和标题的 86% 进同一句。</p>
+</section>
+
+<section id="yours">
+  <h2><span>5</span>你的 AGENTS.md</h2>
+  <p>读完要核对的是仓库根上的上下文文件，按条，不按整份。抽几条已经会跟的规则，看不住全样本里从不跟的那 37.3%。论文对实践的写法：一条只写一个能从产物核的行为，祈使句，少写「必要时」「合适时」；流程类约定，作者倾向放到 hook、分支保护和 CI 里，这一条他们自己标成方向，因为 Development Process 的成对差异没撑过灵敏度。</p>
+  <p>下面是我的推断，原文没测你仓库里的文件，也没测改写措辞。运行位如果把 AGENTS.md 当成已经生效的门，缺的是按条核提交的那一层。编辑起点如果只改措辞、不接产物检查，这篇量过的指令里仍可能留下一截 0%。11-09 <a href="/frontier/2026-11-09-sonnet-extra-calls.html">过期测试命令</a>、11-04 <a href="/frontier/2026-11-04-conditional-wording-loses.html">同一条政策换写法</a>、11-03 <a href="/frontier/2026-11-03-kept-rule-still-violates.html">压缩后规则还在</a>，三条缝挨着，对象不同。</p>
+</section>
+
+<section id="limit">
+  <h2><span>6</span>这篇没测到的</h2>
+  <p>没有「删掉这条指令」的对照，跟也可能是生态默认。脚本吃的是改动文件的全文，不是行级 diff：文件里原先就违规，会算到这次提交头上；原先就合规，可能盖住这次引入的违规。遵从是二元，没有部分跟的等级。适用过滤按扩展名和惯用文件名，碰到同类文件就算适用。</p>
+  <p>只覆盖三个 Agent、公开 GitHub、严格归属子集。原文写有的 Agent 用机器人账号直接提交，Claude Code 常出现在共同作者里，GitHub Copilot 可能靠分支名这类间接信号；严格子集「likely imbalanced」，没有给出验证过的精度。可观察标签交叉模型一致率 76.1%，校验是单人。脚本生成温度 0.8。生成模型是 Qwen2.5-Coder-14B-Instruct，标注是 Qwen 3.5 9B，都是本地开源权重，换模型漏斗会动。时间切片随 ACF 惯例一起过期。</p>
+  <p>HTML 写的复制包本轮 404，脚本和逐条判定打不开。TOSEM 页眉是模板。主研究的协调率、工具调用次数、任务通过率这篇都没测。</p>
+</section>
+
+<section id="src">
+  <h2><span>7</span>出处</h2>
+  <ul>
+    <li>预印本 abs：<a href="https://arxiv.org/abs/2611.13709">arXiv:2611.13709</a>。HTML 全文：<a href="https://arxiv.org/html/2611.13709">arxiv.org/html/2611.13709</a>。提交 2026-11-10。科目 cs.SE。许可 CC BY 4.0。abs 写 PDF 141 KB。HTML 复制包链接 <a href="https://github.com/gianwario/Agents-Context-Files-Analysis">github.com/gianwario/Agents-Context-Files-Analysis</a>，本轮 404。</li>
+    <li>2,053 条、1,116 / 766 / 171、54.4% / 37.3% / 8.3%、均值 59.8%、中位数 100%、18,594 对、中位 3 次、540 条恰好 1 次、≥3 的 1,144 / 87.3% / 12.7%、≥5 的 819 / 86.2% / 13.8%，都从 HTML 第 4.3.2–4.3.3 节抄。漏斗表 2 / 表 6 / 表 8；Agent 表 9；抽查 67/94、宽松默认 2,569/4,123 从第 4.2 节抄。</li>
+    <li>Anthropic 新闻页（<a href="https://www.anthropic.com/news">anthropic.com/news</a>）本轮打开，置顶 11-09 的 Claude Fable 5.2 / Mythos 5.2，未写入本篇数字。OpenAI 新闻页本轮经 r.jina.ai 打开，条目未写入本篇数字；评审会话直连 openai.com 为 403，未复核条目标题。Hacker News 本轮打开 Algolia 新帖接口，与本篇数字无关。Product Hunt 首页本轮 403。X / Reddit 今日未覆盖。</li>
+  </ul>
+  <p><a href="/frontier/rsi-llm-agent-self-evolution.html">09-26 RSI</a> 是谱系，<a href="/frontier/llm-agent-tech-landscape.html">09-27 全景</a> 是增量在哪一层。这篇落在运行位的上下文文件：能核到提交的指令里，86% 以上要么每次都跟，要么一次都不跟。</p>
+</section>
+</main>
+</div>
+</body>
+</html>

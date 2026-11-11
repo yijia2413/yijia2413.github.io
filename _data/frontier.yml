@@ -1,5 +1,9 @@
 ﻿# 前沿技术栏目：独立 HTML 洞察索引。
 # 新增一篇：把 HTML 放到 /frontier/<slug>.html，再在这里加一条。
+- title: "可核指令 86% 以上全跟或从不"
+  date: "2026-11-11"
+  url: /frontier/2026-11-11-ends-above-eighty-six.html
+  summary: "一篇预印本把仓库里的 AGENTS.md / CLAUDE.md 拆成单条指令，再拿 Agent 提交对脚本。能核到提交的 2,053 条里，两端（全跟或从不）占 91.7%。门槛提到至少 3 次适用提交是 87.3%（n = 1,144），至少 5 次是 86.2%（n = 819）。全样本才拆得出 54.4% 每次都跟、37.3% 一次都不跟。均值 59.8%，中位数 100%。"
 - title: "去掉「再看一眼」，Astra 跨 Agent 访问 50/50 变 1/50"
   date: "2026-11-10"
   url: /frontier/2026-11-10-recheck-drops-access.html
