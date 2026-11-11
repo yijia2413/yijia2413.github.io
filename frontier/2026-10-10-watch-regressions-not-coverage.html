@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="zh-CN">
 <head>
   <meta charset="UTF-8">
@@ -38,42 +38,50 @@
     svg text { font-family:-apple-system,"PingFang SC","Noto Sans SC",sans-serif; }
     @media (max-width:860px) { .layout { grid-template-columns:minmax(0,1fr); } aside { position:static; } h1 { font-size:1.55rem; } section { padding:18px 16px; } }
   </style>
+  <link rel="stylesheet" href="assets/article.css">
+  <script src="assets/article.js" defer></script>
 </head>
-<body>
-<nav style="position:sticky;top:0;z-index:50;background:#0f172a;border-bottom:1px solid #1e293b;padding:10px 24px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;">
-  <a href="/frontier" style="color:#93c5fd;text-decoration:none;font-size:14px;margin-right:16px;">← Frontier</a>
-  <a href="/" style="color:#cbd5e1;text-decoration:none;font-size:14px;">@xixi003</a>
+<body class="frontier-article">
+<a class="fr-skip" href="#article-content">跳到正文</a>
+<nav class="fr-nav" aria-label="站点导航">
+  <a class="fr-brand" href="/frontier/"><span class="fr-mark" aria-hidden="true">F</span>Frontier<span class="fr-nav-label">技术与研究</span></a>
+  <a class="fr-home" href="/">@xixi003 <span aria-hidden="true">↗</span></a>
 </nav>
+<div class="fr-progress" aria-hidden="true"><div></div></div>
 
-<header>
+<header class="fr-hero">
   <div class="inner">
     <span class="badge">FRONTIER · 2026-10-10 · 技能演化</span>
     <h1>技能库自动改写，该盯的是原本稳定的任务还稳不稳</h1>
     <p>一篇 10 月 8 日的预印本把技能演化方法放在同一批任务上对比。算子生成那套技能库上，覆盖面最高的两个方法打平在 14/15，三次全过的比例差 20 个百分点。拿掉定位模块后，同一套上覆盖面只掉 6.66 个百分点，三次全过掉 33.33 个百分点。</p>
   </div>
 </header>
-<div class="layout">
-<aside>
-  <p>目录</p>
-  <a href="#what">1 同一批任务，五种改法</a>
-  <a href="#tie">2 覆盖面打平，一致性差 20 点</a>
-  <a href="#ledger">3 回归是一笔暗账</a>
-  <a href="#blind">4 为什么 pass@3 看不见它</a>
-  <a href="#how">5 定位模块干的事</a>
-  <a href="#gate">6 另一条路：改写先过重放</a>
-  <a href="#yours">7 技能库改完该盯什么</a>
-  <a href="#limit">8 这篇没测到的</a>
-  <a href="#src">9 出处</a>
+<div class="fr-layout">
+<aside aria-label="文章目录" class="fr-toc">
+<details open="">
+<summary>本文目录<span aria-hidden="true">＋</span></summary>
+<div class="fr-toc-links">
+<a href="#what">1 同一批任务，五种改法</a>
+<a href="#tie">2 覆盖面打平，一致性差 20 点</a>
+<a href="#ledger">3 改写会让原本通过的任务退步</a>
+<a href="#blind">4 为什么 pass@3 看不见它</a>
+<a href="#how">5 定位模块干的事</a>
+<a href="#gate">6 另一条路：改写先过重放</a>
+<a href="#yours">7 技能库改完该盯什么</a>
+<a href="#limit">8 这篇没测到的</a>
+<a href="#src">9 出处</a>
+</div>
+</details>
 </aside>
-<main>
+<main class="fr-content" id="article-content">
 <section id="what">
   <h2><span>1</span>同一批任务，五种改法</h2>
-  <p>2026 年 10 月 8 日，arXiv 收到 <a href="https://arxiv.org/abs/2610.11858">Trajectory-Guided Fault Localization for Agent Skill Evolution</a>（arXiv:2610.11858v1，cs.SE，南京大学与香港理工）。它提出的方法叫 SkillMorph，做的事是拿执行轨迹里的失败证据，定位到技能文档里具体该改的那几行，再生成修改。</p>
-  <p>对我有用的部分不是这个方法本身，是它的对照组设计。它把原始技能、四个已有技能演化方法和自己放在同两套技能库上跑，同时报三个指标：至少一次通过的任务比例、全部试次里成功试次的比例、三次独立试次全部通过的任务比例。论文里分别写作 pass@3、trial-level accuracy 和 pass3。</p>
+  <p><a href="https://arxiv.org/abs/2610.11858">SkillMorph</a> 根据执行轨迹中的失败证据，定位技能文档里该改的具体内容，再生成修改。研究发表于 2026 年 10 月 8 日，目前是预印本。</p>
+  <p>我更关注它的对照组设计。论文把原始技能、四个已有技能演化方法和自己的方法放在同两套技能库上跑，同时报告三个指标：至少一次通过的任务比例、全部试次里成功试次的比例、三次独立试次全部通过的任务比例，分别记作 pass@3、trial-level accuracy 和 pass3。</p>
   <p>两套技能库：SWE-Skills-Bench 有 49 个相互独立的软件工程技能，每个配十组任务，任务挂在固定 commit 的真实 GitHub 仓库上；CannBot 是 12 个相互协作的技能，做 AscendC 算子生成，任务取自 NPUKernelBench。每个任务跑三次独立试次。</p>
-  <p>这篇只论证一件事：技能库被自动改写之后，覆盖面的提升容易拿到，原本稳定通过的任务掉下去是主要代价，而覆盖面指标基本看不见这笔代价。</p>
+  <p>技能库自动改写后，新增了多少能做的任务，只能反映一部分收益。原本稳定通过的任务是否被改坏，需要另行统计；覆盖面指标很容易漏掉这项代价。</p>
   <div class="note">
-    <p style="margin:0">分母先摆清楚。SWE-Skills-Bench 的held-out 任务按两个互补折分跑了两个方向，合计 490 个任务、1470 个试次。CannBot 单一固定划分，held-out 15 个任务、45 个试次。下文每个比例都落在这两个分母上，两套基准的数字不互相折算。</p>
+    <p style="margin:0">SWE-Skills-Bench 的 held-out 任务按两个互补折分分别测试，合计 490 个任务、1470 个试次。CannBot 使用单一固定划分，held-out 集有 15 个任务、45 个试次。下文分别报告两套基准的比例。</p>
   </div>
 </section>
 <section id="tie">
@@ -102,7 +110,7 @@
   <p>原始技能在 CannBot 上是 pass@3 12/15、pass3 7/15。两个方法都把覆盖面推到 14/15，但其中一个把「能过」变成了「每次都过」，另一个没有。验收时只报前一个口径，这两种结果会写成同一句话。</p>
 </section>
 <section id="ledger">
-  <h2><span>3</span>回归是一笔暗账</h2>
+  <h2><span>3</span>改写会让原本通过的任务退步</h2>
   <p>SWE-Skills-Bench 上，论文按任务逐个比对了改写前后三次试次里的成功次数，分成变好、不变、变差三类。这一组数把代价摆了出来。</p>
   <figure>
     <svg viewBox="0 0 920 400" width="100%" role="img" aria-label="五个技能演化方法在 SWE-Skills-Bench 上改进与回归的任务数对比">
@@ -158,7 +166,7 @@
   <h2><span>4</span>为什么 pass@3 看不见它</h2>
   <p>论文的消融实验正好把这件事量出来了。拿掉定位模块（<code>w/o Localization</code>，改成不做可疑动作定位和编辑位定位，直接从反馈生成修改），两套基准上三个指标的掉幅差别很大。</p>
   <div class="tw">
-  <table>
+  <div class="fr-table" tabindex="0" role="region" aria-label="数据表格，可横向滚动"><table>
     <thead><tr><th>配置</th><th>SWE pass@3<br>（分母 490 任务）</th><th>SWE pass3<br>（分母 490 任务）</th><th>CannBot pass@3<br>（分母 15 任务）</th><th>CannBot pass3<br>（分母 15 任务）</th></tr></thead>
     <tbody>
       <tr><td>原始技能</td><td>82.45%</td><td>67.96%</td><td>80.00%</td><td>46.67%</td></tr>
@@ -167,7 +175,7 @@
       <tr><td>不带定位（w/o Localization）</td><td>91.22%</td><td>82.24%</td><td>86.67%</td><td>60.00%</td></tr>
       <tr><td>完整 SkillMorph</td><td>95.51%</td><td>88.37%</td><td>93.33%</td><td>93.33%</td></tr>
     </tbody>
-  </table>
+  </table></div>
   </div>
   <p>CannBot 这一列最直白。拿掉定位，pass@3 从 93.33% 掉到 86.67%，差 6.66 个百分点，也就是 15 个任务里少过 1 个。同一个改动下 pass3 从 93.33% 掉到 60.00%，差 33.33 个百分点，也就是三次全过的任务从 14 个掉到 9 个。只看第一个口径，这个模块看起来可有可无。</p>
   <p>SWE 那一列的方向相同，幅度小一些：pass@3 差 4.29 个百分点，pass3 差 6.13 个百分点。两套基准的百分点不要相加，它们的分母是 490 和 15。</p>
@@ -175,7 +183,7 @@
 </section>
 <section id="how">
   <h2><span>5</span>定位模块干的事</h2>
-  <p>方法部分值得抄的是顺序，不是具体实现。三步：</p>
+  <p>方法上的可借鉴点是先定位失败，再修改技能文档。具体分三步：</p>
   <ul>
     <li>把原始轨迹抽象成状态转移序列，让动作和它的观测效果成为可比对的单位。同一任务重复执行多次，失败和成功的轨迹放在一起比。</li>
     <li>比较各次执行里动作的失败覆盖和成功覆盖，选出可疑动作。论文每轮取前 10 个可疑动作往下传。</li>
@@ -215,15 +223,17 @@
 </section>
 <section id="src">
   <h2><span>9</span>出处</h2>
+  <p>2026 年 10 月 8 日，arXiv 收到 <a href="https://arxiv.org/abs/2610.11858">Trajectory-Guided Fault Localization for Agent Skill Evolution</a>（arXiv:2610.11858v1，cs.SE，南京大学与香港理工）。它提出的方法叫 SkillMorph，做的事是拿执行轨迹里的失败证据，定位到技能文档里具体该改的那几行，再生成修改。</p>
   <ul>
     <li>SkillMorph：<a href="https://arxiv.org/abs/2610.11858">arXiv:2610.11858v1</a>，Trajectory-Guided Fault Localization for Agent Skill Evolution，2026-10-08，cs.SE。表 1（五个方法三指标两基准）、第 5.3 节细粒度对比、表 2 消融、第 5.4 节轮次效果、第 6 节落地记录。本文所有 SWE 与 CannBot 数字均出自此文。</li>
     <li>Memento 3：<a href="https://arxiv.org/abs/2610.11794">arXiv:2610.11794v1</a>，Model-Based Recursive Self-Improvement through Reflective Rulebooks，2026-10-08。采纳门禁见摘要与第 2.2 节，ARC-AGI-3 结果见摘要。</li>
-    <li>当日另外扫过的源：OpenAI 博客（10 月 9 日两条为客户案例）、Anthropic 新闻页（最近为 10 月 8 日的使用政策更新与 Cyber Mission）、Hacker News 首页、GitHub Trending 当日榜。这些没有能支撑本文判断的一手数字。</li>
-    <li>X 与 Reddit：今日未覆盖，本次运行没有登录态。</li>
+
+
   </ul>
   <p>同系列里和这篇挨得最近的三篇：<a href="/frontier/2026-10-05-tested-opt-still-running.html">测过的优化，为什么还在跑</a>讲通过记录在授权规则变化后失效，<a href="/frontier/2026-10-06-mcp-tools-start-off.html">扫到的 MCP 工具，默认先关着</a>讲新增能力默认不放行，<a href="/frontier/2026-10-07-what-is-a-harness.html">Harness 是什么</a>讲这层软件由谁拥有和修改——这篇补的是同一层软件被自动改写时该记哪本账。</p>
 </section>
 </main>
 </div>
+<a class="fr-top" href="#" aria-label="返回页首">↑</a>
 </body>
 </html>

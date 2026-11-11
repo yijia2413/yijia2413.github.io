@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="zh-CN">
 <head>
   <meta charset="UTF-8">
@@ -44,43 +44,51 @@
       section { padding:18px 16px; }
     }
   </style>
+  <link rel="stylesheet" href="assets/article.css">
+  <script src="assets/article.js" defer></script>
 </head>
-<body>
-<nav>
-  <a href="/frontier">← Frontier</a>
-  <a href="/" style="color:#cbd5e1">@xixi003</a>
+<body class="frontier-article">
+<a class="fr-skip" href="#article-content">跳到正文</a>
+<nav class="fr-nav" aria-label="站点导航">
+  <a class="fr-brand" href="/frontier/"><span class="fr-mark" aria-hidden="true">F</span>Frontier<span class="fr-nav-label">技术与研究</span></a>
+  <a class="fr-home" href="/">@xixi003 <span aria-hidden="true">↗</span></a>
 </nav>
-<header>
+<div class="fr-progress" aria-hidden="true"><div></div></div>
+<header class="fr-hero">
   <div class="inner">
     <span class="badge">FRONTIER · 译文 · 2026-11-07</span>
     <h1>Agent 记忆由哪些部分组成</h1>
-    <p>Anthropic，2026 年 11 月 6 日。会话里写笔记，空闲时对着日志做梦：改错、建 wiki、把笔记抬进下一会话。这篇按原文译完。</p>
+    <p>Agent 写下笔记之后，还需要整理、纠错，并决定下一次会话该读什么。Anthropic 在 2026 年 11 月 6 日介绍了这套记忆分工：工作时记录经历，空闲时重新查看日志、修订笔记、建立 wiki，再把重要内容放到更容易读取的位置。原文把这种离线整理称为“做梦”。</p>
     <p class="src-note">原文：<a href="https://www.anthropic.com/research/components-of-agent-memory">The components of agent memory</a></p>
   </div>
 </header>
-<div class="layout">
-<aside>
-  <p>目录</p>
-  <a href="#open">开场</a>
-  <a href="#notes">记忆笔记</a>
-  <a href="#predict">记忆是对未来需要什么的预测</a>
-  <a href="#salience">显著什么，Claude 自己判</a>
-  <a href="#steer">怎样把 Claude 推向写记忆</a>
-  <a href="#dream-fix">做梦能改记忆</a>
-  <a href="#dream-rep">做梦能建新的记忆表示</a>
-  <a href="#promote">做梦能把笔记抬上记忆层级</a>
-  <a href="#goal">做梦能把记忆对准一个目标</a>
-  <a href="#gaps">做梦能补会话留下的缝</a>
-  <a href="#forward">往后想，往前看</a>
-  <a href="#src">出处</a>
+<div class="fr-layout">
+<aside aria-label="文章目录" class="fr-toc">
+<details open="">
+<summary>本文目录<span aria-hidden="true">＋</span></summary>
+<div class="fr-toc-links">
+<a href="#open">开场</a>
+<a href="#notes">1 记忆笔记</a>
+<a href="#predict">2 记忆是对未来需要什么的预测</a>
+<a href="#salience">3 Claude 怎样判断哪些经历值得记录</a>
+<a href="#steer">4 怎样把 Claude 推向写记忆</a>
+<a href="#dream-fix">5 做梦能改记忆</a>
+<a href="#dream-rep">6 做梦能建新的记忆表示</a>
+<a href="#promote">7 离线整理能调整笔记的存放层级</a>
+<a href="#goal">8 做梦能把记忆对准一个目标</a>
+<a href="#gaps">9 离线整理能补充会话中遗漏的内容</a>
+<a href="#forward">10 往后想，往前看</a>
+<a href="#src">11 出处</a>
+</div>
+</details>
 </aside>
-<main>
+<main class="fr-content" id="article-content">
 
 <section id="open">
   <div class="hero">
     <img src="components-of-agent-memory/hero.jpg" alt="两枚半圆相对，中间一条缝">
   </div>
-  <p>克尔凯郭尔写过：生活只能向后理解，却必须向前过。给 AI agent 设计记忆时，我们也碰到类似的困住。</p>
+  <p>克尔凯郭尔写过：生活只能向后理解，却必须向前过。设计 AI agent 的记忆时，我们也面临类似的问题：怎样从已经发生的经历里，选出未来还会用到的内容？</p>
   <p>人一边过日子，一边不停把记忆编码进去。<a href="https://stanford.edu/~jlmcc/papers/McCMcNaughtonOReilly95.pdf">海马体</a>在这里居中：当场抓住经历，记忆很快成形、立刻能用。可只有<a href="https://www.science.org/doi/10.1126/science.adk8261">一部分经历</a>会巩固成长知识。</p>
   <p>巩固很大一块发生在脑子离线的时候。睡觉时，以及安静的<a href="https://www.nature.com/articles/s41467-018-06213-1">休息</a>里，海马体重放最近的经历。这被当成把<a href="https://www.nature.com/articles/s41593-019-0467-3">那些经历慢慢蒸馏、并进新皮层</a>——我们当成「知识」的大部分，存在那里。</p>
   <p>Agent 记忆可以用类似的分工。Agent 把很多工作记在日志或转写里。Letta 和加州大学伯克利的研究者提出 <a href="https://arxiv.org/abs/2504.13171">sleep-time compute</a>：互动之间的空闲时间，用来重组已有上下文。同一想法也能帮 agent 整理记忆：对着日志反思，修错，或写出新的笔记和表示。这个过程常被<a href="https://platform.claude.com/docs/en/managed-agents/dreams">叫做</a><a href="https://research.google/blog/the-sleep-framework-a-new-way-for-llms-to-retain-knowledge-in-continual-learning/">做梦</a>（图 1）。</p>
@@ -88,7 +96,7 @@
     <img src="components-of-agent-memory/fig1-hierarchy.png" alt="会话之间的记忆层级：转写、笔记、wiki、注入上下文，做梦从转写往上走">
     <figcaption>图 1　会话之间的记忆层级。从下到上：可搜索的事件日志（转写）、Claude 写的记忆笔记、wiki 这类表示、每次会话开头注入的上下文。做梦从转写往上走，上层之间也能互相改。</figcaption>
   </figure>
-  <p>我们发现，做梦是给 Claude 有效记忆的一件有用工具。这篇写下我们怎样看 agent 记忆，并走几项评测：做梦怎么用，每一层对记忆组织贡献什么。</p>
+  <p>我们发现，离线整理有助于 Claude 形成有用的记忆。下面结合几项评测，介绍我们如何理解 agent 记忆，以及“做梦”怎样影响不同层次的记忆组织。</p>
 </section>
 
 <section id="notes">
@@ -119,7 +127,7 @@
 </section>
 
 <section id="salience">
-  <h2><span>3</span>显著什么，Claude 自己判</h2>
+  <h2><span>3</span>Claude 怎样判断哪些经历值得记录</h2>
   <p>我们也评了 Claude 玩 <em>Pokémon Red</em> 的能力。这游戏<a href="https://www.youtube.com/watch?v=CXhYDOvgpuU">逼 Claude 走复杂的长程任务</a>，用来测 Claude 对「什么该存进记忆」的判断。每次开跑，我们给每个模型一文件夹记忆文件，玩的时候可读可写（图 4）。</p>
   <figure>
     <img src="components-of-agent-memory/fig4-pokemon-memory.png" alt="Sonnet 3.7 和 Fable 5 的宝可梦记忆目录树图">
@@ -196,7 +204,7 @@
 </section>
 
 <section id="promote">
-  <h2><span>7</span>做梦能把笔记抬上记忆层级</h2>
+  <h2><span>7</span>离线整理能调整笔记的存放层级</h2>
   <p>做梦也能把笔记浮到记忆层级顶上，agent harness 可以在每次会话开头预先把它们加载进 Claude 的上下文（图 13）。这意味着 Claude 不必去搜它们，甚至不必知道有什么可搜。</p>
   <figure>
     <img src="components-of-agent-memory/fig13-inject.png" alt="做梦把笔记抬进每次会话的注入上下文">
@@ -221,9 +229,9 @@
 </section>
 
 <section id="gaps">
-  <h2><span>9</span>做梦能补会话留下的缝</h2>
+  <h2><span>9</span>离线整理能补充会话中遗漏的内容</h2>
   <p>Claude 写记忆笔记时，它只看见<em>那一次</em>会话里的上下文。做梦可以跨许多会话搜，找共同模式，或改正共同错误。</p>
-  <p>给 LAB 基准建 wiki 时（例如图 14），有时 Claude 会链到还没建出来的页。第二遍做梦合上了其中很多缝。一项任务上（图 15），做梦在 wiki 里找到 9 条链到缺失页的链接，把它们改指到同一份文档已有的页。它也加了 3 个新页，包括一份索引，用来改善这份 wiki。</p>
+  <p>给 LAB 基准建 wiki 时（例如图 14），有时 Claude 会链到还没建出来的页。第二遍离线整理修复了其中许多失效链接。一项任务上（图 15），做梦在 wiki 里找到 9 条链到缺失页的链接，把它们改指到同一份文档已有的页。它也加了 3 个新页，包括一份索引，用来改善这份 wiki。</p>
   <figure>
     <img src="components-of-agent-memory/fig15-wiki-graph.png" alt="第二遍做梦前后的 wiki 网络">
     <figcaption>图 15　第二遍做梦前：38 个条目。做梦找到 9 条断链，改指到已有页，并加了 3 页。</figcaption>
@@ -247,5 +255,6 @@
 
 </main>
 </div>
+<a class="fr-top" href="#" aria-label="返回页首">↑</a>
 </body>
 </html>

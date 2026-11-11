@@ -1,9 +1,9 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="zh-CN">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>条件写法相对规定和解释跟得少，Opus 上 64.2% 对 78.0%</title>
+  <title>同一条政策换个写法，Opus 的遵守率就变了 · Frontier</title>
   <style>
     :root { --ink:#0f172a; --muted:#475569; --line:#e2e8f0; --bg:#f8fafc; --blue:#1d4ed8; --blue-bg:#eff6ff; --amber:#b45309; --green:#047857; --rose:#be123c; }
     * { box-sizing: border-box; }
@@ -42,44 +42,52 @@
     svg text { font-family:-apple-system,"PingFang SC","Noto Sans SC",sans-serif; }
     @media (max-width:860px) { .layout { grid-template-columns:minmax(0,1fr); } aside { position:static; } h1 { font-size:1.55rem; } section { padding:18px 16px; } }
   </style>
+  <link rel="stylesheet" href="assets/article.css">
+  <script src="assets/article.js" defer></script>
 </head>
-<body>
-<nav style="position:sticky;top:0;z-index:50;background:#0f172a;border-bottom:1px solid #1e293b;padding:10px 24px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;">
-  <a href="/frontier" style="color:#93c5fd;text-decoration:none;font-size:14px;margin-right:16px;">← Frontier</a>
-  <a href="/" style="color:#cbd5e1;text-decoration:none;font-size:14px;">@xixi003</a>
+<body class="frontier-article">
+<a class="fr-skip" href="#article-content">跳到正文</a>
+<nav class="fr-nav" aria-label="站点导航">
+  <a class="fr-brand" href="/frontier/"><span class="fr-mark" aria-hidden="true">F</span>Frontier<span class="fr-nav-label">技术与研究</span></a>
+  <a class="fr-home" href="/">@xixi003 <span aria-hidden="true">↗</span></a>
 </nav>
+<div class="fr-progress" aria-hidden="true"><div></div></div>
 
-<header>
+<header class="fr-hero">
   <div class="inner">
     <span class="badge">FRONTIER · 2026-11-04 · Agent Context File</span>
-    <h1>条件写法相对规定和解释跟得少，Opus 上 64.2% 对 78.0%</h1>
-    <p>一篇预印本把同一条可机械核验的政策，用四种写法贴进仓库已有的 AGENTS.md / CLAUDE.md。Claude Code 2.1.227 配 claude-opus-5、有效 82 个任务：规定写法遵守率 78.0%，解释写法 77.2%，条件写法 64.2%。条件对规定、条件对解释显著，规定对解释不显著。对照面是规定和解释，不是四种里最低。标题不写 17.3%：那是同一 harness 上 sonnet-5 的禁止写法，分母 81，低于该行条件 35.6%，不和 64.2 进同一列。</p>
+    <h1>同一条政策换个写法，Opus 的遵守率就变了</h1>
+    <p>AGENTS.md 里同一条规则，换一种句式，执行情况也会变化。一篇预印本要求 Agent 在新增或修改的 Python 函数下标注 # @tracked。Claude Code 配 opus-5，在有效的 82 个任务上，规定写法的遵守率为 78.0%，解释写法为 77.2%，条件写法为 64.2%。这项比较针对这一条政策，不能据此认定所有条件句都不可靠。</p>
   </div>
 </header>
-<div class="layout">
-<aside>
-  <p>目录</p>
-  <a href="#what">1 64.2 对 78.0</a>
-  <a href="#setup">2 怎么计</a>
-  <a href="#why">3 三个显著组合里条件仍更低</a>
-  <a href="#aux">4 禁止句和开源权重是辅线</a>
-  <a href="#yours">5 你的 ACF 核的是还在还是还守</a>
-  <a href="#limit">6 这篇没测到的</a>
-  <a href="#src">7 出处</a>
+<div class="fr-layout">
+<aside aria-label="文章目录" class="fr-toc">
+<details open="">
+<summary>本文目录<span aria-hidden="true">＋</span></summary>
+<div class="fr-toc-links">
+<a href="#what">1 条件写法与规定写法的遵守率</a>
+<a href="#setup">2 任务、政策与计分方法</a>
+<a href="#why">3 三个显著组合里条件仍更低</a>
+<a href="#aux">4 禁止写法及开源权重模型的表现</a>
+<a href="#yours">5 指令文件需要对应可检查的行为</a>
+<a href="#limit">6 这篇没测到的</a>
+<a href="#src">7 出处</a>
+</div>
+</details>
 </aside>
-<main>
+<main class="fr-content" id="article-content">
 <section id="what">
-  <h2><span>1</span>64.2 对 78.0</h2>
-  <p>2026 年 11 月 3 日，arXiv 收到 <a href="https://arxiv.org/abs/2611.04367">Do Coding Agents Follow AGENTS.md? The Effect of Policy Wording on Instruction Compliance</a>（arXiv:2611.04367v1，cs.SE，作者 Rikuto Tsuchida、Youmei Fan、Kazumasa Shimari、Raula Gaikovina Kula、Kenichi Matsumoto；单位署奈良先端科学技术大学院大学、和歌山大学、大阪大学）。预印本，未经同行评审。abs 页 Comments 写 4 页、1 图、4 表，已投 IEICE、审稿中。本轮读的是 HTML 全文。复制包 <a href="https://doi.org/10.5281/zenodo.23148524">10.5281/zenodo.23148524</a>。</p>
-  <p>编码 agent 每个会话开头读仓库里的 Agent Context File（ACF），常见文件名是 <code>AGENTS.md</code> 或 <code>CLAUDE.md</code>。文件在，政策不一定被执行。论文引先前工作：仓库级评测里单条政策遵守率 79.75% 到 85.64%；要求拒绝贡献的规则，四个模型都是 0%。本轮没有打开被引的 [4] 和 [5]，这两个数字转引自该预印本。这篇改的是同一条政策怎么写。</p>
+  <h2><span>1</span>条件写法与规定写法的遵守率</h2>
+
+  <p>编码 agent 每个会话开头读仓库里的 Agent Context File（ACF），常见文件名是 <code>AGENTS.md</code> 或 <code>CLAUDE.md</code>。文件在，政策不一定被执行。论文引先前工作：仓库级评测里单条政策遵守率 79.75% 到 85.64%；要求拒绝贡献的规则，四个模型都是 0%。这两个数字转引自预印本所引的 [4] 和 [5]，本文未独立核验。这篇改的是同一条政策怎么写。</p>
   <div class="note">
-    <p style="margin:0">这篇只论证一个判断。判断是我的，依据是论文第 3 节 RQ1、表 3 和表 4（<a href="https://arxiv.org/html/2611.04367">HTML</a>）。判断是：条件写法相对规定和解释跟得少。Claude Code 配 claude-opus-5，有效 82 个任务：规定写法 78.0%，解释写法 77.2%，条件写法 64.2%，禁止写法 70.7%。Friedman χ²(3) = 17.68，p &lt; 0.001。Holm 校正后显著的两对是规定对条件（配对秩双列相关 +0.65）和解释对条件（+0.56）。规定对解释是 +0.00，不显著。opus-5 上条件和禁止不显著（C–Pr −0.27）。遵守率的单位是任务：每个任务三次跑次先收成一个比例，再在仍留下的任务上比四种写法。不要把 64.2 读成 64/82 次会话。</p>
+    <p style="margin:0">依据论文第 3 节 RQ1、表 3 和表 4（<a href="https://arxiv.org/html/2611.04367">HTML</a>）。条件写法相对规定和解释跟得少。Claude Code 配 claude-opus-5，有效 82 个任务：规定写法 78.0%，解释写法 77.2%，条件写法 64.2%，禁止写法 70.7%。Friedman χ²(3) = 17.68，p &lt; 0.001。Holm 校正后显著的两对是规定对条件（配对秩双列相关 +0.65）和解释对条件（+0.56）。规定对解释是 +0.00，不显著。opus-5 上条件和禁止不显著（C–Pr −0.27）。遵守率的单位是任务：每个任务三次跑次先收成一个比例，再在仍留下的任务上比四种写法。不要把 64.2 读成 64/82 次会话。</p>
   </div>
   <p>条件句要求 agent 先判断「这次改动算不算加函数」。论文讨论把这当成更容易被漏掉的原因，没有做消融。四种写法共用同一条标记政策、同一个位置、同一段原文。</p>
 </section>
 
 <section id="setup">
-  <h2><span>2</span>怎么计</h2>
+  <h2><span>2</span>任务、政策与计分方法</h2>
   <p>任务来自 CTXbench，仓库在任务提交时已经有 ACF。138 条有 ACF 的任务里留了 86 条，来自 10 个仓库。同时有 <code>AGENTS.md</code> 和 <code>CLAUDE.md</code> 时，留较大的那个、删较小的那个，再存成该 harness 会读的文件名。目标政策追加在 ACF 最后一行，前面空一行，原文不动。四种写法因此共用位置和周围文本。</p>
   <p>政策本身：在新增或修改的 Python 函数 <code>def</code> 行正下方加注释 <code># @tracked</code>。一次会话里，目标函数全部带上这条注释，才算遵守。agent 没加也没改任何 Python 函数的会话丢掉。每个任务在每种写法下至少留下一次有效跑次，才进分析。论文写每种写法 1,032 次会话：86 个任务 × 3 次 × 4 个 harness–模型组合。丢掉的会话：规定 72、解释 75、条件 63、禁止 74。表 3 的 n 是留下的任务数：82、81、80、80。</p>
   <div class="quote">
@@ -91,7 +99,7 @@
   <p>四种写法取自 Mohsenimofidi 等人的五类 ACF 政策，去掉了不表达明确政策的 Descriptive。每种风格一篇英文，长度和用词不同。论文局限写：风格和这一句实现绑在一起。</p>
   <p>四个组合。Claude Code 2.1.227 上对比 claude-opus-5 和 claude-sonnet-5，同一家、同一商业 harness、换能力档。qwen-code 0.21.2 上对比 gpt-oss-120b 和代码向的 Qwen3-Coder-Next，同一 harness、换模型和训练。论文把后一对写成 locally running open-weight models。每个组合、每种写法、每个任务三次。</p>
   <div class="tw">
-    <table>
+    <div class="fr-table" tabindex="0" role="region" aria-label="数据表格，可横向滚动"><table>
       <thead>
         <tr>
           <th>harness / 模型</th>
@@ -110,9 +118,9 @@
         <tr><td>qwen-code / gpt-oss-120b</td><td>80</td><td>6.7</td><td>20.4</td><td>0.8</td><td>0.4</td><td>59.62</td><td>&lt; 0.001</td></tr>
         <tr><td>qwen-code / Qwen3-Coder-Next</td><td>80</td><td>1.3</td><td>0.8</td><td>0.4</td><td>0.0</td><td>3.33</td><td>0.343</td></tr>
       </tbody>
-    </table>
+    </table></div>
   </div>
-  <p>表是论文表 3。论文把每个任务三次跑次的遵守率当成一个值。表 3 那一格怎么从这些任务值汇总，原文未写。Qwen3-Coder-Next 四种写法都低于 1.5%，Friedman 不显著。标题的 64.2 和 78.0 只挂第一行。</p>
+  <p>表是论文表 3。论文把每个任务三次跑次的遵守率当成一个值。表 3 那一格怎么从这些任务值汇总，原文未写。Qwen3-Coder-Next 四种写法都低于 1.5%，Friedman 不显著。64.2% 与 78.0% 对应第一行的 Opus 组合。</p>
   <figure>
     <svg viewBox="0 0 960 540" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Claude Code 配 opus-5，四种写法的遵守率">
       <rect width="960" height="540" fill="#ffffff"/>
@@ -139,7 +147,7 @@
       <text x="800" y="137" font-size="14" font-weight="700" fill="#be123c" text-anchor="middle">70.7</text>
       <text x="800" y="454" font-size="14" fill="#0f172a" text-anchor="middle">禁止</text>
       <text x="24" y="508" font-size="14" fill="#475569">虚线标 80。规定对解释不显著。条件对规定、条件对解释 Holm 校正后显著。柱高按 4 像素 / 1 个百分点，作图参数是我的。</text>
-      <text x="24" y="528" font-size="14" fill="#475569">70.7 的禁止写法未进显著对，不要和 64.2 收成同一句主判断。</text>
+      <text x="24" y="528" font-size="14" fill="#475569">禁止写法 70.7% 与条件写法 64.2% 的差异不显著。</text>
     </svg>
     <figcaption>图 1. Claude Code 配 claude-opus-5 的四种写法遵守率。数据来自论文表 3。柱高按 4 像素 / 1 个百分点。</figcaption>
   </figure>
@@ -147,8 +155,8 @@
 
 <section id="why">
   <h2><span>3</span>三个显著组合里条件仍更低</h2>
-  <p>四个组合里，三个组合的写法效应显著。这三个组合里，条件和规定、条件和解释都是条件更低，配对秩双列相关 0.29 到 0.97。这是本篇判断在另外两个组合上的重复，不是第二条判断。规定和解释谁高，论文写成不共用一个答案；那一截放第 4 节。</p>
-  <p>opus-5：条件 64.2%，规定 78.0%，解释 77.2%。sonnet-5：条件 35.6%，规定 71.6%，解释 49.4%。gpt-oss-120b：条件 0.8%，规定 6.7%，解释 20.4%。Qwen3-Coder-Next 四种写法都低于 1.5%，Friedman 不显著，不进这一截。</p>
+  <p>四个组合里，三个组合的写法效应显著。这三个组合里，条件和规定、条件和解释都是条件更低，配对秩双列相关 0.29 到 0.97。这一方向在另外两个组合中也出现了。规定和解释谁高，论文写成不共用一个答案；那一截放第 4 节。</p>
+  <p>opus-5：条件 64.2%，规定 78.0%，解释 77.2%。sonnet-5：条件 35.6%，规定 71.6%，解释 49.4%。gpt-oss-120b：条件 0.8%，规定 6.7%，解释 20.4%。Qwen3-Coder-Next 四种写法都低于 1.5%，Friedman 不显著，不属于效应显著的组合。</p>
   <figure>
     <svg viewBox="0 0 960 540" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="三个显著组合上规定、解释、条件的遵守率">
       <rect width="960" height="540" fill="#ffffff"/>
@@ -201,25 +209,25 @@
 </section>
 
 <section id="aux">
-  <h2><span>4</span>禁止句和开源权重是辅线</h2>
-  <p>这一节不是本篇判断。禁止写法在 sonnet-5 上 17.3%，在 gpt-oss-120b 上 0.4%，这两处相对规定和解释显著更低。sonnet-5 上条件还显著高于禁止（表 4 C–Pr +0.73）。opus-5 上禁止 70.7%，落在规定和条件之间，对规定的 +0.52、对条件的 −0.27 都未过 Holm。不要把 17.3 写进标题，也不要把条件当成四种里最低。</p>
-  <p>规定和解释谁高，换组合就换：sonnet-5 上规定 71.6%、解释 49.4%；gpt-oss-120b 上解释 20.4%、规定 6.7%（P–E −0.82）。论文写隔离不出 harness。那一截不进本篇判断。</p>
+  <h2><span>4</span>禁止写法及开源权重模型的表现</h2>
+  <p>这里还有另一组结果。禁止写法在 sonnet-5 上 17.3%，在 gpt-oss-120b 上 0.4%，这两处相对规定和解释显著更低。sonnet-5 上条件还显著高于禁止（表 4 C–Pr +0.73）。opus-5 上禁止 70.7%，落在规定和条件之间，对规定的 +0.52、对条件的 −0.27 都未过 Holm。17.3% 对应 sonnet-5 的禁止写法，条件句并非四种写法中始终最低。</p>
+  <p>规定和解释谁高，换组合就换：sonnet-5 上规定 71.6%、解释 49.4%；gpt-oss-120b 上解释 20.4%、规定 6.7%（P–E −0.82）。论文写隔离不出 harness。这一差异无法单独归因于模型或 harness。</p>
   <p>qwen-code 上两个开源权重模型，四种写法都低于 21%。gpt-oss-120b 最高是解释 20.4%；Qwen3-Coder-Next 全部低于 1.5%，写法之间不显著。论文写：写法只有在 agent 多少会遵守这条政策时才有意义。这两个模型只跑了 qwen-code，分不出天花板来自模型、harness，还是这一对。论文还写 Claude Code 这一对里能力较低的那个，遵守率跟着写法动得更厉害；跨度 14 个点对 54 个点，只有这一对模型，54 个点主要来自禁止 17.3%，分母 82 对 81。gpt-oss-120b 跨度 20.4 减 0.4 等于 20.0 个点，Qwen3-Coder-Next 只有 1.3 个点，方向不同。</p>
   <p>表 4 的 C–Pr 在 gpt-oss 上是 +1.00，原文这一格没有星号。0.8% 对 0.4%，不要单独拿来当效应。</p>
 </section>
 
 <section id="yours">
-  <h2><span>5</span>你的 ACF 核的是还在还是还守</h2>
-  <p>读完要看的是：自己的运行位、编辑起点、技能记录里，AGENTS.md / CLAUDE.md 的验收停在「文件里写了」，还是对着改过的函数再打一次机械检查。Claude Code 配 opus-5、有效 82 个任务，同一条 <code># @tracked</code> 政策：条件写法 64.2%，规定写法 78.0%。</p>
-  <p>技能记录如果只留「政策写成 if 你改了 X，就做 Y」，没有对着改过的函数再打一次机械检查，和这篇测到的缝是同一条。换成禁止句，在 sonnet-5 上更低。Qwen3-Coder-Next 这一截，改写法几乎不动。</p>
-  <p>下面是我的推断，论文没有在你的线上测过。要看自己的 ACF 还守不守，得固定一条可机械核验的政策，四种写法各跑同一批任务，看任务级遵守率，不要只看文件是不是被读进第一次请求。条件句论文讨论成更容易被漏掉，没有做消融。</p>
+  <h2><span>5</span>指令文件需要对应可检查的行为</h2>
+  <p>指令文件是否生效，需要检查改动产物。在这项实验中，同一条 <code># @tracked</code> 政策、同一个文件位置，Claude Code 配 opus-5 在有效的 82 个任务上，条件写法的遵守率为 64.2%，规定写法为 78.0%。文件被读入上下文，只是检查的起点。</p>
+  <p>改写政策后仍需要检查产物。换成禁止句也不保证改善：sonnet-5 在禁止写法下的遵守率更低；Qwen3-Coder-Next 几乎不随写法变化。</p>
+  <p>如果要比较自己仓库中的写法，我会固定一条能机械核验的政策，用同一批任务测试四种句式，比较任务级遵守率。论文提出条件句可能更容易被漏掉，但没有通过消融验证原因，也没有在这些仓库之外测试这套建议。</p>
   <p><a href="/frontier/2026-10-11-option-labels-are-input.html">10-11</a> 写过护栏选项名也是输入。<a href="/frontier/2026-11-03-kept-rule-still-violates.html">11-03</a> 写过压缩后规则还在、保留一侧仍违规。那两篇动的是决策模型的选项面，和压缩之后的工具调用。这篇动的是 ACF 里同一条政策的句式。</p>
 </section>
 
 <section id="limit">
   <h2><span>6</span>这篇没测到的</h2>
   <ul>
-    <li><strong>标题的 64.2 和 78.0 挂的是 Claude Code 2.1.227、claude-opus-5、有效 82 个任务、任务级遵守率，对照面是规定和解释。</strong>条件对规定、条件对解释显著。规定对解释不显著。opus-5 上条件和禁止不显著。sonnet-5 的禁止 17.3% 低于该行条件 35.6%，分母 81，不和 64.2 收成同一句。</li>
+    <li><strong>64.2% 与 78.0% 对应的是 Claude Code 2.1.227、claude-opus-5、有效 82 个任务、任务级遵守率，对照面是规定和解释。</strong>条件对规定、条件对解释显著。规定对解释不显著。opus-5 上条件和禁止不显著。sonnet-5 的禁止 17.3% 低于该行条件 35.6%，分母 81，与 Opus 的 64.2% 不是同一组比较。</li>
     <li><strong>每种风格一篇英文。</strong>风格和这一句实现绑在一起，长度和用词都不同。论文写差距可能来自句子而不是风格类别。条件在三个显著组合里都低于规定和解释，这一条还在；把「条件」推广到任意 if 句，这篇没测。</li>
     <li><strong>一条标记政策，全有才算遵守。</strong>新增或修改的 Python 函数全部带 <code># @tracked</code>。没改 Python 函数的会话丢掉，论文写这会抬高报告的水平，每个任务只留下一到三次。真实 ACF 里的「不要提交密钥」「结束前跑 linter」没有在这里测。</li>
     <li><strong>86 个任务来自 10 个仓库。</strong>同一仓库共用 ACF 和代码，论文写 p 值可能偏乐观。</li>
@@ -230,11 +238,13 @@
 
 <section id="src">
   <h2><span>7</span>出处</h2>
-  <p>数字来自预印本 HTML（<a href="https://arxiv.org/html/2611.04367">arxiv.org/html/2611.04367</a>，<a href="https://arxiv.org/pdf/2611.04367">pdf</a>，<a href="https://arxiv.org/abs/2611.04367">abs</a>，2026-11-03，未经同行评审）。论文摘要、第 1–6 节、表 1–4。HTML 页眉写 arXiv:2611.04367v1 [cs.SE] 03 Nov 2026。abs 页 Submitted on 3 Nov 2026，科目 cs.SE，Comments 写 4 pages, 1 figure, 4 tables，已投 IEICE、审稿中。复制包 <a href="https://doi.org/10.5281/zenodo.23148524">doi.org/10.5281/zenodo.23148524</a>，本轮打开 doi.org 页面：标题与论文一致，标 Dataset，Published October 5, 2026，Version 1.0。图 1、图 2 柱高按 4 像素 / 1 个百分点，作图参数是我的。78.0 − 64.2 = 13.8，论文写成 14 个点；71.6 − 17.3 = 54.3，论文写成 54，54 个点含禁止写法，不进标题。</p>
-  <p><a href="https://openai.com/news/">OpenAI 新闻页</a>本轮直接请求 403，未打开，未写入数字。<a href="https://www.anthropic.com/news">Anthropic 新闻页</a>本轮打开过，精选区仍挂 Opus 5.5（9-22）、S-1（10-26）、用药开发进展（10-27）；<a href="https://www.anthropic.com/research">研究页</a>打开过，未写入数字。Hacker News 首页本轮打开过，未作为本篇数字来源。Product Hunt 本轮碰到验证页，未打开。GitHub 本轮用 gh 打开过 Claude Code 发布列表，与论文用的 Claude Code 2.1.227 不是同一版，未写入版本号。X、Reddit 今日未覆盖：本机没有可用登录态。arXiv list/new：cs.AI 页眉仍停在 Wednesday, 28 October 2026，cs.CL 停在 Friday, 30 October 2026；cs.SE recent 有 Tue, 3 Nov 2026。本轮题目来自 export API 的 submittedDate 窗口。</p>
+  <p>2026 年 11 月 3 日，arXiv 收到 <a href="https://arxiv.org/abs/2611.04367">Do Coding Agents Follow AGENTS.md? The Effect of Policy Wording on Instruction Compliance</a>（arXiv:2611.04367v1，cs.SE，作者 Rikuto Tsuchida、Youmei Fan、Kazumasa Shimari、Raula Gaikovina Kula、Kenichi Matsumoto；单位署奈良先端科学技术大学院大学、和歌山大学、大阪大学）。预印本，未经同行评审。abs 页 Comments 写 4 页、1 图、4 表，已投 IEICE、审稿中。复制包 <a href="https://doi.org/10.5281/zenodo.23148524">10.5281/zenodo.23148524</a>。</p>
+  <p>数字来自预印本 HTML（<a href="https://arxiv.org/html/2611.04367">arxiv.org/html/2611.04367</a>，<a href="https://arxiv.org/pdf/2611.04367">pdf</a>，<a href="https://arxiv.org/abs/2611.04367">abs</a>，2026-11-03，未经同行评审）。论文摘要、第 1–6 节、表 1–4。HTML 页眉写 arXiv:2611.04367v1 [cs.SE] 03 Nov 2026。abs 页 Submitted on 3 Nov 2026，科目 cs.SE，Comments 写 4 pages, 1 figure, 4 tables，已投 IEICE、审稿中。复制包 <a href="https://doi.org/10.5281/zenodo.23148524">doi.org/10.5281/zenodo.23148524</a>，doi.org 页面标题与论文一致，类型为 Dataset，Published October 5, 2026，Version 1.0。图 1、图 2 柱高按 4 像素 / 1 个百分点，作图参数是我的。78.0 − 64.2 = 13.8，论文写成 14 个点；71.6 − 17.3 = 54.3，论文写成 54，54 个点含禁止写法，与主要比较的条件不同。</p>
+
   <p>谱系和增量层分别在 <a href="/frontier/rsi-llm-agent-self-evolution.html">递归自改进前世今生</a> 和 <a href="/frontier/llm-agent-tech-landscape.html">冻底座、改脚手架</a>。这篇只加一条：条件写法相对规定和解释跟得少，Opus 上 64.2% 对 78.0%。</p>
 </section>
 </main>
 </div>
+<a class="fr-top" href="#" aria-label="返回页首">↑</a>
 </body>
 </html>

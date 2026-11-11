@@ -1,9 +1,9 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="zh-CN">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>文档不够 k 条时，展示的 minItems 把超计从 34.5% 抬到 55.4%</title>
+  <title>文档条目不够时，minItems 会怎样影响抽取 · Frontier</title>
   <style>
     :root { --ink:#0f172a; --muted:#475569; --line:#e2e8f0; --bg:#f8fafc; --blue:#1d4ed8; --blue-bg:#eff6ff; --amber:#b45309; --green:#047857; --rose:#be123c; }
     * { box-sizing: border-box; }
@@ -41,39 +41,47 @@
     svg text { font-family:-apple-system,"PingFang SC","Noto Sans SC",sans-serif; }
     @media (max-width:860px) { .layout { grid-template-columns:minmax(0,1fr); } aside { position:static; } h1 { font-size:1.55rem; } section { padding:18px 16px; } }
   </style>
+  <link rel="stylesheet" href="assets/article.css">
+  <script src="assets/article.js" defer></script>
 </head>
-<body>
-<nav style="position:sticky;top:0;z-index:50;background:#0f172a;border-bottom:1px solid #1e293b;padding:10px 24px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;">
-  <a href="/frontier" style="color:#93c5fd;text-decoration:none;font-size:14px;margin-right:16px;">← Frontier</a>
-  <a href="/" style="color:#cbd5e1;text-decoration:none;font-size:14px;">@xixi003</a>
+<body class="frontier-article">
+<a class="fr-skip" href="#article-content">跳到正文</a>
+<nav class="fr-nav" aria-label="站点导航">
+  <a class="fr-brand" href="/frontier/"><span class="fr-mark" aria-hidden="true">F</span>Frontier<span class="fr-nav-label">技术与研究</span></a>
+  <a class="fr-home" href="/">@xixi003 <span aria-hidden="true">↗</span></a>
 </nav>
+<div class="fr-progress" aria-hidden="true"><div></div></div>
 
-<header>
+<header class="fr-hero">
   <div class="inner">
     <span class="badge">FRONTIER · 2026-10-23 · 结构化抽取</span>
-    <h1>文档不够 k 条时，展示的 minItems 把超计从 34.5% 抬到 55.4%</h1>
+    <h1>文档条目不够时，minItems 会怎样影响抽取</h1>
     <p>一篇 10 月 22 日的预印本只改 JSON Schema 里的最少条数。558 篇真实文档、八个开源权重模型。文档里的真条目少于 k 时，schema 写出但不强制的 minItems，把超过真值条数的列表从 34.5% 抬到 55.4%（k = 3 和 5 合在一起，每列 7,272 条输出）。强制解码到 90.1%。匹配器把 62.9%† 的额外条目标成原文里种类不对的字，子串源检查只有 46.6%† 能对上。</p>
   </div>
 </header>
-<div class="layout">
-<aside>
-  <p>目录</p>
-  <a href="#what">1 34.5% 到 55.4%</a>
-  <a href="#how">2 文档条数少于 k</a>
-  <a href="#ex">3 一封邮件，三条都在原文</a>
-  <a href="#pad">4 补进去的约一半过得了源检查</a>
-  <a href="#fix">5 常见修法只修一半</a>
-  <a href="#yours">6 你的 schema 里有没有最少条数</a>
-  <a href="#limit">7 这篇没测到的</a>
-  <a href="#src">8 出处</a>
+<div class="fr-layout">
+<aside aria-label="文章目录" class="fr-toc">
+<details open="">
+<summary>本文目录<span aria-hidden="true">＋</span></summary>
+<div class="fr-toc-links">
+<a href="#what">1 最少条数要求会让模型补长列表</a>
+<a href="#how">2 文档条数少于 k</a>
+<a href="#ex">3 一封邮件，三条都在原文</a>
+<a href="#pad">4 补出的条目仍可能在源文档中找到</a>
+<a href="#fix">5 常见修法能减少多少超计</a>
+<a href="#yours">6 你的 schema 里有没有最少条数</a>
+<a href="#limit">7 这篇没测到的</a>
+<a href="#src">8 出处</a>
+</div>
+</details>
 </aside>
-<main>
+<main class="fr-content" id="article-content">
 <section id="what">
-  <h2><span>1</span>34.5% 到 55.4%</h2>
-  <p>2026 年 10 月 22 日，arXiv 收到 <a href="https://arxiv.org/abs/2610.30997">Padding to k: A Minimum Count in the Schema Makes Open-Weight Models Pad Their Extraction Lists</a>（arXiv:2610.30997v1，cs.CL，作者 Abhishek Barali、Aayush Paudel，单位署尼泊尔圣泽维尔学院 / 特里布文大学）。预印本，未经同行评审。本轮读的是 PDF 全文。</p>
+  <h2><span>1</span>最少条数要求会让模型补长列表</h2>
+  <p><a href="https://arxiv.org/abs/2610.30997">Padding to k</a> 研究一个常见冲突：提示要求列出文档中的全部条目，schema 却要求列表至少有 k 条。如果原文条目少于 k，模型会怎样补足列表？</p>
   <p>抽取流水线向模型要一份跟 JSON Schema 走的对象。schema 可以写 <code>minItems: 3</code>。文档里只有一条请求时，三条真请求凑不齐。模型仍把列表写到三条。</p>
   <div class="note">
-    <p style="margin:0">这篇只论证一个判断。判断是我的，依据是论文表 16 和表 2 的 C2。八个 GPU 上的开源权重模型合在一起，文档真条目 n 少于请求条数 k，k = 3 和 5：schema 里展示、解码器不强制的 minItems，把超过 n 的列表从 34.5% 抬到 55.4%。同一对照下，实质性条目平均多 0.62 条（95% 区间 0.46 至 0.78），超计多 20.9 个点（19.5 至 22.3）。表 18、表 19 上无计数和展示下限两列都是每个型号 909 条（每列八个型号合计 7,272 条）。第 4 节的源检查、第 5 节的修法用来定位补进去的是什么、常见修法还剩多少，不当另一条主判断。</p>
+    <p style="margin:0">以下判断依据论文表 16 和表 2 的 C2。八个 GPU 上的开源权重模型合在一起，文档真条目 n 少于请求条数 k，k = 3 和 5：schema 里展示、解码器不强制的 minItems，把超过 n 的列表从 34.5% 抬到 55.4%。同一对照下，实质性条目平均多 0.62 条（95% 区间 0.46 至 0.78），超计多 20.9 个点（19.5 至 22.3）。表 18、表 19 上无计数和展示下限两列都是每个型号 909 条（每列八个型号合计 7,272 条）。</p>
   </div>
   <p>34.5% 已经含没有计数时的抽取误差。C2 是同一篇、同一模型上，展示下限减去无计数，模型自己本来就会多列的那一截被减掉了。无计数和展示下限不要拿去跟强制解码的 90.1% 做倍数：强制臂几乎不允许短于 k 的列表，填进去的是什么，和「写在提示里」不是同一问。注册的主度量是长度变化（+0.62 条）；34.5% 到 55.4% 是第二条度量，依赖作者把超计算失败。</p>
 </section>
@@ -82,12 +90,12 @@
   <h2><span>2</span>文档条数少于 k</h2>
   <p>558 篇来自九个带人工标注的集合：会议待办、邮件请求、收据商品、招聘广告技能、招聘广告知识、病案用药、评论特征、维基人名、小说直接引语。真条目 n 从 0 到 6。作者定计数规则，AI 助手套到 1,446 份候选列表上，作者 B 逐条手核，遗留情形两人裁定。清过的计数和原标注在 423 / 558 篇上相同（76%）。盲测：各人单独数 40 篇，分别对上 35 篇（87.5%）和 38 篇（95.0%）；40 篇里 15 篇被标成不好数。招聘广告技能最不稳（5 篇里对上 2 篇和 3 篇）。盲测量的是和书面规则是否一致。</p>
   <p>提示是一条用户消息：指令、按 LangChain <code>JsonOutputParser</code> 的方式贴进去的 schema、然后是文档。展示下限和强制下限送同一份提示，只换解码器（XGrammar）。温度 0、seed 0、思考关掉；gpt-oss-20b 关不掉推理，跑低力度。八个 GPU 模型：Qwen3.5 的 0.8B / 2B / 9B / 27B、Gemma 4 31B、Olmo 3.1 32B、Ministral 3 14B、gpt-oss-20b。另外六个托管开源权重模型只作参照，从不和 GPU 八个合在一起。</p>
-  <p>计划先冻一版，再在 60 篇上做预实验，然后把终版注册到 OSF（<a href="https://osf.io/e4r9f">osf.io/e4r9f</a>；本轮页面没打开，顺序按论文转述）。五条验证对照一起做 Holm 校正。主度量是长度变化，不靠条目匹配；超计是第二条度量。带 † 的数字靠冻结的条目匹配器。</p>
+  <p>计划先冻一版，再在 60 篇上做预实验，然后把终版注册到 OSF（<a href="https://osf.io/e4r9f">osf.io/e4r9f</a>；计划页未直接核验，注册顺序按论文转述）。五条验证对照一起做 Holm 校正。主度量是长度变化，不靠条目匹配；超计是第二条度量。带 † 的数字靠冻结的条目匹配器。</p>
 </section>
 
 <section id="ex">
   <h2><span>3</span>一封邮件，三条都在原文</h2>
-  <p>论文图 1 不是随机抽的，用来把形状说清楚。一封 Enron 邮件，答案列表里只有 1 条请求。提示写「列出全部请求」，schema 的 requests 数组写 <code>minItems: 3</code>，写在提示里、不强制。Qwen3.5-9B 全文跑出来的三条：</p>
+  <p>论文图 1 用一个有意挑选的例子说明问题。一封 Enron 邮件中只有 1 条请求，提示要求「列出全部请求」，schema 的 requests 数组却写了 <code>minItems: 3</code>。这个下限只展示在提示中，并未强制解码。Qwen3.5-9B 最后列出三条：</p>
   <ol>
     <li>「就 2002 年法律费用分摊，你估计自己会在 EGM 事项上花多少比例的时间？」——这一条是请求。</li>
     <li>「来要这个数的会计组知道你是在估。」——原文，不是请求。</li>
@@ -97,10 +105,10 @@
 </section>
 
 <section id="pad">
-  <h2><span>4</span>补进去的约一半过得了源检查</h2>
+  <h2><span>4</span>补出的条目仍可能在源文档中找到</h2>
   <p>表 16，八个 GPU 模型合在一起，n &lt; k，k = 3 和 5：</p>
   <div class="tw">
-    <table>
+    <div class="fr-table" tabindex="0" role="region" aria-label="数据表格，可横向滚动"><table>
       <thead>
         <tr><th>条件</th><th>超计 %</th><th>刚好 k 条 %</th><th>看不懂 %</th><th>真条目漏掉 % †</th></tr>
       </thead>
@@ -112,7 +120,7 @@
         <tr><td>强制下限</td><td>90.1</td><td>71.8</td><td>0.2</td><td>8.6</td></tr>
         <tr><td>强制下限加 N/A</td><td>51.0</td><td>78.5</td><td>0.1</td><td>13.6</td></tr>
       </tbody>
-    </table>
+    </table></div>
   </div>
   <p>漏掉一列的分母是 n ≥ 1 的文档上的真条目。展示下限几乎没把漏掉压下去（18.2 对 17.0），多出来的不是无计数时漏掉的真条目。刚好 k 条从 5.6% 到 35.5%。强制下限把短于 k 的列表压到 0.6%，90.1% 超计，这一截主要是解码器不许短列表。</p>
   <figure>
@@ -192,7 +200,7 @@
 </section>
 
 <section id="fix">
-  <h2><span>5</span>常见修法只修一半</h2>
+  <h2><span>5</span>常见修法能减少多少超计</h2>
   <p>文档里已经有至少 k 条时，展示下限不加长列表（−0.15 条，区间 −0.30 至 −0.02；这一格含 k = 1、3 和 5）。效应来自填不上的空位：n &lt; k 上的变化比 n ≥ k 上的变化多 0.93 条（k = 3 和 5）。</p>
   <p>加一句「如果文档里不够 k 条，把有的都列出来」（论文从 ScrapeGraphAI-100k 的真实抽取提示改来的）：相对无计数，列表短 0.77 条，超计低 3.5 个点，落到 31.0%。八个里七个相对纯展示下限缩短；Qwen3.5-27B 仍比无计数多 0.46 条。代价是真条目漏掉从 17.0%† 到 24.3%†。</p>
   <p>强制下限上允许 N/A：每个被迫空位上的超额条目少 0.54（表 2 的 C5，区间 −0.58 至 −0.50）。超计仍有 51.0%（表 16，与 34.5% 同一口径）。两个最小的型号几乎不用它：Qwen3.5-0.8B 仍超计 89.6%（908 条），2B 仍 83.0%（907 条）。</p>
@@ -201,10 +209,10 @@
 
 <section id="yours">
   <h2><span>6</span>你的 schema 里有没有最少条数</h2>
-  <p>读完要看的是自己的运行位。抽取、工具调用、表单填空，只要 schema 或提示里写了列表最少几条，文档又经常不够，就会落到 n &lt; k 这一格。JSONSchemaBench 的 9,542 份真实 schema 里，7.7% 给字符串或对象的开放数组写了 minItems ≥ 1；minItems ≥ 2 是 0.3%（事后，表 34，分母都是 9,542）。公开 schema 里列表最小值几乎都是 1，k = 3 和 5 更少见。k = 1 的实测在空文档上：105 篇没有真条目，无计数时 34.9% 的输出至少有一条实质性条目，展示 minItems: 1 抬到 42.3%，多 7.4 个点（区间 5.6 至 9.2；表 3）。这是「有没有列出东西」，和标题里的超计不是同一列。</p>
+  <p>抽取、工具调用或表单填空中，只要 schema 要求的最少条数多于文档实际条数，就会出现实验中的 n &lt; k 冲突。JSONSchemaBench 的 9,542 份真实 schema 里，7.7% 对字符串或对象的开放数组设置了 minItems ≥ 1；minItems ≥ 2 的只有 0.3%（事后分析，表 34）。因此，公开 schema 中更常见的是下限为 1，k = 3 和 5 较少见。下限为 1 的实验使用 105 篇没有真条目的文档：无计数要求时，34.9% 的输出至少含一个实质性条目；展示 minItems: 1 后升到 42.3%，多 7.4 个点（区间 5.6 至 9.2；表 3）。这里测的是空文档会不会被列出条目，与标题中的超计不是同一个指标。</p>
   <p>过源检查挡不住落款和「会计组知道你是在估」这种原文。无计数时列表已经刚好 n 条的那些单元上，展示下限仍让 35.2% 变成超计（区间 33.0 至 37.5；表 33，事后；2,275 个模型×文档对，k = 3 或 5 共 3,884 个单元）。校验重试会把最低条数再说一遍。</p>
   <p><a href="/frontier/2026-10-11-option-labels-are-input.html">10-11</a> 写过，护栏的选项名也是输入。<a href="/frontier/2026-10-19-visible-tools-are-input.html">10-19</a> 写过，可见工具列表也是输入。这一篇补的是第三段表面：schema 里的最少条数。论文给 schema 作者的第一条是：文档自己决定长度的列表，不要写 minItems。这条是他们在测到的开源权重模型上的建议，没有在生产流水线上做对照。</p>
-  <p>下面是我的推断，论文没有在 LangChain 默认重试或托管闭源 API 上做主实验。编辑起点如果是「输出必须合法 JSON」，合法列表仍可以是三条原文拼出来的超计。要看见 20.9 个点那一列，看的是这一次请求里写了多少 minItems、文档够不够，仓库里 schema 文件的总数对不上这一列。</p>
+  <p>我会把 JSON 格式合法和抽取内容正确分开检查。列表即使只拼入原文中的句子，也可能凑出了并不存在的额外条目。对应实验中 20.9 个点的变化，需要看每次请求的 minItems 与文档实际条数，而非仓库里有多少 schema 文件。论文没有在 LangChain 默认重试或托管闭源 API 上做主实验，这只是工程外推。</p>
 </section>
 
 <section id="limit">
@@ -224,11 +232,13 @@
 
 <section id="src">
   <h2><span>8</span>出处</h2>
-  <p>数字来自预印本 PDF 全文（<a href="https://arxiv.org/pdf/2610.30997">arxiv.org/pdf/2610.30997</a>，<a href="https://arxiv.org/abs/2610.30997">abs</a>，2026-10-22，未经同行评审）。表 1 至表 4、表 16、表 2、表 3、表 18、表 19、表 22、表 23、表 28、表 30、表 31、表 33、表 34，以及第 3–6 节、附录 M。export.arxiv.org 的 Atom 里 published 为 2026-10-22T09:38:58Z。代码和跑次记录在 <a href="https://github.com/AbhishekBarali/padding-to-k">github.com/AbhishekBarali/padding-to-k</a>。计划页 <a href="https://osf.io/e4r9f">osf.io/e4r9f</a> 本轮抓取失败，计划内容按论文转述。</p>
-  <p><a href="https://openai.com/news/">OpenAI 新闻页</a>直连 403，本轮经 r.jina.ai 打开过，列出标题为「Build more responsive apps with the Decisions API」的 10 月 22 日条目，没有带这一组分母的抽取测量，未写入数字。<a href="https://www.anthropic.com/news">Anthropic 新闻页</a>本轮打开过，10 月 22 日有把 Agent Skills 捐给 Agentic AI Foundation，同样未写入数字。Hacker News、Product Hunt、GitHub 当日可见条目未作为数字来源。X、Reddit 今日未覆盖：本机没有可用登录态。</p>
+  <p>2026 年 10 月 22 日，arXiv 收到 <a href="https://arxiv.org/abs/2610.30997">Padding to k: A Minimum Count in the Schema Makes Open-Weight Models Pad Their Extraction Lists</a>（arXiv:2610.30997v1，cs.CL，作者 Abhishek Barali、Aayush Paudel，单位署尼泊尔圣泽维尔学院 / 特里布文大学）。预印本，未经同行评审。</p>
+  <p>数字来自预印本 PDF 全文（<a href="https://arxiv.org/pdf/2610.30997">arxiv.org/pdf/2610.30997</a>，<a href="https://arxiv.org/abs/2610.30997">abs</a>，2026-10-22，未经同行评审）。表 1 至表 4、表 16、表 2、表 3、表 18、表 19、表 22、表 23、表 28、表 30、表 31、表 33、表 34，以及第 3–6 节、附录 M。export.arxiv.org 的 Atom 里 published 为 2026-10-22T09:38:58Z。代码和跑次记录在 <a href="https://github.com/AbhishekBarali/padding-to-k">github.com/AbhishekBarali/padding-to-k</a>。计划页 <a href="https://osf.io/e4r9f">osf.io/e4r9f</a> 未直接核验，计划内容按论文转述。</p>
+
   <p>谱系和增量层分别在 <a href="/frontier/rsi-llm-agent-self-evolution.html">递归自改进前世今生</a> 和 <a href="/frontier/llm-agent-tech-landscape.html">冻底座、改脚手架</a>。这篇只加一条：schema 里展示的最少条数，在文档不够的时候，会把抽取列表往 k 上凑；八个开源权重模型、n &lt; k、k = 3 和 5 上，超计从 34.5% 到 55.4%。</p>
 </section>
 </main>
 </div>
+<a class="fr-top" href="#" aria-label="返回页首">↑</a>
 </body>
 </html>

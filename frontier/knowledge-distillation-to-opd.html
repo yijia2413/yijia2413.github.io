@@ -1,9 +1,9 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="zh-CN">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>知识蒸馏前世今生：从 Hinton 软标签到 OPD</title>
+  <title>知识蒸馏：从软标签到 On-Policy Distillation · Frontier</title>
   <style>
     :root {
       --primary: #1d4ed8;
@@ -368,7 +368,7 @@
       .container { grid-template-columns: 1fr; }
       aside { position: static; max-height: none; }
     }
-  
+
     .ref-list { font-size: 0.9rem; color: #334155; }
     .ref-list li { margin-bottom: 10px; line-height: 1.55; }
     .ref-list a { color: #1d4ed8; word-break: break-all; }
@@ -406,42 +406,48 @@
     main a { color: #1d4ed8; text-decoration: underline; word-break: break-all; }
     main a:hover { color: #1e3a8a; }
 </style>
+  <link rel="stylesheet" href="assets/article.css">
+  <script src="assets/article.js" defer></script>
 </head>
-<body>
-<nav style="position:sticky;top:0;z-index:50;background:#0f172a;border-bottom:1px solid #1e293b;padding:10px 24px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;">
-  <a href="/frontier" style="color:#93c5fd;text-decoration:none;font-size:14px;margin-right:16px;">← Frontier</a>
-  <a href="/" style="color:#cbd5e1;text-decoration:none;font-size:14px;">@xixi003</a>
+<body class="frontier-article">
+<a class="fr-skip" href="#article-content">跳到正文</a>
+<nav class="fr-nav" aria-label="站点导航">
+  <a class="fr-brand" href="/frontier/"><span class="fr-mark" aria-hidden="true">F</span>Frontier<span class="fr-nav-label">技术与研究</span></a>
+  <a class="fr-home" href="/">@xixi003 <span aria-hidden="true">↗</span></a>
 </nav>
+<div class="fr-progress" aria-hidden="true"><div></div></div>
 
-<header>
+<header class="fr-hero">
   <div class="header-badge">Frontier · 蒸馏技术史 · 2026</div>
-  <h1>知识蒸馏前世今生：从软标签到 On-Policy Distillation</h1>
-  <p>蒸馏一直在做同一件事：让小模型学大模型的行为。变的是「学什么」和「在谁踩过的状态上学」。这条线从 2006 年的模型压缩，走到 2025–2026 年后训练标配的 OPD。</p>
+  <h1>知识蒸馏：从软标签到 On-Policy Distillation</h1>
+  <p>知识蒸馏让学生模型学习教师模型的行为。它既可以缩小模型，也可以把推理能力、多个专家的输出或长思维链转移到另一个模型里。本文沿着 2006 年的模型压缩、Hinton 的软标签、LLM 序列蒸馏，讲到 2025–2026 年的 On-Policy Distillation（OPD）：学生在自己生成的状态上向教师学习。</p>
 </header>
 
-<div class="container">
-  <aside>
-    <h3>目录导航</h3>
-    <ul>
-      <li><a href="#sec-one-sentence">1. 学什么，在谁踩过的状态上学</a></li>
-      <li><a href="#sec-timeline">2. 时间线</a></li>
-      <li><a href="#sec-hinton">3. Hinton：软标签里的暗知识</a></li>
-      <li><a href="#sec-bert">4. Transformer 压缩年代</a></li>
-      <li><a href="#sec-llm-sft">5. LLM 时代：先变成抄作业</a></li>
-      <li><a href="#sec-kl">6. 前向 KL 和反向 KL</a></li>
-      <li><a href="#sec-exposure">7. 曝光偏差：离线蒸馏的硬伤</a></li>
-      <li><a href="#sec-minillm">8. MiniLLM、GKD、DistiLLM</a></li>
-      <li><a href="#sec-opd">9. OPD 是什么，怎么训练</a></li>
-      <li><a href="#sec-variants">10. OPD 变种地图</a></li>
-      <li><a href="#sec-recipe">11. 能跑起来的配方</a></li>
-      <li><a href="#sec-fail">12. 什么时候会失败</a></li>
-      <li><a href="#sec-refs">13. 关键论文</a></li>
-    </ul>
-  </aside>
-  <main>
+<div class="fr-layout">
+  <aside aria-label="文章目录" class="fr-toc">
+<details open="">
+<summary>本文目录<span aria-hidden="true">＋</span></summary>
+<div class="fr-toc-links">
+<a href="#sec-one-sentence">1 蒸馏学什么，训练状态从哪里来</a>
+<a href="#sec-timeline">2 时间线</a>
+<a href="#sec-hinton">3 Hinton：软标签里的暗知识</a>
+<a href="#sec-bert">4 Transformer 压缩年代</a>
+<a href="#sec-llm-sft">5 LLM 时代的序列蒸馏</a>
+<a href="#sec-kl">6 前向 KL 和反向 KL</a>
+<a href="#sec-exposure">7 曝光偏差：离线蒸馏的硬伤</a>
+<a href="#sec-minillm">8 MiniLLM、GKD、DistiLLM：OPD 的三篇奠基</a>
+<a href="#sec-opd">9 OPD 是什么，怎么训练</a>
+<a href="#sec-variants">10 OPD 变种地图</a>
+<a href="#sec-recipe">11 训练流程与实现示例</a>
+<a href="#sec-fail">12 什么时候会失败</a>
+<a href="#sec-refs">13 关键论文（按阅读顺序）</a>
+</div>
+</details>
+</aside>
+  <main class="fr-content" id="article-content">
 
 <section id="sec-one-sentence" class="section-card">
-  <h2><span class="num">1</span> 学什么，在谁踩过的状态上学</h2>
+  <h2><span class="num">1</span> 蒸馏学什么，训练状态从哪里来</h2>
   <p>蒸馏是一种训练方式：<strong>教师已经会了，学生容量更小或更便宜，让学生去对齐教师的行为。</strong></p>
   <p>对齐的对象可以很不一样：</p>
   <div class="steps-grid">
@@ -468,7 +474,7 @@
 
 <section id="sec-timeline" class="section-card">
   <h2><span class="num">2</span> 时间线</h2>
-  <p>名字是 2015 年 Hinton、Vinyals、Dean 给的。事情本身更早：2006 年 Buciluǎ、Caruana、Niculescu-Mizil 已经把集成模型压进一个小网，当时叫 model compression。</p>
+  <p>Hinton、Vinyals 和 Dean 在 2015 年使用了知识蒸馏这个名称。相关工作更早：2006 年，Buciluǎ、Caruana 和 Niculescu-Mizil 已经尝试把集成模型压缩到一个小型网络，当时称为 model compression。</p>
   <div class="figure-wrapper">
   <div class="figure-svg-container"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 900" width="100%" height="auto" preserveAspectRatio="xMidYMid meet">
   <style>
@@ -546,7 +552,7 @@
 </div>
   <div class="figure-caption">图 1　知识蒸馏时间线。上半是压缩，下半是生成模型开始在自己的错误前缀上接受教师纠正。</div>
 </div>
-  <p>读这条线时，不要把每一站都当成「把模型变小」。早期目标确实是部署：手机上跑不动大网。LLM 之后，蒸馏经常发生在<strong>差不多大的模型之间</strong>：把 RL 训出来的推理能力灌回基座、把多个专家合并成一个学生、把长思维链压成短回复。压缩还在，但已经不是唯一动机。</p>
+  <p>蒸馏的早期目标主要是降低部署成本，例如让手机能运行较小的模型。LLM 时代，蒸馏也发生在<strong>规模相近的模型之间</strong>：把 RL 训练得到的推理能力转移给基座，合并多个专家，或把长思维链压成短回复。模型压缩仍然重要，但已不能概括蒸馏的全部用途。</p>
 </section>
 
 <section id="sec-hinton" class="section-card">
@@ -634,7 +640,7 @@
   <h2><span class="num">4</span> Transformer 压缩年代</h2>
   <p>2018 年底 BERT 出来之后，蒸馏的主战场从 CNN 分类转到「把 12 层 BERT 变成能上线的小编码器」。三篇要点名。</p>
   <div class="table-container">
-    <table>
+    <div class="fr-table" tabindex="0" role="region" aria-label="数据表格，可横向滚动"><table>
       <thead>
         <tr><th>模型</th><th>年份</th><th>对齐什么</th><th>结果（相对 BERT-base）</th></tr>
       </thead>
@@ -658,7 +664,7 @@
           <td>不必和学生头数一致；大教师往往蒸中上层比蒸最后一层更好</td>
         </tr>
       </tbody>
-    </table>
+    </table></div>
   </div>
   <p>这三篇把「知识」从 logits 扩成了 Transformer 内部的三种东西：</p>
   <ul>
@@ -672,7 +678,7 @@
 </section>
 
 <section id="sec-llm-sft" class="section-card">
-  <h2><span class="num">5</span> LLM 时代：先变成抄作业</h2>
+  <h2><span class="num">5</span> LLM 时代的序列蒸馏</h2>
   <p>生成模型和分类模型有一个本质差别：输出不是一个类别，是一条任意长的 token 序列。Kim &amp; Rush 2016 在神经机器翻译里已经把这件事拆开了。</p>
   <h3>词级蒸馏 vs 序列级蒸馏</h3>
   <p><strong>Word-KD</strong>：每个位置上，学生去拟合教师的下一个词分布。还是 Hinton，只是每步做一次。</p>
@@ -846,13 +852,13 @@
   </ul>
   <p>实验覆盖 120M 到 13B，指令跟随里比标准 KD 更准、校准更好、长文本更稳。代码在 Microsoft LMOps。</p>
 
-  <h3>GKD：一个 λ 滑过去</h3>
+  <h3>GKD：用 λ 调整训练状态的来源</h3>
   <p>Agarwal 等人不急着站队。他们把采样写成混合策略：</p>
   <div class="eq">π_mix = λ π_θ  +  (1−λ) π_data</div>
   <p>λ=0 退回离线 KD，λ=1 是纯在策略。散度可以选前向 KL、反向 KL 或 JSD。他们还指出，在策略蒸馏可以和 RL 微调接在同一条管线上。经验上 λ≥0.5 往往已经比纯离线好。翻译这种「答案有几个但不是无限个」的任务，JSD 经常更合适。</p>
   <p>GKD 是现在很多框架里「GKD OPD」这个名字的来源：有全量或 top-k logits 时，直接反传 token 级散度，不必走 REINFORCE。</p>
 
-  <h3>DistiLLM：让早期训练别炸</h3>
+  <h3>DistiLLM：改善早期训练的稳定性</h3>
   <p>纯 KL 在师生分布几乎不重叠时会出数值问题。前向 KL 遇到教师给了近 0 的 token 会梯度爆炸；反向 KL 则对那些区域视而不见。DistiLLM 的 skew KL 把 KL 的第二个参数往第一个上混：</p>
   <div class="eq">SKL_α(p ∥ q) = KL( p  ∥  α p + (1−α) q )</div>
   <p>分母被自己撑住，log 比有下界。对称地还有 skew reverse KL。采样上他们不用固定 λ，而是自适应调度：早期多用教师样本（便宜、稳），学生像样了再切到自己的 rollout，并加 replay buffer。可以把它理解成「把 GKD 的 λ 从超参变成课程」。</p>
@@ -943,7 +949,7 @@ traj[<span class="code-string">"advantages"</span>] = -(logp_s - logp_t)
 training.forward_backward(traj, loss_fn=<span class="code-string">"importance_sampling"</span>)</code></pre>
   <h3>和 SFT、RL 各差在哪</h3>
   <div class="table-container">
-    <table>
+    <div class="fr-table" tabindex="0" role="region" aria-label="数据表格，可横向滚动"><table>
       <thead>
         <tr><th></th><th>SFT / SeqKD</th><th>RLVR（结果奖励）</th><th>OPD</th></tr>
       </thead>
@@ -973,7 +979,7 @@ training.forward_backward(traj, loss_fn=<span class="code-string">"importance_sa
           <td>至少要 logprob；纯文本不够</td>
         </tr>
       </tbody>
-    </table>
+    </table></div>
   </div>
   <p>Thinking Machines 用 Qwen3 做了对照：从同一个初始化出发，把 RL 训出来的策略再蒸回去，OPD 大约 7–10 倍更少的梯度步就追上教师，折算算力大约 50–100 倍。原因很具体——RL 必须把 rollout 跑完才有对错；OPD 每个 token 都能算，甚至能用短的、截断的轨迹。</p>
   <p>verl 把同一件事拆成两条实现：</p>
@@ -1098,7 +1104,7 @@ training.forward_backward(traj, loss_fn=<span class="code-string">"importance_sa
   <h3>10.4 监督打在哪：词表太大以后</h3>
   <p>逐步反向 KL 有三种粒度：</p>
   <div class="table-container">
-    <table>
+    <div class="fr-table" tabindex="0" role="region" aria-label="数据表格，可横向滚动"><table>
       <thead>
         <tr><th>粒度</th><th>做法</th><th>代价</th></tr>
       </thead>
@@ -1119,7 +1125,7 @@ training.forward_backward(traj, loss_fn=<span class="code-string">"importance_sa
           <td>k=16 常见；有截断偏差，但稳</td>
         </tr>
       </tbody>
-    </table>
+    </table></div>
   </div>
   <p><em>Rethinking OPD</em> 观察到：成功的 run 里，师生高概率 token 的 overlap 从约 72% 升到 91%，这小撮共享 token 集中了 97%–99% 的质量。只优化 overlap 集合，效果能打平全量 top-k。失败的 run 从一开始 overlap 就卡住。</p>
   <p><strong>OPRD</strong>（2026）把监督从 LM head 之后挪到隐状态：在同一条学生轨迹上对齐选定层的表示，MSE，确定、低方差，还绕开 |V|。他们报过比 top-k OPD 快约 1.44 倍、更新时峰值显存低约 54%，并且能把学生-教师差距再往下压。多教师合并时特别有用——全词表 OPD 要为每个教师物化 [B, T, |V|] 的 logit 张量。</p>
@@ -1127,7 +1133,7 @@ training.forward_backward(traj, loss_fn=<span class="code-string">"importance_sa
 </section>
 
 <section id="sec-recipe" class="section-card">
-  <h2><span class="num">11</span> 能跑起来的配方</h2>
+  <h2><span class="num">11</span> 训练流程与实现示例</h2>
   <p>下面这套不是论文最优，是 2025–2026 年产线和复现博客反复出现的最小组合。Qwen3、Thinking Machines 对 Qwen3 的复现、verl 文档，走的都是这条骨架。</p>
   <div class="figure-wrapper">
   <div class="figure-svg-container"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 900" width="100%" height="auto" preserveAspectRatio="xMidYMid meet">
@@ -1329,5 +1335,6 @@ training.forward_backward(traj, loss_fn=<span class="code-string">"importance_sa
 <footer style="text-align: center; padding: 40px 20px; color: #64748b; font-size: 0.88rem; border-top: 1px solid #e2e8f0; background: #ffffff;">
   知识蒸馏前世今生 · Frontier · 2026
 </footer>
+<a class="fr-top" href="#" aria-label="返回页首">↑</a>
 </body>
 </html>

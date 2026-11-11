@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="zh-CN">
 <head>
   <meta charset="UTF-8">
@@ -34,38 +34,46 @@
     svg text { font-family:-apple-system,"PingFang SC","Noto Sans SC",sans-serif; }
     @media (max-width:860px) { .layout { grid-template-columns:1fr; } aside { position:static; } h1 { font-size:1.55rem; } section { padding:18px 16px; } }
   </style>
+  <link rel="stylesheet" href="assets/article.css">
+  <script src="assets/article.js" defer></script>
 </head>
-<body>
-<nav style="position:sticky;top:0;z-index:50;background:#0f172a;border-bottom:1px solid #1e293b;padding:10px 24px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;">
-  <a href="/frontier" style="color:#93c5fd;text-decoration:none;font-size:14px;margin-right:16px;">← Frontier</a>
-  <a href="/" style="color:#cbd5e1;text-decoration:none;font-size:14px;">@xixi003</a>
+<body class="frontier-article">
+<a class="fr-skip" href="#article-content">跳到正文</a>
+<nav class="fr-nav" aria-label="站点导航">
+  <a class="fr-brand" href="/frontier/"><span class="fr-mark" aria-hidden="true">F</span>Frontier<span class="fr-nav-label">技术与研究</span></a>
+  <a class="fr-home" href="/">@xixi003 <span aria-hidden="true">↗</span></a>
 </nav>
+<div class="fr-progress" aria-hidden="true"><div></div></div>
 
-<header>
+<header class="fr-hero">
   <div class="inner">
     <span class="badge">FRONTIER · 2026-10-08 · openai/math</span>
     <h1>撤稿的三篇，都在 Lean 没盖到的那一半</h1>
     <p>OpenAI 一次放出 719 份数学稿，形式化覆盖了 300 条顶层结果。隔天撤回 3 篇、修补 14 篇。撤掉的三篇在两版形式化目录里都没出现过。错误从一个符号开始，沿引用链传了两层。</p>
   </div>
 </header>
-<div class="layout">
-<aside>
-  <p>目录</p>
-  <a href="#what">1 719 份稿，隔天撤了 3 篇</a>
-  <a href="#where">2 撤稿落在哪一半</a>
-  <a href="#chain">3 一个符号传两层</a>
-  <a href="#verifier">4 验证器自己盖了多少</a>
-  <a href="#mech">5 做对的机制</a>
-  <a href="#yours">6 形式化没盖到的那一半</a>
-  <a href="#outside">7 场外声音</a>
-  <a href="#src">8 出处</a>
+<div class="fr-layout">
+<aside aria-label="文章目录" class="fr-toc">
+<details open="">
+<summary>本文目录<span aria-hidden="true">＋</span></summary>
+<div class="fr-toc-links">
+<a href="#what">1 719 份稿，隔天撤了 3 篇</a>
+<a href="#where">2 撤稿落在哪一半</a>
+<a href="#chain">3 一个符号传两层</a>
+<a href="#verifier">4 形式化检查实际覆盖哪些结论</a>
+<a href="#mech">5 撤回记录保留了版本和依赖</a>
+<a href="#yours">6 Agent 产物也需要逐项记录验证范围</a>
+<a href="#outside">7 场外声音</a>
+<a href="#src">8 出处</a>
+</div>
+</details>
 </aside>
-<main>
+<main class="fr-content" id="article-content">
 <section id="what">
   <h2><span>1</span>719 份稿，隔天撤了 3 篇</h2>
   <p>2026 年 10 月 6 日，OpenAI 发了 <a href="https://openai.com/index/sharing-ai-progress-in-mathematics/">Sharing AI progress in mathematics</a>，同时开放仓库 <a href="https://github.com/openai/math">openai/math</a>。README 写明：719 份手稿，分 372 个家族；一个未发布的内部模型，平均每条结果用了约三小时 ChatGPT Pro 思考算力；整个评估期间模型被喂了约 4000 道题。仓库首次提交时间是 UTC 10 月 6 日 21:58。</p>
   <p>UTC 10 月 8 日 05:20，仓库合并了唯一一个 PR。<a href="https://github.com/openai/math/blob/main/history.md">history.md</a> 把这次更新标为 10 月 7 日：撤回 3 篇，修补 14 篇，另有 13 篇只改引用指向修订版。三篇撤稿说明里写的日期是 10 月 6 日。同一次更新还加了 6 条形式化和 5 条支持结果，顶层结果形式化比例写成 300 / 719，约 42%。</p>
-  <p>这篇只论证一件事：撤稿发生在验证器没覆盖的那一半，而验证器自己的覆盖范围，比「42% 已形式化」这个数字要窄。</p>
+  <p>撤回的三篇稿件均不在形式化目录覆盖的范围内。而且，即使列入目录，也需要继续核对证明究竟覆盖了哪些结论。「42% 已形式化」不能替代逐项的范围说明。</p>
 </section>
 <section id="where">
   <h2><span>2</span>撤稿落在哪一半</h2>
@@ -133,9 +141,9 @@
   <p>README 还有一句：「Some outputs build upon earlier results produced by the models」。模型在自己的早期输出上继续生产。没进验证器的上游结果，照样被当成可用前提，这就是传播的入口。</p>
 </section>
 <section id="verifier">
-  <h2><span>4</span>验证器自己盖了多少</h2>
+  <h2><span>4</span>形式化检查实际覆盖哪些结论</h2>
   <p>「42% 已形式化」读起来像一半的结果拿到了机器证明。仓库里的三处文字把这个范围收得更窄。</p>
-  <table>
+  <div class="fr-table" tabindex="0" role="region" aria-label="数据表格，可横向滚动"><table>
     <thead><tr><th>位置</th><th>原文</th><th>含义</th></tr></thead>
     <tbody>
       <tr><td><a href="https://github.com/openai/math/blob/main/lean/formalization.yaml">formalization.yaml</a> 元数据</td><td><code>automation: methods: [agent]</code>；<code>review: status: unchecked</code></td><td>Lean 证明由 agent 产出，目录自报的人工审查状态是未检查</td></tr>
@@ -143,12 +151,12 @@
       <tr><td><a href="https://github.com/openai/math/blob/main/lean/ComparatorChallenges/README.md">Comparator README</a></td><td>五个比对配置「verify supporting results, not the corresponding papers' main theorems」</td><td>部分比对文件对的是支持引理，不是论文主定理</td></tr>
       <tr><td><a href="https://github.com/openai/math/blob/main/lean/docs/003.md">lean/docs/003.md</a>（242 份范围说明之一）</td><td>「The paper's later applications are not included」</td><td>形式化陈述与论文声明不是同一范围，范围写在逐篇说明里</td></tr>
     </tbody>
-  </table>
+  </table></div>
   <p>所以验证栈有四层：论文声明、Comparator 里的 Lean 陈述、Lean 证明、编译通过。每层之间都有缝。陈述是否对得上论文，靠 242 份人话写的范围说明；证明是否编译通过，这次同步没跑；证明是谁写的，是 agent；谁审过，没有。「已形式化」在这个仓库里的准确含义是：存在一个 agent 写的 Lean 文件，声称对应这篇论文的某个陈述，上一次成功编译在首次发布之前。</p>
-  <p>这不是说形式化没用。恰恰因为这一层存在，仓库才能说「撤稿都在另一半」。要说的是，覆盖率数字只回答「有没有验证器」，不回答「验证器盖到哪」。后一个问题要逐条看范围说明。</p>
+  <p>形式化目录让我们能够确认：三篇撤稿均在未覆盖范围内。整体覆盖率回答的是覆盖了多少，逐条范围说明才能告诉我们某一项结果是否经过验证。</p>
 </section>
 <section id="mech">
-  <h2><span>5</span>做对的机制</h2>
+  <h2><span>5</span>撤回记录保留了版本和依赖</h2>
   <p>仓库在记录层面做了几件对的事，值得照抄。</p>
   <ul>
     <li><strong>撤稿不删文件。</strong>每篇撤稿的 README 改成说明，链接钉到首次提交 SHA 下的旧 PDF。引用方能找到被引时的版本。</li>
@@ -160,7 +168,7 @@
   <p>缺的是一条逐篇的覆盖状态字段。现在判断一篇有没有 Lean 证明，要去 formalization.yaml 里搜标题；判断 Lean 陈述盖到论文哪部分，要去 lean/docs 读对应编号。README 写的「Not all have accompanying Lean formalizations」是集合级陈述，读者拿到一篇具体论文时，没有现成的标记告诉他这篇在哪一半。</p>
 </section>
 <section id="yours">
-  <h2><span>6</span>形式化没盖到的那一半</h2>
+  <h2><span>6</span>Agent 产物也需要逐项记录验证范围</h2>
   <p>做 Agent 系统的人大多有一个类似结构：一批产物，一部分过了检查器，一部分只过了生成。检查器可能是测试、schema、类型检查、模拟器。这个仓库给的对照很直接。</p>
   <p>第一问：你的产物目录里，每一条有没有「检查器是否盖到」的字段。没有的话，你汇报的也是集合级覆盖率，用户拿到任一条时不知道它在哪一半。</p>
   <p>第二问：产物之间的依赖有没有记录。这里的三篇靠人写撤稿说明把链条讲清。Agent 产物互相引用的场景更常见，一条 skill 调另一条 skill，一个缓存结果喂进下一个推理。上游未经检查，下游继承的就是未经检查，哪怕下游自己过了检查。</p>
@@ -176,7 +184,7 @@
 </section>
 <section id="src">
   <h2><span>8</span>出处</h2>
-  <table>
+  <div class="fr-table" tabindex="0" role="region" aria-label="数据表格，可横向滚动"><table>
     <thead><tr><th>数字或引文</th><th>来源</th></tr></thead>
     <tbody>
       <tr><td>719 份手稿、372 家族、约 4000 道题、平均约三小时 Pro 算力、「Some outputs build upon earlier results」</td><td><a href="https://github.com/openai/math/blob/main/README.md">openai/math README</a></td></tr>
@@ -188,12 +196,13 @@
       <tr><td>发布博客、AGMAI 建议（超 600 份回复、第 1/4/5 条、请停止测试）</td><td><a href="https://openai.com/index/sharing-ai-progress-in-mathematics/">OpenAI 博客</a>、<a href="https://agmai.org/general-sep29/">AGMAI 2026-09-29</a></td></tr>
       <tr><td>Tao 四条帖子、Aaronson 博文、AHM 声明；HN 分数 401 / 288 / 1288 / 98</td><td><a href="https://mathstodon.xyz/@tao/117395269325940185">Mathstodon</a>、<a href="https://scottaaronson.blog/?p=10169">Shtetl-Optimized</a>、<a href="https://www.ahmath.org/statements">AHM</a>、<a href="https://news.ycombinator.com/item?id=50002008">HN 50002008</a> / <a href="https://news.ycombinator.com/item?id=49997718">49997718</a> / <a href="https://news.ycombinator.com/item?id=49984923">49984923</a> / <a href="https://news.ycombinator.com/item?id=50003107">50003107</a></td></tr>
     </tbody>
-  </table>
-  <p>今日查过但未选题的源：OpenAI 博客其余条目（GPT-6 and Intelligent UI、Ironclad computer use）、Anthropic 的 Claude Haiku 5.5 页面、GitHub 上的 docker/docker-agent、arXiv cs.CL / cs.AI / cs.LG 最近 48 小时约 300 条（RSIGym、CoTrace、Loud Failures Quiet Failures 等与本题相邻但无运行证据）。Anthropic RSS 地址返回 404。X 与 Reddit 无登录态，今日未覆盖。</p>
+  </table></div>
+
   <p>手稿 PDF 本文未逐篇阅读，所有对证明内容的描述转述自撤稿说明。本文的核心主张只依赖可机读的目录与提交记录。</p>
   <p>谱系看 <a href="rsi-llm-agent-self-evolution.html">09-26 RSI</a>，那篇把评估器写成开放自改进还没跨过的边界；增量分层看 <a href="llm-agent-tech-landscape.html">09-27 全景</a>。这篇是评估器边界在一次真实发布里的样子。</p>
 </section>
 </main>
 </div>
+<a class="fr-top" href="#" aria-label="返回页首">↑</a>
 </body>
 </html>

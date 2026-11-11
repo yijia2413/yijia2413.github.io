@@ -1,9 +1,9 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="zh-CN">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>修好的最后一站，报告仍差 34.8 个点</title>
+  <title>任务已经修好，交付报告为什么仍答不全 · Frontier</title>
   <style>
     :root { --ink:#0f172a; --muted:#475569; --line:#e2e8f0; --bg:#f8fafc; --blue:#1d4ed8; --blue-bg:#eff6ff; --amber:#b45309; --green:#047857; --rose:#be123c; }
     * { box-sizing: border-box; }
@@ -42,39 +42,47 @@
     svg text { font-family:-apple-system,"PingFang SC","Noto Sans SC",sans-serif; }
     @media (max-width:860px) { .layout { grid-template-columns:minmax(0,1fr); } aside { position:static; } h1 { font-size:1.55rem; } section { padding:18px 16px; } }
   </style>
+  <link rel="stylesheet" href="assets/article.css">
+  <script src="assets/article.js" defer></script>
 </head>
-<body>
-<nav style="position:sticky;top:0;z-index:50;background:#0f172a;border-bottom:1px solid #1e293b;padding:10px 24px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;">
-  <a href="/frontier" style="color:#93c5fd;text-decoration:none;font-size:14px;margin-right:16px;">← Frontier</a>
-  <a href="/" style="color:#cbd5e1;text-decoration:none;font-size:14px;">@xixi003</a>
+<body class="frontier-article">
+<a class="fr-skip" href="#article-content">跳到正文</a>
+<nav class="fr-nav" aria-label="站点导航">
+  <a class="fr-brand" href="/frontier/"><span class="fr-mark" aria-hidden="true">F</span>Frontier<span class="fr-nav-label">技术与研究</span></a>
+  <a class="fr-home" href="/">@xixi003 <span aria-hidden="true">↗</span></a>
 </nav>
+<div class="fr-progress" aria-hidden="true"><div></div></div>
 
-<header>
+<header class="fr-hero">
   <div class="inner">
     <span class="badge">FRONTIER · 2026-10-15 · 监督位</span>
-    <h1>修好的最后一站，报告仍差 34.8 个点</h1>
+    <h1>任务已经修好，交付报告为什么仍答不全</h1>
     <p>一篇 10 月 14 日的预印本用同一批问题去问编码 Agent 的例行报告和完整执行记录。37 个任务、4,799 条有效探针上，报告能答对 52.0%，完整记录能答对 92.7%，差 40.7 个点（95% 区间 37.3 至 43.8）。隐藏测试判为修好的 30 条里，最后一站仍差 34.8 个点。</p>
   </div>
 </header>
-<div class="layout">
-<aside>
-  <p>目录</p>
-  <a href="#what">1 报告答对一半，完整记录九成</a>
-  <a href="#three">2 修好、问得答、报告里看得见，是三件事</a>
-  <a href="#gap">3 修好的最后一站，差仍是 34.8 个点</a>
-  <a href="#case">4 两条第 4 站的探针，报告三次都没答上</a>
-  <a href="#mention">5 主判断的一条限定：提到了仍可能答不上</a>
-  <a href="#yours">6 只看报告会漏什么</a>
-  <a href="#limit">7 这篇没测到的</a>
-  <a href="#src">8 出处</a>
+<div class="fr-layout">
+<aside aria-label="文章目录" class="fr-toc">
+<details open="">
+<summary>本文目录<span aria-hidden="true">＋</span></summary>
+<div class="fr-toc-links">
+<a href="#what">1 报告答对一半，完整记录九成</a>
+<a href="#three">2 任务完成不代表报告能支持复核</a>
+<a href="#gap">3 任务修好后，报告仍少了哪些信息</a>
+<a href="#case">4 两条第 4 站的探针，报告三次都没答上</a>
+<a href="#mention">5 提到某个状态，也可能缺少足够细节</a>
+<a href="#yours">6 只看报告会漏什么</a>
+<a href="#limit">7 这篇没测到的</a>
+<a href="#src">8 出处</a>
+</div>
+</details>
 </aside>
-<main>
+<main class="fr-content" id="article-content">
 <section id="what">
   <h2><span>1</span>报告答对一半，完整记录九成</h2>
-  <p>2026 年 10 月 14 日，arXiv 收到 <a href="https://arxiv.org/abs/2610.20003">What Coding Agents Leave Unsaid: Measuring Task-State Gaps Between Execution and Reports</a>（arXiv:2610.20003v1，cs.AI，作者 Guoyang Xu、Rui Zhang、Xiuyu Wu、Hao Chen，单位署腾讯）。作者把这项测量叫 CTXGAP。代码和基准放在 <a href="https://github.com/Kaguraaaaaa/Ctxgap">Kaguraaaaaa/Ctxgap</a>。</p>
+  <p><a href="https://arxiv.org/abs/2610.20003">CTXGAP</a> 用同一批问题分别询问执行者、读取报告的观察者和读取完整记录的观察者，测量报告遗漏了多少执行状态信息。代码和基准见 <a href="https://github.com/Kaguraaaaaa/Ctxgap">Ctxgap 仓库</a>。</p>
   <p>人把长任务交给编码 Agent 之后，常常只看它写给用户的报告：进度、修了什么、测试结果、还剩什么风险。执行过程里的失败尝试、绕路、没说完的前提，可以不出现在这些报告里。监督者没被告知的失败，也就无从追查。</p>
   <div class="note">
-    <p style="margin:0">这篇只论证一个判断。判断是我的，依据是论文表 1 和附录 A.3。在这 37 条 SWE-bench Verified 任务上，例行报告答不上的执行状态，到隐藏测试判为修好之后还在：最后一站的报告–完整记录差是 34.8 个点（95% 区间 28.2 至 41.3），30 条里 28 条任务差为正。34.8 是同一观察者读两种材料的加权准确率之差：满分记 1，半分记 0.5，错和未知记 0。这一站报告答对 57.1%，没答对的是 42.9%；完整记录答对 91.9%。标题里的 34.8 是这个净差，分母是该站 1,172 条探针，既不是 30 条任务里有多少没修好，也不是报告里有 34.8% 的状态完全答不上。</p>
+    <p style="margin:0">在这 37 个 SWE-bench Verified 任务上，测试判定修好后，报告仍不足以回答许多执行状态问题。30 个修好任务的最后一个检查点上，同一观察者读取报告和完整记录的加权准确率分别为 57.1% 和 91.9%，相差 34.8 个百分点（95% 区间 28.2 至 41.3），其中 28 个任务的差值为正。指标按 1,172 条探针计算：满分记 1，半分记 0.5，错误和未知记 0。34.8 是两种材料的回答准确率之差，并不表示有 34.8% 的任务没修好，也不表示这些状态在报告里完全没有出现。</p>
   </div>
   <p>测法是同一批问题、两种读法：</p>
   <ul>
@@ -86,7 +94,7 @@
 </section>
 
 <section id="three">
-  <h2><span>2</span>修好、问得答、报告里看得见，是三件事</h2>
+  <h2><span>2</span>任务完成不代表报告能支持复核</h2>
   <p>隐藏测试量的是检查点上的任务结果。执行者被当场追问时，答对 93.6%（区间 92.9% 至 94.4%）。完整记录的观察者答对 92.7%。累计报告只支撑 52.0%。论文把后两个的差叫视图差，这是头条估计：40.7 个点，任务聚类 bootstrap 的 95% 区间是 37.3 至 43.8。</p>
   <p>三个数的分母都是这 4,799 条探针的加权准确率，不是任务成功率。执行者那一列是辅助对照，只在 harness 支持分叉追问时才有，不进头条。</p>
   <figure>
@@ -126,11 +134,11 @@
 </section>
 
 <section id="gap">
-  <h2><span>3</span>修好的最后一站，差仍是 34.8 个点</h2>
+  <h2><span>3</span>任务修好后，报告仍少了哪些信息</h2>
   <p>30 条在第 4 个检查点被隐藏测试判为修好。就在这一站的 1,172 条探针上，报告答对 57.1%，完整记录答对 91.9%，差 34.8 个点，区间 28.2 至 41.3。30 条里 28 条的任务差为正。这一站的脚本要求执行者评估剩余风险，所以这个差是修完、并且做过风险自述之后测到的。</p>
   <p>这 30 条在全部检查点上的差是 41.2 个点（区间 37.2 至 44.8）。更早的检查点不一定已经修完，所以头条只用最后一站。</p>
   <div class="tw">
-    <table>
+    <div class="fr-table" tabindex="0" role="region" aria-label="数据表格，可横向滚动"><table>
       <thead>
         <tr><th>读法</th><th>答对率</th><th>相差</th><th>分母与区间</th></tr>
       </thead>
@@ -140,7 +148,7 @@
         <tr><td>终端全文回滚</td><td>73.6%</td><td>19.1 个点</td><td>与主测量同一批探针；差是点估计</td></tr>
         <tr><td>模型标成与监督有关的子集</td><td>报告 55.3%</td><td>36.1 个点</td><td>两个模型都标为相关的 125 条；区间 26.0–46.2；完整记录 91.4%</td></tr>
       </tbody>
-    </table>
+    </table></div>
   </div>
   <p>表里前三行来自表 1，最后一行来自第 4.4 节。监督相关性不是人工标的：HY4-preview 和 DeepSeek 各自在不知道报告得分的情况下，给抽到的探针标「对监督决策有用 / 无用 / 不确定」。两边都标为有用的 125 条上，差仍是 36.1 个点。单用一边的标签，差是 35.3（151 条）和 36.4（135 条），区间都不含 0。这是模型对「监督用得上」的判断，论文没有拿人的监督决策来核。</p>
   <figure>
@@ -183,8 +191,8 @@
 </section>
 
 <section id="mention">
-  <h2><span>5</span>主判断的一条限定：提到了仍可能答不上</h2>
-  <p>这一段限定主判断：差出来的质量里，有一大块是报告提到了、但答不上。195 条按层抽取的缺口命题上，两名标注者的点估计把「提到了但不够」放在最大一类，加权后占缺口质量的 55.4% 和 59.2%（95% 区间 43.9 至 65.8，49.3 至 69.1）。「完全没提到」是 42.1% 和 33.7%（区间 31.4 至 53.5，24.7 至 42.6）。两边「提到了但不够」的区间都含 50%，和「完全没提到」的区间重叠。论文写明，数据支持点估计较大，没有在这个置信水平上确立多数。分母是冻结的 1,974 个缺口命题：195 条按逆抽样概率加权，还原到这份总体；缺口按执行者当场答对率减去报告答对率来计质量。自动分类器给同一批缺口质量的「未传达」是 71.1%（把遗漏优先时 79.8%）。论文写明这个自动类是语义不足，人工标注看的是字面提及；人工结果使「71.1% 等于从未提及」这种读法不成立。「已经足够、却仍没答上」只有 2.5% 和 3.7%。提及标签上两名标注者的一致率是 85.6%（κ 0.632），充分性标签是 81.5%（κ 0.638）。只统计报告里出现过某个说法，会把能回答问题的比例报高。</p>
+  <h2><span>5</span>提到某个状态，也可能缺少足够细节</h2>
+  <p>进一步拆分报告缺失的信息，可以看到：有一大块是报告提到了、但不足以回答问题。195 条按层抽取的缺口命题上，两名标注者的点估计把「提到了但不够」放在最大一类，加权后占缺口质量的 55.4% 和 59.2%（95% 区间 43.9 至 65.8，49.3 至 69.1）。「完全没提到」是 42.1% 和 33.7%（区间 31.4 至 53.5，24.7 至 42.6）。两边「提到了但不够」的区间都含 50%，和「完全没提到」的区间重叠。论文写明，数据支持点估计较大，没有在这个置信水平上确立多数。分母是冻结的 1,974 个缺口命题：195 条按逆抽样概率加权，还原到这份总体；缺口按执行者当场答对率减去报告答对率来计质量。自动分类器给同一批缺口质量的「未传达」是 71.1%（把遗漏优先时 79.8%）。论文写明这个自动类是语义不足，人工标注看的是字面提及；人工结果使「71.1% 等于从未提及」这种读法不成立。「已经足够、却仍没答上」只有 2.5% 和 3.7%。提及标签上两名标注者的一致率是 85.6%（κ 0.632），充分性标签是 81.5%（κ 0.638）。只统计报告里出现过某个说法，会把能回答问题的比例报高。</p>
   <p>只补一句提及，测不出收益。99 条人工筛过的「提到了但不够」上，加一句提及相对原文的变化是 −0.2 个点，区间 −2.7 至 +2.5，含 0。改成补上参考答案所指向的、检查点之前的证据，相对「只加提及」高 18.9 个点（三个观察者的平均，区间 +13.7 至 +24.1）。论文附录 D 写明，这些证据是拿着参考答案检索的，和「只加提及」在长度和内容上都没有配平。加进去的证据和参考答案的字符 8-gram 重合，11/99 条达到 0.50 以上，这几条的增益是 +59.1 个点（区间 +40.9 至 +77.3）。去掉这 11 条之后，增益降到 +13.8 个点（区间 +9.7 至 +18.3）。论文把这个分组标成事后敏感性分析，两条都不是总体的上下界。这项对比估计的是这批特定补写的效果，不能单独归因到「证据够不够」。</p>
   <p>把报告总长度对齐之后，用完整记录改写一遍，能多答对大约 8 个点，而且看不出「按缺口类别去对准」比「自然改写」更好。129 个成对检查点单元、4,175 条有效探针上，原文答对 67.2%。这个 67.2% 是 E2 子集，总体和主测量的 52.0% 不同，不能横比，自然改写 75.5%，对准改写 75.7%。相对原文，两条分别高 8.29 个点（区间 +5.72 至 +10.42）和 8.50 个点（区间 +6.34 至 +10.58）。对准减去自然是 +0.20 个点，区间 −1.48 至 +1.78。两份改写都读了完整执行记录才写出来。论文在局限里写：这约 8 个点不是 Agent 自己报告时能拿到的效果。</p>
   <p>换 harness、换执行者、换测量链，差仍为正，但分母不是同一批探针，不能和 40.7 放进一个倍数。HY4-preview 固定当执行者，12 个共有问题上：Claude Code 差 40.7 个点（区间 33.6 至 47.8），Pi 差 39.0（28.9 至 49.1），DSH 差 49.0（41.7 至 56.3）。这三行是任务等权平均，各写各的轨迹和探针，区间是按问题的 t 区间。DeepSeek-v4-flash 在同一套 12 个问题、固定 DSH 上自己跑，差 52.7 个点（46.0 至 60.9），对照的 HY4 是 52.2（42.8 至 61.3）。52.2 不是表 1 里 DSH 那一格的 49.0。附录 L.2 为了和 DeepSeek 的单次回答可比，两边都只用第一次回答样本重算，任务等权，HY4 这一格是 52.2（表 54）。在原来 37 条冻结轨迹上，另一条 DeepSeek 测量链从抽命题做到判分，测到 39.8 个点（34.8 至 45.6）。两条链抽的不是同一批命题。</p>
@@ -209,11 +217,13 @@
 
 <section id="src">
   <h2><span>8</span>出处</h2>
+  <p>2026 年 10 月 14 日，arXiv 收到 <a href="https://arxiv.org/abs/2610.20003">What Coding Agents Leave Unsaid: Measuring Task-State Gaps Between Execution and Reports</a>（arXiv:2610.20003v1，cs.AI，作者 Guoyang Xu、Rui Zhang、Xiuyu Wu、Hao Chen，单位署腾讯）。作者把这项测量叫 CTXGAP。代码和基准放在 <a href="https://github.com/Kaguraaaaaa/Ctxgap">Kaguraaaaaa/Ctxgap</a>。</p>
   <p>数字来自预印本 HTML（<a href="https://arxiv.org/abs/2610.20003">arXiv:2610.20003v1</a>，2026-10-14，未经同行评审）。主表和 34.8、28/30、6,564、25,477、73.6%、19.1 个点在第 4.1 节与表 1。Django 与 pytest 两条在附录 A.3。195 条人工标注在第 4.3 节。长度对齐的改写在第 5.1 节。76 条对照和难度构成在附录 A.4 与局限。跨 harness 在第 6 节与表 1 注。</p>
-  <p>本轮打开的 <a href="https://openai.com/news/">OpenAI 新闻页</a>上，最近一条与 Agent 运行位相关的发布停在 10 月 8 日；<a href="https://www.anthropic.com/news">Anthropic 新闻室</a> 10 月 14 日是中期选举备忘和新加坡办公室，都没有可写的运行位判断。Hacker News 头条里同日的 OpenCode 2.0、Jev 1.14 是产品说明，没有带分母的测量。本轮用 gh 检索 10 月 13 日之后新建的 Agent 仓库，没有够格的实质发布说明；检索没有单独的结果页可挂。X、Reddit 今日未覆盖：本机没有可用登录态。Product Hunt 当日榜抓取被拦截，未采用。</p>
+
   <p>谱系和增量层分别在 <a href="/frontier/rsi-llm-agent-self-evolution.html">递归自改进前世今生</a> 和 <a href="/frontier/llm-agent-tech-landscape.html">冻底座、改脚手架</a>。这篇只加一条：隐藏测试已经通过的最后一站上，例行报告和完整记录的加权准确率仍差 34.8 个点。</p>
 </section>
 </main>
 </div>
+<a class="fr-top" href="#" aria-label="返回页首">↑</a>
 </body>
 </html>

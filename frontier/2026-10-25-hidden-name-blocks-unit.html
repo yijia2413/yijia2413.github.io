@@ -1,9 +1,9 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="zh-CN">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>规格没写的名字，测试仍要，挡住的单元失败 80.6%，对照 48.4%</title>
+  <title>规格没写的名字，为什么会让 Agent 的测试失败 · Frontier</title>
   <style>
     :root { --ink:#0f172a; --muted:#475569; --line:#e2e8f0; --bg:#f8fafc; --blue:#1d4ed8; --blue-bg:#eff6ff; --amber:#b45309; --green:#047857; --rose:#be123c; }
     * { box-sizing: border-box; }
@@ -42,39 +42,49 @@
     svg text { font-family:-apple-system,"PingFang SC","Noto Sans SC",sans-serif; }
     @media (max-width:860px) { .layout { grid-template-columns:minmax(0,1fr); } aside { position:static; } h1 { font-size:1.55rem; } section { padding:18px 16px; } }
   </style>
+  <link rel="stylesheet" href="assets/article.css">
+  <script src="assets/article.js" defer></script>
 </head>
-<body>
-<nav style="position:sticky;top:0;z-index:50;background:#0f172a;border-bottom:1px solid #1e293b;padding:10px 24px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;">
-  <a href="/frontier" style="color:#93c5fd;text-decoration:none;font-size:14px;margin-right:16px;">← Frontier</a>
-  <a href="/" style="color:#cbd5e1;text-decoration:none;font-size:14px;">@xixi003</a>
+<body class="frontier-article">
+<a class="fr-skip" href="#article-content">跳到正文</a>
+<nav class="fr-nav" aria-label="站点导航">
+  <a class="fr-brand" href="/frontier/"><span class="fr-mark" aria-hidden="true">F</span>Frontier<span class="fr-nav-label">技术与研究</span></a>
+  <a class="fr-home" href="/">@xixi003 <span aria-hidden="true">↗</span></a>
 </nav>
+<div class="fr-progress" aria-hidden="true"><div></div></div>
 
-<header>
+<header class="fr-hero">
   <div class="inner">
     <span class="badge">FRONTIER · 2026-10-25 · 规格–金标缺口</span>
-    <h1>规格没写的名字，测试仍要，挡住的单元失败 80.6%，对照 48.4%</h1>
+    <h1>规格没写的名字，为什么会让 Agent 的测试失败</h1>
     <p>一篇 10 月 22 日的预印本把自然语言规格和上游测试拆开查。SWE-Milestone v1.0.2 的 98 个计分里程碑里，25 个含一条依赖未写明、推不出来的名字或路径的测试。被这类依赖挡住的构建单元，在 35 次公开跑里失败 80.6%；同一批里程碑里带着新测试、没有新依赖的单元失败 48.4%。倍数 1.67（自助区间 1.32 至 2.04）。附录 B 写拟合用了 72 个挡住单元对 27 个对照单元。原文没给 80.6% 和 48.4% 各自的（单元，跑次）对数。排行榜名次几乎不动。go-zero 的分数会动。</p>
   </div>
 </header>
-<div class="layout">
-<aside>
-  <p>目录</p>
-  <a href="#what">1 80.6% 对 48.4%</a>
-  <a href="#how">2 规格写行为，测试要名字</a>
-  <a href="#ex">3 M019：行为对了，84 条全挂</a>
-  <a href="#prev">4 25 / 98，风险集中</a>
-  <a href="#real">5 改一个名字就编不过</a>
-  <a href="#yours">6 你的评测有没有这条缝</a>
-  <a href="#limit">7 这篇没测到的</a>
-  <a href="#src">8 出处</a>
+<div class="fr-layout">
+<aside aria-label="文章目录" class="fr-toc">
+<details open="">
+<summary>本文目录<span aria-hidden="true">＋</span></summary>
+<div class="fr-toc-links">
+<a href="#what">1 规格未写明的依赖会影响测试结果</a>
+<a href="#how">2 规格写行为，测试要名字</a>
+<a href="#ex">3 M019：常量名不同导致 84 条测试无法运行</a>
+<a href="#prev">4 25 / 98，风险集中</a>
+<a href="#real">5 改一个名字就编不过</a>
+<a href="#yours">6 核对任务规格与上游测试的要求</a>
+<a href="#limit">7 这篇没测到的</a>
+<a href="#src">8 出处</a>
+</div>
+</details>
 </aside>
-<main>
+<main class="fr-content" id="article-content">
 <section id="what">
-  <h2><span>1</span>80.6% 对 48.4%</h2>
-  <p>2026 年 10 月 22 日，arXiv 收到 <a href="https://arxiv.org/abs/2610.30635">What the Specification Did Not Say: Specification–Oracle Gaps in Test-Graded Coding-Agent Benchmarks</a>（arXiv:2610.30635v1，cs.CL，作者 Fei Ding，单位署 Alibaba Group）。预印本，未经同行评审。本轮读的是 HTML 全文。</p>
+  <h2><span>1</span>规格未写明的依赖会影响测试结果</h2>
+  <p><a href="https://arxiv.org/abs/2610.30635">这项研究</a>核对自然语言规格与测试要求：如果测试依赖某个名字或路径，但规格没有写、也推不出来，Agent 会因此被判失败多少次？</p>
   <p>编码 Agent 的长程基准常常用大模型从提交里写出一份规格，再用上游项目自己的测试来打分。规格写的是行为。测试调用的是常量名、模块路径、精确报文。名字规格里没有，测试里有。作者把这种错位叫规格–金标缺口（specification–oracle gap）。有缺口时，基准还在量：Agent 有没有把上游实现细节再写一遍。</p>
   <div class="note">
-    <p style="margin:0">这篇只论证一个判断。判断是我的，依据是论文第 6.1–6.2 节、表 2 和第 3 节。SWE-Milestone v1.0.2、98 个计分里程碑、580,039 条必测、35 次公开端到端跑：25 个里程碑含硬隐藏依赖（规格没点名、起始树里没有、按作者规则推不出来的名字或路径）。被它挡住的构建单元在（单元，跑次）上失败 80.6%；同一批里程碑里带着 fail-to-pass 或 none-to-pass、没有任何新依赖的单元失败 48.4%。挡住的一侧是对照的 1.67 倍（按里程碑自助，95% 区间 1.32 至 2.04）。附录 B 写回归拟合在含挡住单元的 25 个里程碑上，72 个挡住单元对 27 个对照单元。原文没给 80.6% 和 48.4% 各自的（单元，跑次）对数。80.6 不要和全部其余单元的 15.1% 放进同一个倍数：其余多半只扛 pass-to-pass。这是观测比较。第 3 节的 M019、第 6.3 节的重打分、第 6.5 节的另外四套基准用来定位缺口走哪条通道、排行榜动不动、别的造法密不密，不当另一条主判断。</p>
+    <p>SWE-Milestone v1.0.2 的 98 个计分里程碑中，有 25 个存在硬隐藏依赖：测试要求某个名字或路径，但规格没点名、起始代码树中没有，按作者规则也推不出来。研究覆盖 580,039 条必测和 35 次公开端到端运行，见论文第 6.1–6.2 节、表 2 和第 3 节。</p>
+    <p>受这些依赖影响的构建单元，按（单元，跑次）统计的失败率为 80.6%。同一批里程碑中，带有 fail-to-pass 或 none-to-pass 新测试、却没有任何新依赖的单元为 48.4%。两者之比为 1.67（按里程碑自助，95% 区间 1.32 至 2.04）。</p>
+    <p>附录 B 的回归拟合使用 25 个相关里程碑中的 72 个受影响单元和 27 个对照单元。原文未给出 80.6% 与 48.4% 各自包含多少（单元，跑次）对。全部其余单元的失败率 15.1% 不能作为同一对照，因为它们大多只承担 pass-to-pass 测试。以上是观测比较。</p>
   </div>
   <p>一个里程碑要算解决，全部必测都得过。Agent 没碰巧写出隐藏项，这 25 个过不了。风险测试整体只有必测的 0.6%，挤在少数仓库里。go-zero 15/23 个里程碑中招，表 2 的 Tests at risk 是 7.1%：被挡住的单元里的必测，加上带隐藏字面量或测试级名字的必测。25/98 按里程碑计。审计精度 58/65 按构建单元计，对照作者自己标注是 56/65；七个假阳性是规格暗示但没写明，落在「可推」边界上。</p>
 </section>
@@ -88,7 +98,7 @@
 </section>
 
 <section id="ex">
-  <h2><span>3</span>M019：行为对了，84 条全挂</h2>
+  <h2><span>3</span>M019：常量名不同导致 84 条测试无法运行</h2>
   <p>go-zero 的里程碑 M019 加 Server-Sent Events。规格把行为写清楚了：用 <code>Accept: text/event-stream</code> 认出 SSE 请求，绕过超时处理器。它没写出参考实现为这件事引入的两个名字：<code>headerAccept</code> 和 <code>valueSSE</code>。rest/handler 包的参考测试两个都用。Go 把一个包的测试一起编。行为做对、常量名换了，这个包的必测全没：M019 里 84 条，另外五个继承这些测试的里程碑里每份 88 到 108 条。</p>
   <p>公开跑的源快照（35 次里去掉一次发布名标明见过泄漏信息的，剩 34）：32 次实现了规格要的绕过。9 次还把值写成 <code>valueSSE</code>，其中 4 次过完全部 84 条必测，另外 5 次缺别的名字。其余 23 次写成 <code>valueEventStream</code>（17）、<code>valueTextEventStream</code>（2）、<code>valueSse</code>（1），或者把字符串内联进去，一条都没过。这 23 次里有 13 次，评测日志在这个包里报出的未定义名字只剩 <code>valueSSE</code> 和 <code>headerAccept</code>。</p>
   <figure>
@@ -126,7 +136,7 @@
   <p>静态审计给 Go、Python、Rust、TypeScript、Java 各做提取器，给每条必测的名字、路径、字面量依赖分类。惯例能定的不算硬缺口：起始树里已有的词加仓库里成套的词缀（go-zero 里 Allow → AllowCtx，227 对）、规格点了名再按现成目录放下的新文件、对得上起始树或规格里接口签名的方法。开发集上定规则，留出集再标。留出两轮里被标上的 65 个单元，精度 58/65（89.2%，Wilson 区间 79.4 至 94.7）；对照作者自己标注是 56/65。第二轮召回 13/14（92.9%，68.5 至 98.7）。58/65 按构建单元计，25/98 按里程碑计。七个仓库从冷缓存做完 28.1 分钟，内存最多 1,333 MiB，不调模型。</p>
   <p>论文表 2。Hidden 是硬隐藏名字按里程碑加总。Tests at risk 是被挡住的单元里的必测，加上带隐藏字面量或测试级名字的必测，占该仓库必测的比例。</p>
   <div class="tw">
-    <table>
+    <div class="fr-table" tabindex="0" role="region" aria-label="数据表格，可横向滚动"><table>
       <thead>
         <tr><th>仓库</th><th>计分里程碑</th><th>必测</th><th>硬隐藏名（加总）</th><th>风险测试</th><th>含硬缺口的里程碑</th></tr>
       </thead>
@@ -140,7 +150,7 @@
         <tr><td>scikit-learn（Py）</td><td>12</td><td>266,699</td><td>0</td><td>0.0%</td><td>0/12</td></tr>
         <tr><td>合计</td><td>98</td><td>580,039</td><td>142</td><td>0.6%</td><td>25/98</td></tr>
       </tbody>
-    </table>
+    </table></div>
   </div>
   <p>硬项多半是 A2：祖先里程碑引入、规格没写，后面的测试还在用。把惯例路径算可推、把祖先规格也读进去之后，受影响里程碑从 34 降到 25。测试走公共接口的仓库（scikit-learn、ripgrep）和 nushell 这一列是 0。nushell 另有链条问题：G05_be6e868 的参考测试初始化结构体时没有 G01_48bca0a 加上的字段 <code>custom_completion</code>，没有一次公开跑编过这个里程碑的 5,339 条必测。</p>
 </section>
@@ -182,10 +192,12 @@
 </section>
 
 <section id="yours">
-  <h2><span>6</span>你的评测有没有这条缝</h2>
-  <p>读完要看的是自己的运行位。任务文本是大模型摘要或发布说明，金标是上游测试原样接上，构建失败会抹掉整个单元，评测又不把未解析名字打回给 Agent：和这篇的主设定同类。论文没有在你的仓库上测过。</p>
-  <p>第 6.5 节把同一套审计接到另外四套基准，作者写成探索性，审查单元和样本量都不一样，不当主判断的外推。表 4 各行标记口径不同：SWE-Milestone 计硬名字或路径（另有 31 个带字面量），SWE-Chain 只计 A1。单位也不同：SWE-EVO 是发布任务 17/48，复核 24/40（60.0%）；SWE-Chain 是 step 64/155，复核 28/40（70.0%）；SWE-bench Verified 是 instance，标上 3/500，确认 2 个；DeepSWE 标上 7/113，复核 1/23，正文写审过只剩一条。附录 I：其他基准的初判由大模型起草、作者核对。规格是发布说明或被要求不要写「精确报文」「内部标识符」的大模型摘要时，标上的更多；议题经过人工筛选或说明按测试写时，隐藏名几乎没有。SWE-Chain 标上的步对未标上的步，失败 lift 1.12（区间 1.04 至 1.28）。1.12 和主设定的 1.67 基线不同，不可比。附录 F 把 1.12 读成 harness 反馈：它把 Agent 的树拷到参考镜像上，缺的模块会被补上；失败的导入变成占位，只有用到那个名字的测试挂；失败导入会打回给 Agent 修一轮。构建报告在 55.9% 的系统跑里点出了隐藏名，80.9% 的跑最后把那个名字写上了。这是作者的解读，没有对照实验。SWE-Milestone 把参考测试接到 Agent 的树上，整单元失败，没有这轮反馈。</p>
-  <p>下面是我的推断，论文没有在别的评测台上做主实验。编辑起点如果是「测试过了就是规格做对了」，还要看测试引用的名字、路径、报文有没有写进 Agent 看得见的那份规格。技能记录里如果写了「用上游测试给长程任务打分」，这篇给的是观测证据，外加一个不经过 Agent 的 Go 反事实：LLM 写的 SRS、原样接上的测试、整包编译。作者的修法是两份名单（保守 3,321 条，完整 3,964 条）和 25 个里程碑的规格补记，一共 153 条接口约定，例如「包 rest/handler 必须声明 valueSSE（84 条必测依赖）」。补记还没拿新的 Agent 跑过。</p>
+  <h2><span>6</span>核对任务规格与上游测试的要求</h2>
+  <p>如果任务文本来自大模型摘要或发布说明，评测却直接沿用上游测试，就需要检查两者是否一致。尤其当一个未解析的名字会让整个构建单元失败，而评测又不向 Agent 返回这个名字时，Agent 可能因规格未写出的要求被判失败。论文研究的正是这类设置，尚未直接测试你的仓库。</p>
+  <p>第 6.5 节把审计扩展到另外四套基准。作者将它们列为探索性分析，各行的审查单位、样本量和标记口径不同：SWE-Milestone 统计硬名字或路径（另有 31 个带字面量），SWE-Chain 只统计 A1。因此，这些比例不能直接作为同一种缺口率比较。</p>
+  <p>SWE-EVO 按发布任务统计，为 17/48，复核 24/40（60.0%）；SWE-Chain 按 step 统计，为 64/155，复核 28/40（70.0%）；SWE-bench Verified 按 instance 统计，标上 3/500，确认 2 个；DeepSWE 标上 7/113，复核 1/23，正文称审查后仅剩一条。附录 I 说明，其他基准的初步标注由大模型起草、作者核对。规格来自发布说明，或来自被要求省略「精确报文」「内部标识符」的大模型摘要时，标记出的缺口更多；议题经过人工筛选，或说明按测试编写时，隐藏名字几乎不出现。</p>
+  <p>SWE-Chain 被标记步骤相对未标记步骤的失败 lift 为 1.12（区间 1.04 至 1.28）。它与主设定的 1.67 使用不同基线，不能直接比较。附录 F 将较小差距解释为 harness 提供了反馈：Agent 的代码树会复制到参考镜像，缺少的模块得到补全；导入失败时先用占位替代，只有实际使用该名字的测试失败，并把导入错误交给 Agent 修复一轮。55.9% 的系统运行中，构建报告点出了隐藏名字；80.9% 的运行最终补上了该名字。这是作者的解释，尚无对照实验。SWE-Milestone 则把参考测试接到 Agent 的代码树上，构建失败影响整个单元，也没有这轮反馈。</p>
+  <p>我会先核对测试引用的名字、路径和报文，是否已写进 Agent 能看到的规格。论文没有在其他评测台做主实验，现有证据来自观测比较和一个不经过 Agent 的 Go 反事实实验：大模型生成 SRS，沿用上游测试，按整包编译。作者提供了两份测试名单（保守 3,321 条，完整 3,964 条），并为 25 个里程碑补记了 153 条接口约定，例如「包 rest/handler 必须声明 valueSSE（84 条必测依赖）」。这些补记尚未用新的 Agent 运行验证。</p>
   <p><a href="/frontier/2026-10-14-reproduction-is-not-validation.html">10-14</a> 写过，整池口径下复现成功撑不起联合验收。那一篇的对象是 Agent 自己生成的测试，回放到官方对错标签上。<a href="/frontier/2026-10-15-gap-remains-after-fix.html">10-15</a> 写过，隐藏测试判修好的任务，报告仍差一截。这一篇补的是：官方测试自己也可能在要规格没给的名字。</p>
 </section>
 
@@ -205,11 +217,13 @@
 
 <section id="src">
   <h2><span>8</span>出处</h2>
-  <p>数字来自预印本 HTML 全文（<a href="https://arxiv.org/html/2610.30635v1">arxiv.org/html/2610.30635v1</a>，<a href="https://arxiv.org/abs/2610.30635">abs</a>，2026-10-22，未经同行评审）。表 2、表 3、表 4、第 2–7 节、附录 B、C、F、G、H。export.arxiv.org 的 Atom 里 published 为 2026-10-22T02:56:44Z。文中点到的其他基准：<a href="https://arxiv.org/abs/2603.13428">SWE-Milestone</a>（ICML 2026，arXiv:2603.13428）、<a href="https://arxiv.org/abs/2512.18470">SWE-EVO</a>（预印本 arXiv:2512.18470）、<a href="https://arxiv.org/abs/2605.14415">SWE-Chain</a>（预印本 arXiv:2605.14415）、<a href="https://openai.com/index/introducing-swe-bench-verified/">SWE-bench Verified</a>（OpenAI，2024）、<a href="https://arxiv.org/abs/2607.07946">DeepSWE</a>（预印本 arXiv:2607.07946）。本轮没有再打开这些页面核对数字。</p>
-  <p><a href="https://openai.com/news/">OpenAI 新闻页</a>本轮经 r.jina.ai 打开过，近两日条目包括存储扩容、训练环境加固、Decisions API。据标题判断，没有带这一组分母的规格–金标测量，未写入数字。<a href="https://www.anthropic.com/news">Anthropic 新闻页</a>本轮打开过，10 月 22 日有把 Agent Skills 捐给 Agentic AI Foundation，同样未写入数字。Hacker News 首页、Product Hunt（直连验证页）、GitHub 当日可见条目未作为数字来源。X、Reddit 今日未覆盖：本机没有可用登录态。</p>
+  <p>2026 年 10 月 22 日，arXiv 收到 <a href="https://arxiv.org/abs/2610.30635">What the Specification Did Not Say: Specification–Oracle Gaps in Test-Graded Coding-Agent Benchmarks</a>（arXiv:2610.30635v1，cs.CL，作者 Fei Ding，单位署 Alibaba Group）。预印本，未经同行评审。</p>
+  <p>数字来自预印本 HTML 全文（<a href="https://arxiv.org/html/2610.30635v1">arxiv.org/html/2610.30635v1</a>，<a href="https://arxiv.org/abs/2610.30635">abs</a>，2026-10-22，未经同行评审）。表 2、表 3、表 4、第 2–7 节、附录 B、C、F、G、H。export.arxiv.org 的 Atom 里 published 为 2026-10-22T02:56:44Z。文中点到的其他基准：<a href="https://arxiv.org/abs/2603.13428">SWE-Milestone</a>（ICML 2026，arXiv:2603.13428）、<a href="https://arxiv.org/abs/2512.18470">SWE-EVO</a>（预印本 arXiv:2512.18470）、<a href="https://arxiv.org/abs/2605.14415">SWE-Chain</a>（预印本 arXiv:2605.14415）、<a href="https://openai.com/index/introducing-swe-bench-verified/">SWE-bench Verified</a>（OpenAI，2024）、<a href="https://arxiv.org/abs/2607.07946">DeepSWE</a>（预印本 arXiv:2607.07946）。这些补充来源按主论文转述，本文未逐项核验其数字。</p>
+
   <p>谱系和增量层分别在 <a href="/frontier/rsi-llm-agent-self-evolution.html">递归自改进前世今生</a> 和 <a href="/frontier/llm-agent-tech-landscape.html">冻底座、改脚手架</a>。这篇只加一条：自然语言规格和上游测试之间可以隔着未写明的名字；SWE-Milestone v1.0.2 上，被硬隐藏依赖挡住的构建单元失败 80.6%，对照 48.4%。</p>
 </section>
 </main>
 </div>
+<a class="fr-top" href="#" aria-label="返回页首">↑</a>
 </body>
 </html>

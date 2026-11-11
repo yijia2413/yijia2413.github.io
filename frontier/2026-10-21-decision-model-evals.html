@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="zh-CN">
 <head>
   <meta charset="UTF-8">
@@ -48,34 +48,42 @@
       section { padding:18px 16px; }
     }
   </style>
+  <link rel="stylesheet" href="assets/article.css">
+  <script src="assets/article.js" defer></script>
 </head>
-<body>
-<nav>
-  <a href="/frontier">← Frontier</a>
-  <a href="/" style="color:#cbd5e1">@xixi003</a>
+<body class="frontier-article">
+<a class="fr-skip" href="#article-content">跳到正文</a>
+<nav class="fr-nav" aria-label="站点导航">
+  <a class="fr-brand" href="/frontier/"><span class="fr-mark" aria-hidden="true">F</span>Frontier<span class="fr-nav-label">技术与研究</span></a>
+  <a class="fr-home" href="/">@xixi003 <span aria-hidden="true">↗</span></a>
 </nav>
-<header>
+<div class="fr-progress" aria-hidden="true"><div></div></div>
+<header class="fr-hero">
   <div class="inner">
     <span class="badge">FRONTIER · 译文 · 2026-10-21</span>
     <h1>怎样用决策模型做评测</h1>
-    <p>Hamel Husain 与 Antaripa Saha，2026 年 10 月 20 日。100 条租房客服轨迹上，比较 Jev、Perplexity Decider、Liquid d1 / d1-ultra、Cloudflare Clef Flash、OpenAI Decisions。默认阈值 0.50 不要直接用。这篇按原文译完。交互图在原文。</p>
+    <p>Hamel Husain 与 Antaripa Saha 在 100 条租房客服轨迹上，比较 Jev、Perplexity Decider、Liquid d1 / d1-ultra、Cloudflare Clef Flash 和 OpenAI Decisions。文章发表于 2026 年 10 月 20 日，重点讨论决策阈值和概率校准：默认阈值 0.50 需要用自己的数据验证。</p>
     <p class="src-note">原文：<a href="https://hamel.dev/blog/posts/decision-model-evals/">How To Use Decision Models for Evals</a> · 推文：<a href="https://x.com/hamelhusain/status/2112588257104216294">@HamelHusain</a></p>
   </div>
 </header>
-<div class="layout">
-<aside>
-  <p>目录</p>
-  <a href="#open">开场</a>
-  <a href="#tested">测了什么</a>
-  <a href="#threshold">决策阈值</a>
-  <a href="#cost">表现对成本</a>
-  <a href="#prob">概率信得过吗</a>
-  <a href="#scope">提示和评测范围</a>
-  <a href="#practice">落到手上</a>
-  <a href="#appendix">附录：评测提示</a>
-  <a href="#fn">脚注</a>
+<div class="fr-layout">
+<aside aria-label="文章目录" class="fr-toc">
+<details open="">
+<summary>本文目录<span aria-hidden="true">＋</span></summary>
+<div class="fr-toc-links">
+<a href="#open">开场</a>
+<a href="#tested">1 测了什么</a>
+<a href="#threshold">2 决策阈值</a>
+<a href="#cost">3 评测效果与调用成本</a>
+<a href="#prob">4 概率信得过吗</a>
+<a href="#scope">5 提示和评测范围</a>
+<a href="#practice">6 如何在自己的数据上选择模型</a>
+<a href="#appendix">7 附录：评测提示</a>
+<a href="#fn">8 脚注与出处</a>
+</div>
+</details>
 </aside>
-<main>
+<main class="fr-content" id="article-content">
 
 <section id="open">
   <div class="hero">
@@ -139,13 +147,13 @@
 </section>
 
 <section id="cost">
-  <h2><span>3</span>表现对成本</h2>
+  <h2><span>3</span>评测效果与调用成本</h2>
   <p>下图比较每个模型调过之后的 F1 和成本，只看剩下的候选：</p>
   <figure>
     <img src="decision-model-evals/cost.png" alt="调过阈值后的 F1 对成本">
     <figcaption>虚线是剩下候选里的帕累托前沿。交互原图：<a href="https://hamel.dev/blog/posts/decision-model-evals/charts/cost-comparison.html">cost-comparison</a>。</figcaption>
   </figure>
-  <p>虚线是剩下候选里的<strong>帕累托前沿</strong>。对任意一个 F1，它标出达到或超过这个分数的最便宜候选。选项只有三个，这张图有点傻，但用来想成本对表现仍然有用。</p>
+  <p>虚线表示剩余候选的<strong>帕累托前沿</strong>：对于给定 F1，达到或超过该分数的最低成本。虽然这里只有三个候选，仍可用它比较准确率提升是否值得增加成本。</p>
   <p>这些候选里 Perplexity 最便宜：每 100 次评测 0.82 美分，F1 是 0.79。OpenAI Decisions 的 F1 到 0.87，每 100 次评测 3.72 美分，大约 4.5 倍成本。</p>
 </section>
 
@@ -171,9 +179,9 @@
 </section>
 
 <section id="practice">
-  <h2><span>6</span>落到手上</h2>
+  <h2><span>6</span>如何在自己的数据上选择模型</h2>
   <p>就这套数据，OpenAI 的表现明显更好，成本也更高。Perplexity 和 Liquid d1-ultra 是更便宜、表现更低的选项。我们观察到，模型表现随任务和数据集会差很多，所以要自己量。</p>
-  <p>收一下：</p>
+  <p>选择和使用决策模型时，需要同时检查以下几项。</p>
   <ul>
     <li>对<a href="https://hamel.dev/blog/posts/llm-judge/">评审提示</a>满意之后，给自己的用例设精确率和召回率的下限。达不到的模型先排除。</li>
     <li>比较表现之前，先调每个模型的决策阈值。选贴合业务目标的精确率–召回率权衡。要故意选，不要只因为这篇用了 F1 你就用 F1。</li>
@@ -231,5 +239,6 @@ Do not count as an issue: a minor stylistic preference with no meaningful effect
 
 </main>
 </div>
+<a class="fr-top" href="#" aria-label="返回页首">↑</a>
 </body>
 </html>

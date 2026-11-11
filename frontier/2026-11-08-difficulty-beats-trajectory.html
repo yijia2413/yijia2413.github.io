@@ -1,9 +1,9 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="zh-CN">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>题目难度对照 0.92，仿 Fail-Fast 的轨迹预测约 0.62</title>
+  <title>编码 Agent 的失败预测，多少来自题目难度 · Frontier</title>
   <style>
     :root { --ink:#0f172a; --muted:#475569; --line:#e2e8f0; --bg:#f8fafc; --blue:#1d4ed8; --blue-bg:#eff6ff; --amber:#b45309; --green:#047857; --rose:#be123c; }
     * { box-sizing: border-box; }
@@ -42,49 +42,57 @@
     svg text { font-family:-apple-system,"PingFang SC","Noto Sans SC",sans-serif; }
     @media (max-width:860px) { .layout { grid-template-columns:minmax(0,1fr); } aside { position:static; } h1 { font-size:1.55rem; } section { padding:18px 16px; } }
   </style>
+  <link rel="stylesheet" href="assets/article.css">
+  <script src="assets/article.js" defer></script>
 </head>
-<body>
-<nav style="position:sticky;top:0;z-index:50;background:#0f172a;border-bottom:1px solid #1e293b;padding:10px 24px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;">
-  <a href="/frontier" style="color:#93c5fd;text-decoration:none;font-size:14px;margin-right:16px;">← Frontier</a>
-  <a href="/" style="color:#cbd5e1;text-decoration:none;font-size:14px;">@xixi003</a>
+<body class="frontier-article">
+<a class="fr-skip" href="#article-content">跳到正文</a>
+<nav class="fr-nav" aria-label="站点导航">
+  <a class="fr-brand" href="/frontier/"><span class="fr-mark" aria-hidden="true">F</span>Frontier<span class="fr-nav-label">技术与研究</span></a>
+  <a class="fr-home" href="/">@xixi003 <span aria-hidden="true">↗</span></a>
 </nav>
+<div class="fr-progress" aria-hidden="true"><div></div></div>
 
-<header>
+<header class="fr-hero">
   <div class="inner">
     <span class="badge">FRONTIER · 2026-11-08 · Agent Eval</span>
-    <h1>题目难度对照 0.92，仿 Fail-Fast 的轨迹预测约 0.62</h1>
-    <p>一篇预印本在 SWE-bench Verified 的公开排行榜轨迹上，问仿 Fail-Fast 的 TF-IDF 轨迹失败预测有没有读到这一跑。每个模型每题一次。预测器看不到题目正文，也看不到模型名。题目难度对照 D<sub>ext</sub> 的分数是另外 16 个模型在这题上失败的比例，合并 AUROC 0.92；轨迹预测约 0.62。表 I 在仍跑到第 20 步的 2,840 次上：难度 0.924，最近 8 步 0.624，全前缀 0.630。18 个配置把轨迹分数加进难度和模型身份之后，合并 AUROC 增量的 90% 区间落在预先指定的 ±0.02 里，论文写成等价于零。同题内模型身份 0.72，轨迹预测 0.60 至 0.61，不和 0.92 进同一句倍数。</p>
+    <h1>编码 Agent 的失败预测，多少来自题目难度</h1>
+    <p>看 Agent 的运行轨迹，能提前判断这一次会不会失败吗？一篇基于 SWE-bench Verified 公开轨迹的预印本发现：用其他 16 个模型的失败比例衡量题目难度，合并 AUROC 达到约 0.92；仿 Fail-Fast 的 TF-IDF 轨迹预测约为 0.62。但题目难度使用了部署时拿不到的结果，作用是诊断，不能直接当成线上预测器。</p>
   </div>
 </header>
-<div class="layout">
-<aside>
-  <p>目录</p>
-  <a href="#what">1 0.92 对约 0.62</a>
-  <a href="#setup">2 怎么计</a>
-  <a href="#gain">3 轨迹没多出可测的增量</a>
-  <a href="#aux">4 坏跑在另一套语料</a>
-  <a href="#yours">5 你的失败预测</a>
-  <a href="#limit">6 这篇没测到的</a>
-  <a href="#src">7 出处</a>
+<div class="fr-layout">
+<aside aria-label="文章目录" class="fr-toc">
+<details open="">
+<summary>本文目录<span aria-hidden="true">＋</span></summary>
+<div class="fr-toc-links">
+<a href="#what">1 题目难度比轨迹更能区分成败</a>
+<a href="#setup">2 公开轨迹、对照与预测指标</a>
+<a href="#gain">3 轨迹没多出可测的增量</a>
+<a href="#aux">4 重复运行的证据来自另一套语料</a>
+<a href="#yours">5 失败预测需要区分题目与本次运行</a>
+<a href="#limit">6 这篇没测到的</a>
+<a href="#src">7 出处</a>
+</div>
+</details>
 </aside>
-<main>
+<main class="fr-content" id="article-content">
 <section id="what">
-  <h2><span>1</span>0.92 对约 0.62</h2>
-  <p>2026 年 11 月 5 日，arXiv 收到 <a href="https://arxiv.org/abs/2611.08285">Hard Issue, Weak Model, or Bad Run? Rethinking Failure Prediction for Coding Agents</a>（arXiv:2611.08285v1，cs.SE；作者 Xingyue Shi、Wesley K. G. Assunção；单位署北卡罗来纳州立大学）。预印本，未经同行评审。abs 页 Comments 写 5 页、2 图、2 表。正文第 III 节标题是 Preliminary Findings。本轮读的是 HTML 全文。许可是 arXiv.org perpetual non-exclusive license。</p>
+  <h2><span>1</span>题目难度比轨迹更能区分成败</h2>
+
   <p>编码 Agent 的一次跑会失败。失败预测读到中途的推理、命令和工具输出，再决定停、换模型、或同一模型再跑一次。三种动作对应三种原因：题难，多数模型都过不了；模型弱，它在许多题上过不了；这一跑坏了，同一模型同一题在别的尝试上能过。公开排行榜轨迹里，每个模型每题只跑一次，三种原因叠在一个标签上。</p>
   <div class="note">
-    <p style="margin:0">这篇只论证一个判断。判断是我的，依据是论文摘要和表 I（<a href="https://arxiv.org/html/2611.08285">HTML</a>）。判断是：在仍跑到第 20 步的 2,840 次上，题目难度对照的合并 AUROC 是 0.92，仿 Fail-Fast、看不到题目正文和模型名的 TF-IDF 轨迹预测约 0.62。摘要写 0.92 对 about 0.62。表 I：难度 0.924，最近 8 步 0.624，全前缀 0.630。D<sub>ext</sub> 的分数是另外 16 个模型在该题上失败的比例，同一题的每次跑分数相同；部署时拿不到这些结果，论文写成诊断，不当作实用预测器。AUROC 的分母是失败–成功对：测试折里 494,109 对，99.66% 跨题。0.92 和 0.62 是这些对里排对的比例。同题内模型身份 0.72、轨迹 0.60 至 0.61，分母是同一题不同模型的对，不和 0.92 进同一句倍数。</p>
+    <p style="margin:0">依据论文摘要和表 I（<a href="https://arxiv.org/html/2611.08285">HTML</a>）。在仍跑到第 20 步的 2,840 次上，题目难度对照的合并 AUROC 是 0.92，仿 Fail-Fast、看不到题目正文和模型名的 TF-IDF 轨迹预测约 0.62。摘要写 0.92 对 about 0.62。表 I：难度 0.924，最近 8 步 0.624，全前缀 0.630。D<sub>ext</sub> 的分数是另外 16 个模型在该题上失败的比例，同一题的每次跑分数相同；部署时拿不到这些结果，论文写成诊断，不当作实用预测器。AUROC 的分母是失败–成功对：测试折里 494,109 对，99.66% 跨题。0.92 和 0.62 是这些对里排对的比例。同题内模型身份 0.72、轨迹 0.60 至 0.61，分母是同一题不同模型的对，不能与 0.92 直接计算倍数。</p>
   </div>
-  <p>论文把「坏跑」留给同一模型同一题在别的尝试上能过的那一次。单次排行榜轨迹分不出这一类。重复跑试点在另一套语料上，不进标题。</p>
+  <p>论文把「坏跑」留给同一模型同一题在别的尝试上能过的那一次。单次排行榜轨迹分不出这一类。重复跑试点在另一套语料上，与主要比较的条件不同。</p>
 </section>
 
 <section id="setup">
-  <h2><span>2</span>怎么计</h2>
+  <h2><span>2</span>公开轨迹、对照与预测指标</h2>
   <p>主数据是 mini-swe-agent 在 SWE-bench Verified 500 题上的公开轨迹，每个模型每题一次。七个模型：Claude Haiku 4.5、Claude Opus 4.5 和 4.6、Gemini 3 Flash、GLM-5、GPT-5-mini、MiniMax-M2.5。已知结局 3,492 次，其中失败 994 次。失败标签用发布的 resolved。两份 GPT-5.2 来源转录相同、标签冲突，剔除。配套发布覆盖同一批题的 25 个模型；同样剔除之后是 23 个模型，用来看结论是否还站得住。另外 16 个不在这七个里的模型，只用来估题目难度。</p>
   <p>预测器仿 Fail-Fast 的设计。一次跑完成 t ∈ {10, 20, 40} 步之后读轨迹，窗口是最近 8 步（R8）或到该步为止的全前缀（ALL），输出失败分数。和 Fail-Fast 不同：这里看不到题目正文，也看不到模型名；学到的东西只来自轨迹，轨迹仍可能把题和模型露出来。TF-IDF 逻辑回归，按题分组的五折交叉验证。另在一折上 LoRA 微调 Qwen3-0.6B，每个神经预测器配一个同一截断文本上的逻辑回归。一共 18 个配置：十个 TF-IDF 变体，四个神经预测器加它们配对的逻辑回归。表 I 展示两个代表。除非另写，报告仍跑到第 20 步的 2,840 次（t20）：预测器只能在还没停的跑上动作。</p>
   <p>三个不看这一跑的对照。题目难度 D<sub>ext</sub>：另外 16 个模型在该题上失败的比例，同一题每次跑同一个分数。模型身份 M：该模型在训练题上的失败率，也就是总体能力。长度 + M：在 M 上只加前缀长度。AUROC 是失败–成功对里把失败那次排得更高的比例。对拆成跨题对和同题对（同一题、不同模型）。同题对里，失败来自总体更弱的模型叫一致对，反过来叫 upset。</p>
   <div class="tw">
-    <table>
+    <div class="fr-table" tabindex="0" role="region" aria-label="数据表格，可横向滚动"><table>
       <thead>
         <tr>
           <th>分数</th>
@@ -102,7 +110,7 @@
         <tr><td>TF-IDF，最近 8 步（R8）</td><td>0.624</td><td>0.604</td><td>0.678</td><td>0.415</td></tr>
         <tr><td>TF-IDF，全前缀（ALL）</td><td>0.630</td><td>0.610</td><td>0.687</td><td>0.416</td></tr>
       </tbody>
-    </table>
+    </table></div>
   </div>
   <p>表是论文表 I。分母是仍跑到第 20 步的 2,840 次上的失败–成功对。D<sub>ext</sub> 按构造在同题内是 0.5；M 在一致对上是 1、upset 上是 0。轨迹预测没被告知模型名。</p>
   <figure>
@@ -193,16 +201,16 @@
 </section>
 
 <section id="aux">
-  <h2><span>4</span>坏跑在另一套语料</h2>
-  <p>标题的 0.92 对约 0.62 只挂仍跑到第 20 步的 2,840 次。公开排行榜每个模型每题一次，分不出「这一跑坏了」。论文另用一套公开 SWE-agent 重复跑来看坏跑有没有房间：两套 Llama（70B 和 8B），SWE-bench-extra 和 SWE-bench dev 的 522 题，每题至少四次。同一模型常在某题的一部分跑次上解、另一部分上失败；跑间变异占这套语料结局方差的 42%，特化 4.6%，题目难度 53%。这种失败论文叫坏跑：同一模型同一题在别的尝试上能过。42% 不和 2,840 次混用。</p>
-  <p>被测的轨迹预测器分数，在 2,840 次上没有超出题目难度和模型身份的可测量增量（第 3 节）；分数方差的 64% 至 82% 在题与题之间，不在同一题的各次跑之间。论文据此推断，高分标的是难题或弱模型，再跑更不容易成功；类比是图 1(c) 的玩具难度分数。原文没有在这套 Llama 重复跑上跑过轨迹预测器的报警，也没有测报警之后再跑的成功率。论文写这和 Fail-Fast 一致：由其预测器触发的冷启动只加 0.2 个点。0.2 是这篇对 Fail-Fast 的转述，本轮没有打开 Fail-Fast 原文。</p>
-  <p>换模型、oracle 缺口、表 II 的 +0.09 / +0.41 / +6.91 是同一篇文章里的其他结果，分母和 2,840 次不同，不进本篇判断。</p>
+  <h2><span>4</span>重复运行的证据来自另一套语料</h2>
+  <p>0.92 对约 0.62 对应仍执行到第 20 步的 2,840 次运行。公开排行榜每个模型每题一次，分不出「这一跑坏了」。论文另用一套公开 SWE-agent 重复跑来看同题同模型是否存在偶发失败：两套 Llama（70B 和 8B），SWE-bench-extra 和 SWE-bench dev 的 522 题，每题至少四次。同一模型常在某题的一部分跑次上解、另一部分上失败；跑间变异占这套语料结局方差的 42%，特化 4.6%，题目难度 53%。这种失败论文叫坏跑：同一模型同一题在别的尝试上能过。42% 不和 2,840 次混用。</p>
+  <p>被测的轨迹预测器分数，在 2,840 次上没有超出题目难度和模型身份的可测量增量（第 3 节）；分数方差的 64% 至 82% 在题与题之间，不在同一题的各次跑之间。论文据此推断，高分标的是难题或弱模型，再跑更不容易成功；类比是图 1(c) 的玩具难度分数。原文没有在这套 Llama 重复跑上跑过轨迹预测器的报警，也没有测报警之后再跑的成功率。论文写这和 Fail-Fast 一致：由其预测器触发的冷启动只加 0.2 个点。0.2 是这篇对 Fail-Fast 的转述，本文未独立核验 Fail-Fast 原文。</p>
+  <p>换模型、oracle 缺口、表 II 的 +0.09 / +0.41 / +6.91 是同一篇文章里的其他结果，分母和 2,840 次不同，应与跨 Agent 访问的结果分开看。</p>
 </section>
 
 <section id="yours">
-  <h2><span>5</span>你的失败预测</h2>
-  <p>读完要核对的是运行位上的中途失败预测。Agent 跑到一半，你用轨迹分数决定停、换模型、或同一模型再来一次。这篇里，仍跑到第 20 步的 2,840 次上，题目难度对照合并 AUROC 0.92；仿 Fail-Fast、看不到题目正文和模型名的 TF-IDF 轨迹预测约 0.62。18 个配置把轨迹加进难度和模型身份之后，增量的 90% 区间落在 ±0.02 里。被测预测器主要在跟题和模型走。</p>
-  <p>下面是我的推断，原文没测你仓库里的调度器。如果你的失败预测 AUROC 是在许多题、许多模型上合并算的，而且输入里有题目正文或模型名，0.62 不能直接套。这篇测到的是去掉这两样之后的轨迹窗口。带上题目或模型名，分数可以更高，那一档原文没报。题难、模型弱、这一跑坏了，三种动作不同；公开排行榜每个模型每题一次，这篇的预测器分不开。重复跑里坏跑有房间，但报警后重试成不成，原文没在同一套数据上测。</p>
+  <h2><span>5</span>失败预测需要区分题目与本次运行</h2>
+  <p>中途失败预测常用于决定停止、换模型或重试。这里需要先问：预测器认出的是难题、较弱的模型，还是这一次运行出了问题？在仍执行到第 20 步的 2,840 次运行上，加入轨迹分数之后，18 个配置的 AUROC 增量的 90% 区间都落在 ±0.02 内。这个实验没有发现轨迹提供超出题目难度与模型身份的可测增量。</p>
+  <p>实际调度器的输入可能包含题目正文和模型名，不能直接套用这里约 0.62 的轨迹预测结果。论文排除了这两项输入；加入后是否提高分数，没有报告。难题、较弱模型与本次运行失败，分别对应不同的处理方式，但排行榜每个模型每题只有一次运行，无法完整区分。另一套重复运行语料显示，同一模型同一题的结果确实可能不同；触发报警后重试能否改善，则没有在同一套数据上验证。</p>
 </section>
 
 <section id="limit">
@@ -213,14 +221,16 @@
 
 <section id="src">
   <h2><span>7</span>出处</h2>
+  <p>2026 年 11 月 5 日，arXiv 收到 <a href="https://arxiv.org/abs/2611.08285">Hard Issue, Weak Model, or Bad Run? Rethinking Failure Prediction for Coding Agents</a>（arXiv:2611.08285v1，cs.SE；作者 Xingyue Shi、Wesley K. G. Assunção；单位署北卡罗来纳州立大学）。预印本，未经同行评审。abs 页 Comments 写 5 页、2 图、2 表。正文第 III 节标题是 Preliminary Findings。许可是 arXiv.org perpetual non-exclusive license。</p>
   <ul>
     <li>预印本 abs：<a href="https://arxiv.org/abs/2611.08285">arXiv:2611.08285</a>。HTML 全文：<a href="https://arxiv.org/html/2611.08285">arxiv.org/html/2611.08285</a>。Comments：5 页、2 图、2 表。提交 2026-11-05。科目 cs.SE。许可 arXiv.org perpetual non-exclusive license。</li>
     <li>表 I、0.924 / 0.624 / 0.630、2,840、3,492 / 994、494,109 的 99.66%、−0.001、0.72、4.6% / 53% / 42%、64% 至 82%，都从 HTML 全文抄。摘要的 0.92 对 about 0.62 来自 abs / HTML 摘要。</li>
-    <li>OpenAI 新闻页本轮经 r.jina.ai 打开（<a href="https://openai.com/news/">openai.com/news</a>），近 48 小时条目包括 11-06 的 Hacktron 合作、11-05 的 GPT-6 Cyber，未写入本篇数字。直连 openai.com/index/ 若干页返回 403。Anthropic 新闻页（<a href="https://www.anthropic.com/news">anthropic.com/news</a>）本轮打开，页面日期 2026-11-08，置顶仍是 Sep 22 的 Opus 5.5，未写入本篇数字。Hacker News 首页本轮打开，未见本篇预印本。Product Hunt 首页返回人机验证页，未打开。GitHub 当天新建仓库和 Codex / Claude Code / OpenCode 的近期发布说明扫过，没有与本篇数字相关的条目。X / Reddit 今日未覆盖。这些过程条目未写入本篇数字。</li>
+
   </ul>
-  <p><a href="/frontier/rsi-llm-agent-self-evolution.html">09-26 RSI</a> 是谱系，<a href="/frontier/llm-agent-tech-landscape.html">09-27 全景</a> 是增量在哪一层。这篇落在运行位的失败预测：题目难度对照已经 0.92，轨迹分数还在约 0.62，加进对照之后增量等价于零。</p>
+  <p><a href="/frontier/rsi-llm-agent-self-evolution.html">09-26 RSI</a> 是谱系，<a href="/frontier/llm-agent-tech-landscape.html">09-27 全景</a> 是增量在哪一层。本文讨论中途失败预测：题目难度对照已经 0.92，轨迹分数还在约 0.62，加进对照之后增量等价于零。</p>
 </section>
 </main>
 </div>
+<a class="fr-top" href="#" aria-label="返回页首">↑</a>
 </body>
 </html>

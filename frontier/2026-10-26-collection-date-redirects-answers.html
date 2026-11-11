@@ -1,9 +1,9 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="zh-CN">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>五个开源权重模型上，只换采集日期，后期答案掉 37.6 至 51.4 个点</title>
+  <title>只换采集日期，开源模型就改变了答案 · Frontier</title>
   <style>
     :root { --ink:#0f172a; --muted:#475569; --line:#e2e8f0; --bg:#f8fafc; --blue:#1d4ed8; --blue-bg:#eff6ff; --amber:#b45309; --green:#047857; --rose:#be123c; }
     * { box-sizing: border-box; }
@@ -42,39 +42,49 @@
     svg text { font-family:-apple-system,"PingFang SC","Noto Sans SC",sans-serif; }
     @media (max-width:860px) { .layout { grid-template-columns:minmax(0,1fr); } aside { position:static; } h1 { font-size:1.55rem; } section { padding:18px 16px; } }
   </style>
+  <link rel="stylesheet" href="assets/article.css">
+  <script src="assets/article.js" defer></script>
 </head>
-<body>
-<nav style="position:sticky;top:0;z-index:50;background:#0f172a;border-bottom:1px solid #1e293b;padding:10px 24px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;">
-  <a href="/frontier" style="color:#93c5fd;text-decoration:none;font-size:14px;margin-right:16px;">← Frontier</a>
-  <a href="/" style="color:#cbd5e1;text-decoration:none;font-size:14px;">@xixi003</a>
+<body class="frontier-article">
+<a class="fr-skip" href="#article-content">跳到正文</a>
+<nav class="fr-nav" aria-label="站点导航">
+  <a class="fr-brand" href="/frontier/"><span class="fr-mark" aria-hidden="true">F</span>Frontier<span class="fr-nav-label">技术与研究</span></a>
+  <a class="fr-home" href="/">@xixi003 <span aria-hidden="true">↗</span></a>
 </nav>
+<div class="fr-progress" aria-hidden="true"><div></div></div>
 
-<header>
+<header class="fr-hero">
   <div class="inner">
     <span class="badge">FRONTIER · 2026-10-26 · 采集日期</span>
-    <h1>五个开源权重模型上，只换采集日期，后期答案掉 37.6 至 51.4 个点</h1>
+    <h1>只换采集日期，开源模型就改变了答案</h1>
     <p>一篇预印本把两份修订的正文和修订时间钉死，只对调采集日期。595 个维基百科页、五个开源权重模型：问句当天的采集日期给旧修订、第二天给新修订，相对另一种赋值，后期参考的精确匹配掉 37.6 至 51.4 个点。Qwen2.5-72B 从 77.1% 到 28.3%。497 页上前一天对调仍掉 29.0 至 39.6 个点。两个闭源接口模型在维基上几乎不动。</p>
   </div>
 </header>
-<div class="layout">
-<aside>
-  <p>目录</p>
-  <a href="#what">1 37.6 至 51.4 个点</a>
-  <a href="#how">2 三个时间，两份修订</a>
-  <a href="#ex">3 队名没动，采集日对调</a>
-  <a href="#ctrl">4 问句前后、七条提示还掉</a>
-  <a href="#scope">5 Qwen3.5 思考能削，接口模型几乎不动</a>
-  <a href="#yours">6 你的工具结果里有没有采集日</a>
-  <a href="#limit">7 这篇没测到的</a>
-  <a href="#src">8 出处</a>
+<div class="fr-layout">
+<aside aria-label="文章目录" class="fr-toc">
+<details open="">
+<summary>本文目录<span aria-hidden="true">＋</span></summary>
+<div class="fr-toc-links">
+<a href="#what">1 采集日期会影响模型采用哪个答案</a>
+<a href="#how">2 三个时间，两份修订</a>
+<a href="#ex">3 队名没动，采集日对调</a>
+<a href="#ctrl">4 更换日期偏移与提示后仍会掉分</a>
+<a href="#scope">5 思考模式的效果与闭源接口模型对照</a>
+<a href="#yours">6 你的工具结果里有没有采集日</a>
+<a href="#limit">7 这篇没测到的</a>
+<a href="#src">8 出处</a>
+</div>
+</details>
 </aside>
-<main>
+<main class="fr-content" id="article-content">
 <section id="what">
-  <h2><span>1</span>37.6 至 51.4 个点</h2>
-  <p>2026 年 10 月 23 日，arXiv 收到 <a href="https://arxiv.org/abs/2610.32191">Collection-Date Assignment Redirects Answers in Temporal QA</a>（arXiv:2610.32191v1，cs.CL，作者 Minsu Oh、Seunghui Jwa、Soo Kyun Kim、Yeo-Chan Yoon，单位署济州国立大学）。预印本，未经同行评审。本轮读的是 HTML 全文和 PDF 表。</p>
+  <h2><span>1</span>采集日期会影响模型采用哪个答案</h2>
+  <p><a href="https://arxiv.org/abs/2610.32191">这项研究</a>固定问句、两份修订的正文和修订时间，只交换采集日期，观察模型会采用哪个版本的答案。</p>
   <p>时间问答把两份修订一起塞进上下文之后，模型还要选答哪一版。修订正文、修订时间戳、问句都钉死。动的是采集日期：这份快照是哪天抓到的。Diffbot 的 <code>crawlTimestamp</code>、Firecrawl 变更跟踪里的 <code>previousScrapeAt</code>，原文用来说明这类字段在工具模式里存在，没有测它们多常进到提示词。</p>
   <div class="note">
-    <p style="margin:0">这篇只论证一个判断。判断是我的，依据是论文第 4 节、表 2 和图 2。595 个维基百科页、113 个谓词组、原始维基标记、五个开源权重模型、贪心短答、Qwen3.5 关掉思考：问句当天 <code>t1</code> 给旧修订、第二天给新修订，相对对调后的赋值，后期参考的精确匹配（EM）掉 37.6 至 51.4 个点。Qwen2.5-72B 从 77.1% 到 28.3%；Phi-4 从 51.0% 到 3.7%。前期参考 EM 涨 37.6 至 49.8 个点。分数按页对两个展示顺序取平均。区间是谓词簇自助、名义 95%。128 页复现、497 页前一天对调、七条提示、虚构记录用来排除别的解释，不当另一条主判断。两个闭源接口模型在维基上的对调几乎不动，第 6 节单列。</p>
+    <p>论文第 4 节、表 2 和图 2 的主实验覆盖 595 个维基百科页、113 个谓词组和五个开源权重模型。输入使用原始维基标记，贪心生成短答案，Qwen3.5 关闭思考模式。</p>
+    <p>把问句当天 <code>t1</code> 设为旧修订的采集日、第二天设为新修订的采集日，相比对调后的日期设置，后期参考答案的精确匹配（EM）下降 37.6 至 51.4 个点。Qwen2.5-72B 从 77.1% 到 28.3%，Phi-4 从 51.0% 到 3.7%；前期参考 EM 上升 37.6 至 49.8 个点。分数按页对两个展示顺序取平均，区间采用谓词簇自助法，名义置信水平为 95%。</p>
+    <p>作者还通过 128 页复现、497 页前一天对调、七条提示和虚构记录排查其他解释。两个闭源接口模型在维基对调中几乎不受影响，后文单独讨论。</p>
   </div>
   <p>EM 对齐的是 DynaQuest 在该日期上的参考别名，不是另行裁定的史实。后期参考对应较新那份修订。正文写：找回这份参考，不保证历史上为真。</p>
 </section>
@@ -130,7 +140,7 @@
     <figcaption>图 1. 论文表 1 的输入构造，加上论文图 2 里 Qwen2.5-72B 的后期 EM。77.1% 对 28.3% 是 595 页、原始标记、两个展示顺序的平均，不是 Harris 这一页的逐条输出。</figcaption>
   </figure>
   <div class="tw">
-    <table>
+    <div class="fr-table" tabindex="0" role="region" aria-label="数据表格，可横向滚动"><table>
       <thead>
         <tr>
           <th>模型</th>
@@ -146,13 +156,13 @@
         <tr><td>Qwen3.5-35B</td><td>−37.6 [−44.1, −30.9]</td><td>+37.6 [+30.6, +44.4]</td><td>+39.5 [+33.5, +45.2]</td></tr>
         <tr><td>Qwen2.5-72B</td><td>−48.7 [−60.2, −36.9]</td><td>+44.9 [+34.0, +57.4]</td><td>+48.3 [+39.2, +59.4]</td></tr>
       </tbody>
-    </table>
+    </table></div>
   </div>
   <p>表内是论文表 2：<code>(0, 1) − (1, 0)</code>，595 页、113 个谓词组、原始标记。括号是名义 95% 谓词簇区间。只含前期答案用和 EM 同一套文本归一化，查的是词面别名在不在回复里，原文写不构成蕴涵。</p>
 </section>
 
 <section id="ctrl">
-  <h2><span>4</span>问句前后、七条提示还掉</h2>
+  <h2><span>4</span>更换日期偏移与提示后仍会掉分</h2>
   <p>595 页里 497 页两份修订时间戳都不晚于 <code>t1 − 1</code> 的午夜。在这 497 页上，把问句当天和前一天对调，问句匹配的那份采集得更晚。五个模型的后期 EM 仍掉 29.0 至 39.6 个点（论文表 3：Phi-4 −29.0，Mistral-24B −39.6）。前期 EM 涨 22.5 至 37.1 个点。单靠「更早采集的那份」解释不了。方向仍有影响：相对同一执行里问句后一天的对照，Phi-4、Mistral-24B、Qwen2.5-72B 的掉幅分别小 17.9、12.4、17.4 个点。</p>
   <p>另外 128 页来自不相交的 596 页队列，纯文本显示。问句当天匹配对调掉 38.3 至 53.1 个点。论文表 12 同一次执行的绝对水平：Qwen2.5-72B 在 <code>(1, 0)</code> 为 73.4%，<code>(0, 1)</code> 为 20.3%。595 页的 77.1% / 28.3% 是原始标记，不要和这列纯文本读数放进同一个倍数。</p>
   <figure>
@@ -202,7 +212,7 @@
 </section>
 
 <section id="scope">
-  <h2><span>5</span>Qwen3.5 上思考能削，接口模型几乎不动</h2>
+  <h2><span>5</span>思考模式的效果与闭源接口模型对照</h2>
   <p>同一 128 页、两个种子、共享采样和输出上限：Qwen3.5-35B 关掉思考的匹配对调掉 30.1 个点（59.6% 对 29.5%），打开思考掉 11.1 个点（72.1% 对 60.9%）。交互 +18.9，区间 11.1 至 26.5。贪心同一 128 页掉 40.6 个点，和采样不是同一对照。Ministral-3-14B 思考模式掉 13.1，Nemotron-3-Nano 掉 51.8。思考不是统一解药。跨模型比较隔离不了推理。</p>
   <p>GPT-6 Astra 和 Claude Fable 5.1 在同一 128 页上各跑高/低力度，2,560 次独立接口请求，作者不加系统消息、不加当前日期、不给历史、不用工具。高力度闭卷 EM：Astra 21.9%，Fable 7.8%。全部 128 页的对调：Astra 高/低 −1.2 / −0.8，Fable −0.4 / −2.3，区间建立不了损失，也建立不了力度交互。区间不含大损失，原文不把它当作等价或在别的设置下稳健。虚构 128 条上两个模型高力度两种赋值都是 100% EM。低力度 Claude 掉 14.1 个点；256 条较低 EM 赋值的回复里，99.6% 仍含后期答案，只含前期的 0.4%（1 条）。这和本地模型改口到前期答案不是同一件事。</p>
   <p>128 页上展示观察到的同一采集日 <code>(c, c)</code>，相对去掉字段，后期 EM 低 3.5 至 15.2 个点。这一天距 <code>t1</code> 178 至 755 天。扩展校正后，省略对照还留在 Phi-4、Mistral-24B、Qwen2.5-72B。这是字段、定义和日期值一起改，不是单独的「有没有字段」。</p>
@@ -210,9 +220,9 @@
 
 <section id="yours">
   <h2><span>6</span>你的工具结果里有没有采集日</h2>
-  <p>读完要看的是自己的运行位。检索或抓取工具把 <code>retrieved_at</code>、<code>crawlTimestamp</code>、<code>previousScrapeAt</code> 和正文一起交给模型，两份修订同时在上下文里，问句日期又写在提示里：和这篇的主设定同类。论文没有在你的流水线上测过。赋值对调不估计线上差错率。</p>
+  <p>检索或抓取工具可能把 <code>retrieved_at</code>、<code>crawlTimestamp</code>、<code>previousScrapeAt</code> 与正文一起交给模型。当上下文同时包含两份修订，提示又指定了问句日期时，就需要检查这些采集时间是否影响答案。论文尚未在实际流水线上测量，这种日期对调实验也不能直接估计线上差错率。</p>
   <p>原文给的审计：正文和修订时间戳不动，按时间上合法的采集日对调，两个顺序都跑，同时记同意率和前期答案含量。问句当天两侧、归档来源都测。相关修订已经在上下文里，元数据仍能改答案。先按修订时间戳挑最新合法版本再生成，595 页、纯文本显示上相对两份修订都给、但不含采集字段，<code>t0</code> 问句 EM 高 15.0 至 30.9 个点（论文表 18）。这条规则假定源身份已知，也可能丢掉后来的更正。</p>
-  <p>下面是我的推断，论文没有做这步。编辑起点如果把抓取时间戳当成无害书目，还要看它会不会和问句日期撞上。技能记录里如果写了「把工具返回的元数据原样拼进上下文」，这篇给的是开源权重模型上的对调证据。接口模型在维基对调上几乎不动，不能拿来当本地 7B–72B 的对照。</p>
+  <p>我的工程判断是，不能默认把采集时间当作无害的来源信息。如果工具元数据原样进入上下文，就需要检查采集日期与问句日期的匹配是否改变答案。论文没有直接验证这项工程做法。维基对调中，两个闭源接口模型几乎不受影响，这一结果也不能直接代表本地 7B–72B 模型。</p>
   <p><a href="/frontier/2026-10-11-option-labels-are-input.html">10-11</a> 写过，护栏选项名也是输入。<a href="/frontier/2026-10-19-visible-tools-are-input.html">10-19</a> 写过，可见工具列表也是输入。这一篇补的是：采集日期也是输入。证据正文可以一字不改。</p>
 </section>
 
@@ -235,11 +245,13 @@
 
 <section id="src">
   <h2><span>8</span>出处</h2>
-  <p>数字来自预印本 HTML 与 PDF（<a href="https://arxiv.org/html/2610.32191v1">arxiv.org/html/2610.32191v1</a>，<a href="https://arxiv.org/pdf/2610.32191">pdf</a>，<a href="https://arxiv.org/abs/2610.32191">abs</a>，2026-10-23，未经同行评审）。论文表 1–7、表 12–14、表 18、第 2–6 节、局限、附录 A–D。export.arxiv.org 的 Atom 里 published 为 2026-10-23T05:37:24Z。文中点到的工具文档：<a href="https://www.diffbot.com/docs/dql/reference/dates-and-timestamps">Diffbot 日期字段</a>（原文访问 2026-10-13）、<a href="https://docs.firecrawl.dev/api-reference/endpoint/scrape">Firecrawl scrape 响应</a>（原文访问 2026-10-13）。本轮已核对两页里 <code>crawlTimestamp</code>、<code>previousScrapeAt</code> 字段名存在，没有再核字段名以外的内容。</p>
-  <p><a href="https://openai.com/news/">OpenAI 新闻页</a>本轮经 r.jina.ai 打开过，近几日条目包括在线存储扩容（10-23）、训练环境加固（10-23）、Decisions API（10-22）。据标题判断，没有带这一组分母的采集日期对调，未写入数字。<a href="https://www.anthropic.com/news">Anthropic 新闻页</a>本轮打开过，10 月 22 日有把 Agent Skills 捐给 Agentic AI Foundation，同样未写入数字。Hacker News 首页（含 10-24 一篇上下文工程综述）、Product Hunt 当日列表、GitHub 当日可见新建仓库未作为数字来源。X、Reddit 今日未覆盖：本机没有可用登录态。</p>
+  <p>2026 年 10 月 23 日，arXiv 收到 <a href="https://arxiv.org/abs/2610.32191">Collection-Date Assignment Redirects Answers in Temporal QA</a>（arXiv:2610.32191v1，cs.CL，作者 Minsu Oh、Seunghui Jwa、Soo Kyun Kim、Yeo-Chan Yoon，单位署济州国立大学）。预印本，未经同行评审。</p>
+  <p>数字来自预印本 HTML 与 PDF（<a href="https://arxiv.org/html/2610.32191v1">arxiv.org/html/2610.32191v1</a>，<a href="https://arxiv.org/pdf/2610.32191">pdf</a>，<a href="https://arxiv.org/abs/2610.32191">abs</a>，2026-10-23，未经同行评审）。论文表 1–7、表 12–14、表 18、第 2–6 节、局限、附录 A–D。export.arxiv.org 的 Atom 里 published 为 2026-10-23T05:37:24Z。文中点到的工具文档：<a href="https://www.diffbot.com/docs/dql/reference/dates-and-timestamps">Diffbot 日期字段</a>（原文访问 2026-10-13）、<a href="https://docs.firecrawl.dev/api-reference/endpoint/scrape">Firecrawl scrape 响应</a>（原文访问 2026-10-13）。本文仅核对了文档中的 <code>crawlTimestamp</code>、<code>previousScrapeAt</code> 字段名，未独立核验其他说明。</p>
+
   <p>谱系和增量层分别在 <a href="/frontier/rsi-llm-agent-self-evolution.html">递归自改进前世今生</a> 和 <a href="/frontier/llm-agent-tech-landscape.html">冻底座、改脚手架</a>。这篇只加一条：采集日期也是输入；595 页上只对调它，五个开源权重模型的后期精确匹配掉 37.6 至 51.4 个点。</p>
 </section>
 </main>
 </div>
+<a class="fr-top" href="#" aria-label="返回页首">↑</a>
 </body>
 </html>

@@ -1,9 +1,9 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="zh-CN">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>GPT-5.1 检索读报告，158 条掉 11.3 个点</title>
+  <title>GPT-5.1 按目录检索模拟报告，准确率为何下降 · Frontier</title>
   <style>
     :root { --ink:#0f172a; --muted:#475569; --line:#e2e8f0; --bg:#f8fafc; --blue:#1d4ed8; --blue-bg:#eff6ff; --amber:#b45309; --green:#047857; --rose:#be123c; }
     * { box-sizing: border-box; }
@@ -41,40 +41,48 @@
     svg text { font-family:-apple-system,"PingFang SC","Noto Sans SC",sans-serif; }
     @media (max-width:860px) { .layout { grid-template-columns:minmax(0,1fr); } aside { position:static; } h1 { font-size:1.55rem; } section { padding:18px 16px; } }
   </style>
+  <link rel="stylesheet" href="assets/article.css">
+  <script src="assets/article.js" defer></script>
 </head>
-<body>
-<nav style="position:sticky;top:0;z-index:50;background:#0f172a;border-bottom:1px solid #1e293b;padding:10px 24px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;">
-  <a href="/frontier" style="color:#93c5fd;text-decoration:none;font-size:14px;margin-right:16px;">← Frontier</a>
-  <a href="/" style="color:#cbd5e1;text-decoration:none;font-size:14px;">@xixi003</a>
+<body class="frontier-article">
+<a class="fr-skip" href="#article-content">跳到正文</a>
+<nav class="fr-nav" aria-label="站点导航">
+  <a class="fr-brand" href="/frontier/"><span class="fr-mark" aria-hidden="true">F</span>Frontier<span class="fr-nav-label">技术与研究</span></a>
+  <a class="fr-home" href="/">@xixi003 <span aria-hidden="true">↗</span></a>
 </nav>
+<div class="fr-progress" aria-hidden="true"><div></div></div>
 
-<header>
+<header class="fr-hero">
   <div class="inner">
     <span class="badge">FRONTIER · 2026-10-20 · 工具输出</span>
-    <h1>GPT-5.1 检索读报告，158 条掉 11.3 个点</h1>
+    <h1>GPT-5.1 按目录检索模拟报告，准确率为何下降</h1>
     <p>一篇 10 月 19 日的预印本只改地球化学模拟器报告怎么到模型眼前。158 条已核答案的选择题上，GPT-5.1 从目录检索读报告，比报告贴进上下文掉 11.3 个点（分母 158）。数值题上暴露加闭合合计 −8.7，约占 −11.9 的四分之三；另有约 4 个点来自没看见正确值时的作答，区间含 0。把模拟冻住的只有 GPT-5.2，131 条检查点上掉 9.4 个点。</p>
   </div>
 </header>
-<div class="layout">
-<aside>
-  <p>目录</p>
-  <a href="#what">1 GPT-5.1 掉 11.3 个点</a>
-  <a href="#how">2 只改报告怎么到眼前</a>
-  <a href="#ex">3 2.75065 截成 2.750</a>
-  <a href="#sub">4 算对了，读的是自己那份</a>
-  <a href="#hide">5 净差接近零也会藏着</a>
-  <a href="#fix">6 点名权威文件，四舍五入不够</a>
-  <a href="#yours">7 你的长输出是贴进去还是存文件</a>
-  <a href="#limit">8 这篇没测到的</a>
-  <a href="#src">9 出处</a>
+<div class="fr-layout">
+<aside aria-label="文章目录" class="fr-toc">
+<details open="">
+<summary>本文目录<span aria-hidden="true">＋</span></summary>
+<div class="fr-toc-links">
+<a href="#what">1 按目录检索报告为何更容易答错</a>
+<a href="#how">2 只改报告怎么到眼前</a>
+<a href="#ex">3 2.75065 截成 2.750</a>
+<a href="#sub">4 算对了，读的是自己那份</a>
+<a href="#hide">5 总体分数接近时，仍可能存在读数错误</a>
+<a href="#fix">6 指定权威报告与保留完整报告的对照</a>
+<a href="#yours">7 你的长输出是贴进去还是存文件</a>
+<a href="#limit">8 这篇没测到的</a>
+<a href="#src">9 出处</a>
+</div>
+</details>
 </aside>
-<main>
+<main class="fr-content" id="article-content">
 <section id="what">
-  <h2><span>1</span>GPT-5.1 掉 11.3 个点</h2>
-  <p>2026 年 10 月 19 日，arXiv 收到 <a href="https://arxiv.org/abs/2610.26836">Same Simulation, Different Evidence: Where Retrieved Tool Output Costs LLM Agents Accuracy</a>（arXiv:2610.26836v1，cs.AI，作者 Ke Zhang、Sahchit Chundur、Jerry Peprah Owusu、Mohammad Javad Abdolhosseini Qomi、Maziar Raissi，单位署加州大学河滨分校与欧文分校）。预印本，未经同行评审。本轮读的是 PDF 全文；实验性 HTML 页返回 200，没有另核一版排版。</p>
+  <h2><span>1</span>按目录检索报告为何更容易答错</h2>
+  <p><a href="https://arxiv.org/abs/2610.26836">这项研究</a>比较两种读取模拟器报告的方式：直接放入上下文，或保存成文件、由 Agent 按目录检索。研究重点是证据怎样交到模型手上，而非模拟器是否能算对。</p>
   <p>长工具输出进不了上下文时，harness 常把它存成文件，让模型按目录、搜索或行号去读。论文问的是：这份报告已经算对了，换成检索读，准确率会不会掉。工具是美国地质调查局的水溶液地球化学模拟器 PHREEQC，报告最长 846.8k 字符，同一份输入再跑一遍，打印值对得上。</p>
   <div class="note">
-    <p style="margin:0">这篇只论证一个判断。判断是我的，依据是论文表 1 的主对照。158 条已核答案的四选一上，每个条目的各次运行先按条目汇总，TOC（按章节目录读报告）减 inline（报告截断后贴进上下文）：GPT-5.1 掉 11.3 个点（95% 条目自助区间 −18.0 至 −4.9；五个模型 Holm 校正符号翻转 p = 0.005）。五个模型里另外三个净差区间含 0；GPT-5.2 点估计掉 7.9 个点（区间 −14.9 至 −0.9），Holm 后 p = 0.128，未校正 0.032。11.3 没有冻住模拟。冻住模拟的只有 GPT-5.2，131 条数值题检查点上掉 9.4 个点（区间 −14.5 至 −4.6）。第 4–6 节用来定位掉在哪、改哪一处会回来，不当另一条主判断。</p>
+    <p style="margin:0">论文表 1 的主对照显示，158 道已核答案的四选一题上，GPT-5.1 按目录检索报告（TOC）比将截断报告直接放入上下文（inline）低 11.3 个百分点。各次运行先按条目汇总；95% 条目自助区间为 −18.0 至 −4.9，五模型 Holm 校正后的符号翻转 p = 0.005。另三个模型的净差区间包含 0；GPT-5.2 的点估计下降 7.9 个百分点（区间 −14.9 至 −0.9），未校正 p = 0.032，Holm 后为 0.128。主对照没有固定模拟结果，固定模拟的实验只在 GPT-5.2 上做过，131 个数值题检查点的准确率下降 9.4 个百分点（区间 −14.5 至 −4.6）。</p>
   </div>
   <p>表 1 里 Agent-TOC / Agent-Raw100k 两列是各模型的头条运行：GPT-5.1 是 57.0% 对 67.7%，GPT-5.2 是 57.0% 对 65.8%。主对照用的是同一条件下全部运行按条目汇总后的差，不是这两列相减。GPT-5.4 头条 TOC 75.3%、inline 70.9%，汇总后的差是 +0.2，两列不能拿来当主对照。</p>
 </section>
@@ -148,7 +156,7 @@
 </section>
 
 <section id="hide">
-  <h2><span>5</span>净差接近零也会藏着</h2>
+  <h2><span>5</span>总体分数接近时，仍可能存在读数错误</h2>
   <p>GPT-5.4 也替换证据：TOC 下 41.8% 跳过报告，截断陷阱 15/31。相对那次 inline，暴露 −2.6（−4.8 至 −0.5），闭合 −7.2（−11.1 至 −4.2），大约十个点；构建 +4.1（+0.0 至 +8.1），TOC 下模拟更常印出正确值。数值题净差 −4.4（−12.4 至 +3.4）；158 条全部运行汇总是 +0.2。两个净差的区间都含 0，暴露和闭合两项的区间不含 0。</p>
   <p>无工具时 Direct 准确率 25.9%–43.0%，最多大约高出多数类标签率 32.9% 十个点。五个 Claude 和 GPT 模型上，加上模拟器比更好的无工具基线高 15.8 至 45.6 个点（原文按未舍入数据算；用稿件表里头条列重算，GPT-5.1 是 57.0 − 41.1 = 15.9）。TOC 与 inline 之间的差另算。</p>
   <figure>
@@ -186,7 +194,7 @@
     <figcaption>图 2. 论文表 1 主对照，158 条按条目汇总。GPT-5.2 的区间不含 0，五个模型一起校正后 p = 0.128。GPT-5.2 冻结模拟的 −9.4 不画在这张图上，分母是 131 条检查点。</figcaption>
   </figure>
   <div class="tw">
-    <table>
+    <div class="fr-table" tabindex="0" role="region" aria-label="数据表格，可横向滚动"><table>
       <thead>
         <tr><th>模型</th><th>Direct</th><th>思维链</th><th>头条 TOC</th><th>头条 inline</th><th>TOC − inline 汇总</th></tr>
       </thead>
@@ -197,19 +205,19 @@
         <tr><td>GPT-5.2</td><td>27.2%</td><td>32.9%</td><td>57.0%</td><td>65.8%</td><td>−7.9［−14.9, −0.9］</td></tr>
         <tr><td>GPT-5.1</td><td>41.1%</td><td>36.1%</td><td>57.0%</td><td>67.7%</td><td>−11.3［−18.0, −4.9］</td></tr>
       </tbody>
-    </table>
+    </table></div>
   </div>
   <p>论文表 2 的 TOC 区间：GPT-5.1 53.2%–59.5%，GPT-5.2 55.7%–60.1%；两次 inline 分别是 67.7%/65.8% 和 65.8%/67.7%。两次 inline 都高于每一次 TOC 和那一次 Grep。按 19 套设置再抽样，GPT-5.1 区间 −19.1 至 −2.9，GPT-5.2 是 −16.2 至 +1.0（含 0）；去掉任意一套，点估计仍落在 −14.0 至 −9.7 和 −10.9 至 −5.8。</p>
 </section>
 
 <section id="fix">
-  <h2><span>6</span>点名权威文件，四舍五入不够</h2>
+  <h2><span>6</span>指定权威报告与保留完整报告的对照</h2>
   <p>如果掉点是因为去读自己那份更高精度文件，只改读什么，构建不应动。TOC+Report 在工具说明和每一次工具结果里加三句：<code>result.out</code> 里的值是权威的，按选项精度印刷；从相关章节取值，不要从 selected-output 作答。Hybrid 不加这句话，报告能进 10 万字符就贴进去。</p>
   <p>加了这句话，GPT-5.2 跳过报告落到 0.0%，GPT-5.1 落到 1.6%；闭合升到 98.8% 和 99.2%；截断陷阱 0 条；构建在运行波动内不动。相对全部五次 TOC，准确率 +7.9 和 +6.3 个点（两模型平均 +7.1，区间 +1.9 至 +12.4）；相对 TOC 对照运行是 +3.5 和 +7.9。GPT-5.4 两次都是 81.6%，相对其 TOC 运行 +7.8（+2.2 至 +13.6），相对 inline +7.9（+2.5 至 +13.3）；跳过报告 0.0%，闭合 99.0%，检索带来的构建增益还在（相对 inline +3.4）。摘要把三个 GPT 上相对普通检索的升幅写成 6.3–7.9 个点。</p>
   <p>TOC+Round 换成三句四舍五入规则，不点文件名。跳过报告仍接近 TOC，闭合仍约 82%。截断陷阱里 GPT-5.2 仍 17/25，GPT-5.1 仍 14/19。相对全部 TOC 运行，准确率只 +0.6 和 +1.2 个点。TOC+Report 超出 TOC+Round：GPT-5.2 +7.3（+0.6 至 +13.9），GPT-5.1 +5.1（−1.6 至 +12.0，含 0）。告诉它怎么进位，截断还在。点名权威文件之后，闭合升到 98.8% 和 99.2%；GPT-5.1 相对 inline 仍低 5.1 个点（区间 −11.4 至 +0.9），剩下的差在构建、暴露和没有正确值在眼前时的作答，不在闭合。</p>
   <p>三次 Hybrid：相对 TOC 对照，GPT-5.2 +4.6，GPT-5.1 +8.0。跳过报告几乎消失，闭合回到 inline 水平。相对 inline，GPT-5.2 +1.2，到了 inline 水平；GPT-5.1 −5.0，剩下的差在闭合以外。Hybrid 不需要知道这个工具；那句指令留着检索，但必须点出权威输出。论文写明，干预对照每个模型只有一次对照运行。GPT-5.2 的 TOC 对照是 63.3%，落在其余 TOC 运行的 55.7%–60.1% 之外。</p>
   <div class="tw">
-    <table>
+    <div class="fr-table" tabindex="0" role="region" aria-label="数据表格，可横向滚动"><table>
       <thead>
         <tr><th>模型</th><th>条件（运行数）</th><th>准确率（158 条）</th><th>Δ</th><th>跳过报告（158）</th><th>闭合 c（137 条数值题）</th></tr>
       </thead>
@@ -218,7 +226,7 @@
         <tr><td>GPT-5.1</td><td>TOC 对照 1 / TOC+Report 2 / Hybrid 3</td><td>53.8% / 61.7% / 61.8%</td><td>相对 TOC 对照：— / +7.9 / +8.0</td><td>48.7% / 1.6% / 1.1%</td><td>89.3 / 99.2 / 98.5</td></tr>
         <tr><td>GPT-5.4</td><td>三次 TOC 重跑 / TOC+Report 2</td><td>73.4% / 81.6%</td><td>相对全部四次 TOC：+7.8（81.6 − 73.4 = 8.2，基准不是这一行的 73.4）</td><td>41.8% / 0.0%</td><td>89.0 / 99.0</td></tr>
       </tbody>
-    </table>
+    </table></div>
   </div>
 </section>
 
@@ -227,7 +235,7 @@
   <p>证据边界先写清：PHREEQC 四选一、158 条已核答案、闭源 API、最多 24 步。生产日志、搜索结果、MCP 返回值没有直接测。能进 10 万字符的报告上，GPT-5.2 冻结模拟仍掉 10.1 个点，所以这条不绑在「报告太长贴不进去」。</p>
   <p>下面是我的推断，论文没有在 MCP 网关或生产会话上做对照。在这条边界里，最终准确率接近零的差，盖不住暴露和闭合两项。GPT-5.4 的净差区间含 0，替换证据仍在。Claude 两个模型的净差看不出来；有完整轨迹日志的 Sonnet，跳过报告只有 10.5%，截断陷阱 1/35。论文没找出是哪一项模型性质把 GPT 和 Claude 切开。净差不跟厂商品牌走：GPT-5.4 和 Claude 落在一起，它的两个前代不在。</p>
   <p><a href="/frontier/2026-10-15-gap-remains-after-fix.html">10-15</a> 写的是编码 Agent 自己的例行报告对不上完整执行记录。这一篇是工具的权威报告对上了，模型去读自己写的那份。<a href="/frontier/2026-10-19-visible-tools-are-input.html">10-19</a> 写可见工具列表也是输入。这一篇补的是工具输出怎么进上下文。论文第 6 节写，检索把读报告变成选证据；那句话只在 PHREEQC 上测过。</p>
-  <p>运行位如果把长工具输出一律落盘、只给目录或搜索，先看轨迹里模型打开的是不是那份权威输出。编辑起点如果是加一句「记得四舍五入」，论文表 5 说这句在这一片上几乎不动。点名权威文件或把能贴的贴进去，GPT-5.2 回到 inline 水平，GPT-5.1 大约回来一半，仍低约 5 个点（TOC+Report −5.1，区间 −11.4 至 +0.9；Hybrid −5.0）。11.3 那一列没有整列回来。</p>
+  <p>如果工具长输出统一保存成文件、只向模型提供目录或搜索入口，就需要检查执行轨迹：模型实际打开的是否是权威报告。表 5 中，单加一句「记得四舍五入」几乎没有改善；指定权威文件，或直接放入能容纳的报告，则让 GPT-5.2 回到 inline 水平。GPT-5.1 大约恢复一半，仍低约 5 个点（TOC+Report −5.1，区间 −11.4 至 +0.9；Hybrid −5.0），没有完全消除原来 11.3 个点的差距。</p>
 </section>
 
 <section id="limit">
@@ -245,11 +253,13 @@
 
 <section id="src">
   <h2><span>9</span>出处</h2>
-  <p>数字来自预印本 PDF 全文（<a href="https://arxiv.org/pdf/2610.26836">arxiv.org/pdf/2610.26836</a>，<a href="https://arxiv.org/abs/2610.26836">abs</a>，版本戳 19 Oct 2026，未经同行评审）。表 1 至表 5、表 9、表 10，第 2–5 节、附录 C 和第 9 节。论文没有在摘要里给出配套仓库，本轮未把 GitHub 检索结果当数字来源。</p>
-  <p><a href="https://openai.com/news/">OpenAI 新闻页</a>直连返回 403，未核对当日条目。用 r.jina.ai 读到 <a href="https://openai.com/index/low-resource-programming-languages/">低资源编程语言</a> 评测（MultiLangBench 20 种语言、COBOL 迁移）；页面没有发布日期，稿件未把「10 月 19 日」当作该页日期，也没有把这些数字写入正文。<a href="https://www.anthropic.com/news">Anthropic 新闻页</a>本轮用 r.jina.ai 读到的列表停在 10 月 16 日；独立评审另抓到 10 月 18 日 Investing in the public benefit，没有可写进运行位的新测量。Hacker News 近两日可见 Hybrid Reasoning Agents、Harness2，没有带 158 条分母的证据替换测量。Product Hunt 当日榜被验证页挡住。X、Reddit 今日未覆盖：本机没有可用登录态。arXiv cs.CL / cs.AI / cs.LG 的 export API 本轮按 2026-10-18 至 2026-10-21 检索。</p>
+  <p>2026 年 10 月 19 日，arXiv 收到 <a href="https://arxiv.org/abs/2610.26836">Same Simulation, Different Evidence: Where Retrieved Tool Output Costs LLM Agents Accuracy</a>（arXiv:2610.26836v1，cs.AI，作者 Ke Zhang、Sahchit Chundur、Jerry Peprah Owusu、Mohammad Javad Abdolhosseini Qomi、Maziar Raissi，单位署加州大学河滨分校与欧文分校）。预印本，未经同行评审。</p>
+  <p>数字来自预印本 PDF 全文（<a href="https://arxiv.org/pdf/2610.26836">arxiv.org/pdf/2610.26836</a>，<a href="https://arxiv.org/abs/2610.26836">abs</a>，版本戳 19 Oct 2026，未经同行评审）。表 1 至表 5、表 9、表 10，第 2–5 节、附录 C 和第 9 节。摘要未提供配套仓库，本文数字均来自论文，未据代码独立复现。</p>
+
   <p>谱系和增量层分别在 <a href="/frontier/rsi-llm-agent-self-evolution.html">递归自改进前世今生</a> 和 <a href="/frontier/llm-agent-tech-landscape.html">冻底座、改脚手架</a>。这篇只加一条：GPT-5.1 在 158 条上，报告改成检索读掉 11.3 个点；冻住模拟的对照只覆盖 GPT-5.2，131 条上掉 9.4 个点。</p>
 </section>
 </main>
 </div>
+<a class="fr-top" href="#" aria-label="返回页首">↑</a>
 </body>
 </html>

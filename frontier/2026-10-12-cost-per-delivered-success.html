@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="zh-CN">
 <head>
   <meta charset="UTF-8">
@@ -40,37 +40,45 @@
     svg text { font-family:-apple-system,"PingFang SC","Noto Sans SC",sans-serif; }
     @media (max-width:860px) { .layout { grid-template-columns:minmax(0,1fr); } aside { position:static; } h1 { font-size:1.55rem; } section { padding:18px 16px; } }
   </style>
+  <link rel="stylesheet" href="assets/article.css">
+  <script src="assets/article.js" defer></script>
 </head>
-<body>
-<nav style="position:sticky;top:0;z-index:50;background:#0f172a;border-bottom:1px solid #1e293b;padding:10px 24px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;">
-  <a href="/frontier" style="color:#93c5fd;text-decoration:none;font-size:14px;margin-right:16px;">← Frontier</a>
-  <a href="/" style="color:#cbd5e1;text-decoration:none;font-size:14px;">@xixi003</a>
+<body class="frontier-article">
+<a class="fr-skip" href="#article-content">跳到正文</a>
+<nav class="fr-nav" aria-label="站点导航">
+  <a class="fr-brand" href="/frontier/"><span class="fr-mark" aria-hidden="true">F</span>Frontier<span class="fr-nav-label">技术与研究</span></a>
+  <a class="fr-home" href="/">@xixi003 <span aria-hidden="true">↗</span></a>
 </nav>
+<div class="fr-progress" aria-hidden="true"><div></div></div>
 
-<header>
+<header class="fr-hero">
   <div class="inner">
-    <span class="badge">FRONTIER · 2026-10-12 · 运行位</span>
+    <span class="badge">FRONTIER · 2026-10-12 · Agent 成本</span>
     <h1>决策单价降了七成，账要按每个成功交付算</h1>
     <p>一篇 10 月 9 日的预印本把 Jev 接进五个 Agent 的选动作位置，在 ALFWorld 和 AndroidWorld 上跑了 4,500 次任务执行。单次决策的成本降 66.1% 至 78.4%，五个 Agent 都降。把失败的尝试也计入、按每个成功交付来除，T3A 每次尝试便宜 17.1%，每个成功交付的均值却从 68.70 涨到 73.97 mUSD（差值的 95% 区间跨零），另外四个 Agent 每个成功交付的成本仍然下降；FastAgent 每交付一个成功的用时从 239.4 秒涨到 377.8 秒（差值的 95% 区间整段为正）。</p>
   </div>
 </header>
-<div class="layout">
-<aside>
-  <p>目录</p>
-  <a href="#what">1 决策便宜了，账还没算完</a>
-  <a href="#decision">2 每次决策都便宜了七成上下</a>
-  <a href="#attempt">3 每次尝试，省下的被别处花掉</a>
-  <a href="#success">4 每个成功交付，失败的尝试也要付钱</a>
-  <a href="#recover">5 出错之后，救回来多少</a>
-  <a href="#who">6 算模型的，还是算接法的</a>
-  <a href="#yours">7 该按哪个分母记账</a>
-  <a href="#limit">8 这篇没测到的</a>
-  <a href="#src">9 出处</a>
+<div class="fr-layout">
+<aside aria-label="文章目录" class="fr-toc">
+<details open="">
+<summary>本文目录<span aria-hidden="true">＋</span></summary>
+<div class="fr-toc-links">
+<a href="#what">1 决策便宜了，账还没算完</a>
+<a href="#decision">2 每次决策都便宜了七成上下</a>
+<a href="#attempt">3 辅助调用和交互会抵消部分节省</a>
+<a href="#success">4 每个成功交付，失败的尝试也要付钱</a>
+<a href="#recover">5 出错之后，救回来多少</a>
+<a href="#who">6 区分模型能力与接入方式的影响</a>
+<a href="#yours">7 该按哪个分母记账</a>
+<a href="#limit">8 这篇没测到的</a>
+<a href="#src">9 出处</a>
+</div>
+</details>
 </aside>
-<main>
+<main class="fr-content" id="article-content">
 <section id="what">
   <h2><span>1</span>决策便宜了，账还没算完</h2>
-  <p>2026 年 10 月 9 日，arXiv 收到 <a href="https://arxiv.org/abs/2610.13092">When Faster Decisions Do Not Make Better Agents: An Empirical Study of Jev in Agent Workflows</a>（arXiv:2610.13092v1，cs.AI，南京大学与慕尼黑工业大学）。</p>
+  <p><a href="https://arxiv.org/abs/2610.13092">这项研究</a>把 Jev 接入完整 Agent 工作流，比较替换前后的成功率、总成本和用时。单次决策便宜，并不一定让整个任务更划算。</p>
   <p>Jev 是 TypeSafe AI 在 2026 年 9 月发布的决策模型，厂商叫它 System One Model。调用方给一段状态和若干带类型的问题，它返回候选项上的概率、分数或二元概率。Agent 每一步都要在有限的候选里挑一个：点哪个控件、调哪个工具、发哪条命令。这一步原来由通用大模型做。论文把它换成 Jev，看单步省下的钱和时间能带多少到任务层面。</p>
   <p><a href="/frontier/2026-10-11-option-labels-are-input.html">昨天那篇</a>讲的预印本测的是开放权重的复刻模型，位置是放行，有攻击者，没有测 Jev 本身。今天这篇测的是 Jev 1.13.0，位置是选动作，没有攻击者。</p>
   <ul>
@@ -81,9 +89,13 @@
     <li><strong>模型与遍数。</strong>通用模型是 gpt-5.6-luna，Jev 是 jev-1.13.0。每个配置在同一批任务上跑三遍，任务之间重置环境和记忆。两个环境各 6 个配置，（6 × 134 + 6 × 116）× 3 = 4,500 次任务执行。</li>
     <li><strong>计价，每百万 token。</strong>通用模型输入 0.20 美元、输出 1.20 美元；Jev 输入 0.042 美元，输出不收费。下文 mUSD 是千分之一美元，µUSD 是百万分之一美元。</li>
   </ul>
-  <p>这篇只论证一个判断。把选动作这一步换成便宜的决策模型，单步的降幅在五个 Agent 上都稳。交付一个成功要花多少钱和时间，还取决于三个量：这一步原本占任务多大比例，换完之后多出多少辅助调用和交互，成功率掉了多少以及失败的尝试花掉多少。验收这类替换，分母要用成功交付的次数。第 5、6 两节拆的是第三个量：成功率为什么掉，掉的部分算模型的还是算接法的。</p>
+  <p>五个 Agent 上，换用便宜决策模型都降低了单步成本。但每次成功交付要花多少钱、花多久，还取决于该步骤原本的成本占比、额外增加的辅助调用和交互，以及成功率与失败成本。因此，我会按成功交付次数验收这类替换，并进一步区分模型能力和接入方式带来的影响。</p>
   <div class="note">
-    <p style="margin:0">三个分母先摆清楚。每次决策：只算选动作的调用，分母是该配置的决策调用次数。每次任务尝试：成本算一次任务里的全部模型调用，含辅助调用和反思，用时还含环境交互，分母是任务执行次数，成败都算。每个成功交付：全部尝试（含失败）的总花费或总用时，除以成功次数。成功与否由各基准的官方评测器判定。两个环境的任务和预算不同，家族之间的数字不互相折算，下文只在同一家族内比 B 和 J。</p>
+    <p>本文区分三种成本口径。</p>
+    <p><strong>每次决策：</strong>只统计选动作的调用，除以该配置的决策调用次数。</p>
+    <p><strong>每次任务尝试：</strong>统计任务中的全部模型调用，包括辅助调用和反思；用时还包含环境交互。分母是任务执行次数，成功和失败都算。</p>
+    <p><strong>每个成功交付：</strong>将全部尝试（包括失败）的总花费或总用时，除以成功次数。成功与否由各基准的官方评测器判定。</p>
+    <p>两个环境的任务和预算不同，Agent 家族之间不直接换算，下文只比较同一家族内的 B 和 J。</p>
   </div>
 </section>
 <section id="decision">
@@ -93,7 +105,7 @@
   <p>到这一层，厂商给它的定位（快、便宜的决策模型）在五个 Agent 上都成立。下面两节换分母。</p>
 </section>
 <section id="attempt">
-  <h2><span>3</span>每次尝试，省下的被别处花掉</h2>
+  <h2><span>3</span>辅助调用和交互会抵消部分节省</h2>
   <p>每次任务尝试的成本，五个家族都降：ReAct 50.9%，Reflexion 32.6%，T3A 17.1%，AutoDroid 68.8%，FastAgent 43.0%。按任务配对的 95% 自助区间里，Reflexion 的成本差值跨零，其余四个整段在零以下。</p>
   <p>每次任务尝试的用时：ReAct 降 47.6%，Reflexion 降 37.8%，T3A 降 10.6%，AutoDroid 降 5.7%，FastAgent 涨 0.7%。AutoDroid 和 FastAgent 的用时差值区间跨零。</p>
   <p>决策快了四分之三，T3A、AutoDroid、FastAgent 三个的任务用时变化却都在 11% 以内。论文把每次任务的平均用时拆成三块：选动作的调用、辅助调用、环境交互及其他。</p>
@@ -199,7 +211,7 @@
   <h2><span>4</span>每个成功交付，失败的尝试也要付钱</h2>
   <p>先看成功率。分母是每个配置的全部执行次数，ALFWorld 402 次，AndroidWorld 348 次。</p>
   <div class="tw">
-  <table>
+  <div class="fr-table" tabindex="0" role="region" aria-label="数据表格，可横向滚动"><table>
     <thead><tr><th>Agent</th><th>环境</th><th>原配置 B</th><th>Jev 配置 J</th><th>J 减 B（百分点）<br>与 95% 区间</th></tr></thead>
     <tbody>
       <tr><td>ReAct</td><td>ALFWorld</td><td>97.51%（392/402）</td><td>96.02%（386/402）</td><td>−1.49　[−4.48, +1.24]</td></tr>
@@ -208,12 +220,12 @@
       <tr><td>AutoDroid</td><td>AndroidWorld</td><td>18.68%（65/348）</td><td>16.38%（57/348）</td><td>−2.30　[−5.46, +0.86]</td></tr>
       <tr><td>FastAgent</td><td>AndroidWorld</td><td>50.00%（174/348）</td><td>31.90%（111/348）</td><td>−18.10　[−26.44, −9.77]</td></tr>
     </tbody>
-  </table>
+  </table></div>
   </div>
   <p>ALFWorld 上两个 Agent 的差距在 2 个百分点以内，区间含零（Reflexion 的上界是 +0.00）。AndroidWorld 上 T3A 和 FastAgent 的区间整段为负。AutoDroid 两个配置都不到 20%。</p>
   <p>失败的尝试照样花钱。论文算了失败尝试占推理花费的比例，分母是该配置全部执行的推理花费合计：</p>
   <div class="tw">
-  <table>
+  <div class="fr-table" tabindex="0" role="region" aria-label="数据表格，可横向滚动"><table>
     <thead><tr><th>Agent</th><th>每次尝试的成本<br>B → J（mUSD）</th><th>失败尝试占推理花费<br>B → J</th><th>每个成功交付的成本<br>B → J（mUSD）</th><th>每个成功交付的成本差值<br>与 95% 区间（mUSD）</th></tr></thead>
     <tbody>
       <tr><td>ReAct</td><td>7.74 → 3.80</td><td>8.7% → 34.6%</td><td>7.93 → 3.96</td><td>−3.98　[−5.07, −2.81]</td></tr>
@@ -222,7 +234,7 @@
       <tr><td>AutoDroid</td><td>5.22 → 1.63</td><td>92.8% → 94.7%</td><td>27.93 → 9.93</td><td>−18.00　[−29.85, −11.68]</td></tr>
       <tr><td>FastAgent</td><td>10.98 → 6.26</td><td>56.0% → 82.7%</td><td>21.96 → 19.62</td><td>−2.33　[−7.60, +4.38]</td></tr>
     </tbody>
-  </table>
+  </table></div>
   </div>
   <p>Reflexion 的 Jev 配置，402 次执行里失败 8 次，占 2.0%，这 8 次花掉了 53.3% 的推理花费。按 Reflexion 的设计，失败后带着反思整轮重来，实验里最多十轮、每轮 49 步；按这个设计，救不回来的任务会试到轮数或时间上限。这 8 次各试了几轮，论文没有列。</p>
   <figure>
@@ -316,7 +328,7 @@
   <p>换算式可以由定义直接写出来：每个成功交付的成本 = 每次尝试的成本 ÷ 成功率。每次尝试省 s，成功率从 p₀ 变成 p₁，每个成功交付的成本变成原来的 (1 − s) × p₀ ÷ p₁ 倍。T3A 是 0.829 × 57.47 ÷ 44.25 ≈ 1.077，FastAgent 是 0.570 × 50.00 ÷ 31.90 ≈ 0.893。成功率的相对跌幅超过每次尝试的省幅，每个成功就变贵。这个式子是我推的，代入论文的数对得上。</p>
   <p>时间按同样三个分母列出来：</p>
   <div class="tw">
-  <table>
+  <div class="fr-table" tabindex="0" role="region" aria-label="数据表格，可横向滚动"><table>
     <thead><tr><th>Agent</th><th>每次决策<br>B → J（秒）</th><th>每次任务尝试<br>B → J（秒）</th><th>每个成功交付<br>B → J（秒）</th><th>每个成功交付的用时差值<br>与 95% 区间（秒）</th></tr></thead>
     <tbody>
       <tr><td>ReAct</td><td>4.13 → 1.08</td><td>71.17 → 37.33</td><td>73.0 → 38.9</td><td>−34.11　[−43.92, −23.82]</td></tr>
@@ -325,7 +337,7 @@
       <tr><td>AutoDroid</td><td>8.13 → 1.75</td><td>261.20 → 246.27</td><td>1398.4 → 1503.5</td><td>+105.07　[−206.65, +559.67]</td></tr>
       <tr><td>FastAgent</td><td>5.40 → 1.41</td><td>119.68 → 120.50</td><td>239.4 → 377.8</td><td>+138.43　[+60.33, +257.46]</td></tr>
     </tbody>
-  </table>
+  </table></div>
   </div>
   <p>FastAgent 每次尝试的用时几乎没变，成功次数从 174 掉到 111，每交付一个成功的用时从 239.4 秒涨到 377.8 秒。T3A 从 370.6 秒涨到 430.2 秒。这两格的区间整段为正。AutoDroid 的均值也涨，区间很宽，跨零。</p>
   <p>只看两个配置都做成的那些「任务–遍次」对（ReAct 378 对、Reflexion 393 对、T3A 145 对、AutoDroid 50 对、FastAgent 84 对），Jev 配置确实便宜。ALFWorld 成本低 64.8% 和 66.2%，用时短 59.2% 和 60.8%。AndroidWorld 成本低 11.3%（T3A）、75.3%（AutoDroid）、50.8%（FastAgent）；用时上 AutoDroid 短 18.6%，FastAgent 短 5.5%，T3A 慢 1.1%，后两项的差值区间跨零。每成功成本和用时的差距出在两处：做不成的任务变多了，做不成时也在花钱和时间。</p>
@@ -410,10 +422,10 @@
   </ul>
 </section>
 <section id="who">
-  <h2><span>6</span>算模型的，还是算接法的</h2>
+  <h2><span>6</span>区分模型能力与接入方式的影响</h2>
   <p>ALFWorld 有对照 C，可以拆开看。</p>
   <div class="tw">
-  <table>
+  <div class="fr-table" tabindex="0" role="region" aria-label="数据表格，可横向滚动"><table>
     <thead><tr><th>配置</th><th>成功率（分母 402）</th><th>每次尝试的成本（mUSD）</th><th>每次尝试的用时（秒）</th></tr></thead>
     <tbody>
       <tr><td>ReAct-B　通用模型直接写命令</td><td>97.51%</td><td>7.74</td><td>71.17</td></tr>
@@ -423,7 +435,7 @@
       <tr><td>Reflexion-C</td><td>98.01%</td><td>16.75</td><td>143.03</td></tr>
       <tr><td>Reflexion-J</td><td>98.01%</td><td>6.05</td><td>61.90</td></tr>
     </tbody>
-  </table>
+  </table></div>
   </div>
   <p>同一个候选接口下换模型（C 对 J）：成功率差 ReAct 是 −1.00 个百分点，区间 −3.23 至 +0.75；Reflexion 是 0.00，区间 −1.00 至 +1.00。成本 J 比 C 低 56.6% 和 63.9%，用时都短约 56.6%。Reflexion 上 J 和 C 的最终成功数相同，都是 394/402。在这两个 Agent 上，候选接口固定之后，换成 Jev 的成功率差值区间含零（ReAct 的下界是 −3.23 个百分点），成本降一半以上。</p>
   <p>通用模型拿着候选列表（C）比原配置更贵、更慢。表 7 里它每次决策的 token 更多，ReAct 是 2.51 千对 2.04 千；Reflexion 上它第一轮失败也更多，31 次对 26 次。论文没有把更贵、更慢归到这两项上。</p>
@@ -432,7 +444,7 @@
 </section>
 <section id="yours">
   <h2><span>7</span>该按哪个分母记账</h2>
-  <p>下面八条是我按这篇预印本整理的检查项，适用于打算把循环里某一步换成更便宜模型的系统。前六条各对应论文里的一项结果或建议，后两条是我加的。</p>
+  <p>把 Agent 循环中的某一步换成更便宜的模型时，可以检查下面八项。前六项对应论文结果或建议，后两项是我补充的工程建议。</p>
   <ul>
     <li><strong>先量被替换的那一步占多少。</strong>按任务把时间和钱拆成三块：这一步的调用、其他模型调用、环境和工具执行。ReAct 是 71.17 秒里 68.31 秒在选动作；AutoDroid 是 261.20 秒里 164.43 秒在模型之外，选动作的调用占 96.78 秒（96.78 ÷ 261.20，约 37%），这一步降到零，任务用时也只少这 96.78 秒。</li>
     <li><strong>换完之后重新数调用次数和步数。</strong>T3A 的辅助调用变长，FastAgent 的决策次数多了 44.1%。账单按任务全量算，被替换的那个调用点只占其中一部分。步粒度变了要单独记：一步一个工具让每步都对着最新的界面，也让步数变多。</li>
@@ -462,17 +474,19 @@
 </section>
 <section id="src">
   <h2><span>9</span>出处</h2>
+  <p>2026 年 10 月 9 日，arXiv 收到 <a href="https://arxiv.org/abs/2610.13092">When Faster Decisions Do Not Make Better Agents: An Empirical Study of Jev in Agent Workflows</a>（arXiv:2610.13092v1，cs.AI，南京大学与慕尼黑工业大学）。</p>
   <ul>
     <li>论文：<a href="https://arxiv.org/abs/2610.13092">arXiv:2610.13092v1</a>，When Faster Decisions Do Not Make Better Agents: An Empirical Study of Jev in Agent Workflows，2026-10-09，cs.AI。本文数字的位置：第 4.2 节（设置与预算）、附录 A.1（计价与口径）、第 5.1 节与表 5（成功率）、第 5.2 节与表 2、表 7、表 8、表 9（成本与用时）、表 10（配对差值与区间）、第 5.3 节与表 3、表 4（失败与纠错）、附录 C.1 与表 11（轨迹编码）、附录 C.2 与表 12（案例）。</li>
     <li>代码：论文给的地址是 <a href="https://anonymous.4open.science/r/jev-emp-5BF4/">anonymous.4open.science/r/jev-emp-5BF4</a>，匿名仓库。写稿时的请求和发稿前评审的重新抓取都没有拿到仓库内容，仓库内容未核对。</li>
     <li>我自己算的四处：图 2 的整数比值；第 4 节的换算式和两个代入结果；「每成功成本区间整段为负的只有两个 Agent」这句对表 10 的读法；第 7 节 AutoDroid 选动作占用时约 37%（表 9 的 96.78 秒除以表 8 的 261.20 秒）。</li>
-    <li>当日另外扫过的源：arXiv 接口 cs.AI / cs.CL / cs.LG 最新 1,200 条，提交时间从 10 月 7 日到 10 月 9 日，周末没有新的公告批次。同批读过摘要但没有写的有四篇，都是预印本：<a href="https://arxiv.org/abs/2610.12849">2610.12849</a>（Agent 提交的同时改应用代码和部署配置的 PR）、<a href="https://arxiv.org/abs/2610.12822">2610.12822</a>（多 Agent 编码系统里 reward hacking 的传播）、<a href="https://arxiv.org/abs/2610.12601">2610.12601</a>（深度研究 Agent 的反思式提示优化）、<a href="https://arxiv.org/abs/2610.13841">2610.13841</a>（编码 Agent 从沙箱快照恢复）。本文没有用它们的数字。</li>
+
     <li>OpenAI 博客 RSS：10 月 8 日至 9 日是客户案例和一篇影响力行动通报。其中两篇标题讲降成本，正文请求返回 403，没有读到，未引用。Anthropic 新闻页最近日期是 10 月 8 日。Hacker News 首页前 90 条。GitHub 上 claude-code、codex、langgraph、OpenHands、goose、pi-mono 的最近发布标题和 Trending 当日榜。Product Hunt feed。这些没有能支撑本文判断的一手数字。</li>
-    <li>X 与 Reddit：今日未覆盖。本次运行没有登录态，Reddit 接口返回 403。</li>
+
   </ul>
   <p>同系列里，<a href="/frontier/typesafe-jev-training-guide.html">从零训练类似 TypeSafe JEV 的 System One 决策模型</a>在应用场景里列了动作离散决策和降低账单，这篇给的是接进完整工作流之后按成功交付算的账。<a href="/frontier/llm-agent-tech-landscape.html">冻底座、改脚手架</a>说公开增量落在 harness 这一层，这篇里省下的钱被花掉的地方（辅助调用、交互步数、完成检查、纠错）也都在这一层。<a href="/frontier/rsi-llm-agent-self-evolution.html">递归自改进前世今生</a>里的冻结评估器，对应这里判定「交付成功」的官方评测器；地图收藏那个案例里，它只核对名字。</p>
 </section>
 </main>
 </div>
+<a class="fr-top" href="#" aria-label="返回页首">↑</a>
 </body>
 </html>

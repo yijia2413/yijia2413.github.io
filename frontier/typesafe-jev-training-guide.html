@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="zh-CN">
 <head>
   <meta charset="UTF-8">
@@ -369,42 +369,48 @@
       aside { position: static; max-height: none; }
     }
   </style>
+  <link rel="stylesheet" href="assets/article.css">
+  <script src="assets/article.js" defer></script>
 </head>
-<body>
-<nav style="position:sticky;top:0;z-index:50;background:#0f172a;border-bottom:1px solid #1e293b;padding:10px 24px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;">
-  <a href="/frontier" style="color:#93c5fd;text-decoration:none;font-size:14px;margin-right:16px;">← Frontier</a>
-  <a href="/" style="color:#cbd5e1;text-decoration:none;font-size:14px;">@xixi003</a>
+<body class="frontier-article">
+<a class="fr-skip" href="#article-content">跳到正文</a>
+<nav class="fr-nav" aria-label="站点导航">
+  <a class="fr-brand" href="/frontier/"><span class="fr-mark" aria-hidden="true">F</span>Frontier<span class="fr-nav-label">技术与研究</span></a>
+  <a class="fr-home" href="/">@xixi003 <span aria-hidden="true">↗</span></a>
 </nav>
+<div class="fr-progress" aria-hidden="true"><div></div></div>
 
 
-<header>
+<header class="fr-hero">
   <div class="header-badge">AI 体系工程白皮书 · 2026 技术实操版</div>
   <h1>从零训练类似 TypeSafe JEV 的 System One 决策模型</h1>
   <p>非自回归结构化评估、RLCD 决策校准、OptionMarker 多头并行前向，以及开源、商业产品和业务数据工程</p>
 </header>
 
-<div class="container">
-  <aside>
-    <h3>目录导航</h3>
-    <ul>
-      <li><a href="#sec-overview">1. 什么是 JEV 与 System One？</a></li>
-      <li><a href="#sec-architecture">2. 模型核心机理与架构原理</a></li>
-      <li><a href="#sec-pipeline">3. 端到端训练全流程路线图</a></li>
-      <li><a href="#sec-dataset">4. 基础数据集构造与对齐锚点</a></li>
-      <li><a href="#sec-model-code">5. PyTorch 模型架构与多头实现</a></li>
-      <li><a href="#sec-rlcd-loss">6. RLCD 联合损失函数与训练</a></li>
-      <li><a href="#sec-calibration">7. 后训练温度校准与置信度计算</a></li>
-      <li><a href="#sec-serving">8. 高性能推理服务与 API 规范</a></li>
-      <li><a href="#sec-eval">9. 评测基准与业务工作流验证</a></li>
-      <li><a href="#sec-opensource-models">10. 开源决策模型与基准评测</a></li>
-      <li><a href="#sec-business-data">11. 工业级业务数据工程</a></li>
-      <li><a href="#sec-products">12. 业界产品与生态</a></li>
-      <li><a href="#sec-papers">13. 学术论文脉络</a></li>
-      <li><a href="#sec-conclusion">14. 工业化落地与选型</a></li>
-    </ul>
-  </aside>
+<div class="fr-layout">
+  <aside aria-label="文章目录" class="fr-toc">
+<details open="">
+<summary>本文目录<span aria-hidden="true">＋</span></summary>
+<div class="fr-toc-links">
+<a href="#sec-overview">1 JEV 一次请求评估一串选项</a>
+<a href="#sec-architecture">2 模型结构与工作原理</a>
+<a href="#sec-pipeline">3 从数据到部署的训练流程</a>
+<a href="#sec-dataset">4 基础数据集构造与对齐锚点</a>
+<a href="#sec-model-code">5 PyTorch 模型架构与多头实现</a>
+<a href="#sec-rlcd-loss">6 RLCD 联合损失函数与训练</a>
+<a href="#sec-calibration">7 后训练温度校准与置信度计算</a>
+<a href="#sec-serving">8 高性能推理服务与 API 规范</a>
+<a href="#sec-eval">9 评测基准与业务工作流验证</a>
+<a href="#sec-opensource-models">10 开源决策模型与基准评测</a>
+<a href="#sec-business-data">11 工业级业务数据工程</a>
+<a href="#sec-products">12 业界产品与生态</a>
+<a href="#sec-papers">13 学术论文脉络</a>
+<a href="#sec-conclusion">14 部署与选型建议</a>
+</div>
+</details>
+</aside>
 
-  <main>
+  <main class="fr-content" id="article-content">
 
     <!-- SECTION 1 -->
     <section id="sec-overview" class="section-card">
@@ -483,7 +489,7 @@
 
       <h3>三大决策原语 (Decision Primitives)</h3>
       <div class="table-container">
-        <table>
+        <div class="fr-table" tabindex="0" role="region" aria-label="数据表格，可横向滚动"><table>
           <thead>
             <tr>
               <th>原语名称</th>
@@ -512,13 +518,13 @@
               <td>等级分布的峰度与熵约束（确定性程度）。</td>
             </tr>
           </tbody>
-        </table>
+        </table></div>
       </div>
     </section>
 
     <!-- SECTION 2 -->
     <section id="sec-architecture" class="section-card">
-      <h2><span class="num">2</span> 模型核心机理与架构原理</h2>
+      <h2><span class="num">2</span> 模型结构与工作原理</h2>
       <p>
         为什么 JEV、Von 和 Laya 能够做到一次请求同时评估 10~100 个问题，且延迟仅 18~35ms？
         做法是<strong>“非自回归 OptionMarker 编码”与“双向全注意力机制（Bidirectional Attention）”</strong>。
@@ -606,8 +612,8 @@
 
     <!-- SECTION 3 -->
     <section id="sec-pipeline" class="section-card">
-      <h2><span class="num">3</span> 端到端训练全流程路线图 (End-to-End Pipeline)</h2>
-      <p>要完整复刻一个工业级可用的 JEV 模型，整个工程生命周期分为 5 大关键阶段。</p>
+      <h2><span class="num">3</span> 从数据到部署的训练流程</h2>
+      <p>训练一个可部署的同类决策模型，需要依次处理数据、模型实现、联合训练、校准和服务验证。下面按这五个阶段展开。</p>
 
       <div class="figure-wrapper">
         <div class="figure-svg-container">
@@ -887,10 +893,10 @@
     <!-- SECTION 10 -->
     <section id="sec-opensource-models" class="section-card">
       <h2><span class="num">10</span> 开源决策模型与基准评测</h2>
-      <p>当前开源社区四大主力模型横向对标：</p>
+      <p>下面比较四个相关开源项目的结构、规模和使用方式：</p>
 
       <div class="table-container">
-        <table>
+        <div class="fr-table" tabindex="0" role="region" aria-label="数据表格，可横向滚动"><table>
           <thead>
             <tr>
               <th>模型名称</th>
@@ -949,7 +955,7 @@
               <td>擅长零样本文本跨度与实体级分类，但在复杂逻辑多跳推理和动作决策上表现一般。</td>
             </tr>
           </tbody>
-        </table>
+        </table></div>
       </div>
 
       <div class="callout danger">
@@ -962,7 +968,7 @@
     <!-- SECTION 11 -->
     <section id="sec-business-data" class="section-card">
       <h2><span class="num">11</span> 工业级业务数据工程</h2>
-      <p>商业落地里，<strong>业务工作流数据工程占 85%</strong>。</p>
+      <p>业务工作流数据工程占商业落地工作量的 <strong>85%（待核实）</strong>。具体工作包括下面几项。</p>
 
       <div class="figure-wrapper">
         <div class="figure-svg-container">
@@ -1154,7 +1160,7 @@
         <div class="figure-caption">图 6：TypeSafe JEV 与 System One 决策模型在工业界的四层产品与生态</div>
       </div>
 
-      <h3>业界八大杀手级产品化应用场景</h3>
+      <h3>八种应用场景</h3>
 
       <div class="steps-grid">
         <div class="step-card">
@@ -1236,7 +1242,7 @@
       </p>
 
       <div class="table-container">
-        <table>
+        <div class="fr-table" tabindex="0" role="region" aria-label="数据表格，可横向滚动"><table>
           <thead>
             <tr>
               <th>论文与作者</th>
@@ -1276,13 +1282,13 @@
               <td>严格真分数（Strictly Proper Scoring Rules）的数学体系奠基。证明了 Brier Score 与负对数损失在数学上具有<strong>“防伪防冒”特性</strong>：预测者只有输出其真实的内心后验概率时，才能获得最大的期望数学期望收益。</td>
             </tr>
           </tbody>
-        </table>
+        </table></div>
       </div>
     </section>
 
     <!-- SECTION 14 -->
     <section id="sec-conclusion" class="section-card">
-      <h2><span class="num">14</span> 工业化落地与选型建议总结</h2>
+      <h2><span class="num">14</span> 部署与选型建议</h2>
       <div class="steps-grid">
         <div class="step-card">
           <div class="step-num-badge">建议 1</div>
@@ -1317,5 +1323,6 @@
   从零训练类 TypeSafe JEV 决策模型技术手册 · 自动化软件与 AI 确定性架构指南 · 2026
 </footer>
 
+<a class="fr-top" href="#" aria-label="返回页首">↑</a>
 </body>
 </html>

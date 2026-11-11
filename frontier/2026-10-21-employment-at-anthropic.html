@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="zh-CN">
 <head>
   <meta charset="UTF-8">
@@ -44,32 +44,40 @@
       section { padding:18px 16px; }
     }
   </style>
+  <link rel="stylesheet" href="assets/article.css">
+  <script src="assets/article.js" defer></script>
 </head>
-<body>
-<nav>
-  <a href="/frontier">← Frontier</a>
-  <a href="/" style="color:#cbd5e1">@xixi003</a>
+<body class="frontier-article">
+<a class="fr-skip" href="#article-content">跳到正文</a>
+<nav class="fr-nav" aria-label="站点导航">
+  <a class="fr-brand" href="/frontier/"><span class="fr-mark" aria-hidden="true">F</span>Frontier<span class="fr-nav-label">技术与研究</span></a>
+  <a class="fr-home" href="/">@xixi003 <span aria-hidden="true">↗</span></a>
 </nav>
-<header>
+<div class="fr-progress" aria-hidden="true"><div></div></div>
+<header class="fr-hero">
   <div class="inner">
     <span class="badge">FRONTIER · 译文 · 2026-10-21</span>
     <h1>Anthropic 的就业正在怎样变化</h1>
-    <p>Nathan Wilmers、Regina Catipon、Maxim Massenkoff、Peter McCrory。2026 年 10 月 16 日。内部就业、AI 使用、产出、问卷、沟通、日历和招聘记录，外加 17 次员工访谈。这篇按原文译完。</p>
+    <p>Nathan Wilmers、Regina Catipon、Maxim Massenkoff 和 Peter McCrory 于 2026 年 10 月 16 日发表这份研究。材料涵盖 Anthropic 内部的就业、AI 使用、产出、问卷、沟通、日历和招聘记录，以及 17 次员工访谈。</p>
     <p class="src-note">原文：<a href="https://www.anthropic.com/research/employment-at-anthropic">How employment is changing at Anthropic</a></p>
   </div>
 </header>
-<div class="layout">
-<aside>
-  <p>目录</p>
-  <a href="#findings">主要发现</a>
-  <a href="#intro">引言</a>
-  <a href="#demand">前沿上的劳动力需求</a>
-  <a href="#prod">产出涨了，是 AI 吗</a>
-  <a href="#bottleneck">注意力成了瓶颈</a>
-  <a href="#employers">雇主能做什么</a>
-  <a href="#src">出处</a>
+<div class="fr-layout">
+<aside aria-label="文章目录" class="fr-toc">
+<details open="">
+<summary>本文目录<span aria-hidden="true">＋</span></summary>
+<div class="fr-toc-links">
+<a href="#findings">1 主要发现</a>
+<a href="#intro">2 引言</a>
+<a href="#demand">3 招聘需求如何变化</a>
+<a href="#prod">4 产出涨了，是 AI 吗</a>
+<a href="#bottleneck">5 注意力成了瓶颈</a>
+<a href="#employers">6 雇主能做什么</a>
+<a href="#src">7 出处</a>
+</div>
+</details>
 </aside>
-<main>
+<main class="fr-content" id="article-content">
 
 <section id="findings">
   <h2><span>1</span>主要发现</h2>
@@ -84,14 +92,14 @@
 
 <section id="intro">
   <h2><span>2</span>引言</h2>
-  <p>越来越强的 AI 下，工作和就业会变成什么样？Anthropic 值得研究，因为它已经把工作流彻底按 AI 来塑过。代理在 Slack 里穿来穿去、安排会议。它们自己修 bug，也一起啃巨大的工程项目。代理工时对人的工时是 6 比 1。此刻发生在 Anthropic 的变化，给一种可能的工作和就业前景提供了提前信号。</p>
+  <p>AI 能力增强后，工作和就业会怎样变化？Anthropic 已经围绕 AI 重新组织了大量工作流程，因此值得研究。代理在 Slack 中协作、安排会议、修复 bug，也参与大型工程项目。代理工时与人工工时之比达到 6 比 1。这些变化为理解未来的工作组织提供了一个案例。</p>
   <p>这份报告用的是 Anthropic 内部比较完整的数据：就业、AI 使用、产出指标、员工问卷、内部沟通模式、员工日历、招聘决策记录。定量材料旁边，还有 17 次员工访谈。</p>
-  <p>我们发现：公司在长，初级技术岗位的相对招聘却慢下来了。工程师和非技术员工的生产率都跳了一截，而且是在他们采用编码代理时跳得最猛。招聘经理相对具体的技术专长，越来越强调申请人的自主和判断。在一个 AI 很重的组织里干活，一个鲜明特征是：只要做得到，就一直有压力把自己从瓶颈位上精简出去。一位工程师把工作形容成面对「一支 Claude 大军，每一个都在要我的注意力」。Anthropic 的员工仍然关键。可他们贡献的性质已经变了。</p>
+  <p>我们发现，公司仍在扩张，初级技术岗位的相对招聘需求却在下降。工程师和非技术员工的生产率均有明显提升，采用编码代理时尤其突出。与具体技术专长相比，招聘经理越来越看重候选人的自主性和判断力。在这样重度使用 AI 的组织中，员工持续面对一个要求：减少工作流对自己的等待。一位工程师形容自己面对「一支 Claude 大军，每一个都在要我的注意力」。员工依然发挥关键作用，但贡献的方式已经改变。</p>
   <p>Anthropic 的回应是建一套早期预警，跟踪可能被打乱的岗位；岗位在变的时候，公司优先做内部再安置。这些动作发生在 AI 研发和工作场所变化的最前沿，说明具体的组织承诺可以塑造 AI 对就业的影响。它们也提出更难的问题：那些承诺究竟该是什么。</p>
 </section>
 
 <section id="demand">
-  <h2><span>3</span>前沿上的劳动力需求</h2>
+  <h2><span>3</span>招聘需求如何变化</h2>
   <p>Anthropic 扩张很快。但按每一美元收入雇的人，比上一代大型科技公司少。成立五年时，Anthropic 的人均收入大约是 Meta 和 Google 各自快速增长顶峰时的 2 到 4 倍。<sup class="fn">1</sup></p>
   <p>缺的是哪些岗位？公司内部，关于初级技术员工需求下降的讨论，2026 年 1 月出现在核心技术职能里。自己工作最依赖 Claude 的团队发现，写代码和找 bug 越来越能卸给 Claude。新能力的模型把这种感觉加快了：「特别让人抬眉毛的是性能工程师这边的提升，基本上一夜之间就改了我们在找什么。」</p>
   <p>到 4 月，工程和研究团队已经弱化了较低职级技术岗位的招聘。同月问卷里，多数管理者说因为 AI，他们在招另一套技能。大约三分之一的机器学习管理者、五分之一的软件工程管理者报告，因为 AI 而招得更少。</p>
@@ -109,12 +117,12 @@
 
 <section id="prod">
   <h2><span>4</span>产出涨了，是 AI 吗</h2>
-  <p>这些挪动能算到 AI 头上吗？在 Anthropic，人是薄薄一层，底下是越来越多的 AI 代理。根据代理会话遥测，2026 年 3 月，自主代理和交互式代理的工时合计第一次超过人的工时。一部分是成群的代理在做工业规模的软件工程：填无数例行测试和检查、维护越堆越多的基础设施代码、发动把巨大代码库翻译过去的战役。可即便收窄到由单个员工部署的代理，如图 2，到 8 月这些代理的工时已经是他们人类经手人的 6 倍。</p>
+  <p>这些变化有多少来自 AI？根据代理会话遥测，2026 年 3 月，自主代理与交互式代理的总工时首次超过人工工时。其中一部分来自大规模软件工程任务：补充例行测试和检查、维护基础设施代码、迁移大型代码库。即便只看由单个员工部署的代理，如图 2 所示，到 8 月，它们的工时也已达到相应员工工时的 6 倍。</p>
   <figure>
     <img src="employment-at-anthropic/fig2-agent-hours.png" alt="代理工时超过人工时">
     <figcaption>图 2　代理工时超过人工时。口径：只计员工指挥的交互式会话，子代理合并。工时概念是代理运行时间，含推理和正在用的工具，排除任何超过 30 分钟的等待。人工时按人数乘以每周假定 40 小时。</figcaption>
   </figure>
-  <p>Anthropic 是软件生产者，流过这些代理的 token 绝大多数花在产软件代码上。看板盯着公司各处跑着的代理群。可私人助理代理也盯员工日历和消息：安排日程、从进来的消息里攒待办、自动给即将到来的会议准备人和目的的简报。Token 碰到的日常任务越来越宽。</p>
+  <p>Anthropic 主要生产软件，代理消耗的 token 大多用于编写代码，公司用看板监测这些代理的工作。个人助理代理也会读取日历和消息，安排日程、整理待办，并为即将举行的会议准备与会者和会议目的的简报。AI 参与的日常任务范围正在扩大。</p>
   <figure>
     <img src="employment-at-anthropic/fig3-productivity.png" alt="各职能产出上升">
     <figcaption>图 3　各职能的产出上升。底层是指数化产出，拟合 Loess 平滑。</figcaption>
@@ -140,7 +148,7 @@
   <h2><span>5</span>注意力成了瓶颈</h2>
   <p>重度采用 AI，改的不只是就业和生产率。它也持续改工作过程，造出新任务，挪动员工对职场的感知。一位员工把这说成「Anthropic 里永远存在的压力：尽快动、什么都用 Claude」；另一位说「我们指望一周做完的事，在别处要三个月」。内部问卷问过：Anthropic 的工作过程是否让回答者尽可能地高效。2024 年底 44% 同意；2025 年 11 月 58%（2026 年 4 月 75% 答是，但题目弱化了，去掉了「尽可能」）。到 8 月，<a href="https://www.anthropic.com/research/ai-expectations-gap">Anthropic 员工预期</a>到 2030 年 AI 能做他们 75% 的工作，其他美国人是 28%。</p>
   <p>这种不断拧紧的生产率预期，被内部发模型的节奏戏剧化了。新模型一可用，Anthropic 员工就开始在交互式编码代理会话里啃更难的问题。我们用一个自动的 Claude 评分器，按深度、范围、牵涉多少系统，给去标识的会话打任务难度。超过旧模型难度 90 分位的任务份额急剧上升大约 30%（从全部任务的 10% 到 13%），发模型后的几周里一直抬着。交给代理的简单那一端几乎没变。</p>
-  <p>螺旋上升的代理生产率，变成泼到人屏幕和注意力上的产出。一位工程师把这比成带小孩：</p>
+  <p>代理产出增加后，需要人阅读和处理的信息也随之增多。一位工程师把这种工作比作带小孩：</p>
   <div class="quote">他们会说，我要打开果汁盒，打开果汁盒是紧急事件。这个声音的关切程度，跟那个割破手指、在流血的一样。[...] 你带小孩的时候，每个孩子都把关切带到你面前，要的注意力一样多，各种各样的 Claude 也这样。</div>
   <p>2026 年 4 月问卷有一道开放题，问 AI 怎样影响日常工作。27% 描述了 Claude 工具带来的生产率增益，20% 描述角色从实际干活转到管理 Claude。</p>
   <p>在这种由模型驱动的加速里，人的注意力是恒定的瓶颈。交互式、多轮会话里，代理绝大部分会话时间根本没在干活，而在等。我们从每次交互会话的墙上时钟时间里减去该代理的主动工作时间，来跟踪空闲。Claude 会话大约 80% 是闲着等人的输入。一位工程师的说法是：人在「给代理制造瓶颈」。</p>
@@ -193,5 +201,6 @@
 
 </main>
 </div>
+<a class="fr-top" href="#" aria-label="返回页首">↑</a>
 </body>
 </html>

@@ -1,9 +1,9 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="zh-CN">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>405 片段菜单上，典型测试放行 0.410 的隐藏错误程序</title>
+  <title>测试断言齐全，典型输入仍可能漏掉错误 · Frontier</title>
   <style>
     :root { --ink:#0f172a; --muted:#475569; --line:#e2e8f0; --bg:#f8fafc; --blue:#1d4ed8; --blue-bg:#eff6ff; --amber:#b45309; --green:#047857; --rose:#be123c; }
     * { box-sizing: border-box; }
@@ -42,49 +42,57 @@
     svg text { font-family:-apple-system,"PingFang SC","Noto Sans SC",sans-serif; }
     @media (max-width:860px) { .layout { grid-template-columns:minmax(0,1fr); } aside { position:static; } h1 { font-size:1.55rem; } section { padding:18px 16px; } }
   </style>
+  <link rel="stylesheet" href="assets/article.css">
+  <script src="assets/article.js" defer></script>
 </head>
-<body>
-<nav style="position:sticky;top:0;z-index:50;background:#0f172a;border-bottom:1px solid #1e293b;padding:10px 24px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;">
-  <a href="/frontier" style="color:#93c5fd;text-decoration:none;font-size:14px;margin-right:16px;">← Frontier</a>
-  <a href="/" style="color:#cbd5e1;text-decoration:none;font-size:14px;">@xixi003</a>
+<body class="frontier-article">
+<a class="fr-skip" href="#article-content">跳到正文</a>
+<nav class="fr-nav" aria-label="站点导航">
+  <a class="fr-brand" href="/frontier/"><span class="fr-mark" aria-hidden="true">F</span>Frontier<span class="fr-nav-label">技术与研究</span></a>
+  <a class="fr-home" href="/">@xixi003 <span aria-hidden="true">↗</span></a>
 </nav>
+<div class="fr-progress" aria-hidden="true"><div></div></div>
 
-<header>
+<header class="fr-hero">
   <div class="inner">
     <span class="badge">FRONTIER · 2026-11-06 · Agent Eval</span>
-    <h1>405 片段菜单上，典型测试放行 0.410 的隐藏错误程序</h1>
-    <p>一篇预印本在 CPython、Node.js、SQLite 的 52 个受影响测试任务上，把发布门的可见输入换成典型样例、发布说明边沿输入、盲写测试。作者构造的 405 片段菜单、完整有限修复空间里，全断言门在典型输入上放行 0.410 的隐藏错误程序；作者按发布说明写的一条边沿输入把这个份额降到 0.065。假拒绝仍是 0.010，分母是隐藏正确的程序。0.410 和 0.065 是任务均值，只挂这一张菜单：大菜单是 0.278，加硬干扰后是 0.337，论文写它们不是门的属性。</p>
+    <h1>测试断言齐全，典型输入仍可能漏掉错误</h1>
+    <p>API 升级后，程序能通过常规测试，仍可能在边界输入上出错。一篇预印本在 CPython、Node.js、SQLite 的 52 个受影响测试任务上比较发布检查：在作者构造的 405 个程序片段菜单内，典型输入放行隐藏错误程序的份额为 0.410；增加一条按发布说明编写的边界输入后降到 0.065。两项都是任务均值，不能当成通用失败率。</p>
   </div>
 </header>
-<div class="layout">
-<aside>
-  <p>目录</p>
-  <a href="#what">1 0.410 到 0.065</a>
-  <a href="#setup">2 怎么计</a>
-  <a href="#models">3 开源权重上也降</a>
-  <a href="#aux">4 盲写、自测、硬干扰是辅线</a>
-  <a href="#yours">5 你的发布门</a>
-  <a href="#limit">6 这篇没测到的</a>
-  <a href="#src">7 出处</a>
+<div class="fr-layout">
+<aside aria-label="文章目录" class="fr-toc">
+<details open="">
+<summary>本文目录<span aria-hidden="true">＋</span></summary>
+<div class="fr-toc-links">
+<a href="#what">1 边界输入减少隐藏错误放行</a>
+<a href="#setup">2 有限程序空间内的放行率</a>
+<a href="#models">3 开源权重上也降</a>
+<a href="#aux">4 盲写测试、自测与干扰程序</a>
+<a href="#yours">5 发布检查需要覆盖边界输入</a>
+<a href="#limit">6 这篇没测到的</a>
+<a href="#src">7 出处</a>
+</div>
+</details>
 </aside>
-<main>
+<main class="fr-content" id="article-content">
 <section id="what">
-  <h2><span>1</span>0.410 到 0.065</h2>
-  <p>2026 年 11 月 5 日，arXiv 收到 <a href="https://arxiv.org/abs/2611.08269">Accepted but Wrong: Silent Failures of LLM Code Repairs after API Migrations</a>（arXiv:2611.08269v1，cs.SE，兼 cs.AI；作者 Xiaobo Chen、Genliang Zhu、Ziyuan Wang、Chu Wang；单位署马萨诸塞大学阿默斯特、Accentrust、佐治亚理工、杜克、伊利诺伊大学厄巴纳-香槟）。预印本，未经同行评审。abs 页 Comments 写 30 页、2 图，已预注册；工件向作者索取。本轮读的是 HTML 全文。许可是 arXiv.org perpetual non-exclusive license。</p>
+  <h2><span>1</span>边界输入减少隐藏错误放行</h2>
+
   <p>运行时升了，过程还要满足同一条义务。有的断裂会报错。有的不断：调用成功，结果变了。论文举例：枚举打成 <code>3</code> 而不是 <code>Priority.HIGH</code>；<code>sum()</code> 更准了，对不上账本里存的浮点；<code>Buffer.poolSize</code> 大了八倍，上传分块跟着变。发布门如果只拿典型测试输入，这些错修能过。</p>
   <div class="note">
-    <p style="margin:0">这篇只论证一个判断。判断是我的，依据是论文表 1 和正文「What makes a release gate adequate here is its inputs」（<a href="https://arxiv.org/html/2611.08269">HTML</a>）。判断是：作者构造的 405 片段菜单上，全断言门在典型输入上放行 0.410 的隐藏错误程序；作者按发布说明写的一条边沿输入把份额降到 0.065。对照面是 52 个受影响测试任务、49 个簇，任务均值。簇均值是 0.406 对 0.064，正文写两者相差不超过 0.005。假拒绝两边都是 0.010，分母是隐藏正确的程序。15 个新测试簇上是 0.471 到 0.061，那一截用来回答「这个差是不是旧池子里带出来的」，不和 0.410 进同一句倍数。主对比的 52 个任务里，55 个旧任务整份导入，重叠多少正文没按任务列出。0.410 不是 52 个任务里错了 21 个，也不是模型一次调用的失败率，更不是门换菜单之后仍成立的属性。</p>
+    <p style="margin:0">依据论文表 1 和正文「What makes a release gate adequate here is its inputs」（<a href="https://arxiv.org/html/2611.08269">HTML</a>）。作者构造的 405 片段菜单上，全断言门在典型输入上放行 0.410 的隐藏错误程序；作者按发布说明写的一条边沿输入把份额降到 0.065。对照面是 52 个受影响测试任务、49 个簇，任务均值。簇均值是 0.406 对 0.064，正文写两者相差不超过 0.005。假拒绝两边都是 0.010，分母是隐藏正确的程序。15 个新测试簇上是 0.471 到 0.061，那一截用来回答「这个差是不是旧池子里带出来的」，不能与 0.410 直接计算倍数。主对比的 52 个任务里，55 个旧任务整份导入，重叠多少正文没按任务列出。0.410 不是 52 个任务里错了 21 个，也不是模型一次调用的失败率，更不是门换菜单之后仍成立的属性。</p>
   </div>
   <p>论文把「静默」留给变化的类别：调用成功、结果改了。把「无错」留给一次运行的结局。0.410 是 FA 全体：放行且按隐藏契约不正确。其中隐藏执行没报错的那一部分，原文定义为 error-free 的假接受，表 1 没有单列占比。</p>
 </section>
 
 <section id="setup">
-  <h2><span>2</span>怎么计</h2>
+  <h2><span>2</span>有限程序空间内的放行率</h2>
   <p>73 个任务覆盖 60 个有文档的变更簇：CPython 3.9.6 → 3.12.15、Node.js 20.20.2 → 24.21.0、SQLite shell 3.51.0 → 3.54.0。66 个受影响，7 个未变对照。按类：25 个静默、34 个显式、7 个无可安全修复。测试划分 52 个受影响任务、49 个簇，其中 15 个簇是新的。每个候选都在真实运行时上执行，隐藏契约不给任何模型看。</p>
   <p>修复是在作者写好的片段菜单里选。主实验菜单 405 个片段。每个任务一条作者边沿输入，按发布说明写，质检规则要求它让未修过程在可见检查上失败。盲写器是隔离的 GPT-5.6-luna：只看见需求、钉死的摘录、输入键、典型输入及其旧输出、输出检查；看不见模板、片段、旧程序、隐藏输入。自测是修复模型自己先写输入。四种可见输入组合：只有典型（T）、加上自测（S）、加上作者边沿（E）、两边都加（ES）。</p>
   <p>四个被接纳的模型家族：GPT-5.6-luna（Codex CLI，reasoning effort high）、Qwen3-8B（4-bit MLX，贪心）、gpt-oss-20b、qwen3.6-35b-a3b（思考关掉，LM Studio，温度 0）。gemma-4-12b-qat 没过 12/12 准入，0/12 精确，解码 20.7，答案以泄漏的推理通道文本开头；论文不据此谈 gemma 的修复能力。每个任务每个臂 8 个格子：补丁或全文、diff 开或关、片段顺序正或反。测试划分每个臂 456 次尝试（52 × 8）。</p>
   <div class="tw">
-    <table>
+    <div class="fr-table" tabindex="0" role="region" aria-label="数据表格，可横向滚动"><table>
       <thead>
         <tr>
           <th>可见输入</th>
@@ -101,7 +109,7 @@
         <tr><td>+ 带守卫盲写 k=3</td><td>1.85</td><td>0.157</td><td>0.010</td><td>42/52</td></tr>
         <tr><td>+ 作者边沿输入</td><td>1.00</td><td>0.065</td><td>0.010</td><td>52/52†</td></tr>
       </tbody>
-    </table>
+    </table></div>
   </div>
   <p>表是论文表 1。全断言门，52 个受影响测试任务。FA 分母是每个任务里隐藏错误的程序；FR 分母是隐藏正确的程序。7 个无可安全修复任务里测试划分有 4 个，这些任务没有隐藏正确程序，原文没写它们的 FR 怎么进均值。预注册检验用簇均值。M4c 只看 15 个新测试簇：0.471 到 0.061，差 −0.410，95% 区间 [−0.589, −0.238]，严格 Holm p 0.002。M4c 是构建的确定性函数，F0 冻结前就算过，论文自己写明。† 52/52 是质检规则强制：作者边沿输入必须让未修过程在可见检查上失败，不是观测到的。</p>
   <figure>
@@ -143,7 +151,7 @@
   <h2><span>3</span>开源权重上也降</h2>
   <p>模型修复另计一列：每个臂 456 次尝试，簇均值的每次尝试错误放行率。T 臂和 E 臂的可见输入同时进修复提示和门；门失败时 gated 分支再给一次 pass/FAIL 反馈、不给期望值的修订。表 3 / 表 4 的错放是修订之后的数。原文没有把「门挡住」和「模型看见边沿输入后改写」拆开。作者边沿输入在三个开源权重家族上都降了这一列，正确完成没有掉。预注册的跨家族复制标准要求至少三个家族、且每个确认性家族的 H1 都通过；阈值按五个家族定，gemma 没过准入后用四个，论文单列这条偏差。按四个家族计，标准达到了。</p>
   <div class="tw">
-    <table>
+    <div class="fr-table" tabindex="0" role="region" aria-label="数据表格，可横向滚动"><table>
       <thead>
         <tr>
           <th>模型</th>
@@ -159,7 +167,7 @@
         <tr><td>gpt-oss-20b</td><td>确认性</td><td>320/71/0</td><td>353/8/0</td><td>0.181 → 0.020</td></tr>
         <tr><td>qwen3.6-35b-a3b</td><td>描述性</td><td>354/49/0</td><td>368/7/0</td><td>0.120 → 0.018</td></tr>
       </tbody>
-    </table>
+    </table></div>
   </div>
   <p>表拼自论文表 3 和表 4。456 = 52 任务 × 8 格子。Qwen3-8B 的区间 [−0.267, −0.094]，Holm p &lt; 0.001。gpt-oss-20b Holm p &lt; 0.001。qwen3.6-35b-a3b Holm p 0.004，按预注册规则是描述性：开发划分 T 臂错误接受 0.148，门槛 0.15。GPT-5.6-luna 靠近天花板，也是描述性。无门控时 T 臂错放次数：luna 45、Qwen3-8B 182、gpt-oss-20b 111、qwen3.6 97，和全断言门不是同一列。</p>
   <figure>
@@ -192,7 +200,7 @@
       <rect x="680" y="407.5" width="70" height="22.5" fill="#eff6ff" stroke="#1d4ed8" stroke-width="2"/>
       <text x="715" y="397" font-size="14" font-weight="700" fill="#1d4ed8" text-anchor="middle">0.018</text>
       <text x="675" y="454" font-size="14" fill="#0f172a" text-anchor="middle">qwen3.6-35b</text>
-      <text x="24" y="500" font-size="14" fill="#475569">luna 的 T 臂 22/456、E 臂 7/456 未画，Holm p 0.499，不进标题。0.233 是簇均值，98/456 ≈ 0.215 是次数相除，口径不同，不混。</text>
+      <text x="24" y="500" font-size="14" fill="#475569">luna 的 T 臂 22/456、E 臂 7/456 未画，Holm p 0.499，差异不显著。0.233 是簇均值，98/456 ≈ 0.215 是次数相除，口径不同，不混。</text>
       <text x="24" y="522" font-size="14" fill="#475569">正确完成 E−T 四个家族都 ≥ 0。qwen3.6 按预注册是描述性。作图参数是我的。</text>
     </svg>
     <figcaption>图 2. 三个开源权重家族修订后的每次尝试错误放行率。数据来自论文表 4 正文。每臂 456 次。可见输入同时进提示和门。qwen3.6 描述性。</figcaption>
@@ -200,19 +208,19 @@
 </section>
 
 <section id="aux">
-  <h2><span>4</span>盲写、自测、硬干扰是辅线</h2>
+  <h2><span>4</span>盲写测试、自测与干扰程序</h2>
   <p>盲写最多三条输入，任务均值放到 0.070；去掉 3 条等于隐藏输入的，是 0.090。第一阶段假拒绝没升，仍是 0.010。这条曲线预注册时不是假设，修任何代码之前就算过，而且只有一个写器，论文写成描述性。预注册的带守卫门只留写器标成「旧输出仍约束」的输入，放到 0.157，超过 0.10 的天花板，M4a 未通过。写器把 176 条里 35 条标成非约束，这些里偏多的是能让未修过程可见失败的：G3 下 42/52，W3 下 50/52。</p>
   <p>自测每个家族都降了错放次数：22→9、98→80、71→47、49→30，各 456 次。没有一条 Holm 校正后显著。最小的严格 Holm p 是 gpt-oss-20b 的 0.132。自测复制标准未达到。Qwen3-8B 只在 30/73 个任务上写出至少一条有效自测；GPT-5.6-luna 是 71/73。</p>
   <p>第二阶段菜单扩到 1491 个片段、1986 个过程。典型输入 FA 0.278，边沿 0.045，盲写 k=3 为 0.053。盲写这一档假拒绝从 0.014 升到 0.043。LM3 没按「菜单变大、典型门更松」的方向走：簇均值 0.406 到 0.271，多数新加的错误片段在典型输入上已经可见失败。论文写：门放行多少错程序，取决于菜单怎么建。0.410 和 0.278 只挂各自的菜单，不是门的属性。</p>
   <p>第三阶段加了 233 个硬干扰片段：在典型输入上，新运行时的输出等于旧程序在旧运行时的输出。2310 个过程。典型输入放行 0.337，硬错误程序上是 0.990，按构造如此。边沿输入整体 FA 0.058，硬错误程序上仍是 0.168。盲写 GPT-5.6-luna 整体 0.058，硬错误 0.153，假拒绝从 0.010 升到 0.042。两个本地写器没过预注册：qwen3.6 整体 0.094，假拒绝从 0.010 升到 0.083，升幅超过容许的 0.05；Qwen3-8B 写器 0.182。</p>
-  <p>这些是同一篇文章里的其他结果。标题只挂第一阶段完整空间上 0.410 对 0.065。</p>
+  <p>这些补充实验与第一阶段完整程序空间内的 0.410 对 0.065，设置不同。</p>
 </section>
 
 <section id="yours">
-  <h2><span>5</span>你的发布门</h2>
-  <p>读完要核对的是发布位。Agent 改完依赖、升完运行时，你用来放行的那组测试，是不是只用了仓库里现成的典型样例。这篇里，405 片段菜单上，全断言门在典型输入上放行 0.410 的隐藏错误程序；同一组断言加上一条按发布说明写的边沿输入，份额是 0.065。两组测试用同一组断言，输入不同。模型修复那一列里，边沿输入同时进了提示，门失败还有一次修订，原文没拆开。</p>
+  <h2><span>5</span>发布检查需要覆盖边界输入</h2>
+  <p>依赖或运行时升级后，发布测试是否覆盖了新版本的边界行为，值得单独检查。在这篇论文的 405 个程序片段菜单上，断言相同，仅把典型输入换成按发布说明编写的边界输入，隐藏错误的放行份额就从 0.410 降到 0.065。模型修复实验还同时把边界输入放进提示，并在检查失败后允许修订，论文没有拆开这些改动各自的贡献。</p>
   <p>论文讨论给的廉价步骤：隔离模型按发布说明写几条边沿输入；在旧运行时上算出期望输出；用这些输入挡修复。预注册通过的写器只有 GPT-5.6-luna；两个本地写器没过。第一阶段盲写假拒绝没升；大菜单从 0.014 到 0.043，硬菜单从 0.010 到 0.042。不要让写器自己决定哪些旧输出还约束——预注册守卫正好丢掉了能揭变化的输入。自测多一次调用，Holm 之后站不住。弱修复器从强写器获益更多：事后 21 个任务矩阵上，GPT-5.6-luna 写器对各家族最好或并列最好；同模型格子均值 0.161，跨模型 0.187。这是事后、一个提示、四个家族，论文写成待预注册的假设。</p>
-  <p>下面是我的推断，原文没测编码仓库的 CI。如果你的发布门是「绿测就合」，而绿测的输入来自旧版本的 happy path，升 CPython / Node / SQLite 这类会改返回值、不改报错的变更，错修可以无错通过。10-25 那篇查的是规格没写的名字挡住单元测试；这篇查的是测试已经绿了、隐藏契约仍判错。两缝相邻，分母不同。</p>
+  <p>我的判断是，依赖升级后的 CI 除了检查原有正常路径，也需要覆盖返回值等契约的边界变化。有些错误不会抛异常，测试全绿也可能只是输入没有触发它。10-25 的文章讨论规格未注明的名字如何导致单元测试失败；这里讨论测试通过后，隐藏契约仍然判错。两项研究的对象和分母不同，论文也没有直接测试实际仓库的 CI 改造效果。</p>
 </section>
 
 <section id="limit">
@@ -225,14 +233,16 @@
 
 <section id="src">
   <h2><span>7</span>出处</h2>
+  <p>2026 年 11 月 5 日，arXiv 收到 <a href="https://arxiv.org/abs/2611.08269">Accepted but Wrong: Silent Failures of LLM Code Repairs after API Migrations</a>（arXiv:2611.08269v1，cs.SE，兼 cs.AI；作者 Xiaobo Chen、Genliang Zhu、Ziyuan Wang、Chu Wang；单位署马萨诸塞大学阿默斯特、Accentrust、佐治亚理工、杜克、伊利诺伊大学厄巴纳-香槟）。预印本，未经同行评审。abs 页 Comments 写 30 页、2 图，已预注册；工件向作者索取。许可是 arXiv.org perpetual non-exclusive license。</p>
   <ul>
     <li>预印本 abs：<a href="https://arxiv.org/abs/2611.08269">arXiv:2611.08269</a>。HTML 全文：<a href="https://arxiv.org/html/2611.08269">arxiv.org/html/2611.08269</a>。Comments：30 页、2 图，已预注册。提交 2026-11-05。科目 cs.SE，兼 cs.AI。许可 arXiv.org perpetual non-exclusive license。</li>
     <li>表 1、表 3、表 4、0.410 / 0.065、0.233 → 0.057、0.070、0.157、1491、233、0.168、34/73，都从 HTML 全文抄。簇均值 0.406 / 0.064 来自表 1 段正文。</li>
-    <li>OpenAI 新闻页本轮经 r.jina.ai 打开（<a href="https://openai.com/news/">openai.com/news</a>），近 48 小时条目包括 GPT-6 Cyber、收购 Pierre Computer Company、Images 2.6，未写入本篇数字。直连 openai.com/news 返回 403。Anthropic 新闻页（<a href="https://www.anthropic.com/news">anthropic.com/news</a>）本轮打开，页面日期 2026-11-06，置顶仍是 Sep 22 的 Opus 5.5，未写入本篇数字。Hacker News 首页本轮打开，未见本篇预印本。Product Hunt 首页返回人机验证页，未打开。GitHub 当天新建仓库扫过，没有与本篇数字相关的发布说明。X / Reddit 今日未覆盖。</li>
+
   </ul>
-  <p><a href="/frontier/rsi-llm-agent-self-evolution.html">09-26 RSI</a> 是谱系，<a href="/frontier/llm-agent-tech-landscape.html">09-27 全景</a> 是增量在哪一层。这篇落在运行位的发布门：405 片段菜单上，断言已经齐了，典型输入仍放行 0.410 的隐藏错误程序。</p>
+  <p><a href="/frontier/rsi-llm-agent-self-evolution.html">09-26 RSI</a> 是谱系，<a href="/frontier/llm-agent-tech-landscape.html">09-27 全景</a> 是增量在哪一层。本文讨论发布检查中的一个问题：405 片段菜单上，断言已经齐了，典型输入仍放行 0.410 的隐藏错误程序。</p>
 </section>
 </main>
 </div>
+<a class="fr-top" href="#" aria-label="返回页首">↑</a>
 </body>
 </html>

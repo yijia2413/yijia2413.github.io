@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="zh-CN">
 <head>
   <meta charset="UTF-8">
@@ -31,40 +31,48 @@
     svg text { font-family:-apple-system,"PingFang SC","Noto Sans SC",sans-serif; }
     @media (max-width:860px) { .layout { grid-template-columns:1fr; } aside { position:static; } h1 { font-size:1.55rem; } section { padding:18px 16px; } }
   </style>
+  <link rel="stylesheet" href="assets/article.css">
+  <script src="assets/article.js" defer></script>
 </head>
-<body>
-<nav style="position:sticky;top:0;z-index:50;background:#0f172a;border-bottom:1px solid #1e293b;padding:10px 24px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;">
-  <a href="/frontier" style="color:#93c5fd;text-decoration:none;font-size:14px;margin-right:16px;">← Frontier</a>
-  <a href="/" style="color:#cbd5e1;text-decoration:none;font-size:14px;">@xixi003</a>
+<body class="frontier-article">
+<a class="fr-skip" href="#article-content">跳到正文</a>
+<nav class="fr-nav" aria-label="站点导航">
+  <a class="fr-brand" href="/frontier/"><span class="fr-mark" aria-hidden="true">F</span>Frontier<span class="fr-nav-label">技术与研究</span></a>
+  <a class="fr-home" href="/">@xixi003 <span aria-hidden="true">↗</span></a>
 </nav>
+<div class="fr-progress" aria-hidden="true"><div></div></div>
 
-<header>
+<header class="fr-hero">
   <div class="inner">
     <span class="badge">FRONTIER · 2026-10-06 · Uber Engineering</span>
     <h1>扫到的 MCP 工具，默认先关着</h1>
     <p>Uber 把内部 API 扫进统一的 MCP 注册表。扫到只是登记。每个 server 和每个工具一开始都是关闭的，所属团队审查之后才打开。</p>
   </div>
 </header>
-<div class="layout">
-<aside>
-  <p>目录</p>
-  <a href="#what">1 发现了还不等于能调用</a>
-  <a href="#how">2 三条路都先关着入库</a>
-  <a href="#run">3 原服务不用改接口</a>
-  <a href="#result">4 当时已经超过 800 个 server</a>
-  <a href="#hard">5 开关不在爬虫手里</a>
-  <a href="#new">6 有一份记录，和可以执行，是两步</a>
-  <a href="#src">7 出处</a>
+<div class="fr-layout">
+<aside aria-label="文章目录" class="fr-toc">
+<details open="">
+<summary>本文目录<span aria-hidden="true">＋</span></summary>
+<div class="fr-toc-links">
+<a href="#what">1 发现了还不等于能调用</a>
+<a href="#how">2 三类工具如何自动登记</a>
+<a href="#run">3 原服务不用改接口</a>
+<a href="#result">4 当时已经超过 800 个 server</a>
+<a href="#hard">5 工具由服务团队审批和启用</a>
+<a href="#new">6 自动发现与调用权限分开管理</a>
+<a href="#src">7 出处</a>
+</div>
+</details>
 </aside>
-<main>
+<main class="fr-content" id="article-content">
 <section id="what">
   <h2><span>1</span>发现了还不等于能调用</h2>
   <p>Uber Engineering 2026 年 10 月 2 日发了 <a href="https://x.com/UberEng/status/2106071967619322330">Designing MCP Gateway</a>。内部 agent 接工具时各写各的：难找、难运维，也和具体服务绑死。</p>
   <p>做法是做一个 MCP Gateway。控制面放注册表，数据面做运行时代理。已有 API 不用改成 MCP server，网关负责把 MCP 调用翻成原来的协议。</p>
-  <p>这篇工程笔记里最硬的一句原则是：discovery doesn’t imply exposure。发现了，还不等于对外暴露。每个 MCP server、每个工具，初始状态都是 disabled。所属团队明确审查并启用之后，才进到可调用的集合。</p>
+  <p>Uber 把这条原则写成 discovery doesn’t imply exposure：发现工具，并不意味着开放调用。每个 MCP server、每个工具的初始状态都是 disabled，所属团队审查并启用后才允许调用。</p>
 </section>
 <section id="how">
-  <h2><span>2</span>三条路都先关着入库</h2>
+  <h2><span>2</span>三类工具如何自动登记</h2>
   <p>内部有几千个服务，接口走 HTTP、gRPC 或 TChannel。让每个团队手写一个 MCP server，他们判断会又慢又痛。登记交给 AutoCrawler。它是挂在 Cadence 上的分布式工作流，订阅 IDL 注册表和内部服务信号。cron 按固定节奏触发一次扫描，找新服务、新 API 和 schema 变更。</p>
   <p>IDL 路径针对 Protobuf 或 Thrift。对每个服务的 API 组，AutoCrawler 建立或更新虚拟 MCP server，解析方法名、请求和响应 schema、注释，再用 LLM 生成给 agent 看的工具说明，把 schema 译成 MCP 用的 JSON-RPC 2.0，然后写入注册表。写入时就是关闭状态。</p>
   <p>原生 MCP 用另一套。Uber 用 MCPFx 写直接实现 MCP 的服务。每个原生 server 打心跳，表示自己在、并且就绪。AutoCrawler 看到心跳后调用 listTools，把对方声明的工具和 schema 收进来，在注册表里建一个虚拟代理。这些工具同样以关闭状态入库。</p>
@@ -121,26 +129,26 @@
 </section>
 <section id="result">
   <h2><span>4</span>当时已经超过 800 个 server</h2>
-  <p>文中给出的规模是：网关当时托管超过 800 个 MCP server、超过 5000 个工具。这是「超过」，不是精确到个位的计数。分母是这座网关上的 server 和 tool，不是某一次 agent 任务的成功率。</p>
+  <p>发布时，这座网关托管了超过 800 个 MCP server、超过 5000 个工具。原文没有给出更精确的计数。</p>
   <p>编码 agent 还有一条不把工具定义放进上下文的用法，他们叫 Code Mode。命令行是 aifx，三条子命令：<code>aifx mcp list</code> 列出 server，<code>aifx mcp search</code> 在全部 server 里搜工具，<code>aifx mcp call</code> 经网关调用。输出写到文件，文件系统 agent 再按需摘。原文写：这已经是公司内部 coding agent 使用 MCP 的默认方式。本机不需要安装那些 MCP server。</p>
-  <table>
-    <thead><tr><th>原文里的当时已经超过 800 个 server</th><th>条件</th></tr></thead>
+  <div class="fr-table" tabindex="0" role="region" aria-label="数据表格，可横向滚动"><table>
+    <thead><tr><th>发布时的规模与用法</th><th>条件</th></tr></thead>
     <tbody>
       <tr><td>超过 800 个 MCP server，超过 5000 个工具</td><td>这篇发布时网关上的托管规模</td></tr>
       <tr><td>新工具初始为 disabled</td><td>IDL 生成的、原生 listTools 收来的，都一样</td></tr>
       <tr><td>Code Mode 成为内部默认</td><td>coding agent 调 MCP。原文没给采用人数</td></tr>
     </tbody>
-  </table>
-  <p>帖子互动只说明传播，不说明设计是否成立。2026-10-07 00:36（北京时间）抓取时，这条帖子浏览 968462，赞 3098。分母是这一条帖。</p>
+  </table></div>
+
 </section>
 <section id="hard">
-  <h2><span>5</span>开关不在爬虫手里</h2>
+  <h2><span>5</span>工具由服务团队审批和启用</h2>
   <p>爬虫可以替团队把工具写进注册表，所有权仍要留在服务团队。打开之前，owner 还要看生成出来的工具说明。说明一改就要批 diff。这一步若没人批，注册表里会堆着永远关着的工具。文章没有给「关着的比例」或平均打开时间。</p>
   <p>工具回复可能带 PII。打码做在网关，按工具粒度。下游若在网关看不到的侧信道里返回同一份数据，这层打码盖不住。文章没有写他们测过哪些侧信道。</p>
   <p>Code Mode 把工具定义留在网关外面，agent 用搜索来找。搜错工具时，上下文里没有那份完整 schema 帮它自查。文章把这当作省上下文的办法，没有给搜错率。</p>
 </section>
 <section id="new">
-  <h2><span>6</span>有一份记录，和可以执行，是两步</h2>
+  <h2><span>6</span>自动发现与调用权限分开管理</h2>
   <p>新的部分是把「扫进目录」和「允许调用」拆开，打开权在所属团队。爬虫和调用方的 agent 没有这道开关。配置可以回滚到上一版已知状态。运行时只消费已经启用的那一版。</p>
   <p>和 <a href="/frontier/2026-10-05-tested-opt-still-running.html">测过的优化，为什么还在跑</a> 放在一起看：那边是旧的通过记录继续挑选程序，这边是新的工具记录先落库、默认不暴露。两篇都把「有一份记录」和「可以执行」分开。谱系仍在 <a href="/frontier/rsi-llm-agent-self-evolution.html">递归自改进前世今生</a>，这里不重写。</p>
 </section>
@@ -150,9 +158,10 @@
     <li><a href="https://x.com/UberEng/status/2106071967619322330">Uber Engineering，Designing MCP Gateway</a>，2026-10-02。正文来自这条 X 长文，不是 eng.uber.com 上另找的镜像。抓取时首页没有列出这篇，正式博客 URL 未确认。</li>
     <li>原则原句：discovery doesn’t imply exposure. Every MCP server and tool starts in a disabled state and must be explicitly reviewed and enabled by the owning team.</li>
   </ul>
-  <p>没做的：没有在 Uber 内部复现 AutoCrawler 或 aifx；没有延迟、QPS 或打开率，原文没给，这里不补；Reddit 和 X 的讨论区没有登录态，不收。</p>
+  <p>本文没有复现 AutoCrawler 或 aifx。原文未提供延迟、QPS、工具启用比例或平均启用时间，无法据此评估运行效率。</p>
 </section>
 </main>
 </div>
+<a class="fr-top" href="#" aria-label="返回页首">↑</a>
 </body>
 </html>

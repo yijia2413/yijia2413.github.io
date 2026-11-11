@@ -1,9 +1,9 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="zh-CN">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>三个 Agent 最新版第一次请求里，工具定义占字符 63.2% 至 77.4%</title>
+  <title>Agent 的第一次请求，工具定义占了多少 · Frontier</title>
   <style>
     :root { --ink:#0f172a; --muted:#475569; --line:#e2e8f0; --bg:#f8fafc; --blue:#1d4ed8; --blue-bg:#eff6ff; --amber:#b45309; --green:#047857; --rose:#be123c; }
     * { box-sizing: border-box; }
@@ -42,38 +42,46 @@
     svg text { font-family:-apple-system,"PingFang SC","Noto Sans SC",sans-serif; }
     @media (max-width:860px) { .layout { grid-template-columns:minmax(0,1fr); } aside { position:static; } h1 { font-size:1.55rem; } section { padding:18px 16px; } }
   </style>
+  <link rel="stylesheet" href="assets/article.css">
+  <script src="assets/article.js" defer></script>
 </head>
-<body>
-<nav style="position:sticky;top:0;z-index:50;background:#0f172a;border-bottom:1px solid #1e293b;padding:10px 24px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;">
-  <a href="/frontier" style="color:#93c5fd;text-decoration:none;font-size:14px;margin-right:16px;">← Frontier</a>
-  <a href="/" style="color:#cbd5e1;text-decoration:none;font-size:14px;">@xixi003</a>
+<body class="frontier-article">
+<a class="fr-skip" href="#article-content">跳到正文</a>
+<nav class="fr-nav" aria-label="站点导航">
+  <a class="fr-brand" href="/frontier/"><span class="fr-mark" aria-hidden="true">F</span>Frontier<span class="fr-nav-label">技术与研究</span></a>
+  <a class="fr-home" href="/">@xixi003 <span aria-hidden="true">↗</span></a>
 </nav>
+<div class="fr-progress" aria-hidden="true"><div></div></div>
 
-<header>
+<header class="fr-hero">
   <div class="inner">
     <span class="badge">FRONTIER · 2026-10-29 · 指令栈</span>
-    <h1>三个 Agent 最新版第一次请求里，工具定义占字符 63.2% 至 77.4%</h1>
-    <p>一篇预印本拦截五个编码 Agent 共 1,886 次发布的第一次模型请求。各 Agent 最新那一版的第一次请求里，工具定义占 Claude Code 请求字符的 77.4%、Qwen Code 72.3%、OpenCode 63.2%；Codex 40.5%，Gemini CLI 18.9%。Claude Code 2.1.243 那次：74,078 字符里工具定义 57,346，系统提示 9,517（13%）。固定用户提示 21 个字符，占最新请求 0.02% 至 0.07%。</p>
+    <h1>Agent 的第一次请求，工具定义占了多少</h1>
+    <p>编码 Agent 发给模型的第一条请求里，用户输入可能只占很小一部分。一篇预印本捕获了五个 Agent 共 1,886 次发布的首次请求：各自最新版本中，Claude Code、Qwen Code 和 OpenCode 的工具定义占请求字符的 63.2% 至 77.4%。这个比例衡量的是字符组成，论文没有据此测量任务表现。</p>
   </div>
 </header>
-<div class="layout">
-<aside>
-  <p>目录</p>
-  <a href="#what">1 63.2 到 77.4</a>
-  <a href="#pool">2 1,886 次第一次请求</a>
-  <a href="#ex">3 系统提示只是 13%</a>
-  <a href="#burst">4 工具清单会整段换</a>
-  <a href="#yours">5 你的运行位记了哪一层</a>
-  <a href="#limit">6 这篇没测到的</a>
-  <a href="#src">7 出处</a>
+<div class="fr-layout">
+<aside aria-label="文章目录" class="fr-toc">
+<details open="">
+<summary>本文目录<span aria-hidden="true">＋</span></summary>
+<div class="fr-toc-links">
+<a href="#what">1 首次请求里的工具定义占比</a>
+<a href="#pool">2 1,886 次第一次请求</a>
+<a href="#ex">3 系统提示只是 13%</a>
+<a href="#burst">4 工具清单会整段换</a>
+<a href="#yours">5 记录完整请求才能解释评测差异</a>
+<a href="#limit">6 这篇没测到的</a>
+<a href="#src">7 出处</a>
+</div>
+</details>
 </aside>
-<main>
+<main class="fr-content" id="article-content">
 <section id="what">
-  <h2><span>1</span>63.2 到 77.4</h2>
-  <p>2026 年 10 月 27 日，arXiv 收到 <a href="https://arxiv.org/abs/2610.37332">Hidden in Plain Sight: an Empirical Study about The Instruction Stacks of Coding Agents</a>（arXiv:2610.37332v1，cs.SE，作者 Felipe de Sant'Anna Paixão、Dhyego Tavares、Eduardo Almeida、Iftekhar Ahmed，单位署巴伊亚联邦大学、加州大学欧文分校）。预印本，未经同行评审。本轮读的是 HTML 全文和 PDF。复制包在原文标成匿名链接，本轮没有打开运行产物。</p>
+  <h2><span>1</span>首次请求里的工具定义占比</h2>
+
   <p>编码 Agent 发给主模型的第一次请求里，除了用户那句话，还有指令正文和工具定义。论文把这两块叫指令栈（instruction stack）。系统提示只是指令正文里的一块：三个协议有顶层 <code>system</code> / <code>systemInstruction</code> / <code>instructions</code> 字段，Chat Completions 没有。工具定义另放在结构化字段里，带名字、自然语言描述和参数 schema。</p>
   <div class="note">
-    <p style="margin:0">这篇只论证一个判断。判断是我的，依据是论文 Observation 1、第 5.1 节和图 3 底行右侧。五个 Agent 各自最新一次捕获：工具定义占请求字符的 77.4%（Claude Code）、72.3%（Qwen Code）、63.2%（OpenCode）、40.5%（Codex）、18.9%（Gemini CLI）。标题写三个 Agent，因为过半的是前三个。这是最新那一版、空目录下第一次请求的字符份额，不是会话里后来那几轮，也不是历次发布的中位数。Claude Code 2.1.243 那次请求 74,078 字符，20 个工具定义 57,346 字符；系统字段 9,517 字符，原文写成 13%。固定用户提示 <code>I AM THE USER PROMPT</code> 21 个字符，占最新请求 0.02% 至 0.07%；最新请求本身从 OpenCode 的 29,387 字符到 Qwen Code 的 124,873 字符。77.4 是字符份额，不是 token。原文没有测工具定义变长会不会改对错。</p>
+    <p style="margin:0">依据论文 Observation 1、第 5.1 节和图 3 底行右侧。五个 Agent 各自最新一次捕获：工具定义占请求字符的 77.4%（Claude Code）、72.3%（Qwen Code）、63.2%（OpenCode）、40.5%（Codex）、18.9%（Gemini CLI）。前三个 Agent 的工具定义占比超过一半。这是最新那一版、空目录下第一次请求的字符份额，不是会话里后来那几轮，也不是历次发布的中位数。Claude Code 2.1.243 那次请求 74,078 字符，20 个工具定义 57,346 字符；系统字段 9,517 字符，原文写成 13%。固定用户提示 <code>I AM THE USER PROMPT</code> 21 个字符，占最新请求 0.02% 至 0.07%；最新请求本身从 OpenCode 的 29,387 字符到 Qwen Code 的 124,873 字符。77.4 是字符份额，不是 token。原文没有测工具定义变长会不会改对错。</p>
   </div>
   <p>指令正文里，各 Agent 历次发布的中位数：指令性文字占 89% 至 96%。沟通、工程、工具用法三类合计中位数 73% 至 78%。执行策略（权限和难撤销操作）中位数 2% 至 6%。这些是字符怎么分配，原文写了不代表重要性。</p>
 </section>
@@ -82,7 +90,7 @@
   <h2><span>2</span>1,886 次第一次请求</h2>
   <p>五个 Agent 来自各自官方 npm 包，截止 2026 年 8 月 25 日前的稳定版。表 I：1,911 次合格发布，拦到 1,886 次第一次主模型请求。剩下 25 次没发出请求：15 个 OpenCode 在这篇配置下初始化不了模型提供方，7 个跨三个 Agent 的包或二进制是坏的。15 加 7 是 22，另外 3 次正文没拆开。</p>
   <div class="tw">
-    <table>
+    <div class="fr-table" tabindex="0" role="region" aria-label="数据表格，可横向滚动"><table>
       <thead>
         <tr>
           <th>Agent</th>
@@ -101,7 +109,7 @@
         <tr><td>Qwen Code</td><td>@qwen-code/qwen-code</td><td>OpenAI Chat Completions</td><td>120</td><td>120</td><td>07/25–08/26</td></tr>
         <tr><td>合计</td><td></td><td></td><td>1,911</td><td>1,886</td><td></td></tr>
       </tbody>
-    </table>
+    </table></div>
   </div>
   <p>每次发布单独跑在新的 linux/amd64 容器里，空工作目录、新 home。用户提示固定成那 21 个字符。只留第一次发给主模型、并且带这句标记的请求。OpenCode 和部分 Claude Code 会先找辅助模型写会话标题；拦截端把标题请求和主模型请求分开，标题一律回 <code>Controlled capture session</code>。Claude Code 和 Gemini CLI 用各自默认模型；Codex 在 0.19.0 及以前用默认 o4-mini，之后用 gpt-5；OpenCode 用 gpt-5；Qwen Code 用 qwen3-coder-plus。</p>
   <p>四个协议映射到同一套字段：顶层指令、有序消息、工具定义。映射不改、不合并、不重排正文。1,886 次请求里的角色、内容类型和工具定义都认出来了。指令正文切成 349,404 个片段，多半是句子。功能编码用 12 个码、三组：指令、事实、结构。人工样本 66 次请求、12,862 个片段，两名作者独立标到 Cohen κ 0.75，第三名作者裁决分歧。GLM 5.3 Flash 对裁决标签按片段 93.4% 一致（κ = 0.92，分母 12,862），之后标全集。</p>
@@ -195,10 +203,10 @@
 </section>
 
 <section id="yours">
-  <h2><span>5</span>你的运行位记了哪一层</h2>
-  <p>读完要看的是发给模型的第一次请求里，自己有没有记下工具定义。三个 Agent 最新那一版的第一次请求里，工具定义已经是 63.2% 至 77.4%。</p>
-  <p>技能记录如果把 <code>AGENTS.md</code> / <code>CLAUDE.md</code> 当成模型看见的全部指令，这篇的栈在那些文件外面。原文引用过：开发者写的指引可能重复或顶牛厂商指令，厂商指令自己也会顶牛。这篇没有测顶牛之后谁赢。</p>
-  <p>下面是我的推断，论文没有在你的线上测过。运行位、编辑起点、技能记录如果只留模型名、用户提示和系统提示，覆盖面和这篇 Claude Code 2.1.243 的 13% 同类。原文讨论写：差别若只记到模型能力，也可能夹带 harness 给的指令；这篇暴露了这一层变化，没有做成因。每个 Agent 累计字符编辑的一半来自 5 到 10 次相邻发布，原文没有把这几次叫大改动，也没有量化过它们会把模型差改多少。仓库挖掘如果靠 <code>Co-Authored-By: Claude</code> 认 Claude Code 的拉取请求，493 次捕获里有 1 次没有这条指令。日志里按消息角色把用户角色整段存成「用户输入」，在 Gemini CLI 和 Qwen Code 上会把环境事实算进用户。工具列表默认全开、描述写得很长，第一次请求就会带上用户没点名的能力，Workflow 那 19,290 字符是一个例子。</p>
+  <h2><span>5</span>记录完整请求才能解释评测差异</h2>
+  <p>复现编码 Agent 的行为时，第一次请求中的工具定义也需要留下记录。在论文捕获的最新版本里，三个 Agent 的这一部分已占请求字符的 63.2% 至 77.4%。只保存用户输入和系统提示，会漏掉模型看到的大量说明。</p>
+  <p><code>AGENTS.md</code> / <code>CLAUDE.md</code> 只是模型收到的部分指令。论文引用的既有研究指出，开发者指引与厂商指令之间可能重复或冲突，厂商指令内部也可能冲突。本研究没有测试冲突发生后模型优先服从哪一方。</p>
+  <p>我认为，复现结果时还应保存完整请求与工具清单，不能把差异全部归因于模型能力。以 Claude Code 2.1.243 为例，系统字段仅占该次请求字符的 13%；这一比例不代表系统提示的实际影响力。论文也没有量化请求变化会怎样改变任务成绩。每个 Agent 累计字符编辑的一半集中在 5 到 10 次相邻发布。另一个细节是，493 次捕获中有 1 次没有 <code>Co-Authored-By: Claude</code> 指令，单靠这个标记识别 Claude Code 的拉取请求可能遗漏。在 Gemini CLI 和 Qwen Code 中，用户角色消息还包含环境事实，也不宜全部标为“用户输入”。Workflow 工具的 19,290 字符说明了，工具定义本身就是复现材料的一部分。</p>
   <p><a href="/frontier/2026-10-07-what-is-a-harness.html">10-07</a> 写过 harness 是模型外面那层程序。<a href="/frontier/2026-10-19-visible-tools-are-input.html">10-19</a> 写过可见工具列表也是输入。这一篇补的是：三个 Agent 最新版第一次请求里，工具定义已经占字符 63.2% 至 77.4%。</p>
 </section>
 
@@ -218,11 +226,13 @@
 
 <section id="src">
   <h2><span>7</span>出处</h2>
+  <p>2026 年 10 月 27 日，arXiv 收到 <a href="https://arxiv.org/abs/2610.37332">Hidden in Plain Sight: an Empirical Study about The Instruction Stacks of Coding Agents</a>（arXiv:2610.37332v1，cs.SE，作者 Felipe de Sant'Anna Paixão、Dhyego Tavares、Eduardo Almeida、Iftekhar Ahmed，单位署巴伊亚联邦大学、加州大学欧文分校）。预印本，未经同行评审。复制包在原文标成匿名链接，本文未检查运行产物。</p>
   <p>数字来自预印本 HTML 与 PDF（<a href="https://arxiv.org/html/2610.37332">arxiv.org/html/2610.37332</a>，<a href="https://arxiv.org/pdf/2610.37332">pdf</a>，<a href="https://arxiv.org/abs/2610.37332">abs</a>，2026-10-27，未经同行评审）。论文表 I、第 4–5.2 节、图 1–5。export.arxiv.org 的 Atom 里 published 为 2026-10-27T14:38:25Z。73,125、差 953、57,346 ÷ 9,517 ≈ 6.0、15 + 7 = 22 是我算的，已标明。图 1 柱高按 3.6 像素 / 百分点画，作图参数是我的。</p>
-  <p><a href="https://openai.com/news/">OpenAI 新闻页</a>本轮直接抓取返回 403，未核对当日条目，未写入数字。写稿时经 r.jina.ai 见过 ServiceNow（10-28）、The future of the firm（10-28）、Oracle 应用进 ChatGPT（10-27）的标题，评审未能复核。<a href="https://www.anthropic.com/news">Anthropic 新闻页</a>本轮打开过，10 月 29 日页上有 Opus 5.5（9-22）、AI for Science 扩展（10-28）、用药开发进展（10-27）、S-1（10-26），未写入数字。Hacker News 首页、Product Hunt 当日页、GitHub 搜索本轮打开过，未作为本篇数字来源，评审未复核条目。X、Reddit 今日未覆盖：本机没有可用登录态。</p>
+
   <p>谱系和增量层分别在 <a href="/frontier/rsi-llm-agent-self-evolution.html">递归自改进前世今生</a> 和 <a href="/frontier/llm-agent-tech-landscape.html">冻底座、改脚手架</a>。这篇只加一条：三个 Agent 最新版第一次请求里，工具定义占字符 63.2% 至 77.4%。</p>
 </section>
 </main>
 </div>
+<a class="fr-top" href="#" aria-label="返回页首">↑</a>
 </body>
 </html>

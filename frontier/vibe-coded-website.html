@@ -449,17 +449,21 @@
     .orig-quote { font-style: italic; color: #64748b; font-size: 0.92rem; }
 
 </style>
+  <link rel="stylesheet" href="assets/article.css">
+  <script src="assets/article.js" defer></script>
 </head>
-<body>
-<nav style="position:sticky;top:0;z-index:50;background:#0f172a;border-bottom:1px solid #1e293b;padding:10px 24px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;">
-  <a href="/frontier" style="color:#93c5fd;text-decoration:none;font-size:14px;margin-right:16px;">← Frontier</a>
-  <a href="/" style="color:#cbd5e1;text-decoration:none;font-size:14px;">@xixi003</a>
+<body class="frontier-article">
+<a class="fr-skip" href="#article-content">跳到正文</a>
+<nav class="fr-nav" aria-label="站点导航">
+  <a class="fr-brand" href="/frontier/"><span class="fr-mark" aria-hidden="true">F</span>Frontier<span class="fr-nav-label">技术与研究</span></a>
+  <a class="fr-home" href="/">@xixi003 <span aria-hidden="true">↗</span></a>
 </nav>
+<div class="fr-progress" aria-hidden="true"><div></div></div>
 
-<header>
+<header class="fr-hero">
   <div class="header-badge">Frontier · 译文 · 2026</div>
   <h1>我们 vibe coding 出来的网站，为什么看起来像设计师做的</h1>
-  <p>编码代理没有让我对设计更没兴趣，反而更上头。这是 Railcode 创始人 Yakko Majuri 把过山车种子做成整座乐园的过程。</p>
+  <p>Railcode 创始人 Yakko Majuri 用编码代理做网站，从一条过山车动画逐步做出整座乐园。他保留了失败的原型，也记录了每次改动的提示词。这个过程比最终页面更有参考价值：设计方向怎么选、哪些尝试被放弃，以及细节怎样逐步统一。</p>
   <div class="byline">
     <img src="vibe-coded-website/yakko-2Nvfx4O1.png" alt="Yakko Majuri">
     <span>原文 Yakko Majuri · 2026-08-10 · 约 10 分钟</span>
@@ -467,22 +471,24 @@
   <p class="src-note">译文。原文：<a href="https://railcode.dev/blog/vibe-coded-website">https://railcode.dev/blog/vibe-coded-website</a>。图和视频来自原文，过程图按原文时间线另画。</p>
 </header>
 
-<div class="container">
-  <aside>
-    <h3>目录导航</h3>
-    <ul>
-      <li><a href="#sec-open">1. 你以为的 vibe coding</a></li>
-      <li><a href="#sec-process">2. 过程一张图</a></li>
-      <li><a href="#sec-coaster">3. 过山车从哪来</a></li>
-      <li><a href="#sec-rct">4. 过山车大亨</a></li>
-      <li><a href="#sec-park">5. 脱轨：需要一座园</a></li>
-      <li><a href="#sec-fork">6. 分叉再分叉</a></li>
-      <li><a href="#sec-insp">7. 灵感从哪抄</a></li>
-      <li><a href="#sec-list">8. 他自己的清单</a></li>
-      <li><a href="#sec-src">9. 出处</a></li>
-    </ul>
-  </aside>
-  <main>
+<div class="fr-layout">
+  <aside aria-label="文章目录" class="fr-toc">
+<details open="">
+<summary>本文目录<span aria-hidden="true">＋</span></summary>
+<div class="fr-toc-links">
+<a href="#sec-open">1 你以为的 vibe coding</a>
+<a href="#sec-process">2 网站设计的尝试与取舍</a>
+<a href="#sec-coaster">3 过山车从哪来</a>
+<a href="#sec-rct">4 过山车大亨</a>
+<a href="#sec-park">5 从单条过山车扩展到整座乐园</a>
+<a href="#sec-fork">6 分叉再分叉</a>
+<a href="#sec-insp">7 设计参考从哪里来</a>
+<a href="#sec-list">8 他自己的清单</a>
+<a href="#sec-src">9 出处</a>
+</div>
+</details>
+</aside>
+  <main class="fr-content" id="article-content">
 
 <section id="sec-open" class="section-card">
   <h2><span class="num">1</span> 你以为的 vibe coding</h2>
@@ -493,14 +499,14 @@
   <div class="media-block"><video controls muted loop playsinline src="vibe-coded-website/railcode-website.mp4"></video></div>
   <p class="media-caption">Railcode 官网。原文视频。</p>
   <p>作者自己也觉得，说它「像设计师做的」有点过。可别人真这么跟他说了。很多人过来问这站怎么做的、跟谁一起做的。</p>
-  <p>问的人太多，他决定把 Railcode 网站的创作过程讲一遍。他不是在表明自己多厉害，也不认为设计师可以不要。网上大多在骂 LLM 设计 slop。他自己的感觉是，有了编码代理之后，对设计更兴奋了。以前无从下手，现在能把脑子里的画面做出来。</p>
+  <p>问的人多了，他决定把 Railcode 网站的创作过程写下来。他不认为这能证明设计师可以被替代。对他个人而言，编码代理让设计变得更有意思：过去想得到却做不出来的页面，现在可以逐步尝试。</p>
   <p>这篇想说明一件事：编码代理可以做出你自己看得顺眼的设计。</p>
   <div class="media-block"><img src="vibe-coded-website/prototype-index.jpg" alt="把每个网站原型和对应提示词排成索引页"></div>
   <p class="media-caption">写这篇文章时，他把每个原型和生成它的提示词收进一张索引，把过程钉在事实上。</p>
 </section>
 
 <section id="sec-process" class="section-card">
-  <h2><span class="num">2</span> 过程一张图</h2>
+  <h2><span class="num">2</span> 网站设计的尝试与取舍</h2>
   <p>原文是按时间讲的。下面这张图把死胡同也画进去：霓虹丑稿、迷你游戏、单轨贴模板、孤立条带，他都走过。</p>
   <div class="figure-wrapper">
     <div class="figure-svg-container"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 900" width="100%" height="auto" preserveAspectRatio="xMidYMid meet">
@@ -658,7 +664,7 @@
 </section>
 
 <section id="sec-park" class="section-card">
-  <h2><span class="num">5</span> 脱轨：需要一座园</h2>
+  <h2><span class="num">5</span> 从单条过山车扩展到整座乐园</h2>
   <p>决定要乐园之后，他直觉它该放在 hero 底部。说不清从哪几个站看来的。</p>
   <p>于是做出这条：</p>
   <div class="prompt">add a thin strip of maybe 200px height where we have a bunch of amusement park attractions in the same style as the rollercoaster</div>
@@ -679,7 +685,7 @@
   <p>好处是：复制一版、改一两处、并排看，非常快。</p>
   <div class="media-block"><img src="vibe-coded-website/forks.jpg" alt="同一设计的多个分叉并排比较"></div>
   <p class="media-caption">分叉对照。他从不删这些分叉。</p>
-  <p>另一件事是做他所谓的 playground：颜色和变量能实时拧，不必每改一次都跟代理说一句话。</p>
+  <p>他还做了一个 playground，可以实时调整颜色和其他变量，不必每改一个值都重新向代理发指令。</p>
   <p>这次先把草地从蓝改成绿（草本来就是绿的）。可那一版绿不对。于是让 Claude 做了块调色场：强调色、字色、草地、背景都能试。草地的调子是在那儿拧出来的。</p>
   <p>（他几乎想做个开源小工具专门干这个。有空再说。）</p>
   <div class="figure-wrapper">
@@ -759,8 +765,8 @@
 </section>
 
 <section id="sec-insp" class="section-card">
-  <h2><span class="num">7</span> 灵感从哪抄</h2>
-  <p>前面说过：他不是设计师，从现成作品里找灵感。对编码代理来说，清楚的例子也是最好的方向盘。</p>
+  <h2><span class="num">7</span> 设计参考从哪里来</h2>
+  <p>他不是设计师，很多灵感来自已有作品。给编码代理看清楚具体参考，也比只描述一种抽象风格更容易沟通。</p>
   <p>有时会跟看过的东西很像。浅色区块转深色是常见手法，他常拿 <a href="https://contextual.ai/">Contextual AI</a> 当参照：</p>
   <div class="media-block"><img src="vibe-coded-website/contextual-comparison.jpg" alt="contextual.ai 与 railcode.dev 浅转深对比"></div>
   <p class="media-caption">左 <a href="https://contextual.ai/">contextual.ai</a>，右 Railcode。</p>
@@ -803,5 +809,6 @@
 
   </main>
 </div>
+<a class="fr-top" href="#" aria-label="返回页首">↑</a>
 </body>
 </html>

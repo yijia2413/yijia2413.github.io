@@ -1,9 +1,9 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="zh-CN">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Sonnet 过期测试命令多约两拍（探索性）</title>
+  <title>过期测试命令让 Sonnet 多调用约两次工具（探索性） · Frontier</title>
   <style>
     :root { --ink:#0f172a; --muted:#475569; --line:#e2e8f0; --bg:#f8fafc; --blue:#1d4ed8; --blue-bg:#eff6ff; --amber:#b45309; --green:#047857; --rose:#be123c; }
     * { box-sizing: border-box; }
@@ -42,45 +42,53 @@
     svg text { font-family:-apple-system,"PingFang SC","Noto Sans SC",sans-serif; }
     @media (max-width:860px) { .layout { grid-template-columns:minmax(0,1fr); } aside { position:static; } h1 { font-size:1.55rem; } section { padding:18px 16px; } }
   </style>
+  <link rel="stylesheet" href="assets/article.css">
+  <script src="assets/article.js" defer></script>
 </head>
-<body>
-<nav style="position:sticky;top:0;z-index:50;background:#0f172a;border-bottom:1px solid #1e293b;padding:10px 24px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;">
-  <a href="/frontier" style="color:#93c5fd;text-decoration:none;font-size:14px;margin-right:16px;">← Frontier</a>
-  <a href="/" style="color:#cbd5e1;text-decoration:none;font-size:14px;">@xixi003</a>
+<body class="frontier-article">
+<a class="fr-skip" href="#article-content">跳到正文</a>
+<nav class="fr-nav" aria-label="站点导航">
+  <a class="fr-brand" href="/frontier/"><span class="fr-mark" aria-hidden="true">F</span>Frontier<span class="fr-nav-label">技术与研究</span></a>
+  <a class="fr-home" href="/">@xixi003 <span aria-hidden="true">↗</span></a>
 </nav>
+<div class="fr-progress" aria-hidden="true"><div></div></div>
 
-<header>
+<header class="fr-hero">
   <div class="inner">
     <span class="badge">FRONTIER · 2026-11-09 · Agent Eval</span>
-    <h1>Sonnet 过期测试命令多约两拍（探索性）</h1>
-    <p>一篇预印本在三条真实过期指令上，用 Claude Code 2.1.316 配 Haiku 5.5 和 Sonnet 5.5 修 22 个维护任务。过期、改对、删掉各跑一遍，代码和任务钉死，732 次。Claude Sonnet 5.5 在过期测试命令上，每任务中位数再平均是 7.8 次工具调用，改对同一行是 5.8，大约多两拍、多三分之一。论文写 95% 区间不含零；按估计条数校正之后，区间不再排除零。标成探索性。Haiku 5.5 和另外两个案例检测不到调用差。</p>
+    <h1>过期测试命令让 Sonnet 多调用约两次工具（探索性）</h1>
+    <p>仓库里一条过期的测试命令，可能让 Agent 多做几次工具调用。在一项包含 22 个维护任务的预印本实验中，Sonnet 5.5 遇到过期测试命令时，每任务工具调用中位数的平均值为 7.8 次，修正同一行后为 5.8 次。这是探索性结果：按估计数量校正后，区间不再排除零；Haiku 5.5 和另外两个案例没有检测到调用差。</p>
   </div>
 </header>
-<div class="layout">
-<aside>
-  <p>目录</p>
-  <a href="#what">1 多约两拍（探索性）</a>
-  <a href="#setup">2 怎么计</a>
-  <a href="#path">3 任务过了才走那条线</a>
-  <a href="#silent">4 多出来的两拍从哪来</a>
-  <a href="#debt">5 绕过去，不还债</a>
-  <a href="#yours">6 你的 AGENTS.md</a>
-  <a href="#limit">7 这篇没测到的</a>
-  <a href="#src">8 出处</a>
+<div class="fr-layout">
+<aside aria-label="文章目录" class="fr-toc">
+<details open="">
+<summary>本文目录<span aria-hidden="true">＋</span></summary>
+<div class="fr-toc-links">
+<a href="#what">1 过期命令增加的工具调用（探索性）</a>
+<a href="#setup">2 三条过期指令与 22 个维护任务</a>
+<a href="#path">3 先分析任务结果，再分析执行成本</a>
+<a href="#silent">4 增加的工具调用发生在哪里</a>
+<a href="#debt">5 任务完成后，过期指令仍然留下</a>
+<a href="#yours">6 你的 AGENTS.md</a>
+<a href="#limit">7 这篇没测到的</a>
+<a href="#src">8 出处</a>
+</div>
+</details>
 </aside>
-<main>
+<main class="fr-content" id="article-content">
 <section id="what">
-  <h2><span>1</span>多约两拍（探索性）</h2>
-  <p>2026 年 11 月 6 日，arXiv 收到 <a href="https://arxiv.org/abs/2611.09802">When Instruction Files Go Stale: Documentation Debt and Hidden Cost in Coding Agents</a>（arXiv:2611.09802v1，cs.SE；作者 Tural Mehtiyev、Biruk Tadesse、Lawrence Arkoh、Wesley Assunção；单位署北卡罗来纳州立大学）。预印本，未经同行评审。abs 页 Comments 写 11 页、5 图、3 表。复制包 <a href="https://doi.org/10.5281/zenodo.23992004">Zenodo 23992004</a>。本轮读的是 HTML 全文。许可是 arXiv.org perpetual non-exclusive license。</p>
-  <p>编码 Agent 每次开会都读仓库根上的 <code>AGENTS.md</code> / <code>CLAUDE.md</code>。测试目录搬过了，文件还写着旧命令。论文把这条过期指令叫文档债：本金是改一行，利息是一次碰上多付的工。论文写利息还要乘上任务走到这一行的频率；这篇只测了前一半。</p>
+  <h2><span>1</span>过期命令增加的工具调用（探索性）</h2>
+
+  <p>编码 Agent 每次开始会话时都会读取仓库根目录的 <code>AGENTS.md</code> / <code>CLAUDE.md</code>。测试目录搬过了，文件还写着旧命令。论文把这条过期指令叫文档债：本金是改一行，利息是一次碰上多付的工。论文写利息还要乘上任务走到这一行的频率；这篇只测了前一半。</p>
   <div class="note">
-    <p style="margin:0">这篇只论证一个判断。判断是我的，依据是论文摘要和表 II（<a href="https://arxiv.org/html/2611.09802">HTML</a>）。判断是：Claude Sonnet 5.5 在过期测试命令上，每任务中位数再平均 7.8 次工具调用，改对同一行是 5.8，大约多两拍、多三分之一。论文写 95% 区间不含零；按估计条数校正之后，区间不再排除零。标成探索性。Haiku 5.5 和另外两个案例，工具调用差检测不到。任务通过率几乎不动。</p>
+    <p style="margin:0">依据论文摘要和表 II（<a href="https://arxiv.org/html/2611.09802">HTML</a>）。Claude Sonnet 5.5 在过期测试命令上，每任务中位数再平均 7.8 次工具调用，改对同一行是 5.8，大约多两次工具调用、多三分之一。论文写 95% 区间不含零；按估计条数校正之后，区间不再排除零。标成探索性。Haiku 5.5 和另外两个案例，工具调用差检测不到。任务通过率几乎不动。</p>
   </div>
-  <p>论文 Fig. 1 里那条 4 拍对 6 拍是作者挑的中位示例，不进标题。标题挂表 II 的 Sonnet 测试命令列。732 次没人改指令文件是同一跑次里的旁证：提示只有 bug 报告，任务没要求维护文档。</p>
+  <p>论文 Fig. 1 里那条 4 次对 6 次工具调用是作者挑的中位示例，与主要比较的条件不同。7.8 对 5.8 来自表 II 的 Sonnet 测试命令列。732 次没人改指令文件是同一跑次里的旁证：提示只有 bug 报告，任务没要求维护文档。</p>
 </section>
 
 <section id="setup">
-  <h2><span>2</span>怎么计</h2>
+  <h2><span>2</span>三条过期指令与 22 个维护任务</h2>
   <p>三条过期指令都来自还在更新的开源仓库，当时写对、代码搬过之后文件还留着旧路径，中间又改过文件也没删那一行：测试命令 2 次后续编辑，代码位置 13 次，加组件手续 4 次。论文用脚本从抽样仓库抽出曾经存在、现在没有的路径，再用 Claude 和 Codex 两轮复核这条是否仍写成现行指引。搜索只用来找案例，不报过期率。</p>
   <ul>
     <li>测试命令：<a href="https://github.com/ZJU-PL/pyflow">pyflow</a> 的 <code>AGENTS.md</code> 写 <code>pytest tests/ifds</code>。测试在 2026-07-14 搬到 <code>tests/analysis/ifds</code>。8 个缺陷；每个修复都要用这条命令点名的测试来核。</li>
@@ -89,7 +97,7 @@
   </ul>
   <p>每个任务三种条件：过期原样；改成代码搬走后的路径；删掉这一行、文件其余不动。代码、缺陷、bug 报告钉死。Agent 是 Claude Code 2.1.316，medium effort，30 分钟上限，每跑有预算帽。提示只有 bug 报告，指令文件只走 Claude Code 自己的加载。可以不经询问跑命令。Haiku 5.5 和 Sonnet 5.5 各跑一遍。</p>
   <div class="tw">
-    <table>
+    <div class="fr-table" tabindex="0" role="region" aria-label="数据表格，可横向滚动"><table>
       <thead>
         <tr>
           <th>案例</th>
@@ -106,16 +114,16 @@
         <tr><td>加组件手续（aghub）</td><td>8</td><td>3</td><td>5</td><td>2</td><td>240</td></tr>
         <tr><td>合计</td><td>22</td><td></td><td></td><td></td><td>732</td></tr>
       </tbody>
-    </table>
+    </table></div>
   </div>
   <p>表是论文表 I。缺陷算修好：把原来的测试文件放回去，在终态工作区副本上离线跑目标测试和整套。主度量是轨迹里有没有跑、读、写过期路径。工具调用和 token 是每个任务的中位数再按案例平均。token 含输入、输出和缓存。失败的跑从零重来。核对数字时，过期路径检测器漏掉了改目录之后的相对路径；修过之后，手续案例里 19 次 Sonnet 跑改了归类，复制包同时放修正前后。</p>
 </section>
 
 <section id="path">
-  <h2><span>3</span>任务过了才走那条线</h2>
+  <h2><span>3</span>先分析任务结果，再分析执行成本</h2>
   <p>过期条件下，测试命令 78/80 次走到过期路径，手续 55/80，代码位置 0/84。改对之后三次都是 0。按模型、按任务分层的精确检验，过期对改对在 Holm 校正后显著（Haiku p = 2×10<sup>−28</sup>，Sonnet p = 2×10<sup>−33</sup>）。差来自测试命令和手续；代码位置没有任何一次。</p>
   <div class="tw">
-    <table>
+    <div class="fr-table" tabindex="0" role="region" aria-label="数据表格，可横向滚动"><table>
       <thead>
         <tr>
           <th>案例 / 条件</th>
@@ -136,7 +144,7 @@
         <tr><td>手续 · 改对</td><td>0/80</td><td>77/80</td><td>6.8</td><td>249</td></tr>
         <tr><td>手续 · 删掉</td><td>20/80</td><td>79/80</td><td>7.8</td><td>283</td></tr>
       </tbody>
-    </table>
+    </table></div>
   </div>
   <p>表摘论文表 II。调用和 token 是每个任务中位数再平均。修好这一列两模型合在一起；Sonnet 测试命令 40/40 三次条件都修好。Haiku 测试命令三次都是 39/40。任务成功的精确检验两模型都是 p = 1.0。</p>
   <figure>
@@ -182,21 +190,21 @@
     </svg>
     <figcaption>图 1. 过期路径使用率，按案例和条件。数据来自论文表 II。柱高按 3.2 像素 / 1%。零次的柱画成底线上的描边。</figcaption>
   </figure>
-  <p>任务决定这条线用不用得上。测试命令每个修复都要跑测试，两种 bug 报告都会碰上。手续那一行写描述符住在哪：宽报告写「某个 agent 描述符行为不对」，Haiku 20/20、Sonnet 19/20 走进过期目录；报告点名函数时，Haiku 4/20、Sonnet 12/20。代码位置：点名函数的报告同时点名了文件，宽报告两拍之内列出包或跑测试就能拿到坏文件，没有人去翻指令文件里的旧位置。</p>
+  <p>任务决定这条线用不用得上。测试命令每个修复都要跑测试，两种 bug 报告都会碰上。手续那一行写描述符住在哪：宽报告写「某个 agent 描述符行为不对」，Haiku 20/20、Sonnet 19/20 走进过期目录；报告点名函数时，Haiku 4/20、Sonnet 12/20。代码位置：点名函数的报告同时点名了文件，宽报告两次工具调用之内列出包或跑测试就能拿到坏文件，没有人去翻指令文件里的旧位置。</p>
   <p>133 次走到过期路径的跑里，第一次过期调用之前引用指令文件 2 次，打开文件 0 次。路径来自 Claude Code 加载进会话的那份。Sonnet 在测试命令上 35/40 次整段抄了文档里的命令。</p>
 </section>
 
 <section id="silent">
-  <h2><span>4</span>多出来的两拍从哪来</h2>
+  <h2><span>4</span>增加的工具调用发生在哪里</h2>
   <p>旧测试目录已经不在。文档里的命令收不到测试，pytest 以错误退出。测试命令过期条件 80 次里，64 次至少有一次过期路径调用没跑到测试。Claude Code 一次都没把这些调用标成错误：凡是跑了这条命令的，都把输出管进 <code>tail</code> 或 <code>head</code>，shell 报成功。Sonnet 40 次过期跑，第一次这种调用都打印了目录找不到、没有测试跑，仍记成成功。Haiku 38 次过期跑里 16 次自己用 <code>2&gt;/dev/null</code> 把报文藏掉。结果：Sonnet 40 次过期跑里 19 次第一次核修复时跑的测试套件是空的；40 次改对跑里 0 次。</p>
   <p>手续案例缺目录被标成错误更勤：Haiku 20/24，Sonnet 13/31。</p>
   <p>工具调用只在一处能分开，而且是探索性的：Sonnet 测试命令过期 7.8 对改对 5.8，过期中位在八个任务里有七个更高；95% 区间不含零，按估计条数校正之后区间不再排除零。token 195k 对 152k，不显著。四个任务上，Sonnet 每个任务 15 次跑（5 次× 3 条件）交出同一份补丁，字节级相同，只是到那儿的工不同。删掉这一行，Sonnet 测试命令仍是 7.8，和过期一样，高于改对的 5.8。</p>
-  <p>Haiku 测试命令过期 16.0、改对 18.2、删掉 14.0。论文写同一任务里波动太大，差检测不到（过期对改对，每个任务从少 18 拍到多 9 拍）。手续上，宽报告大约多两拍（Haiku 2.25，Sonnet 2.0），点名函数几乎没有（0.0 和 0.25）；按任务的比较全部标成探索性。Sonnet 代码位置三次条件的调用叠在 5.3 到 5.5；Haiku 是 7.5 / 7.3 / 7.7。</p>
+  <p>Haiku 测试命令过期 16.0、改对 18.2、删掉 14.0。论文写同一任务里波动太大，差检测不到（过期对改对，每个任务从少 18 次到多 9 次工具调用）。手续上，宽报告平均多约两次工具调用（Haiku 2.25，Sonnet 2.0），点名函数几乎没有（0.0 和 0.25）；按任务的比较全部标成探索性。Sonnet 代码位置三次条件的调用叠在 5.3 到 5.5；Haiku 是 7.5 / 7.3 / 7.7。</p>
 </section>
 
 <section id="debt">
-  <h2><span>5</span>绕过去，不还债</h2>
-  <p>表 III 的分母是 133 次碰上：过期条件下对研究的过期路径做过操作的跑。后来有调用离开过期路径、真的跑到测试，或操作到现在的目录，记成走到目标：130/133。其中 98 次先搜过仓库。碰上之后中位再两拍走到目标。三条轨迹没走到现在的位置就结束了。这组序列只描述绕路，不是过期行的净成本因果估计。</p>
+  <h2><span>5</span>任务完成后，过期指令仍然留下</h2>
+  <p>表 III 的分母是 133 次碰上：过期条件下对研究的过期路径做过操作的跑。后来有调用离开过期路径、真的跑到测试，或操作到现在的目录，记成走到目标：130/133。其中 98 次先搜过仓库。碰上之后中位再经过两次工具调用到达目标。三条轨迹没走到现在的位置就结束了。这组序列只描述绕路，不是过期行的净成本因果估计。</p>
   <figure>
     <svg viewBox="0 0 960 480" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="133 次碰上：走到目标 130，终稿点出 21，建议修改 0，改文件 0">
       <rect width="960" height="480" fill="#ffffff"/>
@@ -229,7 +237,7 @@
     <figcaption>图 2. 碰上过期路径之后：操作恢复、终稿点出、建议修改、改文件。数据来自论文表 III。零次的柱画成底线上的描边。</figcaption>
   </figure>
   <div class="tw">
-    <table>
+    <div class="fr-table" tabindex="0" role="region" aria-label="数据表格，可横向滚动"><table>
       <thead>
         <tr>
           <th>案例 / 模型</th>
@@ -247,7 +255,7 @@
         <tr><td>手续 · Haiku</td><td>24</td><td>23（96%）</td><td>16（67%）</td><td>1（4%）</td><td>0</td><td>0</td></tr>
         <tr><td>手续 · Sonnet</td><td>31</td><td>31（100%）</td><td>28（90%）</td><td>0（0%）</td><td>0</td><td>0</td></tr>
       </tbody>
-    </table>
+    </table></div>
   </div>
   <p>表是论文表 III。百分号的分母是同一行的碰上次数。终稿点出只算终态回复点出研究的这条错位，不算文件里别的过期段落。Sonnet 在点名函数的 20 次测试命令跑里点出旧测试目录 17 次，论文观察它通常在核修复时碰上这条命令；宽报告的 20 次里 0 次，论文观察它在复现缺陷时碰上。这是按任务分组的描述，报告类型没有随机化。手续案例终稿点出 1 次。Haiku 手续案例 120 次跑、三种条件都算上，22 次终稿提到 <code>CLAUDE.md</code> 里别的过期段落，其中常写文件不是这次缺陷的一部分所以没动。</p>
   <p>任务要的是改代码缺陷，不是维护文档。论文写这不能证明改文件是任务成功所必须；这是默认会做的，不是被要求维护文档时会做的。它表明日常维护里，Agent 可以绕过错误指令、交出过测试的补丁，把同一块绊脚石留给下一会话。</p>
@@ -255,29 +263,31 @@
 
 <section id="yours">
   <h2><span>6</span>你的 AGENTS.md</h2>
-  <p>读完要核对的是运行位上的指令文件。仓库根上的 <code>AGENTS.md</code> / <code>CLAUDE.md</code> 每次会话都进上下文。这篇里，过期测试命令让 Sonnet 每任务中位数再平均多约两拍（探索性），任务通过率几乎不动。只看绿测，多出来的工看不见。</p>
+  <p>指令文件中的命令需要跟仓库一起维护。这项实验里，Sonnet 最终仍能完成任务，过期测试命令带来的额外工具调用却会留在执行成本里。若只看测试是否通过，就看不到这部分成本；“平均多约两次调用”仍是探索性发现。</p>
   <p>论文测到的：改对比删掉干净。删掉之后手续仍有 20/80 走进旧目录，测试命令 Sonnet 的调用数和过期一样。论文建议维护人先核「每个修复都会跑」的那几行，例子是测试命令。路径在不在可以用脚本扫；缺了是不是错，还要人看。论文列了四条没评过的防护：Harness 若加载指令文件，可以把文件里不存在的路径标出来；Shell 开 <code>pipefail</code>，管进 <code>tail</code> 的失败命令仍失败（Agent 自己 <code>2&gt;/dev/null</code> 时这条不够）；把「没有测试跑」当成失败；绕过缺失路径时，终稿写出来，并提议改那一行。</p>
-  <p>下面是我的推断，原文没测你仓库里的文件。构建命令原文没单列。11-05 那篇测的是五种脚手架换手册，AGENTS.md 段是作者推断，没测编码仓库里的技能文件。这篇测的是文件已经在、其中一行过期。两条缝挨着，不是同一条。</p>
+  <p>这项实验针对指令文件中已经过期的一行命令，构建命令没有单独分析。11-05 的文章比较五种脚手架下的银行操作手册，关于 AGENTS.md 的讨论属于推断，并未测试编码仓库的技能文件。两项研究都涉及说明文本，但实验对象不同。</p>
 </section>
 
 <section id="limit">
   <h2><span>7</span>这篇没测到的</h2>
-  <p>三个案例，指令种类、仓库、任务绑在一起，分不开。732 次是三条债的重复，不是独立抽样。多数任务是该行描述的代码里种下的小缺陷，更难的维护工可能另一套成本。两个模型、一家供应商、一套 harness。论文写发现按这些案例读，不要当成一般率。一次碰上的成本测了；任务走到这一行的频率没测；改对或删掉这一行要多少工，论文写没测。</p>
-  <p>多约两拍只挂 Sonnet 的测试命令，探索性；Haiku 和另外两个案例检测不到。token 差不显著。删掉这一行没有把 Sonnet 测试命令的调用降到改对那一档。代码位置 0/84 只说明这些任务不需要那份文件，不说明位置类过期指令从不咬人。Sonnet 在点名了正确模块的 20 次手续跑里仍有 12 次搜过期目录，那是辅线。732 次没人改指令文件，前提是提示只有 bug 报告；论文写这是默认会做的，不是被要求维护文档时会做的。</p>
-  <p>引言转述 Treude and Baltes：356 个仓库的指令文件里，23.0% 标出可能过期的代码引用。本轮没有打开那篇。构造冲突里 Agent 跟指令不跟代码，是另两篇被引，也没打开。</p>
+  <p>三个案例，指令种类、仓库、任务绑在一起，分不开。732 次来自三条过期指令的重复实验，不是独立抽样。多数任务是该行描述的代码里种下的小缺陷，更复杂的维护任务可能产生不同成本。两个模型、一家供应商、一套 harness。论文写发现按这些案例读，不要当成一般率。论文测量了触发过期指令后的成本，没有测量真实任务触发这些指令的频率，也没有估算修订或删除指令的维护成本。</p>
+  <p>平均多约两次工具调用，仅见于 Sonnet 的测试命令，属于探索性结果；Haiku 和另外两个案例检测不到。token 差不显著。删掉这一行没有把 Sonnet 测试命令的调用降到改对那一档。代码位置 0/84 只说明这些任务不需要那份文件，不能说明位置类过期指令在其他任务中没有代价。Sonnet 在点名了正确模块的 20 次手续跑里仍有 12 次搜过期目录，那是辅线。732 次没人改指令文件，前提是提示只有 bug 报告；论文写这是默认会做的，不是被要求维护文档时会做的。</p>
+  <p>引言转述 Treude and Baltes：356 个仓库的指令文件里，23.0% 标出可能过期的代码引用。本文未独立核验该项引用。构造冲突里 Agent 跟指令不跟代码，是另两篇被引，也没打开。</p>
 </section>
 
 <section id="src">
   <h2><span>8</span>出处</h2>
+  <p>2026 年 11 月 6 日，arXiv 收到 <a href="https://arxiv.org/abs/2611.09802">When Instruction Files Go Stale: Documentation Debt and Hidden Cost in Coding Agents</a>（arXiv:2611.09802v1，cs.SE；作者 Tural Mehtiyev、Biruk Tadesse、Lawrence Arkoh、Wesley Assunção；单位署北卡罗来纳州立大学）。预印本，未经同行评审。abs 页 Comments 写 11 页、5 图、3 表。复制包 <a href="https://doi.org/10.5281/zenodo.23992004">Zenodo 23992004</a>。许可是 arXiv.org perpetual non-exclusive license。</p>
   <ul>
     <li>预印本 abs：<a href="https://arxiv.org/abs/2611.09802">arXiv:2611.09802</a>。HTML 全文：<a href="https://arxiv.org/html/2611.09802">arxiv.org/html/2611.09802</a>。Comments：11 页、5 图、3 表。提交 2026-11-06。科目 cs.SE，交叉 cs.AI。许可 arXiv.org perpetual non-exclusive license。复制包 <a href="https://doi.org/10.5281/zenodo.23992004">doi.org/10.5281/zenodo.23992004</a>。</li>
     <li>表 I 的 8×3×5×2=240、6×3×7×2=252、8×3×5×2=240、合计 732；表 II 的 78/80、55/80、0/84、7.8 对 5.8、195k 对 152k、修好列；表 III 的 133、130、98、21、0、0；19/40 空核、35/40 整段抄命令、2/133 引用文件，都从 HTML 全文抄。摘要的 about two extra tool calls、a third more、none repaired 来自 abs / HTML 摘要。</li>
-    <li>案例仓库：<a href="https://github.com/ZJU-PL/pyflow">pyflow</a> 论文写 commit 0128cfd；<a href="https://github.com/replicate/cog">cog</a> commit ee8ae12；<a href="https://github.com/AkaraChen/aghub">aghub</a> commit 2a846f2。本轮按论文引用抄，没有再对 commit。</li>
-    <li>OpenAI 新闻页本轮经 r.jina.ai 打开（<a href="https://openai.com/news/">openai.com/news</a>），近两日条目包括 11-06 的 Hacktron 合作、11-05 的 GPT-6 Cyber，未写入本篇数字。Anthropic 新闻页（<a href="https://www.anthropic.com/news">anthropic.com/news</a>）本轮打开，页面日期 2026-11-09，置顶仍是 Sep 22 的 Opus 5.5，未写入本篇数字。GitHub 当天更新的仓库扫过，没有与本篇数字相关的发布说明。Hacker News 首页、Product Hunt 首页、Anthropic 研究页近文条目本轮过程里打开过，评审抓取目录没有这些页，不写入本篇数字。X / Reddit 今日未覆盖。</li>
+    <li>案例仓库：<a href="https://github.com/ZJU-PL/pyflow">pyflow</a> 论文写 commit 0128cfd；<a href="https://github.com/replicate/cog">cog</a> commit ee8ae12；<a href="https://github.com/AkaraChen/aghub">aghub</a> commit 2a846f2。commit 来自论文引用，本文未再次核验。</li>
+
   </ul>
-  <p><a href="/frontier/rsi-llm-agent-self-evolution.html">09-26 RSI</a> 是谱系，<a href="/frontier/llm-agent-tech-landscape.html">09-27 全景</a> 是增量在哪一层。这篇落在运行位的指令文件：Sonnet 过期测试命令多约两拍，探索性。</p>
+  <p><a href="/frontier/rsi-llm-agent-self-evolution.html">09-26 RSI</a> 是谱系，<a href="/frontier/llm-agent-tech-landscape.html">09-27 全景</a> 是增量在哪一层。本文讨论指令文件过期带来的成本：Sonnet 过期测试命令平均多约两次工具调用，属于探索性结果。</p>
 </section>
 </main>
 </div>
+<a class="fr-top" href="#" aria-label="返回页首">↑</a>
 </body>
 </html>

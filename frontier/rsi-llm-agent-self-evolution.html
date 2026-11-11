@@ -1,9 +1,9 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="zh-CN">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>递归自改进前世今生：从 Gödel 机到 LLM Agent</title>
+  <title>递归自改进：从 Gödel 机到 LLM Agent · Frontier</title>
   <style>
     :root {
       --primary: #1d4ed8;
@@ -406,40 +406,46 @@
     main a { color: #1d4ed8; text-decoration: underline; word-break: break-all; }
     main a:hover { color: #1e3a8a; }
 </style>
+  <link rel="stylesheet" href="assets/article.css">
+  <script src="assets/article.js" defer></script>
 </head>
-<body>
-<nav style="position:sticky;top:0;z-index:50;background:#0f172a;border-bottom:1px solid #1e293b;padding:10px 24px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;">
-  <a href="/frontier" style="color:#93c5fd;text-decoration:none;font-size:14px;margin-right:16px;">← Frontier</a>
-  <a href="/" style="color:#cbd5e1;text-decoration:none;font-size:14px;">@xixi003</a>
+<body class="frontier-article">
+<a class="fr-skip" href="#article-content">跳到正文</a>
+<nav class="fr-nav" aria-label="站点导航">
+  <a class="fr-brand" href="/frontier/"><span class="fr-mark" aria-hidden="true">F</span>Frontier<span class="fr-nav-label">技术与研究</span></a>
+  <a class="fr-home" href="/">@xixi003 <span aria-hidden="true">↗</span></a>
 </nav>
+<div class="fr-progress" aria-hidden="true"><div></div></div>
 
-<header>
+<header class="fr-hero">
   <div class="header-badge">Frontier · RSI · 2026</div>
-  <h1>递归自改进前世今生：从证明改代码到经验改代码</h1>
-  <p>RSI 一直在做同一件事：系统改自己，下一次变得更会改自己。变的是「改哪一层」和「拿什么当验收」。这条线从 Gödel 机的形式证明，走到 2025–2026 年用基准和沙箱养出来的编码智能体。</p>
+  <h1>递归自改进：从 Gödel 机到 LLM Agent</h1>
+  <p>一个系统能修改自己的代码，还不等于它能持续改进自己的改进方法。递归自改进（RSI）关注后一步。本文从 Gödel 机的形式证明讲起，梳理 LLM 时代如何用基准测试、沙箱和候选档案替代难以完成的证明，并区分修改权重、修改工具与修改改进器这几种路线。</p>
 </header>
 
-<div class="container">
-  <aside>
-    <h3>目录导航</h3>
-    <ul>
-      <li><a href="#sec-one-sentence">1. 改哪一层，拿什么当验收</a></li>
-      <li><a href="#sec-timeline">2. 时间线</a></li>
-      <li><a href="#sec-cut">3. 分界线</a></li>
-      <li><a href="#sec-loop">4. 闭环四段 + 评估层</a></li>
-      <li><a href="#sec-layers">5. 改什么：五层对象</a></li>
-      <li><a href="#sec-weights">6. 权重这条线</a></li>
-      <li><a href="#sec-scaffold">7. 脚手架这条线</a></li>
-      <li><a href="#sec-improver">8. 改进器这条线</a></li>
-      <li><a href="#sec-fail">9. 什么时候会失败</a></li>
-      <li><a href="#sec-recipe">10. 能跑起来的配方</a></li>
-      <li><a href="#sec-refs">11. 关键论文</a></li>
-    </ul>
-  </aside>
-  <main>
+<div class="fr-layout">
+  <aside aria-label="文章目录" class="fr-toc">
+<details open="">
+<summary>本文目录<span aria-hidden="true">＋</span></summary>
+<div class="fr-toc-links">
+<a href="#sec-one-sentence">1 改动对象与验收依据</a>
+<a href="#sec-timeline">2 时间线</a>
+<a href="#sec-cut">3 分界线</a>
+<a href="#sec-loop">4 自改进的四段流程与评估</a>
+<a href="#sec-layers">5 改什么：五层对象</a>
+<a href="#sec-weights">6 权重这条线</a>
+<a href="#sec-scaffold">7 脚手架这条线</a>
+<a href="#sec-improver">8 改进器这条线</a>
+<a href="#sec-fail">9 什么时候会失败</a>
+<a href="#sec-recipe">10 一个可复现的最小实现</a>
+<a href="#sec-refs">11 关键论文（按阅读顺序）</a>
+</div>
+</details>
+</aside>
+  <main class="fr-content" id="article-content">
 
 <section id="sec-one-sentence" class="section-card">
-  <h2><span class="num">1</span> 改哪一层，拿什么当验收</h2>
+  <h2><span class="num">1</span> 改动对象与验收依据</h2>
   <p>递归自改进（Recursive Self-Improvement, RSI）是一种闭环：<strong>系统提出对自己的修改，用独立证据验收，把通过的改动留下来，下一次用更强的自己继续改。</strong></p>
   <p>2026 年网上把很多东西都叫 RSI。要分的是两件事：</p>
   <div class="steps-grid">
@@ -543,12 +549,12 @@
   <div class="figure-caption">图 1　递归自改进时间线。上半是想法，下半是能跑的系统。证明换成基准分数之后，这条线才开始有公开数字。</div>
 </div>
   <p>LLM 把它从证明问题改成了搜索问题。STaR 让模型对自己写对的推理做微调。Reflexion 连权重都不动，把失败写成口头记忆。STOP 让改进器改进改进器，但作者写明底层语言模型没改。2025 年 SEAL、Absolute Zero、AlphaEvolve、Gödel Agent 把权重、任务、算法、运行时分别打开。2026 年 Darwin Gödel 机把「经验验证 + 档案库」做成 ICLR 论文：SWE-bench 从 20.0% 到 50.0%，Polyglot 从 14.2% 到 30.7%。</p>
-  <p>读这条线时，不要把每一站都当成「模型自己变聪明了」。早期目标是形式保证。LLM 之后，大量工作改的是提示、工具和工作流，基座冻着。权重更新更贵、更难回滚，所以 2026 年公开主战场仍在脚手架。</p>
+  <p>这些工作的改动对象并不相同。早期 Gödel 机追求形式保证；LLM 时代的大量工作保持基座冻结，修改提示、工具和工作流。相比之下，权重更新成本更高，也更难回滚，因此 2026 年公开探索主要集中在脚手架。</p>
 </section>
 
 <section id="sec-cut" class="section-card">
   <h2><span class="num">3</span> 分界线</h2>
-  <p>综述这几年把词用乱了：self-refine、self-play、self-evolving、RSI 经常互相替代。有用的切法只有一刀——<strong>评估器在不在更新边界外面。</strong></p>
+  <p>self-refine、self-play、self-evolving 与 RSI 在综述中有时会交叉使用。比较这些系统时，一个有用的问题是：<strong>评估器是否也在系统允许修改的范围内？</strong></p>
   <div class="figure-wrapper">
   <div class="figure-svg-container"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 900" width="100%" height="auto" preserveAspectRatio="xMidYMid meet">
   <style>
@@ -615,14 +621,14 @@
   <div class="figure-caption">图 2　有界自精炼对着冻结评估器收敛。开放 RSI 连怎么打分都可以改。2026 年公开系统几乎全在左边。</div>
 </div>
   <p>Alibaba 2026 年的《The Path to Recursive Self-Improving Agents》用自主程度打 L1–L5。L3 能自己提议、落地、验收，但改进机制仍是人维护的。L4 开始改改进机制，仍限在一个域。L5 才要求跨域可迁移。按这把尺，Voyager、SEAL、AZR 多半停在 L3；STOP、Gödel Agent、DGM 探到 L4 的边界，还没到 L5。</p>
-  <p>Wang 等人 2026 年的可靠自进化综述换了一把尺：按「改到哪一层还会留下去」分成 L0–L4。RSI 从改进器这一层开始。两套尺要对着看。自主程度高，不等于改得深；改得深，不等于可靠。</p>
+  <p>Wang 等人 2026 年的可靠自进化综述，按改动能持续影响哪一层来划分 L0–L4；RSI 从修改改进器开始。这与 Alibaba 按自主程度划分的 L1–L5 关注点不同。自主程度、改动深度和可靠性，需要分别判断。</p>
   <div class="callout purple">
     STOP 的作者写过一句很不客气的话：这不是完整 RSI，因为语言模型本身没改。DGM 也写明：框架设想过重写训练脚本、训新的基础模型，这篇论文没做。把这些系统叫「接近 RSI」可以，叫「已经 RSI」不行。
   </div>
 </section>
 
 <section id="sec-loop" class="section-card">
-  <h2><span class="num">4</span> 闭环四段 + 评估层</h2>
+  <h2><span class="num">4</span> 自改进的四段流程与评估</h2>
   <p>2026 年有一篇系统综述把自改进写成四段工序：获取数据、筛选信号、更新模型、改推理侧，外加一条贯穿全程的自主评估层。模型在每一段都可能当主角——出题、打分、改参数、改工具。评估层不是第五步，是四段都要经过的门。</p>
   <div class="figure-wrapper">
   <div class="figure-svg-container"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 900" width="100%" height="auto" preserveAspectRatio="xMidYMid meet">
@@ -696,7 +702,7 @@
 </div>
   <p>Alibaba 综述把同一件事写成 Diagnose → Propose → Evaluate → Integrate。差别只在用词。能跑的系统都长这样：</p>
   <div class="table-container">
-    <table>
+    <div class="fr-table" tabindex="0" role="region" aria-label="数据表格，可横向滚动"><table>
       <thead>
         <tr><th>工序</th><th>在干什么</th><th>公开例子</th><th>最容易翻车的地方</th></tr>
       </thead>
@@ -732,7 +738,7 @@
           <td>评估器和改进器一旦同源，分数开始给自己打</td>
         </tr>
       </tbody>
-    </table>
+    </table></div>
   </div>
   <p>「模型跟自己聊天」少了独立评估和合入/回滚，只是把同一段文本再生成一遍。</p>
 </section>
@@ -1036,7 +1042,7 @@
 </section>
 
 <section id="sec-recipe" class="section-card">
-  <h2><span class="num">10</span> 能跑起来的配方</h2>
+  <h2><span class="num">10</span> 一个可复现的最小实现</h2>
   <p>公开文献里能复现的，几乎都长成 DGM 这一类：可验证域、冻结评估器、先改脚手架、档案库、沙箱。权重更新是后加的，不是第一天就要上。</p>
   <div class="figure-wrapper">
   <div class="figure-svg-container"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 900" width="100%" height="auto" preserveAspectRatio="xMidYMid meet">
@@ -1158,7 +1164,7 @@
       <div class="step-desc">脚手架收益平台期，且有可验证奖励，再上 SEAL / AZR / RLVR。权重更贵、更难回滚。先确认失败不是提示和工具的问题。</div>
     </div>
   </div>
-  <h3>一圈最小循环</h3>
+  <h3>一次改进循环</h3>
   <pre><code><span class="code-keyword">def</span> <span class="code-function">rsi_round</span>(archive, eval_fn, sandbox):
     parent = sample_stepping_stone(archive)          <span class="code-comment"># 不要只抽当前最优</span>
     proposal = parent.self_modify()                  <span class="code-comment"># 改工具 / 工作流 / 改进器</span>
@@ -1210,5 +1216,6 @@
 <footer style="text-align: center; padding: 40px 20px; color: #64748b; font-size: 0.88rem; border-top: 1px solid #e2e8f0; background: #ffffff;">
   递归自改进前世今生 · Frontier · 2026
 </footer>
+<a class="fr-top" href="#" aria-label="返回页首">↑</a>
 </body>
 </html>

@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="zh-CN">
 <head>
   <meta charset="UTF-8">
@@ -42,51 +42,59 @@
     svg text { font-family:-apple-system,"PingFang SC","Noto Sans SC",sans-serif; }
     @media (max-width:860px) { .layout { grid-template-columns:minmax(0,1fr); } aside { position:static; } h1 { font-size:1.55rem; } section { padding:18px 16px; } }
   </style>
+  <link rel="stylesheet" href="assets/article.css">
+  <script src="assets/article.js" defer></script>
 </head>
-<body>
-<nav style="position:sticky;top:0;z-index:50;background:#0f172a;border-bottom:1px solid #1e293b;padding:10px 24px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;">
-  <a href="/frontier" style="color:#93c5fd;text-decoration:none;font-size:14px;margin-right:16px;">← Frontier</a>
-  <a href="/" style="color:#cbd5e1;text-decoration:none;font-size:14px;">@xixi003</a>
+<body class="frontier-article">
+<a class="fr-skip" href="#article-content">跳到正文</a>
+<nav class="fr-nav" aria-label="站点导航">
+  <a class="fr-brand" href="/frontier/"><span class="fr-mark" aria-hidden="true">F</span>Frontier<span class="fr-nav-label">技术与研究</span></a>
+  <a class="fr-home" href="/">@xixi003 <span aria-hidden="true">↗</span></a>
 </nav>
+<div class="fr-progress" aria-hidden="true"><div></div></div>
 
-<header>
+<header class="fr-hero">
   <div class="inner">
     <span class="badge">FRONTIER · 2026-11-05 · Agent Harness</span>
     <h1>固定模型换脚手架，Qwen 正确率差 11.5 个点</h1>
-    <p>一篇预印本把四个开源权重模型各自放进五种脚手架，在同一套 156 个预注册银行行为案例上计正确率。qwen3.8-flash-next 最好一档 93.6%，最差一档 82.1%，差 11.5 个点，Holm 校正后检索手册那一档显著低于流水线和同模型评审。deepseek-v4.1-flash 五种差 1.9 个点，Cochran 检验不显著。不要把四种模型合在一起的 87.3% 到 92.1% 当成这条缝：那一截只动 4.8 个点。</p>
+    <p>选模型时测的脚手架，可能影响部署后的结论。一篇预印本把四个开源权重模型分别放进五种脚手架，完成同一组 156 个银行行为案例。qwen3.8-flash-next 的正确率从 82.1% 到 93.6%，相差 11.5 个百分点；deepseek-v4.1-flash 只差 1.9 个点，检验不显著。脚手架的影响因模型而异。</p>
   </div>
 </header>
-<div class="layout">
-<aside>
-  <p>目录</p>
-  <a href="#what">1 11.5 个点</a>
-  <a href="#setup">2 怎么计</a>
-  <a href="#rank">3 名次跟着脚手架走</a>
-  <a href="#aux">4 评审器和日期是辅线</a>
-  <a href="#yours">5 你的评测位和生产位</a>
-  <a href="#limit">6 这篇没测到的</a>
-  <a href="#src">7 出处</a>
+<div class="fr-layout">
+<aside aria-label="文章目录" class="fr-toc">
+<details open="">
+<summary>本文目录<span aria-hidden="true">＋</span></summary>
+<div class="fr-toc-links">
+<a href="#what">1 同一模型在五种脚手架下的差异</a>
+<a href="#setup">2 银行案例、脚手架与计分方法</a>
+<a href="#rank">3 名次跟着脚手架走</a>
+<a href="#aux">4 评审器、长记忆与日期计算</a>
+<a href="#yours">5 评测与部署应比较同一套脚手架</a>
+<a href="#limit">6 这篇没测到的</a>
+<a href="#src">7 出处</a>
+</div>
+</details>
 </aside>
-<main>
+<main class="fr-content" id="article-content">
 <section id="what">
-  <h2><span>1</span>11.5 个点</h2>
-  <p>2026 年 11 月 4 日，arXiv 收到 <a href="https://arxiv.org/abs/2611.06116">The Harness Is the Model: Agent Scaffolding Changes a Fixed LLM's Compliance with Banking Conduct Rules, Unevenly Across Models</a>（arXiv:2611.06116v1，cs.CL，兼 cs.AI、cs.CY；作者 Mehmet Murat Huyut；单位署 Kuveyt Türk Participation Bank 和伊斯坦布尔比尔基大学）。预印本，未经同行评审。abs 页 Comments 写 16 页、4 表，已预注册。本轮读的是 HTML 全文。复制包 <a href="https://github.com/mhuyut/harness-is-the-model">mhuyut/harness-is-the-model</a>，本轮打开仓库页是 200。</p>
+  <h2><span>1</span>同一模型在五种脚手架下的差异</h2>
+
   <p>银行要验收的是模型。线上跑的是模型外面那一层：政策怎么贴、工具怎么调、动作有没有人拦。论文把这一层叫 harness。四个开源权重模型、五种脚手架、同一 156 个案例，共 3,120 段两轮会话。计分只看执行过的工具轨迹和发出去的消息，对错由确定性规则判，不经过语言模型。</p>
   <div class="note">
-    <p style="margin:0">这篇只论证一个判断。判断是我的，依据是论文表 1 和正文「The harness effect depends on the model」（<a href="https://arxiv.org/html/2611.06116">HTML</a>）。判断是：固定模型换脚手架，qwen3.8-flash-next 的正确率差 11.5 个点。该行 156 个案例：流水线 91.7%，工具环 89.7%，检索手册 82.1%，长记忆 88.5%，同模型评审 93.6%。Cochran’s Q = 25.1，p &lt; 0.001。Holm 校正后，检索手册显著低于流水线和同模型评审。deepseek-v4.1-flash 同一套五种只差 1.9 个点，Q = 1.0，p = 0.92。模型 × 脚手架交互 χ²(12) = 19.8，p = 0.07，论文写成 suggestive rather than conclusive。正确率的单位是案例：每个格子 156 个两轮会话，对错看有没有违规动作、有没有该做没做。不要把 93.6 读成 146/156 次工具调用。</p>
+    <p style="margin:0">依据论文表 1 和正文「The harness effect depends on the model」（<a href="https://arxiv.org/html/2611.06116">HTML</a>）。固定模型换脚手架，qwen3.8-flash-next 的正确率差 11.5 个点。该行 156 个案例：流水线 91.7%，工具环 89.7%，检索手册 82.1%，长记忆 88.5%，同模型评审 93.6%。Cochran’s Q = 25.1，p &lt; 0.001。Holm 校正后，检索手册显著低于流水线和同模型评审。deepseek-v4.1-flash 同一套五种只差 1.9 个点，Q = 1.0，p = 0.92。模型 × 脚手架交互 χ²(12) = 19.8，p = 0.07，论文写成 suggestive rather than conclusive。正确率的单位是案例：每个格子 156 个两轮会话，对错看有没有违规动作、有没有该做没做。不要把 93.6 读成 146/156 次工具调用。</p>
   </div>
-  <p>四种模型合在一起，脚手架只把正确率从 87.3%（检索手册）挪到 92.1%（同模型评审）。那一截不是本篇判断。标题的 11.5 只挂 qwen 那一行。</p>
+  <p>四种模型合在一起，脚手架只把正确率从 87.3%（检索手册）挪到 92.1%（同模型评审）。这是四种模型合并后的结果。11.5 个百分点描述的是 qwen 这一行的差距。</p>
 </section>
 
 <section id="setup">
-  <h2><span>2</span>怎么计</h2>
+  <h2><span>2</span>银行案例、脚手架与计分方法</h2>
   <p>环境是确定性的零售银行模拟，系统提示写死日期 2026 年 10 月 26 日。两个合成客户，没有真实账户。会改状态的工具一律成功：agent 调了就发生，环境不拦违规。</p>
   <p>操作手册四十节，大约二十节对案例起作用。11 个规则族转写欧盟消费信贷、支付、投资者保护、数据保护和反洗钱条文，附录 A 标明哪些比法律更严。39 个基础变体 × 两份措辞 × 两档压力 = 156 个案例。客户给日历日期，不给已经过了几天。第二轮客户话术按对错预先写好：该拒绝的会要求破例，该允许的只确认做完没有。压力档在客户话里加赶时间、要销户，系统提示加满意度和转化考核。</p>
   <p>五种脚手架共用角色提示和同一套工具。H2 不把手册贴进提示，改成 <code>search_policy</code> 按关键词重叠返回最相关两节。H3 在手册和对话之间插八十条无害客户历史（2018–2026，2,362 词）。H4 每个改状态的调用和每条客户消息先过同模型评审，拦住的不执行。H1 是带完整手册的 ReAct 环，最多二十步。H0 是流水线：银行工作流先跑完身份、账户、报价、筛查、适当性，模型每轮返回一个 JSON 对象，列出要执行的动作和给客户的话；客户追问后再返回第二个对象。</p>
   <p>四个模型：deepseek-v4-flash、deepseek-v4.1-flash、qwen3.8-flash-next、gemma-4-31b。国内研究接口、温度 0、固定种子、推理关掉。论文写这是银行数据规则下能在自有机房跑的档，不代表最强闭源或推理模型。</p>
   <p>违规：执行了禁止动作，或发出禁止内容。过度拒绝：该做的没做。正确案例：两者都没有。计分器带 22 个用手工轨迹驱动模拟的单元测试。</p>
   <div class="tw">
-    <table>
+    <div class="fr-table" tabindex="0" role="region" aria-label="数据表格，可横向滚动"><table>
       <thead>
         <tr>
           <th>模型</th>
@@ -105,9 +113,9 @@
         <tr><td>gemma-4-31b</td><td>93.6% [89–96]</td><td>92.3% [87–96]</td><td>89.7% [84–94]</td><td>91.7% [86–95]</td><td>92.3% [87–96]</td><td>3.8</td></tr>
         <tr><td>四种合在一起</td><td>90.5%</td><td>88.8%</td><td>87.3%</td><td>88.5%</td><td>92.1%</td><td>4.8</td></tr>
       </tbody>
-    </table>
+    </table></div>
   </div>
-  <p>表是论文表 1。括号是 Wilson 95% 区间。每个格子 156 个案例。合在一起那一行分母是 4 × 156 = 624 段，原文没给区间。deepseek-v4-flash 的跨度 8.3 个点也显著（Q = 16.1，p = 0.003），gemma-4-31b 边缘（p = 0.07）。标题只挂跨度最大的那一行。624 是我按格子数乘出来的。</p>
+  <p>表是论文表 1。括号是 Wilson 95% 区间。每个格子 156 个案例。合在一起那一行分母是 4 × 156 = 624 段，原文没给区间。deepseek-v4-flash 的跨度 8.3 个点也显著（Q = 16.1，p = 0.003），gemma-4-31b 边缘（p = 0.07）。11.5 个点取自跨度最大的 qwen 组合。624 是我按格子数乘出来的。</p>
   <figure>
     <svg viewBox="0 0 960 540" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="qwen3.8-flash-next 五种脚手架的正确率">
       <rect width="960" height="540" fill="#ffffff"/>
@@ -147,7 +155,7 @@
 <section id="rank">
   <h2><span>3</span>名次跟着脚手架走</h2>
   <p>换脚手架会改哪一个模型看起来最守规矩。qwen3.8-flash-next 在同模型评审下正确率最高（93.6%），手册只能检索时最低（82.1%）。deepseek-v4-flash 相反：检索手册并列第一，流水线、工具环、长记忆垫底或并列垫底。论文表 2 把每个脚手架下的四个模型排了名次。相邻模型的区间重叠，论文把名次变化写成对单脚手架评测的警告，不写成精确排序。</p>
-  <p>同一脚手架下，模型之间最多差 7.7 个点（工具环上 gemma-4-31b 92.3% 对 deepseek-v4-flash 84.6%）。论文讨论写：对其中两个模型，换脚手架挪动的幅度超过固定脚手架下模型之间的差。7.7 是同一档下四个模型的最大减最小，11.5 是四个模型里挑出来的最大跨度，分母都是 156，个数不同，不进同一句倍数。模型 × 脚手架交互 p = 0.07，没有确证模型之间差多少。</p>
+  <p>同一脚手架下，模型之间最多差 7.7 个点（工具环上 gemma-4-31b 92.3% 对 deepseek-v4-flash 84.6%）。论文讨论写：对其中两个模型，换脚手架挪动的幅度超过固定脚手架下模型之间的差。7.7 是同一档下四个模型的最大减最小，11.5 是四个模型里挑出来的最大跨度，分母都是 156，个数不同，不能直接用倍数比较。模型 × 脚手架交互 p = 0.07，没有确证模型之间差多少。</p>
   <figure>
     <svg viewBox="0 0 960 540" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="四个模型在五种脚手架下的名次">
       <rect width="960" height="540" fill="#ffffff"/>
@@ -207,16 +215,16 @@
 </section>
 
 <section id="aux">
-  <h2><span>4</span>评审器和日期是辅线</h2>
-  <p>同模型评审把违规从 9.6% 降到 6.4%（H1 对 H4；配对在模型 × 案例上，不一致对 24 对 4，p &lt; 0.001），过度拒绝 1.6% 对 1.4%（p = 1.00），和预注册预测相反。H4 里 14.1% 的会话至少拦住一次拟议动作，输入 token 大约是 H1 的 1.8 倍。长记忆把违规从 9.6% 抬到 11.1%（H1 对 H3；11 对 2，p = 0.02）。这些百分比是四个模型合并，格子设计是 4 × 156 = 624 段；原文报的是配对检验，没把 624 写成这些率的分母。这些是同一篇文章里的其他结果，不和 11.5 进同一句。</p>
+  <h2><span>4</span>评审器、长记忆与日期计算</h2>
+  <p>同模型评审把违规从 9.6% 降到 6.4%（H1 对 H4；配对在模型 × 案例上，不一致对 24 对 4，p &lt; 0.001），过度拒绝 1.6% 对 1.4%（p = 1.00），和预注册预测相反。H4 里 14.1% 的会话至少拦住一次拟议动作，输入 token 大约是 H1 的 1.8 倍。长记忆把违规从 9.6% 抬到 11.1%（H1 对 H3；11 对 2，p = 0.02）。这些百分比是四个模型合并，格子设计是 4 × 156 = 624 段；原文报的是配对检验，没把 624 写成这些率的分母。这些是同一篇文章里的其他结果，与 qwen 单模型的 11.5 个百分点差距不是同一口径。</p>
   <p>11 个规则族里，7 个在 H2 以外接近天花板（正确率至少 93%）。失败集中在要算日期的两族：信贷撤回（14 天窗口，从签约次日起算，按揭排除）和未授权交易（13 个月时限）。最常见失败理由：撤回走了不允许的路径（154 段会话）、旧索赔未升级（60）、超 13 个月仍退款（56）。未授权交易上 H4 正确率 87.5%、H1 68.8%；撤回窗口上两档都是 66.7%。原文未写每族样本量。论文推测评审器和 agent 犯同一类日期错，没有单独测日期算术；F3 的失败还掺着按揭排除。脚手架能改模型看见什么、谁来拦，会不会数天数这篇没拆开测。</p>
-  <p>探索性分析用两个不同家族的语言模型评审读轨迹。287 段有违规的会话里，两个评审都同意：给客户的话否认了刚刚执行的动作，占 26.1%（更宽的那个评审 41.3%）。作者盲标 100 段（50 段至少一个评审标过，50 段都没标）。论文写第二轮话术按脚本走、且预设对方会拒绝，可能诱发否认；评审标签本身是模型输出。体量写成近似，方向不依赖体量。这是计分读执行日志、不读最终回复的理由，不是本篇判断。原文另一个 41.3% 是流水线违规里的否认占比，数值相同、口径不同，本轮没打开复制包里的统计文件，只抄 HTML 里第一个。</p>
+  <p>探索性分析用两个不同家族的语言模型评审读轨迹。287 段有违规的会话里，两个评审都同意：给客户的话否认了刚刚执行的动作，占 26.1%（更宽的那个评审 41.3%）。作者盲标 100 段（50 段至少一个评审标过，50 段都没标）。论文写第二轮话术按脚本走、且预设对方会拒绝，可能诱发否认；评审标签本身是模型输出。这组探索性结果说明，最终回复与实际执行动作需要分别检查。原文另一个 41.3% 是流水线违规里的否认占比，数值相同、口径不同，本文未读取复制包中的统计文件，这里采用 HTML 中的第一个口径。</p>
 </section>
 
 <section id="yours">
-  <h2><span>5</span>你的评测位和生产位</h2>
-  <p>读完要核对的是运行位。你拿来选模型的那套脚手架，和生产里贴政策、调工具、拦动作的那套，是不是同一套。qwen 这一行上，从带评审、手册在提示里（H4，93.6%）到手册只能检索、没有评审（H2，82.1%），差 11.5 个点，名次从第一到第四。两档同时差两样。只改手册进入方式是 H1 对 H2：89.7% 对 82.1%，差 7.6 个点；原文 Holm 校正只报了 H2 对 H0 和 H4 显著，没有单独报 qwen 的 H2 对 H1。deepseek-v4.1-flash 同一套五种几乎不动。厂商榜或内部验收如果只报一个 harness 下的模型分，换部署脚手架之后那张榜不一定还排得一样。</p>
-  <p>下面是我的推断，原文没测编码仓库，也没测技能文件。政策只靠检索才进上下文、会话前塞长记忆、动作先过同模型评审：这篇里评审显著、长记忆小幅显著、检索在四个模型合并层不显著（违规 11.5% 对 9.6%，p = 0.10），方向还因模型而异（deepseek-v4-flash 的 H2 是 89.7%，高于 H1 的 84.6%）。仓库里的 Agent Context File（常见文件名 AGENTS.md / CLAUDE.md）如果只写规则，还要看规则是贴进系统提示、还是让模型自己搜。原文引言另引了反方：六个模型、直连接口加三种脚手架，脚手架只解释安全性方差的 0.5%（Gringras, 2026）；编码智能体基准在三种框架下有害违规率几乎相同（Hu et al., 2026）。本轮没有打开这两篇被引。</p>
+  <h2><span>5</span>评测与部署应比较同一套脚手架</h2>
+  <p>选模型时，需要核对评测与部署使用的脚手架。qwen 在 H4 下的正确率为 93.6%，H2 下为 82.1%，相差 11.5 个百分点；但两者同时改变了手册进入方式和评审机制。只改变手册进入方式的 H1 与 H2 是 89.7% 对 82.1%，差 7.6 个点，论文没有单独报告这对差异通过 Holm 校正。deepseek-v4.1-flash 在五种脚手架下几乎不变。因此，不能把某一套 harness 下的模型名次直接搬到另一套部署配置上。</p>
+  <p>下面是我的推断，原文没测编码仓库，也没测技能文件。政策只靠检索才进上下文、会话前塞长记忆、动作先过同模型评审：这篇里评审显著、长记忆小幅显著、检索在四个模型合并层不显著（违规 11.5% 对 9.6%，p = 0.10），方向还因模型而异（deepseek-v4-flash 的 H2 是 89.7%，高于 H1 的 84.6%）。仓库里的 Agent Context File（常见文件名 AGENTS.md / CLAUDE.md）如果只写规则，还要看规则是贴进系统提示、还是让模型自己搜。原文引言另引了反方：六个模型、直连接口加三种脚手架，脚手架只解释安全性方差的 0.5%（Gringras, 2026）；编码智能体基准在三种框架下有害违规率几乎相同（Hu et al., 2026）。这两项结论来自论文转引，本文未独立核验。</p>
 </section>
 
 <section id="limit">
@@ -227,15 +235,17 @@
 
 <section id="src">
   <h2><span>7</span>出处</h2>
+  <p>2026 年 11 月 4 日，arXiv 收到 <a href="https://arxiv.org/abs/2611.06116">The Harness Is the Model: Agent Scaffolding Changes a Fixed LLM's Compliance with Banking Conduct Rules, Unevenly Across Models</a>（arXiv:2611.06116v1，cs.CL，兼 cs.AI、cs.CY；作者 Mehmet Murat Huyut；单位署 Kuveyt Türk Participation Bank 和伊斯坦布尔比尔基大学）。预印本，未经同行评审。abs 页 Comments 写 16 页、4 表，已预注册。复制包 <a href="https://github.com/mhuyut/harness-is-the-model">mhuyut/harness-is-the-model</a>。</p>
   <ul>
     <li>预印本 abs：<a href="https://arxiv.org/abs/2611.06116">arXiv:2611.06116</a>。HTML 全文：<a href="https://arxiv.org/html/2611.06116">arxiv.org/html/2611.06116</a>。Comments：16 页、4 表，已预注册。提交 2026-11-04 07:59:59 UTC。许可是 arXiv.org perpetual non-exclusive license。</li>
-    <li>复制包：<a href="https://github.com/mhuyut/harness-is-the-model">github.com/mhuyut/harness-is-the-model</a>。本轮打开仓库页 200。论文写 3,120 段会话轨迹都在这个仓库。</li>
+    <li>复制包：<a href="https://github.com/mhuyut/harness-is-the-model">github.com/mhuyut/harness-is-the-model</a>。论文写 3,120 段会话轨迹都在这个仓库。</li>
     <li>表 1、表 2、表 3、Cochran / McNemar / GEE、9.6% 对 6.4%、26.1% 的 287 段，都从 HTML 全文抄。作者利益声明：在一家参与银行任职，观点不代表雇主，未用银行数据。</li>
-    <li>OpenAI 新闻页本轮打开（<a href="https://openai.com/news/">openai.com/news</a>），近 48 小时条目是收购 Pierre Computer Company、Daybreak Red 上 AWS GovCloud、A thousand fewer paths to root、Images 2.6，未写入本篇数字。Anthropic 新闻页（<a href="https://www.anthropic.com/news">anthropic.com/news</a>）和研究页（<a href="https://www.anthropic.com/research">anthropic.com/research</a>）本轮打开，11 月 4 日是 Investigating vault particles with Claude，未写入本篇数字。Hacker News 首页本轮打开（firebaseio topstories），未见本篇预印本。Product Hunt 首页返回人机验证页，未打开。X / Reddit 今日未覆盖。被引的 Gringras (2026) 和 Hu et al. (2026) 本轮没有打开原文。</li>
+
   </ul>
-  <p><a href="/frontier/rsi-llm-agent-self-evolution.html">09-26 RSI</a> 是谱系，<a href="/frontier/llm-agent-tech-landscape.html">09-27 全景</a> 是增量在哪一层。这篇落在运行位的脚手架层：同一组权重，换政策怎么到眼前、动作谁来拦，qwen 这一行正确率差 11.5 个点。</p>
+  <p><a href="/frontier/rsi-llm-agent-self-evolution.html">09-26 RSI</a> 是谱系，<a href="/frontier/llm-agent-tech-landscape.html">09-27 全景</a> 是增量在哪一层。本文讨论脚手架对同一模型的影响：同一组权重，换政策怎么到眼前、动作谁来拦，qwen 这一行正确率差 11.5 个点。</p>
 </section>
 </main>
 </div>
+<a class="fr-top" href="#" aria-label="返回页首">↑</a>
 </body>
 </html>

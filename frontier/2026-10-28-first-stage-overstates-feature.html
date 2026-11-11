@@ -1,9 +1,9 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="zh-CN">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>十个 Agent、73 条特征：第一阶段 62.7%，整条终检 28.5%</title>
+  <title>第一步通过率，为什么高估完整功能的成功率 · Frontier</title>
   <style>
     :root { --ink:#0f172a; --muted:#475569; --line:#e2e8f0; --bg:#f8fafc; --blue:#1d4ed8; --blue-bg:#eff6ff; --amber:#b45309; --green:#047857; --rose:#be123c; }
     * { box-sizing: border-box; }
@@ -42,40 +42,48 @@
     svg text { font-family:-apple-system,"PingFang SC","Noto Sans SC",sans-serif; }
     @media (max-width:860px) { .layout { grid-template-columns:minmax(0,1fr); } aside { position:static; } h1 { font-size:1.55rem; } section { padding:18px 16px; } }
   </style>
+  <link rel="stylesheet" href="assets/article.css">
+  <script src="assets/article.js" defer></script>
 </head>
-<body>
-<nav style="position:sticky;top:0;z-index:50;background:#0f172a;border-bottom:1px solid #1e293b;padding:10px 24px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;">
-  <a href="/frontier" style="color:#93c5fd;text-decoration:none;font-size:14px;margin-right:16px;">← Frontier</a>
-  <a href="/" style="color:#cbd5e1;text-decoration:none;font-size:14px;">@xixi003</a>
+<body class="frontier-article">
+<a class="fr-skip" href="#article-content">跳到正文</a>
+<nav class="fr-nav" aria-label="站点导航">
+  <a class="fr-brand" href="/frontier/"><span class="fr-mark" aria-hidden="true">F</span>Frontier<span class="fr-nav-label">技术与研究</span></a>
+  <a class="fr-home" href="/">@xixi003 <span aria-hidden="true">↗</span></a>
 </nav>
+<div class="fr-progress" aria-hidden="true"><div></div></div>
 
-<header>
+<header class="fr-hero">
   <div class="inner">
     <span class="badge">FRONTIER · 2026-10-28 · 演进特征</span>
-    <h1>十个 Agent、73 条特征：第一阶段 62.7%，整条终检 28.5%</h1>
-    <p>一篇预印本把同一条用户可见特征拆成 2 到 10 个阶段，Agent 在自己上一阶段的代码上接着改，隐藏测试的结果不告诉它，也不回滚。十个编码 Agent 的第一阶段通过率（未加权平均）62.7%；整条特征在最终代码上过终检 28.5%。Claude Opus 5.5 点估计最高：第一阶段 83.6%，整条 49.3%，区间本轮未从图 6b 读出。分母 73 条任务、十个 Agent 各一条通过率再平均。</p>
+    <h1>第一步通过率，为什么高估完整功能的成功率</h1>
+    <p>Agent 完成第一版功能之后，还能在自己写的代码上持续扩展吗？FeatureArc 把 73 条功能需求拆成连续阶段，让十个编码 Agent 接着自己的代码往下写。第一阶段平均通过率是 62.7%，全部阶段结束后，整条功能通过最终检查的比例只有 28.5%。两者检查范围不同，差距不能全部归因于后续改动。</p>
   </div>
 </header>
-<div class="layout">
-<aside>
-  <p>目录</p>
-  <a href="#what">1 62.7 到 28.5</a>
-  <a href="#pool">2 73 条从哪来</a>
-  <a href="#l4">3 不报分、不回滚</a>
-  <a href="#ex">4 runAndWait 叠在自己写的 run 上</a>
-  <a href="#inherit">5 每个 Agent 都低 26 至 38 个点</a>
-  <a href="#green">6 辅线：失败之后接着写</a>
-  <a href="#yours">7 你的验收停在第几阶段</a>
-  <a href="#limit">8 这篇没测到的</a>
-  <a href="#src">9 出处</a>
+<div class="fr-layout">
+<aside aria-label="文章目录" class="fr-toc">
+<details open="">
+<summary>本文目录<span aria-hidden="true">＋</span></summary>
+<div class="fr-toc-links">
+<a href="#what">1 第一阶段通过，不等于整条功能完成</a>
+<a href="#pool">2 73 条从哪来</a>
+<a href="#l4">3 不报分、不回滚</a>
+<a href="#ex">4 runAndWait 叠在自己写的 run 上</a>
+<a href="#inherit">5 每个 Agent 都低 26 至 38 个点</a>
+<a href="#green">6 失败之后继续开发的结果</a>
+<a href="#yours">7 验收需要覆盖全部功能阶段</a>
+<a href="#limit">8 这篇没测到的</a>
+<a href="#src">9 出处</a>
+</div>
+</details>
 </aside>
-<main>
+<main class="fr-content" id="article-content">
 <section id="what">
-  <h2><span>1</span>62.7 到 28.5</h2>
-  <p>2026 年 10 月 27 日，arXiv 收到 <a href="https://arxiv.org/abs/2610.37434">FeatureArc: Benchmarking Coding Agents on Evolving Features</a>（arXiv:2610.37434v1，cs.SE，作者 Yunlong Wang、Alyssa Wu、Cuiyun Gao、Jia Feng、Songyuanyi Lu、Zhichao Hu，单位署腾讯混元团队、香港中文大学）。预印本，未经同行评审。本轮读的是 PDF 全文和 HTML 全文。</p>
+  <h2><span>1</span>第一阶段通过，不等于整条功能完成</h2>
+
   <p>原文问：单次需求写得好的 Agent，能不能在自己写过的代码上把同一条特征接着做对。评测设定叫 L4：用户只给下一阶段的规格，不说上一阶段过没过。十个编码 Agent，每个在同一 73 条任务上跑完整条链。</p>
   <div class="note">
-    <p style="margin:0">这篇只论证一个判断。判断是我的，依据是论文表 3 和 Finding 1。十个 Agent 的第一阶段通过率未加权平均 62.7%，整条特征终检（chain gate）28.5%。每个 Agent 自己的终检都比第一阶段低：表 3 两列相减是 26.1 至 38.4 个点，Finding 1 写 26.0 至 38.4。Claude Opus 5.5 点估计最高：第一阶段 83.6%、终检 49.3%，整条仍有一半以上没过；它的区间本轮未从图 6b 读出。62.7 和 28.5 的分母都是 73 条任务、十个 Agent 各一条通过率再平均。每个 Agent 都跑这 73 条，十个通过率平均和 730 次合并通过率数值相同；原文没写每个 Agent–任务只跑一次，730 是我用 73×10 乘的。论文给 Hunyuan 4 Preview 终检写了任务自助 95% 区间 23.3% 至 45.2%，其余 Agent 的区间在图 6b，正文没有逐个数。终检要求整条链每一步都过，第一阶段只要一步。下面是我的粗算，论文没做：用平均第一阶段 0.627、论文续写率 0.701、平均链长 3.60（后面 2.60 步），按步独立估 0.627×0.701<sup>2.60</sup>≈0.249。和实测 28.5% 同量级。算法用均值代替分布，只作量级。落差里有「多步都要过」的成分，论文没拆开。</p>
+    <p style="margin:0">依据论文表 3 和 Finding 1。十个 Agent 的第一阶段通过率未加权平均 62.7%，整条特征终检（chain gate）28.5%。每个 Agent 自己的终检都比第一阶段低：表 3 两列相减是 26.1 至 38.4 个点，Finding 1 写 26.0 至 38.4。Claude Opus 5.5 点估计最高：第一阶段 83.6%、终检 49.3%，整条仍有一半以上没过；它的区间本文未从图 6b 提取。62.7 和 28.5 的分母都是 73 条任务、十个 Agent 各一条通过率再平均。每个 Agent 都跑这 73 条，十个通过率平均和 730 次合并通过率数值相同；原文没写每个 Agent–任务只跑一次，730 是我用 73×10 乘的。论文给 Hunyuan 4 Preview 终检写了任务自助 95% 区间 23.3% 至 45.2%，其余 Agent 的区间在图 6b，正文没有逐个数。终检要求整条链每一步都过，第一阶段只要一步。下面是我的粗算，论文没做：用平均第一阶段 0.627、论文续写率 0.701、平均链长 3.60（后面 2.60 步），按步独立估 0.627×0.701<sup>2.60</sup>≈0.249。和实测 28.5% 同量级。算法用均值代替分布，只作量级。落差里有「多步都要过」的成分，论文没拆开。</p>
   </div>
   <p>第一阶段从仓库初始状态 S0 起步，口径上等价于普通的单阶段任务。终检在最终工作区上跑整条特征的 F2P 和 P2P。两条都过才算整条做成。</p>
 </section>
@@ -105,7 +113,7 @@
   <h2><span>5</span>每个 Agent 都低 26 至 38 个点</h2>
   <p>表 3 按终检从高到低排。m0 是第一阶段 F2P 和 P2P 都过的任务比例。Gate 是终检。Cont. 是前面阶段都过的条件下，m1 及以后的阶段通过率。F2P 是所有计分阶段里 F2P 套件通过的比例。Depth 是第一次失败前连续通过的阶段数除以链长。P2P↓ 是整条特征的 P2P 套件失败的任务比例，分母比「纯回归」宽，含新行为已经失败的那些次。</p>
   <div class="tw">
-    <table>
+    <div class="fr-table" tabindex="0" role="region" aria-label="数据表格，可横向滚动"><table>
       <thead>
         <tr>
           <th>Agent</th>
@@ -130,7 +138,7 @@
         <tr><td>DeepSeek V4 Pro</td><td>52.1</td><td>17.8</td><td>34.3</td><td>61.5</td><td>40.3</td><td>11.0</td></tr>
         <tr><td>Pooled（论文）</td><td>62.7</td><td>28.5</td><td>34.2</td><td>70.1</td><td>50.4</td><td>11.1</td></tr>
       </tbody>
-    </table>
+    </table></div>
   </div>
   <p>表内百分数来自论文表 3。差值是我用表 3 两列相减，范围 26.1 至 38.4；论文 Finding 1 写 26.0 至 38.4，差 0.1 个点，按表 3 的一位小数相减。Pooled 一行照抄表 3；m0、Gate、F2P、P2P↓ 与十个 Agent 的未加权平均一致（我验算过），Cont. 70.1 是论文的合并值，十个续写率未加权平均是 69.1，分母是各 Agent 前面阶段都过的后续阶段，条数不同。Hunyuan 终检 34.2% 的 95% 区间 23.3% 至 45.2% 写在论文第 VI 节，按任务自助、4,000 次重抽样。名次大体还在（m0 与终检 Spearman ρ = 0.87），第一阶段分数仍高估整条做成的次数。</p>
   <figure>
@@ -216,8 +224,8 @@
 </section>
 
 <section id="green">
-  <h2><span>6</span>辅线：失败之后接着写</h2>
-  <p>下面几句是论文 Finding 4、6、7，不当另一条主判断。分母是阶段，十个 Agent 合并。22.6% 和 70.2% 的 n，论文正文没给。</p>
+  <h2><span>6</span>失败之后继续开发的结果</h2>
+  <p>论文 Finding 4、6、7 还讨论了失败后的继续开发。分母是阶段，十个 Agent 合并。22.6% 和 70.2% 的 n，论文正文没给。</p>
   <figure>
     <svg viewBox="0 0 880 500" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="L4 流程与 62.7 到 28.5 从哪掉">
       <rect width="880" height="500" fill="#ffffff"/>
@@ -265,10 +273,10 @@
 </section>
 
 <section id="yours">
-  <h2><span>7</span>你的验收停在第几阶段</h2>
-  <p>读完要看的是自己的运行位。排行榜、内部评测、技能记录如果停在「这一次请求过了隐藏测试」，和这篇的第一阶段 62.7% 同类。论文测的是：同一条特征再往下写、代码是 Agent 自己留下的、中间没有人报失败，终检剩 28.5%。</p>
+  <h2><span>7</span>验收需要覆盖全部功能阶段</h2>
+  <p>如果评测只检查一次请求能否通过隐藏测试，它接近这篇论文的第一阶段任务。FeatureArc 多测了一步：让 Agent 在自己留下的代码上继续扩展，中间不反馈失败，再检查整条功能。第一阶段的 62.7% 和终检的 28.5%，回答的是不同范围的问题。</p>
   <p>编辑起点如果在每阶段结束时把失败告诉 Agent 或回滚，那是论文的 L1 到 L3，这篇的 28.5% 不能直接当那个数字。技能记录里如果写了「Agent 自己跑测试就算过」，第 6 节有阶段级隐藏 F2P 的对照，不是终检。</p>
-  <p>下面是我的推断，论文没有在你的线上测过。把「先写、再验收、再写下一段」里的验收省掉，第一阶段分数会高估整条特征。高估幅度不要直接抄 26 至 38 个点：终检要求每一步都过，第一阶段只要一步，第 1 节那条独立粗算已经和 28.5% 同量级。这篇也没有证明 34 个点都来自没注意到继承缺陷：36.2% 的全部次数第一次失败就在 m0，那一截还没继承。继承这条缝出现在已经失败之后的续写上。</p>
+  <p>我的判断是，单阶段通过率不足以代表连续功能开发的结果。但也不能直接把 26 至 38 个百分点的差距当成省略阶段验收的代价：终检要求每一步都通过，第一阶段只检查一步，第 1 节的独立近似计算已经得到与 28.5% 相近的量级。论文没有证明全部差距来自继承缺陷；36.2% 的运行第一次失败就在 m0，还没有继承前序代码。继承缺陷的影响，需要在失败后继续开发的部分单独分析。</p>
   <p><a href="/frontier/2026-10-07-what-is-a-harness.html">10-07</a> 写过 harness 是模型外面那层程序。这篇九个 Agent 跑 Claude Code、一个跑 Codex CLI，分数没有拆开。<a href="/frontier/2026-10-15-gap-remains-after-fix.html">10-15</a> 写过隐藏测试判为修好之后，报告仍差一截。这一篇补的是：十个 Agent、73 条特征，第一阶段 62.7%，整条终检 28.5%。</p>
 </section>
 
@@ -278,23 +286,25 @@
     <li><strong>设定是 L4。</strong>中间有人报失败或回滚，数字会变。原文没在 L1 到 L3 上对同一 73 条重跑。</li>
     <li><strong>模型和 harness 绑在一起。</strong>九个 Claude Code，一个 Codex CLI。原文写跨 Agent 分数是联合成绩，没有只换 harness 的消融。</li>
     <li><strong>73 条是 100 条分层样本再筛再人工留下的。</strong>轨迹筛掉 7 条。由 100、7、73 推得另外 20 条在人工检查前后离开，作者自算，前提是除这两步外没有别的筛选。四种语言、七个应用域，原文自己写可能盖不住真实特征开发的全部流程。任务筛选用若干模型的轨迹，被筛掉的正是 Agent 易失败的类型。</li>
-    <li><strong>终检区间正文只给了 Hunyuan。</strong>34.2%（23.3% 至 45.2%）。其余 Agent 的任务自助区间在图 6b，本轮没有从矢量图里读数。28.5% 没有单独公布的区间。Opus 是点估计最高，区间未读。</li>
+    <li><strong>终检区间正文只给了 Hunyuan。</strong>34.2%（23.3% 至 45.2%）。其余 Agent 的任务自助区间在图 6b，本文未从矢量图提取读数。28.5% 没有单独公布的区间。Opus 是点估计最高，区间未读。</li>
     <li><strong>标注与构造用的模型和被评模型重叠。</strong>轨迹标签三个模型：Hunyuan 4 Preview、DeepSeek V4.1 Flash、GLM-5.3 Flash，多数表决，第一作者裁决全票不一致的项。Hunyuan 4 Preview 是作者团队的待评预发布模型，同时被评测、又给轨迹打标签。任务构造：GPT-5.5 做步骤 1–3，DeepSeek V4.1 Flash 做步骤 4，Claude Sonnet 5 做步骤 5，两家模型家族与被评 Agent 重合。规格抽查 60 个阶段只由第一作者一人完成。继承 90/90 一致，先验觉察 56/60。72.9% 和 94.9% 跟这些标签走。</li>
     <li><strong>五阶段及以上终检 1.5%，分母是这类任务上的全部次数，正文没写这类任务有几条。</strong>过的两次都是 Grok 4.7，不要读成 Grok 在长任务上系统更强。</li>
     <li><strong>绿测、红测的分母随 Agent 变。</strong>Grok 和 Gemini 的红测少于 20 个阶段。这些是第 6 节辅线，不是终检。</li>
     <li><strong>每阶段四小时、离线容器、依赖预装。</strong>要上网装包、要人补语境的特征，这篇没有。</li>
-    <li><strong>Hunyuan 4 Preview 是预发布内部模型。</strong>论文第 VI 节用它说明内部评测缺 L4，不是另一条主判断。</li>
+    <li><strong>Hunyuan 4 Preview 是预发布内部模型。</strong>论文第 VI 节用它说明内部评测缺 L4，不代表另一项独立实证结果。</li>
     <li><strong>落差没有链长校正。</strong>终检要求每一步都过。第 1 节那条独立粗算是作者自己的，论文没做。</li>
   </ul>
 </section>
 
 <section id="src">
   <h2><span>9</span>出处</h2>
+  <p>2026 年 10 月 27 日，arXiv 收到 <a href="https://arxiv.org/abs/2610.37434">FeatureArc: Benchmarking Coding Agents on Evolving Features</a>（arXiv:2610.37434v1，cs.SE，作者 Yunlong Wang、Alyssa Wu、Cuiyun Gao、Jia Feng、Songyuanyi Lu、Zhichao Hu，单位署腾讯混元团队、香港中文大学）。预印本，未经同行评审。</p>
   <p>数字来自预印本 PDF 与 HTML（<a href="https://arxiv.org/html/2610.37434">arxiv.org/html/2610.37434</a>，<a href="https://arxiv.org/pdf/2610.37434">pdf</a>，<a href="https://arxiv.org/abs/2610.37434">abs</a>，2026-10-27，未经同行评审）。论文表 1–4、第 2–6 节、图 1、2、4–8。export.arxiv.org 的 Atom 里 published 为 2026-10-27T15:45:50Z。Claude Code 按原文注 <a href="https://code.claude.com/docs/en/overview">code.claude.com/docs/en/overview</a>。Codex CLI 按原文注 <a href="https://github.com/openai/codex">github.com/openai/codex</a>。表 3 差值、第一阶段失败率 37.3 个点、独立粗算 0.249、组内差 43.6、73×10=730 是我算的，已标明。</p>
-  <p><a href="https://openai.com/news/">OpenAI 新闻页</a>本轮经 r.jina.ai 打开过，近几日条目包括与 Oracle 把应用接到 ChatGPT（10-27）、学术合作（10-26）、GPT-6.1 Sol 与 CodeRabbit（10-26）、GPT-6.1 Terra 系统卡补篇（10-26）。据标题判断，没有带这 73 条分母的演进特征对比，未写入数字。<a href="https://www.anthropic.com/news">Anthropic 新闻页</a>本轮打开过，10 月 28 日页上有 Opus 5.5（9-22）、S-1（10-26）、用药开发进展（10-27），同样未写入数字。Hacker News 首页打开过，Algolia 48 小时检索返回 400，未作为数字来源。Product Hunt 当日页经 r.jina.ai 打开过，未写入数字。GitHub 搜索返回了 10-26 之后更新的仓库，没有带这一组分母的 FeatureArc 发布说明，未写入数字。X、Reddit 今日未覆盖：本机没有可用登录态。</p>
+
   <p>谱系和增量层分别在 <a href="/frontier/rsi-llm-agent-self-evolution.html">递归自改进前世今生</a> 和 <a href="/frontier/llm-agent-tech-landscape.html">冻底座、改脚手架</a>。这篇只加一条：十个 Agent、73 条特征，第一阶段 62.7%，整条终检 28.5%。</p>
 </section>
 </main>
 </div>
+<a class="fr-top" href="#" aria-label="返回页首">↑</a>
 </body>
 </html>

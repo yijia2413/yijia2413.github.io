@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="zh-CN">
 <head>
   <meta charset="UTF-8">
@@ -42,38 +42,46 @@
     svg text { font-family:-apple-system,"PingFang SC","Noto Sans SC",sans-serif; }
     @media (max-width:860px) { .layout { grid-template-columns:minmax(0,1fr); } aside { position:static; } h1 { font-size:1.55rem; } section { padding:18px 16px; } }
   </style>
+  <link rel="stylesheet" href="assets/article.css">
+  <script src="assets/article.js" defer></script>
 </head>
-<body>
-<nav style="position:sticky;top:0;z-index:50;background:#0f172a;border-bottom:1px solid #1e293b;padding:10px 24px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;">
-  <a href="/frontier" style="color:#93c5fd;text-decoration:none;font-size:14px;margin-right:16px;">← Frontier</a>
-  <a href="/" style="color:#cbd5e1;text-decoration:none;font-size:14px;">@xixi003</a>
+<body class="frontier-article">
+<a class="fr-skip" href="#article-content">跳到正文</a>
+<nav class="fr-nav" aria-label="站点导航">
+  <a class="fr-brand" href="/frontier/"><span class="fr-mark" aria-hidden="true">F</span>Frontier<span class="fr-nav-label">技术与研究</span></a>
+  <a class="fr-home" href="/">@xixi003 <span aria-hidden="true">↗</span></a>
 </nav>
+<div class="fr-progress" aria-hidden="true"><div></div></div>
 
-<header>
+<header class="fr-hero">
   <div class="inner">
     <span class="badge">FRONTIER · 2026-11-01 · 完成核验</span>
     <h1>ScienceBoard 上，查过状态的误报 5.4%，生成脚本 21.7%</h1>
-    <p>一篇预印本在三个在线计算机使用环境里核验任务有没有做完。核验器先看机器上下文，再选界面或代码检查。ScienceBoard 169 例：假阳性率 5.4%。同一套 gemini-3-flash-preview 上，按任务生成一次脚本再跑：21.7%。单次看观察的视觉语言模型评审：24.8%。弃权记成失败。标题不写 AndroidWorld 和 OSWorld：那两列也是查过状态更低，数字和 5.4 / 21.7 不在同一列。</p>
+    <p>核验计算机任务是否完成，检查实际状态比只看一张截图更可靠。VeriCUA 先了解机器上下文，再选择界面或代码检查。在 ScienceBoard 的 169 个案例上，它的假阳性率为 5.4%；同样使用 gemini-3-flash-preview 的一次性生成脚本方案为 21.7%，单次视觉语言模型评审为 24.8%。弃权按失败计算。</p>
   </div>
 </header>
-<div class="layout">
-<aside>
-  <p>目录</p>
-  <a href="#what">1 5.4 和 21.7</a>
-  <a href="#setup">2 三个在线环境</a>
-  <a href="#abstain">3 弃权不当成功</a>
-  <a href="#gui">4 只看屏幕，决定率 45%</a>
-  <a href="#yours">5 你的核验位查不查状态</a>
-  <a href="#limit">6 这篇没测到的</a>
-  <a href="#src">7 出处</a>
+<div class="fr-layout">
+<aside aria-label="文章目录" class="fr-toc">
+<details open="">
+<summary>本文目录<span aria-hidden="true">＋</span></summary>
+<div class="fr-toc-links">
+<a href="#what">1 实际状态检查减少误报</a>
+<a href="#setup">2 三个在线环境</a>
+<a href="#abstain">3 弃权不当成功</a>
+<a href="#gui">4 只看屏幕，决定率 45%</a>
+<a href="#yours">5 核验要读取哪些实际状态</a>
+<a href="#limit">6 这篇没测到的</a>
+<a href="#src">7 出处</a>
+</div>
+</details>
 </aside>
-<main>
+<main class="fr-content" id="article-content">
 <section id="what">
-  <h2><span>1</span>5.4 和 21.7</h2>
-  <p>2026 年 10 月 29 日，arXiv 收到 <a href="https://arxiv.org/abs/2610.40578">VeriCUA: Verification as Agentic Exploration for Computer-Using Agents</a>（arXiv:2610.40578v1，cs.AI，作者 Qiushi Sun、Da Yu、Alexander Knop、Amer Sinha、Lingpeng Kong、Ben Kao、Ravi Kumar、Pritish Kamath；单位署 Google 与香港大学）。预印本，未经同行评审。本轮读的是 HTML 全文。文内没有给出 VeriCUA 自己的代码仓库。</p>
+  <h2><span>1</span>实际状态检查减少误报</h2>
+
   <p>计算机使用 Agent 跑完一条，常见核验是：把截图或轨迹交给视觉语言模型打一次分，或者按任务生成一段检查脚本对着机器跑一次。两条路都只看见当时给到的观察，或脚本猜到的状态位置。编辑没保存、操作失败没有提示、Agent 自己报完成，都可能被写成成功。</p>
   <div class="note">
-    <p style="margin:0">这篇只论证一个判断。判断是我的，依据是论文表 1 和附录 B.4。ScienceBoard 在线、169 例、官方评测器做金标、执行 Agent 和核验器都跑 gemini-3-flash-preview：VeriCUA 假阳性率 5.4%，自动生成核验器 21.7%，单次视觉语言模型评审 24.8%。成功是正类。弃权记成失败，不记成成功，所以弃权不加假阳性、会压召回。标题只写 ScienceBoard：论文写这里生成检查和目标科学软件对不齐的缺口最大，5.4 大约是生成脚本的四分之一。AndroidWorld 116 例是 7.7 对 16.9；OSWorld 361 例是 13.9 对 25.9。三列不要并进同一个范围。</p>
+    <p style="margin:0">依据论文表 1 和附录 B.4。ScienceBoard 在线、169 例、官方评测器做金标、执行 Agent 和核验器都跑 gemini-3-flash-preview：VeriCUA 假阳性率 5.4%，自动生成核验器 21.7%，单次视觉语言模型评审 24.8%。成功是正类。弃权记成失败，不记成成功，所以弃权不加假阳性、会压召回。ScienceBoard 中，生成检查与目标科学软件不匹配的问题最明显；5.4 大约是生成脚本的四分之一。AndroidWorld 116 例是 7.7 对 16.9；OSWorld 361 例是 13.9 对 25.9。三列不要并进同一个范围。</p>
   </div>
   <p>附录 D.1 给了一条 AndroidWorld。指令要恰好一段新视频。媒体库读到开局之后多了三行，目录里三份文件，间隔一分钟。四次核验里三次判失败，一次弃权。Agent 报完成。单次评审和生成脚本都判成功。</p>
 </section>
@@ -81,10 +89,10 @@
 <section id="setup">
   <h2><span>2</span>三个在线环境</h2>
   <p>在线核验发生在回合结束之后，对着还在的机器状态。AndroidWorld 跑模拟器，OSWorld 跑虚拟机，ScienceBoard 跑科学桌面。每条由该基准自己的脚手架执行。金标是各基准官方评测器。OSWorld 执行成功率 44.3%，ScienceBoard 23.7%。AndroidWorld 116 例写的是 M3A Agents，表 B.1 没有给执行成功率。</p>
-  <p>对照三条。视觉语言模型评审：一次调用，看给到的观察，出裁决或分数。自动生成核验器：每个任务生成一段评测脚本，对机器跑一次，二元裁决。VeriCUA：先看应用上下文，写出任务量表，再对还没落实的条目选界面检查或代码检查，按证据规则汇总。后两条只在在线设置里比；离线设置另有 CUAJudge 和 OS-Themis，不进标题。</p>
+  <p>对照三条。视觉语言模型评审：一次调用，看给到的观察，出裁决或分数。自动生成核验器：每个任务生成一段评测脚本，对机器跑一次，二元裁决。VeriCUA：先看应用上下文，写出任务量表，再对还没落实的条目选界面检查或代码检查，按证据规则汇总。后两条只在在线设置里比；离线设置另有 CUAJudge 和 OS-Themis，与主要比较的条件不同。</p>
   <p>主表 backbone 是 gemini-3-flash-preview。backbone 对照另跑 gemini-3.1-pro-preview，那一列不和 5.4 / 21.7 比。</p>
   <div class="tw">
-    <table>
+    <div class="fr-table" tabindex="0" role="region" aria-label="数据表格，可横向滚动"><table>
       <thead>
         <tr>
           <th>环境</th>
@@ -107,7 +115,7 @@
         <tr><td>ScienceBoard</td><td>169</td><td>生成脚本</td><td>76.9</td><td>21.7</td><td>100%</td><td>76.9%</td></tr>
         <tr><td>ScienceBoard</td><td>169</td><td>VeriCUA</td><td>86.4</td><td>5.4</td><td>70%</td><td>91.6%</td></tr>
       </tbody>
-    </table>
+    </table></div>
   </div>
   <p>表是论文表 1 加附录表 B.1 的例数。准确率、假阳性率是百分数，原文没给百分号。两条对照每条都出裁决，已决定准确率等于总准确率。VeriCUA 在 ScienceBoard 上已决定 70%，已决定准确率 91.6，总准确率 86.4：弃权记失败，分母仍是 169。</p>
   <figure>
@@ -164,7 +172,7 @@
   <h2><span>3</span>弃权不当成功</h2>
   <p>两条对照每条都给裁决。VeriCUA 在发现落不定任务、或者已经决定的几次核验互相打架时弃权。附录 B.4：弃权在一致率、精确率、召回、F1、假阳性率里都记成失败。已决定准确率另报。</p>
   <p>ScienceBoard 已决定 70%，已决定准确率 91.6，总准确率 86.4。少掉的那截是弃权进了失败。假阳性率 5.4 不含把不确定写成成功。论文写这套口径偏向保守挑成功轨迹，用在数据筛选和奖励赋值。</p>
-  <p>第 5.3 节另写：三个在线环境里的虚假完成报告，AndroidWorld 用了一个子集，VeriCUA 拒掉约 80%。原文是 about 80%，没有条数分母，不进标题。差距在 ScienceBoard 最大：生成脚本很少拒掉错误的完成声明。</p>
+  <p>第 5.3 节另写：三个在线环境里的虚假完成报告，AndroidWorld 用了一个子集，VeriCUA 拒掉约 80%。原文是 about 80%，没有条数分母，与主要比较的条件不同。差距在 ScienceBoard 最大：生成脚本很少拒掉错误的完成声明。</p>
 </section>
 
 <section id="gui">
@@ -207,36 +215,38 @@
     </svg>
     <figcaption>图 2. 在线 AndroidWorld：只看界面和混合动作空间。数据来自论文表 C.1。假阳性两边都是 3/41。柱高按 3.5 像素 / 1 个点。</figcaption>
   </figure>
-  <p>离线核验是辅线。记录轨迹上 VeriCUA 仍高于对照，OSReward-Hard 284 条人工标签：准确率 70.4，对 OS-Themis 65.7、CUAJudge 63.4、TRM 57.4。WebArena 715 条里，记录解决不了任务时走初始判断回退，原文写发生在 23% 的轨迹。那一列没有机器可探，不支撑标题里的 5.4。</p>
+  <p>离线核验是辅线。记录轨迹上 VeriCUA 仍高于对照，OSReward-Hard 284 条人工标签：准确率 70.4，对 OS-Themis 65.7、CUAJudge 63.4、TRM 57.4。WebArena 715 条里，记录解决不了任务时走初始判断回退，原文写发生在 23% 的轨迹。那一列没有机器可探，不能用来解释在线环境的 5.4% 假阳性率。</p>
 </section>
 
 <section id="yours">
-  <h2><span>5</span>你的核验位查不查状态</h2>
-  <p>读完要看的是：自己的计算机使用 Agent、浏览器 Agent、桌面 Agent，完成核验是一次看截图、一次生成脚本，还是回合结束后读文件、数据库、设置。ScienceBoard 169 例上，先看上下文再探状态的假阳性率 5.4，生成脚本 21.7。</p>
-  <p>技能记录如果只留「加一个完成评审」或「给任务写一段 checker」，没有记下评审看见的是不是回合后的持久状态、脚本生成前有没有看应用上下文、不确定时是弃权还是写成成功，和这篇测到的缝是同一条。</p>
-  <p>下面是我的推断，论文没有在你的线上测过。数据筛选和奖励赋值如果把 Agent 自报完成、或单次看图的成功，直接写进正例，假阳性会进训练集。支付、发邮件、改配置这类动作，界面上看起来做完、存储里没有对应行，和附录 D.1 的三段视频是同一类证据。运行位如果在回合结束后读权威存储，读的是这篇的持久证据。</p>
+  <h2><span>5</span>核验要读取哪些实际状态</h2>
+  <p>给计算机或浏览器 Agent 增加完成核验时，需要说清核验器能读到什么：一张截图、生成脚本所需的上下文，还是操作结束后的文件、数据库和设置。ScienceBoard 的 169 个案例中，先了解上下文再探索状态的假阳性率为 5.4%，一次生成脚本为 21.7%。</p>
+  <p>选择完成核验方法时，需要明确三点：评审能否读取操作结束后的持久状态，生成检查脚本前能否了解应用上下文，以及证据不足时能否弃权。仅写“增加完成评审”或“生成 checker”，还不足以定义核验行为。</p>
+  <p>我的判断是，不能直接把 Agent 自报完成或单次截图评审的成功，作为训练和奖励的正例。界面显示完成而存储中没有对应记录，是附录 D.1 视频所展示的失败类型。支付、邮件和配置修改等任务，可以据此考虑增加操作结束后的持久状态检查；论文没有验证这些具体部署建议。</p>
   <p><a href="/frontier/2026-10-14-reproduction-is-not-validation.html">10-14</a> 写过复现成功撑不起联合验收。<a href="/frontier/2026-10-28-first-stage-overstates-feature.html">10-28</a> 写过第一阶段通过率高于整条终检。<a href="/frontier/2026-10-31-unverified-plan-halves-ter.html">10-31</a> 写过未核计划终局 0.94、整条可执行 0.47。那三篇动的是测试池、阶段、工具前缀。这篇动的是完成声明有没有对着机器状态查过。</p>
 </section>
 
 <section id="limit">
   <h2><span>6</span>这篇没测到的</h2>
   <ul>
-    <li><strong>标题的 5.4 / 21.7 是 ScienceBoard 在线、169 例、flash backbone、弃权记失败。</strong>AndroidWorld 7.7 / 16.9，OSWorld 13.9 / 25.9，不要和 5.4 / 21.7 并进同一个范围。表 1 假阳性率没有整数分母。表 C.1 的 3/41 只挂 AndroidWorld 动作消融。</li>
+    <li><strong>5.4 / 21.7 的比较来自 ScienceBoard 在线、169 例、flash backbone、弃权记失败。</strong>AndroidWorld 7.7 / 16.9，OSWorld 13.9 / 25.9，不要和 5.4 / 21.7 并进同一个范围。表 1 假阳性率没有整数分母。表 C.1 的 3/41 仅对应 AndroidWorld 的动作消融。</li>
     <li><strong>虚假完成「约 80%」没有条数。</strong>第 5.3 节写 about 80%，AndroidWorld 用子集，图 5b。不和 5.4 比大小。</li>
     <li><strong>生成脚本在 OSWorld、ScienceBoard 上召回更高。</strong>总准确率和假阳性率是另一列。挑成功轨迹和追全成功，口径不同。</li>
     <li><strong>代价按数量级写。</strong>附录 E：一次核验对每条轨迹发出数十次工具调用和模型调用，比单次评审高一个数量级。表 C.9：在线第一套 VeriCUA 39.2K token、97 秒，生成脚本 16.2K、60 秒。离线 OSReward 上 VeriCUA 345K–378K，三个单次评审合计 33K–35K。论文写更适合筛选和奖励赋值，不适合交互使用。</li>
-    <li><strong>金标也会错。</strong>附录 C.6：814 条记录轨迹里，已决定的 VeriCUA 和金标打架 81 条；换一家模型的盲审支持 VeriCUA 51 条、反对 20、不确定 10，不确定留在分母，51/81 ≈ 63%。在线 OSWorld：VeriCUA 的 28 次假阳性里，约 18 次是官方评测器把失败标错。63% 和约 18 不进标题。</li>
+    <li><strong>金标也会错。</strong>附录 C.6：814 条记录轨迹里，已决定的 VeriCUA 和金标打架 81 条；换一家模型的盲审支持 VeriCUA 51 条、反对 20、不确定 10，不确定留在分母，51/81 ≈ 63%。在线 OSWorld：VeriCUA 的 28 次假阳性里，约 18 次是官方评测器把失败标错。这两项是对金标差异的补充分析。</li>
     <li><strong>只读。</strong>论文写 VeriCUA 从不写入被核验的环境。不能回放到不能插桩的机器上。随机核验要把多次抽样的离散写在每次比较旁边。</li>
   </ul>
 </section>
 
 <section id="src">
   <h2><span>7</span>出处</h2>
+  <p>2026 年 10 月 29 日，arXiv 收到 <a href="https://arxiv.org/abs/2610.40578">VeriCUA: Verification as Agentic Exploration for Computer-Using Agents</a>（arXiv:2610.40578v1，cs.AI，作者 Qiushi Sun、Da Yu、Alexander Knop、Amer Sinha、Lingpeng Kong、Ben Kao、Ravi Kumar、Pritish Kamath；单位署 Google 与香港大学）。预印本，未经同行评审。文内没有给出 VeriCUA 自己的代码仓库。</p>
   <p>数字来自预印本 HTML（<a href="https://arxiv.org/html/2610.40578">arxiv.org/html/2610.40578</a>，<a href="https://arxiv.org/pdf/2610.40578">pdf</a>，<a href="https://arxiv.org/abs/2610.40578">abs</a>，2026-10-29，未经同行评审）。论文摘要、第 4.1–4.3 节、第 5.1 节、第 5.3 节、第 5.5 节、结论、附录 B.1、B.4、C.1、C.6、C.9、D.1、E，表 1、表 C.1、表 C.9、表 C.10。HTML 页眉写 arXiv:2610.40578v1 [cs.AI] 29 Oct 2026。图 1 柱高按 12 像素 / 1 个点画，图 2 按 3.5 像素 / 1 个点，作图参数是我的。</p>
-  <p><a href="https://openai.com/news/">OpenAI 新闻页</a>本轮直接请求返回 403，未打开，未写入数字。<a href="https://www.anthropic.com/news">Anthropic 新闻页</a>本轮打开过，页上仍挂 Opus 5.5（9-22）、S-1（10-26）、用药开发进展（10-27），未写入数字。Hacker News 首页与 Algolia 本轮打开过，未作为本篇数字来源。Product Hunt Atom 源本轮打开过，未写入数字。GitHub 搜索本轮打开过，文内没有 VeriCUA 仓库。X、Reddit 今日未覆盖：本机没有可用登录态。</p>
+
   <p>谱系和增量层分别在 <a href="/frontier/rsi-llm-agent-self-evolution.html">递归自改进前世今生</a> 和 <a href="/frontier/llm-agent-tech-landscape.html">冻底座、改脚手架</a>。这篇只加一条：ScienceBoard 上，查过状态的误报 5.4%，生成脚本 21.7%。</p>
 </section>
 </main>
 </div>
+<a class="fr-top" href="#" aria-label="返回页首">↑</a>
 </body>
 </html>

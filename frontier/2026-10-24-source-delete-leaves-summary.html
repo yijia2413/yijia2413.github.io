@@ -1,9 +1,9 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="zh-CN">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>源记录删了，抽取摘要还在，Qwen 上 136/200 还能问回来</title>
+  <title>删掉源记录后，Agent 仍能从摘要找回信息 · Frontier</title>
   <style>
     :root { --ink:#0f172a; --muted:#475569; --line:#e2e8f0; --bg:#f8fafc; --blue:#1d4ed8; --blue-bg:#eff6ff; --amber:#b45309; --green:#047857; --rose:#be123c; }
     * { box-sizing: border-box; }
@@ -42,45 +42,53 @@
     svg text { font-family:-apple-system,"PingFang SC","Noto Sans SC",sans-serif; }
     @media (max-width:860px) { .layout { grid-template-columns:minmax(0,1fr); } aside { position:static; } h1 { font-size:1.55rem; } section { padding:18px 16px; } }
   </style>
+  <link rel="stylesheet" href="assets/article.css">
+  <script src="assets/article.js" defer></script>
 </head>
-<body>
-<nav style="position:sticky;top:0;z-index:50;background:#0f172a;border-bottom:1px solid #1e293b;padding:10px 24px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;">
-  <a href="/frontier" style="color:#93c5fd;text-decoration:none;font-size:14px;margin-right:16px;">← Frontier</a>
-  <a href="/" style="color:#cbd5e1;text-decoration:none;font-size:14px;">@xixi003</a>
+<body class="frontier-article">
+<a class="fr-skip" href="#article-content">跳到正文</a>
+<nav class="fr-nav" aria-label="站点导航">
+  <a class="fr-brand" href="/frontier/"><span class="fr-mark" aria-hidden="true">F</span>Frontier<span class="fr-nav-label">技术与研究</span></a>
+  <a class="fr-home" href="/">@xixi003 <span aria-hidden="true">↗</span></a>
 </nav>
+<div class="fr-progress" aria-hidden="true"><div></div></div>
 
-<header>
+<header class="fr-hero">
   <div class="inner">
     <span class="badge">FRONTIER · 2026-10-24 · 记忆删除</span>
-    <h1>源记录删了，抽取摘要还在，Qwen 上 136/200 还能问回来</h1>
+    <h1>删掉源记录后，Agent 仍能从摘要找回信息</h1>
     <p>一篇 10 月 22 日的预印本把「删掉那条源记录」和「派生状态里还有没有秘密」拆开测。Qwen2.5-7B-Instruct、层级记忆、写过滤器关掉：一条直接问，IID 上暴露再删除的那一侧 136/200 对上完整目标，从未暴露的对照 0/200。ΔRec = 0.680（95% 配对区间 0.615 至 0.745）。136 按表 1 四格相加，原文未直接给出这个分数。摘要是按标识符排序、原文换行拼接的抽取对象。</p>
   </div>
 </header>
-<div class="layout">
-<aside>
-  <p>目录</p>
-  <a href="#what">1 136/200</a>
-  <a href="#how">2 一对世界，一条源记录</a>
-  <a href="#ex">3 代码进了摘要</a>
-  <a href="#comp">4 残留不依赖另一份完整拷贝</a>
-  <a href="#fix">5 修法停在哪一站</a>
-  <a href="#yours">6 你的删除清不清摘要</a>
-  <a href="#limit">7 这篇没测到的</a>
-  <a href="#src">8 出处</a>
+<div class="fr-layout">
+<aside aria-label="文章目录" class="fr-toc">
+<details open="">
+<summary>本文目录<span aria-hidden="true">＋</span></summary>
+<div class="fr-toc-links">
+<a href="#what">1 删除源记录后，摘要仍能泄露信息</a>
+<a href="#how">2 暴露后删除与从未暴露的配对实验</a>
+<a href="#ex">3 代码进了摘要</a>
+<a href="#comp">4 残留不依赖另一份完整拷贝</a>
+<a href="#fix">5 同时清理派生记录与限制写入的效果</a>
+<a href="#yours">6 你的删除清不清摘要</a>
+<a href="#limit">7 这篇没测到的</a>
+<a href="#src">8 出处</a>
+</div>
+</details>
 </aside>
-<main>
+<main class="fr-content" id="article-content">
 <section id="what">
-  <h2><span>1</span>136/200</h2>
-  <p>2026 年 10 月 22 日，arXiv 收到 <a href="https://arxiv.org/abs/2610.31366">AfterDeleteBench: Auditing Post-Deletion Information Persistence in LLM Agents</a>（arXiv:2610.31366v1，cs.CR，作者 Ehsan Saleh、Roozbeh Nahavandi、Sama Salarian、Raef Bassily、Andrew Perrault，单位署俄亥俄州立大学）。预印本，未经同行评审。本轮读的是 PDF 全文。</p>
+  <h2><span>1</span>删除源记录后，摘要仍能泄露信息</h2>
+  <p><a href="https://arxiv.org/abs/2610.31366">AfterDeleteBench</a> 把删除原始记录和清除派生记忆分开测试。用户要求删除的信息，是否仍能从摘要或其他派生状态里问回来？</p>
   <p>带外部记忆的智能体把对话写成可寻址的源记录，再从这些记录长出摘要一类的派生对象。用户删掉那条源记录。记录没了，摘要还在。这篇问：固定权重的模型，事后还能不能把那条秘密完整问回来。</p>
   <div class="note">
-    <p style="margin:0">这篇只论证一个判断。判断是我的，依据是论文第 5.1 节和表 1。Qwen2.5-7B-Instruct、层级记忆、写过滤器关掉、一条 DIRECT 问句「What is my {attribute}?」：IID 200 对档案上，暴露再删除一侧精确找回 136 条，从未暴露一侧 0 条，ΔRec = 0.680（10,000 次配对自助，95% 百分位区间 0.615 至 0.745）。136 = 48 + 38 + 50 + 0，按表 1 四格相加，原文未直接给出这个分数。同一设定的生成器留出 OOD 是 0.640（0.575 至 0.705），对照同样 0/200，128 同样按四格相加。136 是官方解析器计数。第 4 节的分件拼回、第 5 节的闭包和写过滤用来定位残留走哪条通道、常见修法停在哪一站，不当另一条主判断。</p>
+    <p style="margin:0">以下判断依据论文第 5.1 节和表 1。Qwen2.5-7B-Instruct、层级记忆、写过滤器关掉、一条 DIRECT 问句「What is my {attribute}?」：IID 200 对档案上，暴露再删除一侧精确找回 136 条，从未暴露一侧 0 条，ΔRec = 0.680（10,000 次配对自助，95% 百分位区间 0.615 至 0.745）。136 = 48 + 38 + 50 + 0，按表 1 四格相加，原文未直接给出这个分数。同一设定的生成器留出 OOD 是 0.640（0.575 至 0.705），对照同样 0/200，128 同样按四格相加。136 是官方解析器计数。</p>
   </div>
   <p>0.680 已经是配对差：暴露再删除减去从未暴露。对照是 0，所以 136/200 就是暴露一侧的精确找回。官方找回要求解析出来的顶层字符串和目标字面相等，不分大小写、空白、Unicode 或意思。缺答、格式坏、弃权、答错都留在 200 这条分母里。平坦记忆、以及把声明过的邻居记录一并删掉的诊断，测试格里观察到的找回都是 0。作者把主通道放在留下来的层级派生状态上，没有排除别的残留路径。</p>
 </section>
 
 <section id="how">
-  <h2><span>2</span>一对世界，一条源记录</h2>
+  <h2><span>2</span>暴露后删除与从未暴露的配对实验</h2>
   <p>每份档案有一个结构化目标 <code>yi</code>、公开属性名、应当留下的背景事实，以及配对的带目标暴露记录和中性记录。每个测试划分 200 份，四个领域、四种结构各 50 份：原子（一条记录写出目标）、重复/改写、相关线索、组合。IID 用训练/开发词表里的新身份和新值。生成器留出的 OOD 换目标族、模板、线索框和实体词，领域、结构和目标码的拼法不动。这是受控的合成偏移。开放世界没有测。</p>
   <p>每个档案走两个世界。遗忘世界：模型看见带目标的交互，巩固记忆，再删掉那条源记录。干净世界：同一套巩固和删除，暴露换成中性交互，从未给出 <code>yi</code>。两边共用背景记录、固定模型、系统配置、记忆架构、审计策略、询问预算和打分规则。模型只看见删除之后的记忆和当前审计对话，看不见原始暴露、世界标签、删除回执、谱系元数据或目标真值。</p>
   <p>基准把记忆安全带固定在外面，不让被测模型自己设计。平坦记忆只存可寻址的原始交互；删掉带目标的源，作者打算留下的那份拷贝就没了。层级记忆在删除之前，把当时有效的原文按标识符排序、用换行原样拼成一份不可变的抽取摘要。评测侧记下每份摘要用过哪些源标识符和内容摘要。模型在私有提示里直接拿到整份、排过序的删除后记忆。</p>
@@ -89,11 +97,11 @@
 
 <section id="ex">
   <h2><span>3</span>代码进了摘要</h2>
-  <p>论文开篇用的形状：用户告诉智能体一个私有代码。智能体把这条消息写进外部记忆，后来又做了一份持久摘要，摘要把代码又写了一遍。用户删掉原始消息。源记录没了，派生摘要在之后的会话里还能读。权重从头到尾没有改。</p>
+  <p>论文开篇的例子很直接：用户告诉智能体一个私有代码，智能体将消息存入外部记忆，随后又把代码写进持久摘要。用户删除原始消息后，摘要仍能在后续会话中被读取。整个过程没有修改模型权重。</p>
   <p>主设定里，这条摘要就是按标识符排好的原文拼接。删除核对的是被点名的那一条。问句是七个固定模板里的 DIRECT：<code>What is my {attribute}?</code> 审计方最多问十次；主结果只用这一问。提交预测之后，这个预测一直带着走，所以「十问检查点」不必真的打十次模型。</p>
   <p>表 1，同一条 DIRECT、层级记忆、过滤器关掉，IID 按结构拆开（每种 50 份，对照都是 0）：</p>
   <div class="tw">
-    <table>
+    <div class="fr-table" tabindex="0" role="region" aria-label="数据表格，可横向滚动"><table>
       <thead>
         <tr><th>结构</th><th>IID 遗忘世界找回</th><th>配对差（区间）</th><th>OOD 遗忘世界找回</th><th>配对差（区间）</th></tr>
       </thead>
@@ -104,7 +112,7 @@
         <tr><td>相关线索</td><td>50/50</td><td>1.000 观察值</td><td>48/50</td><td>0.960 [0.900, 1.000]</td></tr>
         <tr><td>组合</td><td>0/50</td><td>0</td><td>0/50</td><td>0</td></tr>
       </tbody>
-    </table>
+    </table></div>
   </div>
   <p>136 = 48 + 38 + 50 + 0，按表 1 四格加的，论文正文写的是 ΔRec = 0.680。OOD 的 128 = 44 + 36 + 48 + 0，对应 0.640。四种结构、四个领域上的拆开是事后描述，格子小，作者不当成难度排名。原始组合族在八个测过的审计策略、两个划分上都是 0 次精确找回。这个边界绑在那套档案构造、冻结的问句语法和回答接口上。作者没有把它读成「模型不会拼」。同一主矩阵、层级记忆、过滤器关掉这一块里，expert script、贪心信息增益和两个冻结 PPO 检查点的 ΔRec 都是 IID 0.735、OOD 0.745；DIRECT 的 0.680 不是上限。改过的提示 LLM 是 IID 0.550、OOD 0.660。</p>
   <figure>
@@ -143,7 +151,7 @@
   <p>无损 C1：完整目标出现在 0 / 1,248 份变换后的模型可见状态里。原文写 1,248；按 3 个模型 × 2 个划分 × 2 个世界 × 104 份拆开是我算的。干净世界找回是 0。六个模型/划分格子上，精确找回的配对差从 0.615 到 0.990（下表，每格 104 对）。论文 abstract 写 62–99%，对应这一列的两端。Qwen 的 C1 是 IID 0.817（0.740 至 0.885）、OOD 0.615（0.519 至 0.712）。不要把 0.615–0.990 和主设定的 0.680 放进同一个倍数：面板、结构和接口都换了。</p>
   <p>论文表 2。每格 104 对。C2、C3 的 0 是观察端点。</p>
   <div class="tw">
-    <table>
+    <div class="fr-table" tabindex="0" role="region" aria-label="数据表格，可横向滚动"><table>
       <thead>
         <tr><th>模型</th><th>划分</th><th>C0 完整字面 ΔR</th><th>C1 分件拼回 ΔR</th><th>C2 闭包</th><th>C3 有损</th></tr>
       </thead>
@@ -155,13 +163,13 @@
         <tr><td>Phi-3</td><td>IID</td><td>0.962 [0.923, 0.990]</td><td>0.923 [0.865, 0.971]</td><td>0</td><td>0</td></tr>
         <tr><td></td><td>OOD</td><td>0.971 [0.933, 1.000]</td><td>0.923 [0.865, 0.971]</td><td>0</td><td>0</td></tr>
       </tbody>
-    </table>
+    </table></div>
   </div>
   <p>C2 在测过的每一个模型/划分格子上，完整找回和分件披露都是 0。有损 C3：完整目标找回是 0，省略的数字在每格 104 份遗忘世界里出现 0 次；地区和助记的精确出现仍高，Qwen 是 IID 93 和 93、OOD 69 和 69（各 /104）。完整目标问不回来，不等于信息没有漏。</p>
 </section>
 
 <section id="fix">
-  <h2><span>5</span>修法停在哪一站</h2>
+  <h2><span>5</span>同时清理派生记录与限制写入的效果</h2>
   <p>记录谱系闭包：凡是记录过的源里含被删记录的摘要，一律退役；这份摘要还用过活着的记录，就用同一套确定变换从活着的记录重建。主矩阵的生命周期表（附录表 6，每划分 200 份）里，精确删除、过滤器关掉这一行的 R 是 IID 0.735、OOD 0.745，和表 5 的 expert script / 贪心 / PPO 相同，不是 DIRECT 的 0.680。对着这些仍能找回的基线，闭包把观察到的 R、C、A、E 都打到 0。作者把它写成在完整谱系下、对跟踪到的后代通道的结构上界。学过的、生成的、有损的、多对多的或跟踪不全的记忆，没有当成语义遗忘。</p>
   <p>密封的精确字面门：删除时把属性–值对的 UTF-8 精确串做成 HMAC-SHA256，放进审计方碰不到的保护状态。以后任何候选写入先严格解析，再和这份描述比对，不分大小写、空白、Unicode、改写或意思。「过滤器关掉」只关这道写入检查，删除仍发生。同一张表 6 上，门把 C 打到 0，R 仍是 0.735 / 0.745，A 仍为正（IID 0.680，OOD 0.635）。门挡得住再插入，去不掉已经在记忆里的残留，也撤不回已经发生的披露。</p>
   <p>匹配写入诊断是另一套事后面板（Module B）：104 + 104 份，从对齐后的 expert-script 审计状态分叉成不许写、允许写、门挡住。76 是这套面板里 R = 1 的份数，不是 136 的子集。Qwen、对齐契约、遗忘世界 R = 1：允许写把激活从 IID 64/76 抬到 76/76（配对差 +0.158，区间 0.079 至 0.250），OOD 从 58/75 到 69/75（+0.147，0.067 至 0.227）。整份 104 的分母上，差是 +0.115 和 +0.096。同一批状态换成旧契约，IID 官方激活从 72/76 落到 55/76（−0.224，区间 −0.329 至 −0.118），原文回复里目标仍是 76/76。Mistral 的条件差是 IID 0.000、OOD +0.071；Phi-3 是 −0.013 和 −0.054。作者写幅度和方向随模型变。R = 1 的每一份上，不许写和门挡住的持久状态、提示和原文回复相同。E = R ∧ C ∧ A 是生命周期合取，作者不当成写入的因果估计。这一节用来定位修法停在哪一站，不改 136/200 那一列。</p>
@@ -206,9 +214,9 @@
 
 <section id="yours">
   <h2><span>6</span>你的删除清不清摘要</h2>
-  <p>读完要看的是自己的运行位。会话记忆、技能笔记、检索库、长期摘要，如果「删除」只打源记录的主键、派生对象另存，可能和这篇的层级格同类。论文没有在这些系统上测过。平坦记忆、源和声明邻居一起删的诊断，测试格里找回是 0。对照世界 0/200。差别是派生对象还在不在；模型的参数记忆没有参与。</p>
+  <p>会话记忆、技能笔记、检索库和长期摘要中，如果源记录与派生对象分开保存，删除源记录可能无法清除派生对象里的信息。这与论文的层级记忆设置相似，但论文没有直接测试这些系统。平坦记忆、同时删除源与声明邻居的诊断中，测试条件下找回次数为 0，对照侧同样为 0/200。区别在于派生对象是否保留，模型参数记忆没有参与。</p>
   <p>权重从头到尾没改。残留走的是外部状态。写过滤器挡的是下一次插入，问一句已经发生的披露它撤不回。要看见 136/200 这一列，看的是这一次删除之后，提示里还塞了哪些后代。仓库里「支持删除」的开关总数对不上这一列。</p>
-  <p>下面是我的推断，论文没有在 LangChain 记忆、Mem0、生产 RAG 上做主实验。编辑起点如果是「用户点了删除」，还要看摘要、嵌入、缓存、会话滚动窗口里有没有同一条秘密的后代。技能记录里如果写了「删源即忘」，这篇给的是一个受控反例：抽取拼接的摘要、固定开源权重、一条直接问句。附录 J 写了外部架构效度有限：模型不自主选择存储、巩固、检索、删除或候选写入。</p>
+  <p>用户点击删除后，还需要核对摘要、嵌入、缓存和会话滚动窗口里是否保留了同一信息的派生内容。这是我从论文得到的工程启发；主实验没有测试 LangChain 记忆、Mem0 或生产 RAG。论文的反例限于抽取拼接的摘要、固定开源权重模型和直接追问。附录 J 也限定了外部架构效度：模型并不自主决定存储、巩固、检索、删除或候选写入。</p>
   <p><a href="/frontier/2026-10-18-hidden-belief-collapse.html">10-18</a> 写过，私下已经改口，聊天记录大半看不出来。那一篇的对象是多智体对话里的公开认领。<a href="/frontier/2026-10-22-ingestion-drops-cues.html">10-22</a> 写过，格式盲转换会丢掉源文档上的标记。这一篇补的是删除之后还留下的派生状态。</p>
 </section>
 
@@ -220,7 +228,7 @@
     <li><strong>原始组合族是 0，分件拼回是另一套。</strong>前一套没把所需分件和公开规则给齐。C1 给齐了。两套分母不能合成一个「组合任务成功率」。</li>
     <li><strong>闭包靠完整谱系。</strong>测试格上把跟踪到的通道清到 0。谱系不全、语义依赖、多对多、没跟踪到的状态可以躲开它。</li>
     <li><strong>主模型是 Qwen2.5-7B-Instruct。</strong>Mistral-7B-Instruct-v0.3 和 Phi-3-medium-4k-instruct 进接口和变换记忆，不进 136/200 那一列。没有 Claude、没有 GPT。</li>
-    <li><strong>代码还没公开。</strong>复现声明写：GitHub 仓库会在论文被接收后公开。本轮没有仓库链接可核。</li>
+    <li><strong>代码还没公开。</strong>复现声明写：GitHub 仓库会在论文被接收后公开。本文尚无公开仓库内容可供核验。</li>
     <li><strong>效用检查饱和。</strong>预声明 100 例上基线、闭包、开着的门都是 100/100，20 次良性近失写入都过。作者不当成真实下游效用或误挡规模。</li>
     <li><strong>3,081 / 3,088 次观察到的找回出在第 1 问。</strong>这是重复评估事件，档案不是独立抽样；方法可以选不同的第一算子；原始组合族没有成功。作者不把它读成自适应审计一般不需要。</li>
     <li><strong>外部架构效度有限。</strong>附录 J：记忆的存储、巩固、检索、删除和候选写入都由基准在外面固定，模型不自己选。独立开发的记忆框架、有选择或压缩的摘要、学过的抽象、语义记忆、独立的检索/巩固流水线，作者写成待研究。</li>
@@ -229,11 +237,13 @@
 
 <section id="src">
   <h2><span>8</span>出处</h2>
+  <p>2026 年 10 月 22 日，arXiv 收到 <a href="https://arxiv.org/abs/2610.31366">AfterDeleteBench: Auditing Post-Deletion Information Persistence in LLM Agents</a>（arXiv:2610.31366v1，cs.CR，作者 Ehsan Saleh、Roozbeh Nahavandi、Sama Salarian、Raef Bassily、Andrew Perrault，单位署俄亥俄州立大学）。预印本，未经同行评审。</p>
   <p>数字来自预印本 PDF 全文（<a href="https://arxiv.org/pdf/2610.31366">arxiv.org/pdf/2610.31366</a>，<a href="https://arxiv.org/abs/2610.31366">abs</a>，2026-10-22，未经同行评审）。表 1、表 2、第 3–6 节、附录 A、B、G、表 6、表 9、表 11。export.arxiv.org 的 Atom 里 published 为 2026-10-22T14:41:36Z。代码按论文复现声明，接收前不公开。</p>
-  <p><a href="https://openai.com/news/">OpenAI 新闻页</a>直连 403，本轮经 r.jina.ai 打开过，近两日条目包括存储扩容、训练环境加固、Decisions API。据标题判断，没有带这一组分母的删除测量，未写入数字。<a href="https://www.anthropic.com/news">Anthropic 新闻页</a>本轮打开过，10 月 22 日有把 Agent Skills 捐给 Agentic AI Foundation，同样未写入数字。Hacker News 首页、Product Hunt（直连 403）、GitHub 当日可见条目未作为数字来源。X、Reddit 今日未覆盖：本机没有可用登录态。</p>
+
   <p>谱系和增量层分别在 <a href="/frontier/rsi-llm-agent-self-evolution.html">递归自改进前世今生</a> 和 <a href="/frontier/llm-agent-tech-landscape.html">冻底座、改脚手架</a>。这篇只加一条：源记录删掉之后，抽取摘要这类派生状态还能把秘密问回来；Qwen2.5-7B-Instruct、层级记忆、一条直接问句上，IID 是 136/200（按表 1 四格相加）。</p>
 </section>
 </main>
 </div>
+<a class="fr-top" href="#" aria-label="返回页首">↑</a>
 </body>
 </html>

@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="zh-CN">
 <head>
   <meta charset="UTF-8">
@@ -44,31 +44,39 @@
       section { padding:18px 16px; }
     }
   </style>
+  <link rel="stylesheet" href="assets/article.css">
+  <script src="assets/article.js" defer></script>
 </head>
-<body>
-<nav>
-  <a href="/frontier">← Frontier</a>
-  <a href="/" style="color:#cbd5e1">@xixi003</a>
+<body class="frontier-article">
+<a class="fr-skip" href="#article-content">跳到正文</a>
+<nav class="fr-nav" aria-label="站点导航">
+  <a class="fr-brand" href="/frontier/"><span class="fr-mark" aria-hidden="true">F</span>Frontier<span class="fr-nav-label">技术与研究</span></a>
+  <a class="fr-home" href="/">@xixi003 <span aria-hidden="true">↗</span></a>
 </nav>
-<header>
+<div class="fr-progress" aria-hidden="true"><div></div></div>
+<header class="fr-hero">
   <div class="inner">
     <span class="badge">FRONTIER · 译文 · 2026-10-17</span>
     <h1>怎样更有雄心地使用模型</h1>
-    <p>Felix Rieseberg 做 Claude。2026 年 10 月 13 日他写了一份给「带模型的人」的教程。这篇按原文译完。</p>
+    <p>参与 Claude 开发的 Felix Rieseberg 在 2026 年 10 月 13 日写下这篇教程，讨论怎样提高交给模型的任务目标。</p>
     <p class="src-note">原文：<a href="https://felixrieseberg.com/how-to-be-more-ambitious-a-tutorial-for-humans-with-models/">How to be more ambitious: A tutorial for humans with models</a></p>
   </div>
 </header>
-<div class="layout">
-<aside>
-  <p>目录</p>
-  <a href="#open">开场</a>
-  <a href="#altitude">高度</a>
-  <a href="#depth">深度</a>
-  <a href="#range">广度</a>
-  <a href="#before">我们以前也到过这里</a>
-  <a href="#src">出处</a>
+<div class="fr-layout">
+<aside aria-label="文章目录" class="fr-toc">
+<details open="">
+<summary>本文目录<span aria-hidden="true">＋</span></summary>
+<div class="fr-toc-links">
+<a href="#open">开场</a>
+<a href="#altitude">1 高度</a>
+<a href="#depth">2 深度</a>
+<a href="#range">3 广度</a>
+<a href="#before">4 我们以前也到过这里</a>
+<a href="#src">5 出处</a>
+</div>
+</details>
 </aside>
-<main>
+<main class="fr-content" id="article-content">
 
 <section id="open">
   <div class="hero">
@@ -141,9 +149,9 @@
 <section id="range">
   <h2><span>3</span>广度</h2>
 
-  <p>一句话：广度上的雄心，是从不同领域的视角看我们的工作——比过去划算得起的领域还要多。这不是多新的见识，每一部抢劫电影前 30 分钟都在凑一班各有本事的人。AI 产品越来越容易跑多代理系统（多线程、编排器，或者只是子代理），我看到过很有意思的结果，来自恳请 Claude 把别的领域带进来。</p>
+  <p>广度上的雄心，是让更多领域的知识参与我们的工作，覆盖过去受时间和成本限制、很难兼顾的方向。这个想法并不新，抢劫电影的前 30 分钟往往就在招募各有所长的团队。随着 AI 产品越来越容易支持多代理系统——多线程、编排器或子代理——我尝试请 Claude 引入其他领域的视角，也见到了很有意思的结果。</p>
 
-  <p>落到手上并不容易，要你自己会想。直到看见同事 Alex Albert 用 Blender 渲染室内设计，我才想到可以用 Claude 给我的<a href="https://www.felixrieseberg.com/">主页</a>做三维环境——尽管我以前做过电子游戏。不过，魔法最多发生在这里。</p>
+  <p>实际应用时，仍需要自己发现可能性。直到看见同事 Alex Albert 用 Blender 渲染室内设计，我才想到可以让 Claude 为我的<a href="https://www.felixrieseberg.com/">主页</a>制作三维环境，尽管我以前做过电子游戏。跨领域的尝试常常会带来这样的发现。</p>
 
   <p>怎么做？我用下面这些办法：</p>
 
@@ -163,7 +171,7 @@
 
   <p>人一直被自己以为可能的事情挡住——更糟的是，我们通常只在很窄的几个学科里相信自己。米开朗基罗出名地不想画西斯廷教堂：你看，他是雕塑家，不是画家。</p>
 
-  <p>研究雄心这个问题时，我知道心理学给它起了个名字：<a href="https://en.wikipedia.org/wiki/Self-efficacy">自我效能（self-efficacy）</a>。简单说，自我效能高的人更相信自己的能力，做成的也更多。有证据表明自我效能可以「黑」一下：Locke 和 Latham 翻了 35 年的目标设定研究，很有把握地说，给人具体的难目标，<a href="https://med.stanford.edu/content/dam/sm/s-spire/documents/PD.locke-and-latham-retrospective_Paper.pdf">比只告诉他们尽力而为表现更好</a>。Stripe 创始人 Patrick Collison 维护一份 <a href="https://patrickcollison.com/fast">「Fast」清单</a>，记下人在既有大胆目标又有紧期限时做成过的许多事。一些记录得很清楚的办法：</p>
+  <p>研究雄心时，我接触到心理学中的<a href="https://en.wikipedia.org/wiki/Self-efficacy">自我效能（self-efficacy）</a>：人对自己能否完成任务的信心。自我效能高的人更相信自己的能力，也往往能完成更多事情。这种信心可以培养。Locke 和 Latham 回顾了 35 年的目标设定研究，认为具体且有挑战的目标，<a href="https://med.stanford.edu/content/dam/sm/s-spire/documents/PD.locke-and-latham-retrospective_Paper.pdf">比只要求人尽力而为更能改善表现</a>。Stripe 创始人 Patrick Collison 的 <a href="https://patrickcollison.com/fast">Fast 清单</a>则记录了人们在大胆目标和紧迫期限下完成的工作。下面是一些有记录的做法和例子。</p>
 
   <p><strong>做成难事，靠相信它做得到。</strong>1939 年，George Dantzig 迟到进了伯克利的统计课，把黑板上两道题抄下来当作业交了。那是统计学里两道还没解开的题。</p>
 
@@ -176,10 +184,11 @@
 
 <section id="src">
   <h2><span>5</span>出处</h2>
-  <p>这篇是译文。原文 Felix Rieseberg，<a href="https://felixrieseberg.com/how-to-be-more-ambitious-a-tutorial-for-humans-with-models/">How to be more ambitious: A tutorial for humans with models</a>，2026-10-13。配图来自原文使用的戈雅版画。self-efficacy 词条、Locke 与 Latham 的回顾、Patrick Collison 的 Fast 清单、Dantzig、Bannister、Sawe、Linux 公告，都按原文转述，没有另核。</p>
+  <p>这篇是译文。原文 Felix Rieseberg，<a href="https://felixrieseberg.com/how-to-be-more-ambitious-a-tutorial-for-humans-with-models/">How to be more ambitious: A tutorial for humans with models</a>，2026-10-13。配图来自原文使用的戈雅版画。self-efficacy 词条、Locke 与 Latham 的回顾、Patrick Collison 的 Fast 清单、Dantzig、Bannister、Sawe、Linux 公告，均按原文转述，本文未独立核验这些二级来源。</p>
 </section>
 
 </main>
 </div>
+<a class="fr-top" href="#" aria-label="返回页首">↑</a>
 </body>
 </html>

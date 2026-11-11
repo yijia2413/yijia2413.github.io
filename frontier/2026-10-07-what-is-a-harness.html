@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="zh-CN">
 <head>
   <meta charset="UTF-8">
@@ -46,31 +46,39 @@
       section { padding:18px 16px; }
     }
   </style>
+  <link rel="stylesheet" href="assets/article.css">
+  <script src="assets/article.js" defer></script>
 </head>
-<body>
-<nav>
-  <a href="/frontier">← Frontier</a>
-  <a href="/" style="color:#cbd5e1">@xixi003</a>
+<body class="frontier-article">
+<a class="fr-skip" href="#article-content">跳到正文</a>
+<nav class="fr-nav" aria-label="站点导航">
+  <a class="fr-brand" href="/frontier/"><span class="fr-mark" aria-hidden="true">F</span>Frontier<span class="fr-nav-label">技术与研究</span></a>
+  <a class="fr-home" href="/">@xixi003 <span aria-hidden="true">↗</span></a>
 </nav>
-<header>
+<div class="fr-progress" aria-hidden="true"><div></div></div>
+<header class="fr-hero">
   <div class="inner">
     <span class="badge">FRONTIER · 译文 · 2026-10-07</span>
     <h1>Harness 是什么</h1>
-    <p>Earendil 2026 年 10 月 1 日写给「听过 agent harness、又不好意思问它是什么」的人。这篇按原文译完。</p>
+    <p>Earendil 在 2026 年 10 月 1 日发表这篇文章，解释 agent harness 是什么，以及用户为什么可以拥有、修改这一层软件。</p>
     <p class="src-note">原文：<a href="https://earendil.com/posts/what-is-a-harness/">What is a Harness?</a></p>
   </div>
 </header>
-<div class="layout">
-<aside>
-  <p>目录</p>
-  <a href="#open">安全带</a>
-  <a href="#agent">Agent harness</a>
-  <a href="#four">四件事</a>
-  <a href="#yours">把它变成你的</a>
-  <a href="#agency">开源、中立、人还握着锤子</a>
-  <a href="#src">出处</a>
+<div class="fr-layout">
+<aside aria-label="文章目录" class="fr-toc">
+<details open="">
+<summary>本文目录<span aria-hidden="true">＋</span></summary>
+<div class="fr-toc-links">
+<a href="#open">安全带</a>
+<a href="#agent">1 Agent harness</a>
+<a href="#four">2 系统提示、工具、执行循环和模型适配</a>
+<a href="#yours">3 用户可以修改自己的 harness</a>
+<a href="#agency">4 开源和模型中立带来的选择权</a>
+<a href="#src">5 出处</a>
+</div>
+</details>
 </aside>
-<main>
+<main class="fr-content" id="article-content">
 
 <section id="open">
   <p><strong>Harness</strong>——剑桥词典的定义</p>
@@ -91,14 +99,14 @@
 
 <section id="agent">
   <h2><span>1</span>Agent harness</h2>
-  <p>别人写过（写得太简）：Agent = Model + Harness。这里的 Harness 指的是 agent harness。可 agent harness 是什么？Agent harness 用 AI 模型做出 AI agent，最早一批用在写代码。现在各类 AI agent 的核心都坐着一层 harness。弄懂它怎么工作，有助于弄懂 AI agent 是什么。</p>
+  <p>有人把 Agent 写成一个简单公式：Agent = Model + Harness。模型提供能力，agent harness 则把模型组织成能执行任务的 Agent。最早的 harness 多用于编程，现在各类 Agent 都依赖这一层软件。理解它，也就更容易理解 Agent 如何工作。</p>
   <div class="quote">An agent harness is a piece of software that provides an environment for an AI model to operate within.</div>
   <p>和大多数 AI 模型不同，你作为终端用户可以拥有自己的 agent harness。</p>
-  <p>软件工程师常常用电脑上的终端，直接跟 <a href="https://pi.dev/">Pi</a> 这类 harness 说话。也有 harness 走别的界面：<a href="https://openclaw.ai/">OpenClaw</a> 用 iMessage、聊天软件或邮件。我们自己的 harness <a href="https://www.lefos.com/about">Lefos</a> 主要走邮件。界面不论，harness 一般做四件事。第一，给一套说明，管模型怎么回应，通常叫「系统提示」。第二，描述并提供一套工具，模型可以调用它们来回应用户。第三，建立一套框架，管模型怎么表现。这套框架干很多事，其中一件主轴是建立「agentic loop」。最后，大多数 harness 还提供一层翻译，让同一套带子能接各种 AI 模型。</p>
+  <p>软件工程师常通过终端使用 <a href="https://pi.dev/">Pi</a> 这类 harness。也有其他界面：<a href="https://openclaw.ai/">OpenClaw</a> 支持 iMessage、聊天软件或邮件；我们自己的 <a href="https://www.lefos.com/about">Lefos</a> 主要通过邮件交互。无论界面怎样，harness 通常负责四项工作：提供系统提示，描述并提供工具，管理包含 agentic loop 在内的执行过程，以及适配不同 AI 模型。</p>
 </section>
 
 <section id="four">
-  <h2><span>2</span>四件事</h2>
+  <h2><span>2</span>系统提示、工具、执行循环和模型适配</h2>
   <figure>
     <svg viewBox="0 0 920 240" role="img" aria-label="Harness 的四个部件围着模型">
       <rect x="1" y="1" width="918" height="238" rx="10" fill="#fff" stroke="#e2e8f0"/>
@@ -139,12 +147,12 @@
 </section>
 
 <section id="yours">
-  <h2><span>3</span>把它变成你的</h2>
+  <h2><span>3</span>用户可以修改自己的 harness</h2>
   <p>和模型本身不同，你可以拥有并改 harness。像攀岩安全带一样，你可以把它做成自己的。人们喜欢 Pi 这一点。Pi 是一套很薄的 agent harness。系统提示短。工具很少。开箱就是为了把自己让开。可人用着 Pi，会按自己的方式延长它、捏它。他们改系统提示，或者做一个贴合某个流程的 <a href="https://pi.dev/packages">扩展</a>，再分享出去。Pi 用户互相分享了超过 5,000 个扩展。Pi 也免费开源。它住在你自己的笔记本上。于是人手里有了一件自己拥有的工具，跑在自己的硬件上，可以拿它去用 AI。</p>
 </section>
 
 <section id="agency">
-  <h2><span>4</span>开源、中立、人还握着锤子</h2>
+  <h2><span>4</span>开源和模型中立带来的选择权</h2>
   <p>Harness 一开始并不开源，也不中立。第一款流行的 agent harness 是 Claude Code。它做成在本地用 Claude 写代码的应用，没有做成对各种模型一视同仁的翻译层。从那以后，免费开源的 agent harness 多了起来：OpenClaw、OpenCode、Hermes、Pi。在 Earendil，我们把 Pi 做成中立的，把能力和选择、自由交给 Pi 的用户。我们也在想，怎样把 harness 带来的好处和主动权，扩到更宽的一群人。</p>
   <p>很多人眼下担心越来越大的 AI 公司的力量和影响。其中一些人可能选择完全躲开 AI。我们在 Earendil 相信，可以靠做软件和开放协议来加强人的主动权：搭桥跨过分裂和无知，培养能持久的快乐和理解。我们不会靠无视今天已经存在的技术来做到这一点，而是看清楚、握紧，去驾驭它们；确保是我们握着锤子，锤子不握着我们。</p>
 </section>
@@ -156,5 +164,6 @@
 
 </main>
 </div>
+<a class="fr-top" href="#" aria-label="返回页首">↑</a>
 </body>
 </html>

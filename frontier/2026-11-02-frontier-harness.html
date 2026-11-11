@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="zh-CN">
 <head>
   <meta charset="UTF-8">
@@ -52,46 +52,54 @@
       .nums { grid-template-columns:1fr; }
     }
   </style>
+  <link rel="stylesheet" href="assets/article.css">
+  <script src="assets/article.js" defer></script>
 </head>
-<body>
-<nav>
-  <a href="/frontier">← Frontier</a>
-  <a href="/" style="color:#cbd5e1">@xixi003</a>
+<body class="frontier-article">
+<a class="fr-skip" href="#article-content">跳到正文</a>
+<nav class="fr-nav" aria-label="站点导航">
+  <a class="fr-brand" href="/frontier/"><span class="fr-mark" aria-hidden="true">F</span>Frontier<span class="fr-nav-label">技术与研究</span></a>
+  <a class="fr-home" href="/">@xixi003 <span aria-hidden="true">↗</span></a>
 </nav>
-<header>
+<div class="fr-progress" aria-hidden="true"><div></div></div>
+<header class="fr-hero">
   <div class="inner">
     <span class="badge">FRONTIER · 译文 · 2026-11-02</span>
     <h1>Droid 1.0：做一套前沿 harness</h1>
-    <p>Factory，2026 年 10 月 29 日。Droid 是套在模型外面的那层软件：提示、工具、工具结果怎么回来、把这些跑起来的循环。同一任务、同一模型上，他们说 Droid 比各家原生 harness 最多省 20%。这篇按原文译完。交互图在原文。</p>
+    <p>Droid 把提示、工具、工具结果和执行循环组织在一起。Factory 在 2026 年 10 月 29 日介绍了 Droid 1.0：通过程序化调用工具、调整缓存和基础提示，降低长任务的成本。按 Factory 报告，同一任务、同一模型上，Droid 相比各家原生 harness 最多节省 20%。</p>
     <p class="src-note">原文：<a href="https://factory.com/news/frontier-harness">Droid 1.0: Building a Frontier Harness</a></p>
   </div>
 </header>
-<div class="layout">
-<aside>
-  <p>目录</p>
-  <a href="#open">开场</a>
-  <a href="#bench">同一任务上更便宜</a>
-  <a href="#ptc">程序化调工具</a>
-  <a href="#factory">Agent Factory</a>
-  <a href="#beyond">程序化调工具之外</a>
-  <a href="#fast">启动也更快</a>
-  <a href="#time">用时</a>
-  <a href="#method">方法</a>
-  <a href="#src">出处</a>
+<div class="fr-layout">
+<aside aria-label="文章目录" class="fr-toc">
+<details open="">
+<summary>本文目录<span aria-hidden="true">＋</span></summary>
+<div class="fr-toc-links">
+<a href="#open">开场</a>
+<a href="#bench">1 同一任务上更便宜</a>
+<a href="#ptc">2 程序化调工具</a>
+<a href="#factory">3 Agent Factory</a>
+<a href="#beyond">4 程序化调工具之外</a>
+<a href="#fast">5 启动也更快</a>
+<a href="#time">6 用时</a>
+<a href="#method">7 方法</a>
+<a href="#src">8 出处</a>
+</div>
+</details>
 </aside>
-<main>
+<main class="fr-content" id="article-content">
 
 <section id="open">
   <div class="hero">
     <img src="frontier-harness/cover.png" alt="Droid 1.0 封面">
   </div>
-  <p>过去一年，我们和全球一些最大企业里的几十万开发者一起干活。挨着这些团队，我们做硬了一套前沿 agent harness，直接对着企业开发的要求：复杂任务上结果要好、资源要用省、安全控制要硬。</p>
+  <p>过去一年，我们与全球多家大型企业的几十万开发者合作，逐步完善 agent harness。企业开发对它有具体要求：能完成复杂任务，合理使用资源，并提供明确的安全控制。</p>
   <p>今天推出 Droid 1.0：比以前更准、更省、更快，靠新的设计原则，外加一套程序化调工具的引擎。</p>
   <p>Droid 是我们的 agent harness。Harness 是模型外面的一切：提示、工具、工具结果怎么回来、把这些跑起来的循环。Agent 现在会跨几百轮干上几小时甚至几天，每一轮都要把说明、工具和历史再发一遍。</p>
   <p>这次对 Droid 的更新是到目前最大的一次。同一批任务上，Droid 比给这些模型做的原生 harness 最多再省 20%。它也按接下来会发生的事来设计：当前沿模型能把整段工作流当成代码来规划时，Droid 让它们在一次模型请求里跑上几百次工具调用。</p>
   <p>Factory 按设计不绑某一家模型。我们觉得最好的 agent harness 是给每个模型做的，用户可以选市面上最好的模型，也可以让 Droid 用自动模型路由器 Factory Router 选最省的组合。</p>
   <p>给许多模型一起优化 harness，harness 会更好。只对着一个模型调，很难把进展和迁就那个模型的怪癖分开。跨模型做，最强的改进才会泛化，撑过当初启发它的那个模型。</p>
-  <p>这就是内部 Agent Factory 的想法。Agent 一起看基准失败和用户在真实会话里碰到的摩擦，提出改动，并在它碰到的每个模型家族上测。工程师审证据，决定什么上船。</p>
+  <p>内部 Agent Factory 负责这项工作。Agent 分析基准测试中的失败和真实会话中的问题，提出改动，并在各个模型家族上验证。工程师审查证据，再决定哪些改动发布。</p>
   <p>结果是一套对企业能用、对着每个前沿模型调过的最省编码 agent，开源权重和闭源权重都算。</p>
   <p>下文写头对头结果、harness 背后的设计原则、内部 Agent Factory 怎么建，以及带动最大影响的那几处改动。</p>
 </section>
@@ -121,7 +129,7 @@
   <p>Linear 清理在队列之间挪了 151 张 issue，每次挪都核过，一共 312 次工具调用。直接调用时，每次请求都把说明和越来越长的历史再发一遍，即便每次请求 10 次调用，这个任务也要 36 次请求、读大约 310 万输入 token。Script 用了 2 次请求、大约 61,000 token：一次写程序，一次读它打印出来的东西。</p>
   <p>CI 扫过展示省下来的另一半：模型读到什么。这段 Script 查了 547 次运行里的 5,384 个桌面任务，550 次工具调用，一次 60 个，用 2 次请求，而不是估计的 59 到 187 次。模型只看到一个五数字摘要，包括 41 个失败任务。不到 0.1% 的工具结果进到它的上下文。这次扫在后台跑了大约 8 分钟，模型同时在干另一件事。</p>
   <div class="tw">
-    <table>
+    <div class="fr-table" tabindex="0" role="region" aria-label="数据表格，可横向滚动"><table>
       <thead>
         <tr><th></th><th>Linear 清理</th><th>CI 扫过</th></tr>
       </thead>
@@ -130,7 +138,7 @@
         <tr><td>直接调用（估计）</td><td>36 次请求，约 310 万输入 token</td><td>59 到 187 次请求</td></tr>
         <tr><td>一段 Script</td><td>2 次请求，约 61,000 token</td><td>2 次请求；模型只看到五数字摘要</td></tr>
       </tbody>
-    </table>
+    </table></div>
   </div>
   <p>原文图 2、图 3 是 Script 对直接调用的交互示意。请到原文点。</p>
 
@@ -146,7 +154,7 @@
   <h3>设计取舍</h3>
   <p>程序化调工具加进去简单，做错也容易。这些是最要紧的取舍。</p>
   <div class="tw">
-    <table>
+    <div class="fr-table" tabindex="0" role="region" aria-label="数据表格，可横向滚动"><table>
       <thead>
         <tr><th>取舍</th><th>怎么做</th><th>为什么要紧</th></tr>
       </thead>
@@ -157,7 +165,7 @@
         <tr><td>长任务不堵住</td><td>程序最多等 5 分钟，然后把目前的输出交回来。也可以在后台启动，立刻返回。</td><td>模型继续干活。</td></tr>
         <tr><td>不轮询</td><td>一个专用工具去查、等、或停一段正在跑的程序。后台活干完时 Droid 把模型叫醒。</td><td>没有请求花在问活干完没有。</td></tr>
       </tbody>
-    </table>
+    </table></div>
   </div>
 </section>
 
@@ -175,18 +183,18 @@
     <li>agent 卡住时，永远备好下一步：推一把、重试、摘要、或停。</li>
   </ul>
   <p>Droid 提出的改动取决于它朝哪些目标干活。多出来的一条要求是：每个目标必须在每个模型家族上站住。我们在 GPT-6.1 Sol、Claude Opus 5.5、GLM 5.3 和 Kimi K3 上调 Script 模式时，目标之一是：同时给 Script 和直接工具时，模型应当选 Script。循环产出了对提示、Script 里调用的工具描述、以及 Script 结果结构的改动。没有哪一条单独挪动每个模型，三条合在一起在所有模型上达到了目标。</p>
-  <p>另一个目标是 Script 模式在每个家族上都比直接调用便宜。给读到的每个文件每一行编号，拦住了 Sol 为了拿行号再通过 shell 重读文件，并在一个任务上把 Opus 的成本砍了 22%。它也给每次读取大约加了每行两个 token，在 GLM 上把成本抬了 8%，在 Kimi 上抬了 32%——这两个模型没什么可省。它作为选项上船：模型需要行号时再要。</p>
-  <p>工程师坐在循环尽头。他们带着证据读每条提案，对着这些原则核，决定什么上船。结果是一套跟得上模型提供方节奏的 harness。</p>
+  <p>另一个目标是 Script 模式在每个家族上都比直接调用便宜。给读到的每个文件每一行编号，拦住了 Sol 为了拿行号再通过 shell 重读文件，并在一个任务上把 Opus 的成本砍了 22%。它也给每次读取大约加了每行两个 token，在 GLM 上把成本抬了 8%，在 Kimi 上抬了 32%——这两个模型没什么可省。最终它成为可选功能，由模型在需要时请求行号。</p>
+  <p>工程师最终审查每项提案的证据，按这些原则决定是否发布。结果是一套跟得上模型提供方节奏的 harness。</p>
 </section>
 
 <section id="beyond">
   <h2><span>4</span>程序化调工具之外</h2>
   <p>程序化调工具是这套循环产出的最大改动，但不是唯一的。其余更小，铺在 harness 各处：每次请求提供方能复用多少、每次请求里有什么、一轮走歪时循环怎样恢复、以及每次请求多快发出去。</p>
 
-  <h3>把提示缓存捂热</h3>
+  <h3>提高提示缓存命中率</h3>
   <p>提供方按前缀缓存请求，所以任何改动都会让它后面的全部失效。Droid 的请求本来就已经只追加，只有一个例外：工具发现。工具定义靠近请求顶部，所以会话中途加载一个 MCP 或连接器工具，意味着整段对话要再处理一遍。Droid 现在把新发现的工具追加到请求末尾，缓存前缀不动。</p>
   <div class="tw">
-    <table>
+    <div class="fr-table" tabindex="0" role="region" aria-label="数据表格，可横向滚动"><table>
       <thead>
         <tr><th>会话中的改动</th><th>下一次请求从缓存读</th></tr>
       </thead>
@@ -196,12 +204,12 @@
         <tr><td>第二个同类型子代理（测试中）</td><td>96.5%</td></tr>
         <tr><td>加载了新工具（前后对照，Azure · 全部 26,400 token 复用）</td><td>100%</td></tr>
       </tbody>
-    </table>
+    </table></div>
   </div>
   <p>原文图 5 是「新工具插进工具列表」对「追加到末尾」的示意：以前大约 73,500 token 重新处理、28,000 从缓存复用；Droid 1.0 大约 1,500 新处理、100,000 从缓存复用。</p>
   <p>生产里，典型请求 98% 的输入从缓存读，98.6% 的请求严格只追加。一套监视靠把每次请求和前一次比、点出任何打破缓存的部分，把这件事稳住。这些打破很贵：请求前头一个改过的 token 就会逼一次完整再处理。它们也是 Agent Factory 的理想活，已经送出好几处提示缓存修复。Git 状态变了之后，下一次请求现在只加 176 个新 token。一次回滚复用 99.8% 的缓存，第二个同类型子代理复用 96.5%。错误也不重置缓存，因为 Droid 在已经握着它的提供方上重试失败的请求。</p>
 
-  <h3>把基础提示砍掉 37%</h3>
+  <h3>基础提示缩短 37%</h3>
   <p>第一次请求带着说明、工具定义和启动上下文，之后每一轮都跟着走，所以是 harness 里我们砍得最狠的部分。从 Droid 0.170.0 到 0.250.0，它从 20,887 个输入 token 缩到 13,055（少 37%）。</p>
   <p>省下来的大部分来自工具。Droid 以前一开始送 11 个工具定义。现在送 2 个，很少用的工具模型需要时再按需加载。工具定义少了 45%，Droid 在启动时加的提醒少了三分之一。系统提示往另一边走，长了 31%，尽管旧提示里的大多数规则被写短了。长出来的部分来自两块新指导：agent 怎样跟用户说话，以及它怎样处理环境细节，比如图像、接上的应用、个人数据。</p>
   <p>很多改写是模型自己做的。一套自动化常常把 Droid 的说明交给一个模型，让它找重复、矛盾或不清楚的指导。每条发现变成一条拟议编辑，像其他改动一样测。</p>
@@ -281,5 +289,6 @@
 
 </main>
 </div>
+<a class="fr-top" href="#" aria-label="返回页首">↑</a>
 </body>
 </html>

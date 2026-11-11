@@ -1,9 +1,9 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="zh-CN">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>同一 200 例上，未核计划终局 0.94，整条可执行 0.47</title>
+  <title>最终任务成功，不代表每一步都可执行 · Frontier</title>
   <style>
     :root { --ink:#0f172a; --muted:#475569; --line:#e2e8f0; --bg:#f8fafc; --blue:#1d4ed8; --blue-bg:#eff6ff; --amber:#b45309; --green:#047857; --rose:#be123c; }
     * { box-sizing: border-box; }
@@ -42,38 +42,46 @@
     svg text { font-family:-apple-system,"PingFang SC","Noto Sans SC",sans-serif; }
     @media (max-width:860px) { .layout { grid-template-columns:minmax(0,1fr); } aside { position:static; } h1 { font-size:1.55rem; } section { padding:18px 16px; } }
   </style>
+  <link rel="stylesheet" href="assets/article.css">
+  <script src="assets/article.js" defer></script>
 </head>
-<body>
-<nav style="position:sticky;top:0;z-index:50;background:#0f172a;border-bottom:1px solid #1e293b;padding:10px 24px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;">
-  <a href="/frontier" style="color:#93c5fd;text-decoration:none;font-size:14px;margin-right:16px;">← Frontier</a>
-  <a href="/" style="color:#cbd5e1;text-decoration:none;font-size:14px;">@xixi003</a>
+<body class="frontier-article">
+<a class="fr-skip" href="#article-content">跳到正文</a>
+<nav class="fr-nav" aria-label="站点导航">
+  <a class="fr-brand" href="/frontier/"><span class="fr-mark" aria-hidden="true">F</span>Frontier<span class="fr-nav-label">技术与研究</span></a>
+  <a class="fr-home" href="/">@xixi003 <span aria-hidden="true">↗</span></a>
 </nav>
+<div class="fr-progress" aria-hidden="true"><div></div></div>
 
-<header>
+<header class="fr-hero">
   <div class="inner">
     <span class="badge">FRONTIER · 2026-10-31 · 前缀可执行</span>
-    <h1>同一 200 例上，未核计划终局 0.94，整条可执行 0.47</h1>
-    <p>一篇预印本在 BFCL v3 的 200 条分层样本上，用 GPT-5.4（high）跑四种工具 Agent。把未核过的计划写进执行：终局成功 0.94，整条工具轨迹可执行 0.47。执行前核过计划的同一套执行器：终局仍是 0.94，整条可执行 0.94。Llama-4 Maverick 上，148 次终局成功里 138 次先走过无效前缀。</p>
+    <h1>最终任务成功，不代表每一步都可执行</h1>
+    <p>工具 Agent 最后答对了，不代表前面的工具调用都能执行。在 BFCL v3 的 200 条分层样本上，GPT-5.4（high）按未经核验的计划执行，最终成功率是 0.94，整条轨迹可执行的比例却只有 0.47。在同一套执行器之前增加计划核验后，两项都达到 0.94。</p>
   </div>
 </header>
-<div class="layout">
-<aside>
-  <p>目录</p>
-  <a href="#what">1 0.94 和 0.47</a>
-  <a href="#setup">2 同一 200 例、四种做法</a>
-  <a href="#recover">3 终局从哪来</a>
-  <a href="#bound">4 Dual-Loop 抬的是整条</a>
-  <a href="#yours">5 你的运行位有没有未核计划</a>
-  <a href="#limit">6 这篇没测到的</a>
-  <a href="#src">7 出处</a>
+<div class="fr-layout">
+<aside aria-label="文章目录" class="fr-toc">
+<details open="">
+<summary>本文目录<span aria-hidden="true">＋</span></summary>
+<div class="fr-toc-links">
+<a href="#what">1 最终成功与轨迹可执行是两项指标</a>
+<a href="#setup">2 同一 200 例、四种做法</a>
+<a href="#recover">3 终局从哪来</a>
+<a href="#bound">4 计划核验改善了整条轨迹</a>
+<a href="#yours">5 执行前核验计划的适用条件</a>
+<a href="#limit">6 这篇没测到的</a>
+<a href="#src">7 出处</a>
+</div>
+</details>
 </aside>
-<main>
+<main class="fr-content" id="article-content">
 <section id="what">
-  <h2><span>1</span>0.94 和 0.47</h2>
-  <p>2026 年 10 月 29 日，arXiv 收到 <a href="https://arxiv.org/abs/2610.40444">Prefix Executability: Evaluating Tool-Using Agents Beyond Final Success</a>（arXiv:2610.40444v1，cs.AI，作者 Amir H. Rezaeian、Weiyi Sun、Yassine Benajiba、Dan Roth，单位署 Oracle AI）。预印本，未经同行评审。本轮读的是 HTML 全文。GitHub 上有 <a href="https://github.com/amirrezaeian/prefix-executability">amirrezaeian/prefix-executability</a> 标成参考实现，本轮没有打开运行产物。</p>
+  <h2><span>1</span>最终成功与轨迹可执行是两项指标</h2>
+
   <p>工具评测通常只看终局成功。论文量另一件事：发出去的每一步工具调用，在 schema、前置条件和数据依赖下能不能执行。第一条失败的深度叫 FED。整条都可执行叫 TER。走过至少一次无效前缀之后仍成功的比例，叫 RR。</p>
   <div class="note">
-    <p style="margin:0">这篇只论证一个判断。判断是我的，依据是论文第 3.1 节和表 2。BFCL v3 多层对话、分层抽 200 例、GPT-5.4（reasoning.effort=high）：Plan-Conditioned ReAct 终局成功 0.94（区间 0.90 至 0.96），TER 0.47（0.40 至 0.54）。同一套执行器前面加 Dual-Loop 计划核验：终局 0.94（0.90 至 0.97），TER 0.94（0.91 至 0.97）。区间是 10,000 次任务级百分位 bootstrap。标题不写 ToolSandbox：同一模型上 Plan-Conditioned 终局 0.69、TER 0.48，终局数字和 0.94 不在同一张表的同一列。也不写 τ<sup>3</sup>-bench：那里 Dual-Loop 没有同样的整条优势。</p>
+    <p style="margin:0">依据论文第 3.1 节和表 2。BFCL v3 多层对话、分层抽 200 例、GPT-5.4（reasoning.effort=high）：Plan-Conditioned ReAct 终局成功 0.94（区间 0.90 至 0.96），TER 0.47（0.40 至 0.54）。同一套执行器前面加 Dual-Loop 计划核验：终局 0.94（0.90 至 0.97），TER 0.94（0.91 至 0.97）。区间是 10,000 次任务级百分位 bootstrap。ToolSandbox 的结果不同：同一模型上 Plan-Conditioned 终局 0.69、TER 0.48，终局数字和 0.94 不在同一张表的同一列。τ<sup>3</sup>-bench 的情况也不同：那里 Dual-Loop 没有同样的整条优势。</p>
   </div>
   <p>论文附录 C.2 给了一条联系人删除。第一步用电话号码去删，被拒，因为标识符对不上。第二步按号码查出存储的标识符。第三步用查到的标识符删掉。终局可以过。FED 钉在第一步。</p>
 </section>
@@ -84,7 +92,7 @@
   <p>四种做法是嵌套的梯子。ReAct：边想边调，没有显式计划核验。Prompt Planning：先写计划，执行时不强制。Plan-Conditioned ReAct：把写出的计划当作执行时的控制信号。Dual-Loop：同一套计划条件执行器，前面加一轮执行前核验。规划器和核验器的消息算方法成本，不进工具步数 <code>T<sub>i</sub></code>。ReAct 风格的环境循环上限 <code>K<sub>exec</sub>=10</code>。Dual-Loop 另有执行前预算 <code>K<sub>val</sub>=5</code>。</p>
   <p>三个模型条件：GPT-5.4（reasoning.effort=high）、GPT-4.1、Llama-4-Maverick-Instruct。GPT-4.1 和 Llama 温度 0。所有规划、核验、执行调用的回复上限 4,000 token。</p>
   <div class="tw">
-    <table>
+    <div class="fr-table" tabindex="0" role="region" aria-label="数据表格，可横向滚动"><table>
       <thead>
         <tr>
           <th>做法</th>
@@ -101,7 +109,7 @@
         <tr><td>Plan-Cond. ReAct</td><td>0.47 [0.40, 0.54]</td><td>0.54 [0.48, 0.60]</td><td>106</td><td>0.88 [0.80, 0.93]</td><td>0.94 [0.90, 0.96]</td></tr>
         <tr><td>Dual-Loop</td><td>0.94 [0.91, 0.97]</td><td>0.96 [0.93, 0.98]</td><td>12</td><td>0.00 [0.00, 0.24]</td><td>0.94 [0.90, 0.97]</td></tr>
       </tbody>
-    </table>
+    </table></div>
   </div>
   <p>表是 BFCL、GPT-5.4（high），分母 200。数据来自论文表 2。RR 分母是走过至少一次无效前缀的条数，论文写作 RR-Eligible，等于 <code>N(1−TER)</code>：Plan-Cond. 200×(1−0.47)=106，Dual-Loop 200×(1−0.94)=12。RR 区间用 Wilson，其余用任务级 bootstrap。Prompt Planning 的 TER 和终局都是 0.78。计划一旦当成执行控制信号，终局升到 0.94，TER 掉到 0.47。</p>
   <figure>
@@ -176,7 +184,7 @@
 </section>
 
 <section id="bound">
-  <h2><span>4</span>Dual-Loop 抬的是整条</h2>
+  <h2><span>4</span>计划核验改善了整条轨迹</h2>
   <p>Dual-Loop 是论文用来压协议的探针。论文没有把它写成主架构主张。规划器给出结构化计划，核验器查工具是否存在、schema、前置条件、变量绑定；失败就按反馈改计划，通过之后才交给执行器。环境只看见执行器发出的调用。</p>
   <p>BFCL 上 Dual-Loop 相对 Plan-Cond. 的 TER：GPT-5.4 0.94 对 0.47，GPT-4.1 0.96 对 0.35（差 0.61），Llama-4 0.88 对 0.05（差 0.83）。ToolSandbox 上 GPT-4.1 差 0.61，Llama-4 差 0.71。第 3.2 节 PEC@4：Plan-Cond. 三个模型 0.42、0.33、0.05，Dual-Loop 0.82、0.82、0.78。分母仍是 200，含没走到第 4 步就结束的轨迹。</p>
   <p>Airline/Retail 没有同样的整条优势。τ<sup>3</sup>-bench 文本半双工、记录版本 v1.0.1，Airline 50 例加 Retail 114 例，共 164，每种模型–方法一条。GPT-5.4：Plan-Cond. 终局点估计最高 0.51，ReAct 的 TER/AUC-PEC 最高，0.95 / 0.95。GPT-4.1：Prompt Planning 终局 0.51，ReAct TER/AUC-PEC 0.84 / 0.91。Llama-4 三种做法终局都是 0.18，TER 从 0.52 到 0.60。论文写这是点估计排序，没有配成对显著性。一种解释是 BFCL 强调事先写好的组合，τ<sup>3</sup> 里用户反馈和状态会让提前写的计划过期。论文标明这是可检验的解释。因果机制没有识别出来。</p>
@@ -184,17 +192,17 @@
 </section>
 
 <section id="yours">
-  <h2><span>5</span>你的运行位有没有未核计划</h2>
-  <p>读完要看的是：自己的工具 Agent 排行、回归、上线门槛，有没有只留下终局成功。BFCL 200 例、GPT-5.4 上，未核计划终局 0.94，整条可执行 0.47。同一终局数字，核过计划的 TER 是 0.94。</p>
-  <p>技能记录如果只留「先写计划再执行，终局更高」，没有记下计划有没有进执行、有没有执行前核验、无效前缀出现在第几步、终局是不是修回来的，和这篇测到的缝是同一条。</p>
-  <p>下面是我的推断，论文没有在你的线上测过。支付、删除、改权限这类调用，第一次拒绝已经改了外部状态。FED 落在第 2 步，后面修回来的终局，账上已经付过一次。评测如果只回放终态，会把 Plan-Cond. 排到 Dual-Loop 前面。运行位如果在每一步调用前查 schema 和对象是否还在，查的是这篇的前缀谓词。</p>
+  <h2><span>5</span>执行前核验计划的适用条件</h2>
+  <p>工具 Agent 的评测需要同时记录最终成功和中间轨迹。在 BFCL 的 200 个案例、GPT-5.4 上，未经核验的计划得到 0.94 的最终成功率，但整条轨迹可执行的比例只有 0.47；执行前核验计划后，后者提高到 0.94。只记录最终成功，会漏掉这组差异。</p>
+  <p>“先规划再执行”的记录还需要补充几个条件：计划是否直接进入执行，执行前是否核验，第一次无效调用出现在第几步，最终成功是否经历了中途修正。这些信息决定了终局成功率能说明多少。</p>
+  <p>我的判断是，支付、删除和权限修改等动作，需要额外检查中间步骤。即使最终修正了结果，也不能由此认定此前的调用都满足约束。FED 记录第一次出现无效前缀的位置；调用前检查 schema 和对象状态，则是在检查论文所定义的前缀可执行条件。论文没有在实际生产系统上验证这些建议。</p>
   <p><a href="/frontier/2026-10-14-reproduction-is-not-validation.html">10-14</a> 写过复现成功撑不起联合验收。<a href="/frontier/2026-10-15-gap-remains-after-fix.html">10-15</a> 写过隐藏测试判修好之后，报告仍差一截。<a href="/frontier/2026-10-28-first-stage-overstates-feature.html">10-28</a> 写过第一阶段通过率高于整条终检。那三篇动的是测试池、报告、阶段。这篇动的是工具前缀还能不能执行。</p>
 </section>
 
 <section id="limit">
   <h2><span>6</span>这篇没测到的</h2>
   <ul>
-    <li><strong>标题的 0.94 / 0.47 是 BFCL 200 例、GPT-5.4（high）、Plan-Cond. 对 Dual-Loop。</strong>ToolSandbox 同一模型 Plan-Cond. 终局 0.69、TER 0.48，终局和 TER 不要和 0.94 / 0.47 并进同一个范围。τ<sup>3</sup> Airline/Retail 上 Dual-Loop 没有同样的整条优势。</li>
+    <li><strong>0.94 / 0.47 的结果来自 BFCL 200 例、GPT-5.4（high）、Plan-Cond. 对 Dual-Loop。</strong>ToolSandbox 同一模型 Plan-Cond. 终局 0.69、TER 0.48，终局和 TER 不要和 0.94 / 0.47 并进同一个范围。τ<sup>3</sup> Airline/Retail 上 Dual-Loop 没有同样的整条优势。</li>
     <li><strong>200 是分层样本。BFCL 全量没有评。</strong>四个多层类别各 50。ToolSandbox 200 是受支持的本地工具场景，贪心多标签分层。任务级区间不覆盖同一任务反复跑的种子。主表给的是边际区间。</li>
     <li><strong>可执行不等于语义正确、安全、隐私。</strong>计分器要显式 schema、前置条件和基准能看见的状态。部分可观察的网页或 GUI 需要另估状态。论文没有配约束解码基线。</li>
     <li><strong>Dual-Loop 把核验/改写和多出来的推理绑在一起。</strong>敏感性实验改了核验容量和预算，接受包装同时改了执行器指导。BFCL/ToolSandbox 只有合计墙钟，约 72 小时、16 个异步 API worker；分方法的 token 账在 τ<sup>3</sup> 审计里。</li>
@@ -204,11 +212,13 @@
 
 <section id="src">
   <h2><span>7</span>出处</h2>
+  <p>2026 年 10 月 29 日，arXiv 收到 <a href="https://arxiv.org/abs/2610.40444">Prefix Executability: Evaluating Tool-Using Agents Beyond Final Success</a>（arXiv:2610.40444v1，cs.AI，作者 Amir H. Rezaeian、Weiyi Sun、Yassine Benajiba、Dan Roth，单位署 Oracle AI）。预印本，未经同行评审。GitHub 上有 <a href="https://github.com/amirrezaeian/prefix-executability">amirrezaeian/prefix-executability</a> 标成参考实现，本文未检查运行产物。</p>
   <p>数字来自预印本 HTML（<a href="https://arxiv.org/html/2610.40444">arxiv.org/html/2610.40444</a>，<a href="https://arxiv.org/pdf/2610.40444">pdf</a>，<a href="https://arxiv.org/abs/2610.40444">abs</a>，2026-10-29，未经同行评审）。论文摘要、第 2.5–2.7 节、第 3.1–3.3 节、第 4 节、局限、表 2、图 1、附录 C.2、D、E、表 F.1–F.3、表 G.1。HTML 页眉写 arXiv:2610.40444v1 [cs.AI] 29 Oct 2026。图 1 柱高按 3.5 像素 / 0.01 画，作图参数是我的。图 2 格子宽度按条数，3.6 像素 / 条。</p>
-  <p><a href="https://openai.com/news/">OpenAI 新闻页</a>本轮经 r.jina.ai 打开过，10 月 30 日有网站训练偏好、社区安全报告，10 月 29 日有更新 Model Spec、检测前沿模型偏离对齐；专题页直接请求返回 403，未写入数字。<a href="https://www.anthropic.com/news">Anthropic 新闻页</a>本轮打开过，页上仍挂 Opus 5.5（9-22）、S-1（10-26）、用药开发进展（10-27），未写入数字。Hacker News 首页本轮打开过，未作为本篇数字来源。Product Hunt 当日页返回验证码，未读条目。GitHub 搜索本轮打开过，看到参考实现仓库，未跑产物。X、Reddit 今日未覆盖：本机没有可用登录态。</p>
+
   <p>谱系和增量层分别在 <a href="/frontier/rsi-llm-agent-self-evolution.html">递归自改进前世今生</a> 和 <a href="/frontier/llm-agent-tech-landscape.html">冻底座、改脚手架</a>。这篇只加一条：同一 200 例上，未核计划终局 0.94，整条可执行 0.47。</p>
 </section>
 </main>
 </div>
+<a class="fr-top" href="#" aria-label="返回页首">↑</a>
 </body>
 </html>

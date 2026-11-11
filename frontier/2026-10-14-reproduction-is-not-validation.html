@@ -1,9 +1,9 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="zh-CN">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>整池口径下，复现成功撑不起联合验收</title>
+  <title>复现了故障，为什么仍不能确认修复有效 · Frontier</title>
   <style>
     :root { --ink:#0f172a; --muted:#475569; --line:#e2e8f0; --bg:#f8fafc; --blue:#1d4ed8; --blue-bg:#eff6ff; --amber:#b45309; --green:#047857; --rose:#be123c; }
     * { box-sizing: border-box; }
@@ -41,41 +41,49 @@
     svg text { font-family:-apple-system,"PingFang SC","Noto Sans SC",sans-serif; }
     @media (max-width:860px) { .layout { grid-template-columns:minmax(0,1fr); } aside { position:static; } h1 { font-size:1.55rem; } section { padding:18px 16px; } }
   </style>
+  <link rel="stylesheet" href="assets/article.css">
+  <script src="assets/article.js" defer></script>
 </head>
-<body>
-<nav style="position:sticky;top:0;z-index:50;background:#0f172a;border-bottom:1px solid #1e293b;padding:10px 24px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;">
-  <a href="/frontier" style="color:#93c5fd;text-decoration:none;font-size:14px;margin-right:16px;">← Frontier</a>
-  <a href="/" style="color:#cbd5e1;text-decoration:none;font-size:14px;">@xixi003</a>
+<body class="frontier-article">
+<a class="fr-skip" href="#article-content">跳到正文</a>
+<nav class="fr-nav" aria-label="站点导航">
+  <a class="fr-brand" href="/frontier/"><span class="fr-mark" aria-hidden="true">F</span>Frontier<span class="fr-nav-label">技术与研究</span></a>
+  <a class="fr-home" href="/">@xixi003 <span aria-hidden="true">↗</span></a>
 </nav>
+<div class="fr-progress" aria-hidden="true"><div></div></div>
 
-<header>
+<header class="fr-hero">
   <div class="inner">
     <span class="badge">FRONTIER · 2026-10-14 · 验收位</span>
-    <h1>整池口径下，复现成功撑不起联合验收</h1>
+    <h1>复现了故障，为什么仍不能确认修复有效</h1>
     <p>一篇 10 月 13 日的预印本把 12 套编码 Agent 自己生成的测试，回放到 619 个仓库任务上。这 619 条先去掉了容易复现的任务。候选补丁来自编码 Agent 的轨迹，由官方评测打成正确或错误。八个代表配置的联合验收率都低于 10%，最高 9.21%（95% 区间 6.95% 至 11.47%）；复现率最高的配置是 68.17%。联合验收按整池计：同一条任务上，错误补丁要全部拦住，正确补丁要全部放过。</p>
   </div>
 </header>
-<div class="layout">
-<aside>
-  <p>目录</p>
-  <a href="#what">1 619 条任务，先去掉容易复现的</a>
-  <a href="#how">2 三个量，只有同时成立才算验收</a>
-  <a href="#gap">3 复现过了，联合验收停在一成以下</a>
-  <a href="#two">4 拦错补丁和放过对补丁是两件事</a>
-  <a href="#case">5 一条过了复现、两边都判错的测试</a>
-  <a href="#train">6 训练侧的数字不改变上面的判断</a>
-  <a href="#yours">7 验收要同时看三件事</a>
-  <a href="#limit">8 这篇没测到的</a>
-  <a href="#src">9 出处</a>
+<div class="fr-layout">
+<aside aria-label="文章目录" class="fr-toc">
+<details open="">
+<summary>本文目录<span aria-hidden="true">＋</span></summary>
+<div class="fr-toc-links">
+<a href="#what">1 619 条任务，先去掉容易复现的</a>
+<a href="#how">2 三个量，只有同时成立才算验收</a>
+<a href="#gap">3 复现过了，联合验收停在一成以下</a>
+<a href="#two">4 拦错补丁和放过对补丁是两件事</a>
+<a href="#case">5 一条过了复现、两边都判错的测试</a>
+<a href="#train">6 用判别分数筛选微调数据的效果</a>
+<a href="#yours">7 验收要同时看三件事</a>
+<a href="#limit">8 这篇没测到的</a>
+<a href="#src">9 出处</a>
+</div>
+</details>
 </aside>
-<main>
+<main class="fr-content" id="article-content">
 <section id="what">
   <h2><span>1</span>619 条任务，先去掉容易复现的</h2>
-  <p>2026 年 10 月 13 日，arXiv 收到 <a href="https://arxiv.org/abs/2610.18004">SWEPatchTest: Evaluating Software Tests Beyond Reproduction</a>（arXiv:2610.18004v1，cs.SE，作者 Hua Lu、Pengcheng Wang、Han Li、Zichen Tian、Yanyu Chen、Huang He、Bingjin Chen，单位署百度、南京大学、香港中文大学）。</p>
+  <p><a href="https://arxiv.org/abs/2610.18004">SWEPatchTest</a> 检查编码 Agent 生成的测试，能否区分正确与错误的补丁。测试既要复现原来的问题，也应接受有效修复、拒绝无效修复。</p>
   <p>编码 Agent 修仓库问题的时候，会自己写测试，用测试结果决定一个补丁能不能交。现在常见的评法只看一件事：测试在有 bug 的代码上失败，打上参考补丁之后通过。这篇把这件事叫参考识别，指标是 Gold Recognition Rate（GRR）。SWT-Bench 和 TDD-Bench Verified 用的就是这个 fail-to-pass 转换。</p>
   <p>过了这一关的测试，还可以做两件相反的事。它可能放过一个官方评测判为错误的补丁，也可能拒掉一个官方评测判为正确的补丁。论文把前者叫规格太弱，把后者叫解法偏见。两种都可以和一次成功的参考转换同时出现。</p>
   <div class="note">
-    <p style="margin:0">这篇只论证一个判断。判断是我的，依据是论文表 2。在这个先去掉容易复现任务的 619 条上，八个代表配置的联合验收率都低于 10%，最高 9.21%（95% 区间 6.95% 至 11.47%）。联合验收是论文的整池口径：同一条任务上复现成立，错误池全部拦住，正确池全部放过，平均每条大约 133 个候选。漏一个，这条任务记 0。论文没有只抽「复现已经通过」的任务再算一次。拿这个口径当门禁，复现成功撑不起一条任务被完整验收。</p>
+    <p style="margin:0">论文表 2 中，八个代表配置在这 619 个任务上的联合验收率均低于 10%，最高为 9.21%（95% 区间 6.95% 至 11.47%）。这个指标要求同一任务既复现原错误，又拦住所有错误补丁、放过所有正确补丁，平均每个任务约有 133 个候选补丁，漏判一个就记 0。论文没有只挑复现成功的任务重新计算。因此，复现率高，并不足以证明生成测试能可靠验收补丁。</p>
   </div>
   <p>实验设置：</p>
   <ul>
@@ -146,7 +154,7 @@
   <h2><span>3</span>复现过了，联合验收停在一成以下</h2>
   <p>表 2 列了 8 个代表配置。百分数都是 619 条任务上的占比。GRR、WDR、CAR 是任务平均；CT-WDR、CT-CAR 是整池都判对的任务占比；JVR 是三件事同时成立的任务占比。</p>
   <div class="tw">
-  <table>
+  <div class="fr-table" tabindex="0" role="region" aria-label="数据表格，可横向滚动"><table>
     <thead>
       <tr><th>配置</th><th>GRR</th><th>WDR</th><th>CAR</th><th>CT-WDR</th><th>CT-CAR</th><th>JVR</th></tr>
     </thead>
@@ -160,7 +168,7 @@
       <tr><td>DeepSeek-V4-Flash + OpenHands</td><td>29.89%</td><td>80.53%</td><td>44.62%</td><td>40.87%</td><td>22.94%</td><td>3.88%</td></tr>
       <tr><td>GLM-5.3 + ZCode</td><td>38.77%</td><td>85.36%</td><td>53.55%</td><td>37.64%</td><td>25.04%</td><td>3.72%</td></tr>
     </tbody>
-  </table>
+  </table></div>
   </div>
   <p>复现率最高的是 Claude-Opus-5，68.17%，它的 JVR 点估计是 7.11%。联合验收点估计最高的是 GPT-5.6-sol，9.21%，它自己的复现率是 59.29%。表 8 里 Opus 相对 GPT 的 JVR 差 −2.10 个百分点，95% 区间 −4.36 至 +0.16，含 0；Fable 相对 GPT 是 −1.29，区间 −3.72 至 +0.97，也含 0。精确双侧 McNemar 检验经 Holm 校正之后，p 分别是 0.222 和 0.350。</p>
   <p>9.21% 的 95% 区间是 6.95% 至 11.47%，按来源分层、配对的自助法，10,000 次。这个区间只覆盖在已记录的运行和固定候选池上对任务做重抽样，不含测试生成再跑一遍的方差。论文写明，证据能站住的是联合验收整体很低。前三名的名次立不住。八个配置的 JVR 都低于 10%，最高那个的区间上沿是 11.47%。</p>
@@ -243,10 +251,10 @@
 </section>
 
 <section id="train">
-  <h2><span>6</span>训练侧的数字不改变上面的判断</h2>
-  <p>论文还用判别分数挑了微调数据。这一节只划边界：这些数字没有把联合验收补到能当门禁的水平，显著性也不是两种挑法之间的比较。基座是 Qwen3-30B-A3B-Instruct，轨迹由 DeepSeek-V4-Flash 生成，训五个 epoch，评测用 OpenHands。修复轨迹 19 亿 token。两种挑选各加 20 亿 token，轨迹池大约 20,000 个问题环境，仓库和评测集不相交。下表的 F1 是 WDR 与 CAR 的调和平均。</p>
+  <h2><span>6</span>用判别分数筛选微调数据的效果</h2>
+  <p>论文还用判别分数筛选微调数据，但这些结果仍未达到可靠联合验收的水平。基座是 Qwen3-30B-A3B-Instruct，轨迹由 DeepSeek-V4-Flash 生成，训练五个 epoch，用 OpenHands 评测。修复轨迹有 19 亿 token，两种筛选方法各增加 20 亿 token；轨迹池约有 20,000 个问题环境，仓库与评测集不相交。下表的 F1 是 WDR 与 CAR 的调和平均。显著性比较针对只训练修复轨迹的基线，未直接比较两种筛选方法。</p>
   <div class="tw">
-  <table>
+  <div class="fr-table" tabindex="0" role="region" aria-label="数据表格，可横向滚动"><table>
     <thead>
       <tr><th>配置</th><th>JVR</th><th>相对只训修复</th><th>F1</th><th>Verified AVG@4</th></tr>
     </thead>
@@ -256,7 +264,7 @@
       <tr><td>+ 按 WDR、CAR、JVR 挑的 20 亿 token</td><td>3.23%</td><td>+1.94 个百分点</td><td>56.45%</td><td>70.24%</td></tr>
       <tr><td>+ 同一标准再加 20 亿，共 40 亿</td><td>3.88%</td><td>+2.59 个百分点</td><td>60.18%</td><td>71.84%</td></tr>
     </tbody>
-  </table>
+  </table></div>
   </div>
   <p>同样 20 亿 token，按判别分数挑的 JVR 是 3.23%，按复现挑的是 2.26%。论文给的显著性检验是对「只训修复轨迹」的比较，不是这两种挑法之间的比较：按判别挑的 JVR 增量，95% 区间 0.81 至 3.23 个百分点，McNemar 经 Holm 校正 p = 0.008；按复现挑的那一档 p = 0.146，不显著。扩到 40 亿 token 之后 JVR 到 3.88%，区间 1.29 至 4.04 个百分点。这一档同时改了数据量和环境池，论文写明挑法和规模的贡献拆不开。</p>
   <p>论文说的「大约三倍」，是 3.88% 对 1.29%，同一个 619 条的分母。三倍之后仍然是 3.88%。下游修复用 AVG@4，四个回合的平均解决率：扩到 40 亿之后，Verified、Multilingual、Pro 分别是 71.84%、63.30%、50.70%，相对只训修复轨迹高 4.31、8.22、4.14 个百分点。这个增量对照的是没有额外测试生成 token 的那一档，论文没有给同样 token 预算的下游对照。三个基准的分母论文没有在这篇里写出，不能和 SWEPatchTest 的 619 放在一起比。微调模型是另一个基座、另一个 Agent，不能和表 2 的 9.21% 比高低。</p>
@@ -289,12 +297,14 @@
 
 <section id="src">
   <h2><span>9</span>出处</h2>
+  <p>2026 年 10 月 13 日，arXiv 收到 <a href="https://arxiv.org/abs/2610.18004">SWEPatchTest: Evaluating Software Tests Beyond Reproduction</a>（arXiv:2610.18004v1，cs.SE，作者 Hua Lu、Pengcheng Wang、Han Li、Zichen Tian、Yanyu Chen、Huang He、Bingjin Chen，单位署百度、南京大学、香港中文大学）。</p>
   <p>数字和口径来自这篇预印本：<a href="https://arxiv.org/abs/2610.18004">arXiv:2610.18004v1</a>，HTML 版 <a href="https://arxiv.org/html/2610.18004">arxiv.org/html/2610.18004</a>。表 2 的八行、表 3 的四行、表 9 的三个来源、第 2.4 节的池子规模、第 3.1 节的区间和 p 值、第 5 节与附录 G 的局限，都按原文抄。9.21%、16.17%、2.73%、8.77% 与 57/619、27/167、3/110、30/342 一致，正文用论文报告的百分数。</p>
   <p>同一判断不重复已有的 Frontier。<a href="/frontier/2026-10-10-watch-regressions-not-coverage.html">10-10</a> 讲的是技能库改写之后，原本稳定的任务有没有变差，分母是技能覆盖的任务。<a href="/frontier/2026-10-12-cost-per-delivered-success.html">10-12</a> 讲的是选动作的成本要按每个成功交付算。这篇的门禁在测试套件，不在技能条目，也不在动作单价。</p>
   <p>谱系和增量层分别在 <a href="/frontier/rsi-llm-agent-self-evolution.html">递归自改进前世今生</a> 和 <a href="/frontier/llm-agent-tech-landscape.html">冻底座、改脚手架</a>。这篇只加一条：生成测试若只按复现来验收补丁，验收器本身没有就位。</p>
-  <p>今日未覆盖：X、Reddit，没有登录态。另外四处看过，没有进入这篇的论证。<a href="https://openai.com/news/">OpenAI 新闻页</a>直接请求返回 403，经 r.jina.ai 于 2026-10-14 抓到的列表里，最近条目止于 10 月 8 日的安全通报。<a href="https://www.anthropic.com/engineering/redesigning-source-control">Anthropic 工程文</a>标注 Published Oct 13, 2026，讲单仓库从 git 迁到自建版本控制。<a href="https://github.com/trending?since=daily">GitHub 当日 Trending</a>和 <a href="https://www.producthunt.com/leaderboard/daily/2026/10/14">Product Hunt 10 月 14 日榜</a>没有可用的对照实验。</p>
+
 </section>
 </main>
 </div>
+<a class="fr-top" href="#" aria-label="返回页首">↑</a>
 </body>
 </html>

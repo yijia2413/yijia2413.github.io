@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="zh-CN">
 <head>
   <meta charset="UTF-8">
@@ -50,37 +50,45 @@
       section { padding:18px 16px; }
     }
   </style>
+  <link rel="stylesheet" href="assets/article.css">
+  <script src="assets/article.js" defer></script>
 </head>
-<body>
-<nav>
-  <a href="/frontier">← Frontier</a>
-  <a href="/" style="color:#cbd5e1">@xixi003</a>
+<body class="frontier-article">
+<a class="fr-skip" href="#article-content">跳到正文</a>
+<nav class="fr-nav" aria-label="站点导航">
+  <a class="fr-brand" href="/frontier/"><span class="fr-mark" aria-hidden="true">F</span>Frontier<span class="fr-nav-label">技术与研究</span></a>
+  <a class="fr-home" href="/">@xixi003 <span aria-hidden="true">↗</span></a>
 </nav>
-<header>
+<div class="fr-progress" aria-hidden="true"><div></div></div>
+<header class="fr-hero">
   <div class="inner">
     <span class="badge">FRONTIER · 译文 · 2026-10-17</span>
     <h1>Claude Code 团队怎样做代码评审</h1>
-    <p>我们说过，Claude Code 自己的代码大约九成是 Claude 写的。那我们怎么审这个量？还有没有人在读代码？出事谁拦住？这篇按 Claude Code 团队 2026 年 10 月 15 日的原文译完。</p>
+    <p>我们说过，Claude Code 自身大约九成代码由 Claude 编写。面对这么多改动，我们怎样评审？还有人在读代码吗？出现问题时，靠什么发现并阻止？</p>
     <p class="src-note">原文：<a href="https://claude.dev/blog/solving-code-review-at-anthropic/">How the Claude Code team does code review</a></p>
   </div>
 </header>
-<div class="layout">
-<aside>
-  <p>目录</p>
-  <a href="#open">开场</a>
-  <a href="#purpose">评审到底干什么</a>
-  <a href="#scarce">稀缺的是人的时间和注意力</a>
-  <a href="#layers">一层一层</a>
-  <a href="#better">评审怎样变好</a>
-  <a href="#human">人还留在哪些地方</a>
-  <a href="#context">共享上下文</a>
-  <a href="#own">你合进去，你接着</a>
-  <a href="#turn">方向改了怎么办</a>
-  <a href="#adopt">你可以怎样接过来</a>
-  <a href="#next">接下来</a>
-  <a href="#src">出处</a>
+<div class="fr-layout">
+<aside aria-label="文章目录" class="fr-toc">
+<details open="">
+<summary>本文目录<span aria-hidden="true">＋</span></summary>
+<div class="fr-toc-links">
+<a href="#open">开场</a>
+<a href="#purpose">1 重新想代码评审是干什么的</a>
+<a href="#scarce">2 稀缺的是人的时间和注意力</a>
+<a href="#layers">3 从提交前到合并后的多层检查</a>
+<a href="#better">4 我们怎样让评审变得更好</a>
+<a href="#human">5 人还留在哪些地方</a>
+<a href="#context">6 在团队里共享上下文</a>
+<a href="#own">7 合并改动的人负责后续修复</a>
+<a href="#turn">8 方向改了怎么办</a>
+<a href="#adopt">9 团队如何采用这套评审方式</a>
+<a href="#next">10 哪些低风险改动可以自动合并</a>
+<a href="#src">11 出处</a>
+</div>
+</details>
 </aside>
-<main>
+<main class="fr-content" id="article-content">
 
 <section id="open">
   <p>从 6 月到 9 月，合进 Claude Code 代码库的拉取请求翻了一倍以上，必须回退的比例掉了四成以上。</p>
@@ -90,7 +98,7 @@
 <section id="purpose">
   <h2><span>1</span>重新想代码评审是干什么的</h2>
   <p>代理写代码的时候，改动量涨得很快。Anthropic 的单体仓库里，每天落地的改动从今年 5 月大约 <a href="https://www.anthropic.com/engineering/redesigning-source-control">2,500 条涨到 9 月超过 30,000 条</a>。</p>
-  <p>Claude Code 住在自己的仓库里，跟单体仓库分开，压力也很大。发得这么快，一行一行人工审，极其难，近乎做不到。</p>
+  <p>Claude Code 使用独立仓库，虽然与单体仓库分开，也面临大量改动的压力。按这样的发布速度，人工逐行审查几乎无法完成。</p>
   <p>代码评审干两件事：</p>
   <ol>
     <li>发出去之前找出问题并修好</li>
@@ -104,12 +112,12 @@
 <section id="scarce">
   <h2><span>2</span>稀缺的是人的时间和注意力</h2>
   <p>我们想把人的时间和注意力留给只有人能解的问题，其余交给自动检查。按我们现在的改动速度，人要做的事仍然多得吓人，团队几乎每天都会碰上新的、没见过的难题。</p>
-  <p>人的时间覆盖评审成本的两边：人花在审上的时间，以及人花在修坏代码弄出来的麻烦上的时间。砍掉前一块，如果时间只是出现在后一块，并不算帮到忙。</p>
+  <p>评审消耗的人工时间包括两部分：审查改动，以及修复坏代码引起的问题。如果减少审查只是增加了事后的修复时间，就没有节省人的精力。</p>
   <p>所以目标是：Claude Code 这些仓库（命令行、桌面和网页应用、移动应用）里，大多数拉取请求合并时最多一个人在场，这个人可以是作者，同时回退和事故不增加。为了量人的时间，我们跟踪每条拉取请求的人工批准数（中位数和 95 分位）、人工评论，以及一条拉取请求等人的时长。回退率和事故率是护栏：这两项涨了，我们就没有省下人的时间，只是把它挪了地方。</p>
 </section>
 
 <section id="layers">
-  <h2><span>3</span>一层一层</h2>
+  <h2><span>3</span>从提交前到合并后的多层检查</h2>
   <p>一条典型的改动，从工程师的电脑（或者 Slack 里的一次 Claude 会话）出发，经过多层代码评审。路径的大部分是自动的；人的注意力去风险所在的地方。</p>
   <figure>
     <svg viewBox="0 0 960 520" role="img" aria-label="七层检查">
@@ -168,7 +176,7 @@
   <h3>5. 人的批准，按风险缩放</h3>
   <p>改文档和改自动更新器，带着不一样的风险，所以它们得到不一样的评审。</p>
   <div class="tw">
-    <table>
+    <div class="fr-table" tabindex="0" role="region" aria-label="数据表格，可横向滚动"><table>
       <thead>
         <tr><th>风险</th><th>例子</th><th>要几个人批准</th></tr>
       </thead>
@@ -177,7 +185,7 @@
         <tr><td>中</td><td>普通产品改动，以及对缓存、自动更新器、系统提示这类敏感区的改动</td><td>一个人</td></tr>
         <tr><td>高</td><td>最高风险的代码，外加一小批路径永远要两个人</td><td>两个人</td></tr>
       </tbody>
-    </table>
+    </table></div>
   </div>
   <p><strong>档位由这次改动定，不由作者定。</strong>一个分类器读这次改动，挑它的风险档。第二个分类器再问：即便档位说不用，这一次要不要再叫一个人。有些路径永远要人：负责人列为敏感的任何东西，以及任何 CI 工作流文件。</p>
   <p><strong>更轻的路径只给受信任的作者。</strong>只有仓库信任名单上的作者能走更轻的路径，多半是拥有这块代码的团队。其他人都要第二个人批准。代理的批准也永远不算人的。自动评审可以放行低风险改动，填不了「必须有人」的那个空位。</p>
@@ -231,12 +239,12 @@
     <img src="code-review-at-anthropic/learn-the-code.png" alt="机器读了大多数 diff 之后，人怎样学代码">
     <figcaption>原文配图。左边是代码库，你只取出想搞懂的那一块；问 Claude 只要这一片。一份说明几分钟就能写出来，对着今天的代码。有人还会让 Claude 做一个小物件，按自己习惯的方式教。</figcaption>
   </figure>
-  <p>我们有些人还会再往前一步，让 Claude 做一个小物件，把那一块画出来，按那个人喜欢的方式教。</p>
+  <p>有些人还会让 Claude 做一个小工具，把相关代码的结构和行为画出来，按自己习惯的方式学习。</p>
   <p>如果目标是把人的注意力花好，这比一行一行读琐碎的 diff 强。一行文案改动几乎什么也教不到。你正要改的那个模块的说明，能教到很多。我们默认在公开 Slack 频道里干活也帮了忙，别人在建什么，你在他们建的时候就看得见。</p>
 </section>
 
 <section id="own">
-  <h2><span>7</span>「你合进去，你接着」</h2>
+  <h2><span>7</span>合并改动的人负责后续修复</h2>
   <p>你合进去一条小的或中等的改动，后面还是出了问题，团队规范是：通常由你来修。几件事让这条规范不至于走歪：</p>
   <ul>
     <li><strong>改动小</strong>，所以好审、好查、好撤。</li>
@@ -250,12 +258,12 @@
 
 <section id="turn">
   <h2><span>8</span>方向改了怎么办</h2>
-  <p>代理让开工变便宜，所以有些活不该合进去。通常频道里会有人问为什么、指到更早的决定、或者提出更简单的路，作者关掉或改形状。</p>
+  <p>代理降低了尝试一个想法的成本，但写出来的代码并不都适合合并。通常会有人在频道里追问需求、指出之前的决定，或者提出更简单的方案，作者再据此修改或关闭拉取请求。</p>
   <p>代码写得快，关掉拉取请求不像亏了一笔。窍门是尽早在线程里提出另一个方向，不要等成品上再当阻塞评论。</p>
 </section>
 
 <section id="adopt">
-  <h2><span>9</span>你可以怎样把这套接过来</h2>
+  <h2><span>9</span>团队如何采用这套评审方式</h2>
   <p>和你的团队一起做这件事，大多数零件今天已经有了。</p>
   <h3>拉取请求之前</h3>
   <ul>
@@ -287,7 +295,7 @@
 </section>
 
 <section id="next">
-  <h2><span>10</span>这套东西在往哪走</h2>
+  <h2><span>10</span>哪些低风险改动可以自动合并</h2>
   <p>Code Review 的<a href="https://claude.com/resources/articles/code-review">发布说明</a>说过，批准一条拉取请求仍然是人的决定；产品贴的是发现，不是批准。我们自己的仓库走得更远，允许负责人决定哪些低风险改动只靠自动检查合并，那条线还在往前挪。</p>
   <p>评审漏了什么的时候，我们问模型当时眼前少了什么，再把修补写进 <code>CLAUDE.md</code>、一项技能，或一条新检查。目标没变：每条改动少用人的时间，回退不比以前多。</p>
   <p>如果你的团队让代理开拉取请求，我们想听听你们把哪些检查自动化了、哪些仍然要人，以及你觉得我们哪里说错了。</p>
@@ -302,5 +310,6 @@
 
 </main>
 </div>
+<a class="fr-top" href="#" aria-label="返回页首">↑</a>
 </body>
 </html>

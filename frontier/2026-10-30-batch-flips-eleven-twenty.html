@@ -1,9 +1,9 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="zh-CN">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>同一 2,000 条换一批 25 条，伤害和短答改判 11% 至 22%</title>
+  <title>同样的样本换一批，模型评审也会改判 · Frontier</title>
   <style>
     :root { --ink:#0f172a; --muted:#475569; --line:#e2e8f0; --bg:#f8fafc; --blue:#1d4ed8; --blue-bg:#eff6ff; --amber:#b45309; --green:#047857; --rose:#be123c; }
     * { box-sizing: border-box; }
@@ -42,38 +42,46 @@
     svg text { font-family:-apple-system,"PingFang SC","Noto Sans SC",sans-serif; }
     @media (max-width:860px) { .layout { grid-template-columns:minmax(0,1fr); } aside { position:static; } h1 { font-size:1.55rem; } section { padding:18px 16px; } }
   </style>
+  <link rel="stylesheet" href="assets/article.css">
+  <script src="assets/article.js" defer></script>
 </head>
-<body>
-<nav style="position:sticky;top:0;z-index:50;background:#0f172a;border-bottom:1px solid #1e293b;padding:10px 24px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;">
-  <a href="/frontier" style="color:#93c5fd;text-decoration:none;font-size:14px;margin-right:16px;">← Frontier</a>
-  <a href="/" style="color:#cbd5e1;text-decoration:none;font-size:14px;">@xixi003</a>
+<body class="frontier-article">
+<a class="fr-skip" href="#article-content">跳到正文</a>
+<nav class="fr-nav" aria-label="站点导航">
+  <a class="fr-brand" href="/frontier/"><span class="fr-mark" aria-hidden="true">F</span>Frontier<span class="fr-nav-label">技术与研究</span></a>
+  <a class="fr-home" href="/">@xixi003 <span aria-hidden="true">↗</span></a>
 </nav>
+<div class="fr-progress" aria-hidden="true"><div></div></div>
 
-<header>
+<header class="fr-hero">
   <div class="inner">
     <span class="badge">FRONTIER · 2026-10-30 · 同屏批改</span>
-    <h1>同一 2,000 条换一批 25 条，伤害和短答改判 11% 至 22%</h1>
-    <p>一篇预印本把同一 2,000 条放到不同的随机 25 条批次里。五个 4–9B 开源权重模型：伤害评论和短答打分上，新随机划分改判 11% 至 22%，比改键名或改指令多 6.5 至 13.3 个点。对人 AUROC 只差 −0.033 到 +0.010。九次打乱顺序的多数票仍留下 52% 至 60% 的改判。十五个独立批次的多数票和单独打分仍差 8.4% 至 17.8%。星级评论改判 2.9% 至 3.9%。</p>
+    <h1>同样的样本换一批，模型评审也会改判</h1>
+    <p>让模型一次给 25 条内容打分，结果会受到同批其他内容影响。一篇预印本在五个 4–9B 开源权重模型上发现：同一组 2,000 条伤害评论或短答，只是重新随机分批，就有 11% 至 22% 的判定改变；对人的 AUROC 却只变动 −0.033 到 +0.010。整体排序看着稳定，单条判定仍可能变化。</p>
   </div>
 </header>
-<div class="layout">
-<aside>
-  <p>目录</p>
-  <a href="#what">1 11 到 22</a>
-  <a href="#pool">2 同一 2,000 条、每批 25</a>
-  <a href="#auroc">3 AUROC 几乎不动</a>
-  <a href="#vote">4 换顺序还不够</a>
-  <a href="#yours">5 你的运行位有没有同屏</a>
-  <a href="#limit">6 这篇没测到的</a>
-  <a href="#src">7 出处</a>
+<div class="fr-layout">
+<aside aria-label="文章目录" class="fr-toc">
+<details open="">
+<summary>本文目录<span aria-hidden="true">＋</span></summary>
+<div class="fr-toc-links">
+<a href="#what">1 随机分批怎样改变单条判定</a>
+<a href="#pool">2 同一 2,000 条、每批 25</a>
+<a href="#auroc">3 AUROC 几乎不动</a>
+<a href="#vote">4 换顺序还不够</a>
+<a href="#yours">5 批量评审需要检查单条稳定性</a>
+<a href="#limit">6 这篇没测到的</a>
+<a href="#src">7 出处</a>
+</div>
+</details>
 </aside>
-<main>
+<main class="fr-content" id="article-content">
 <section id="what">
-  <h2><span>1</span>11 到 22</h2>
-  <p>2026 年 10 月 29 日，arXiv 收到 <a href="https://arxiv.org/abs/2610.40241">Judged in Company: In-Context Batching Makes LLM Verdicts Depend on Other Items</a>（arXiv:2610.40241v1，cs.CL，作者 Peng Xie、Amr Alanwar，单位署慕尼黑工业大学海尔布隆校区）。预印本，未经同行评审。本轮读的是 HTML 全文。复制包标在 <a href="https://github.com/PX-CPS/Judged_in_company">github.com/PX-CPS/Judged_in_company</a>，本轮没有打开运行产物。</p>
+  <h2><span>1</span>随机分批怎样改变单条判定</h2>
+
   <p>为了省重复的指令，一条提示里放多条独立样本，模型一次返回每条的判定。论文把这叫同屏批改（in-context batching）。默认假设是可分离：一条的判定只取决于这一条，不取决于同屏另外 24 条，也不取决于它排在第几格。解码器按顺序写 JSON，写第 12 条时已经读过另外 24 条正文，也写过前 11 条判定。</p>
   <div class="note">
-    <p style="margin:0">这篇只论证一个判断。判断是我的，依据是论文摘要、第 5.1 节和表 2。五个 4–9B 开源权重模型，伤害评论和短答打分各 2,000 条：把同一批条目重新随机划成每批 25 条，划分 0 对划分 1 改判 11% 至 22%（十对模型–任务里最低 Gemma-4 短答 10.7%，最高 Granite 短答 21.7%）。最大的同屏对照——改键名、改指令、或同一提示一次只生成一条——改判 4.2% 至 8.4%；多出来 6.5 至 13.3 个点，十对的区间下沿都在 5.3 个点及以上。这是判定变没变，不是写出来的档位。星级评论同一设置改判 2.9% 至 3.9%，多出来 1.4 至 2.0 个点，下沿低于论文事先定的 2 个点，标题不写它。对人 AUROC 相对单独打分只差 −0.033 到 +0.010。四个 14–32B 模型是附录 J 的跟跑，GPU 换成 H200 NVL，改判 5.9% 至 14.6%，不和 11–22 放进同一个范围。</p>
+    <p style="margin:0">依据论文摘要、第 5.1 节和表 2。五个 4–9B 开源权重模型，伤害评论和短答打分各 2,000 条：把同一批条目重新随机划成每批 25 条，划分 0 对划分 1 改判 11% 至 22%（十对模型–任务里最低 Gemma-4 短答 10.7%，最高 Granite 短答 21.7%）。最大的同屏对照——改键名、改指令、或同一提示一次只生成一条——改判 4.2% 至 8.4%；多出来 6.5 至 13.3 个点，十对的区间下沿都在 5.3 个点及以上。这是判定变没变，不是写出来的档位。星级评论同一设置改判 2.9% 至 3.9%，多出来 1.4 至 2.0 个点，下沿低于论文事先定的 2 个点，未达到同样的效应门槛。对人 AUROC 相对单独打分只差 −0.033 到 +0.010。四个 14–32B 模型是附录 J 的跟跑，GPU 换成 H200 NVL，改判 5.9% 至 14.6%，不和 11–22 放进同一个范围。</p>
   </div>
   <p>论文图 1 给了一条 SciEntsBank 短答。单独打、改键名、都判正确。随机批次 A 排在第 14 格、改键名、改指令，三次都判部分正确；批次 B 第 15 格判部分正确；批次 C 第 8 格又判正确。每次给出的下一 token 概率都高。</p>
 </section>
@@ -84,7 +92,7 @@
   <p>五个主模型：Qwen3-4B-Instruct-2507、Qwen3-8B（关掉思考）、Gemma-4-E4B-it、Granite-3.3-8B-Instruct、GLM-4-9B-0414。bf16、贪心解码，每个模型一台 RTX 5090。提示给出量表、一行背景、条目，要求返回把条目编号映到一位数字的 JSON。判定读模型写出的数字。</p>
   <p>对照都在划分 0 上：把 <code>c0</code> 改成 <code>m0</code>；换一句指令；同一条提示一次只生成一条，用来量 GPU 批推理的数值噪声。事先定了三道门。G1 要求短答和星级上至少三个模型的新划分改判超过最大同屏对照，且多出来的下沿不少于 2 个点。短答五个都过，星级一个都不过。论文因此只把有真实含糊的判定写成可推广。</p>
   <div class="tw">
-    <table>
+    <div class="fr-table" tabindex="0" role="region" aria-label="数据表格，可横向滚动"><table>
       <thead>
         <tr>
           <th>模型</th>
@@ -102,7 +110,7 @@
         <tr><td>Granite</td><td>15.7</td><td>5.9</td><td>21.7</td><td>8.4</td><td>3.5</td></tr>
         <tr><td>GLM-4</td><td>16.2</td><td>6.5</td><td>15.6</td><td>8.0</td><td>2.9</td></tr>
       </tbody>
-    </table>
+    </table></div>
   </div>
   <p>表里「新划分」是划分 0 对划分 1，门 G1 也用这一对。分母是有判定的条目，接近 2,000；表 17 有效 n 是 1,977 至 2,000，表 18 是 1,975 至 2,000。表 4 三个划分两两平均会略有不同，Granite 短答是 21.9。对照是改键名、改指令、一次只生成一条三者里最大的那个。一次只生成一条：伤害和短答 0.5% 至 2.1%。表 2 脚注：星级多出来的下沿低于 2 个点。</p>
   <figure>
@@ -213,10 +221,10 @@
 </section>
 
 <section id="yours">
-  <h2><span>5</span>你的运行位有没有同屏</h2>
-  <p>读完要看的是：自己的评审、打分、审核请求里，有没有把彼此独立的样本塞进同一条提示。五个 4–9B 模型在伤害和短答上，换一批 25 条就改判 11% 至 22%。对人 AUROC 几乎不动，过不了这一关。</p>
-  <p>技能记录如果只留「用模型当评审、批量 JSON 一次返回」，没有记下每条请求里塞了几条、邻居怎么抽、判定读的是单独打还是同屏，和这篇测到的缝是同一条。论文引言转述过：有研究把 25 到 100 条、最多十个编码变量写成对多数现行模型安全，省八成以上 token、准确率少不到 2 个点。这篇没有复现那组准确率，测的是同一条换邻居之后判定还在不在。</p>
-  <p>下面是我的推断，论文没有在你的线上测过。评测集如果把多条轨迹、多条补丁、多条工具结果拼进一次评审调用，邻居顺序和成员都会进判定。多数票打乱同一批的顺序，费用上去了，成员主效应还在。用单独打分当金标准也不稳：校准过线之后，单独打分和十五个批次里抽十三批的多数票，合计差 10.4%；一个批次和其余十四个里抽十三批的多数票差 11.0%。分歧也不等于错：十五批多数票和单独打分不一致的那些条目上，十对里有四对多数票贴人标超过一半，原文写最高到 83%，没有逐对的表。</p>
+  <h2><span>5</span>批量评审需要检查单条稳定性</h2>
+  <p>这项结果提醒我们，批量评审需要额外检查单条判定是否稳定。在五个 4–9B 模型的伤害评论和短答任务上，同一条内容换一批同伴，就可能改变判定。对人 AUROC 几乎不变，并不能证明每条内容的结果可靠。</p>
+  <p>使用批量 JSON 评审时，记录每次包含几条样本、如何抽取同批内容，也有助于解释结果。论文引言转述的既有研究称，一次处理 25 到 100 条、最多十个编码变量，对多数现行模型可节省八成以上 token，准确率损失不到 2 个百分点。这篇没有复现那组准确率；它检查的是同一条内容换一批同伴后，判定是否改变。</p>
+  <p>据此，我会在批量评审之外抽查单条判定的稳定性。只打乱同一批内容的顺序，不能消除批次成员带来的影响；把单独打分当成金标准也需要谨慎。论文校准后，单独打分与从十五个批次抽十三批的多数票，合计仍差 10.4%；一个批次与其余十四批中抽十三批的多数票差 11.0%。分歧本身不等于错误：在多数票与单独打分不一致的条目上，十对模型–任务中有四对，多数票与人标的一致比例超过一半，最高为 83%，但论文没有逐对列出数据。</p>
   <p><a href="/frontier/2026-10-13-judge-consensus-not-alignment.html">10-13</a> 写过改评分标准能让评审彼此更齐，和人的齐没有跟着涨。那篇动的是条款。这篇动的是同屏的邻居。</p>
 </section>
 
@@ -225,7 +233,7 @@
   <ul>
     <li><strong>主实验是 4–9B 开源权重。</strong>四个 14–32B 只在伤害和短答上跟了核心设计，H200 NVL，没有星级、没有改批次大小、没有干预、没有投票。Granite 家族没有大模型。闭源模型这篇说可能更敏感也可能更钝。</li>
     <li><strong>三个英文任务、一套提示加一句改写、JSON、贪心。</strong>附录 J：四个 14–32B 在改写指令下新划分改判 6.1% 至 13.0%，相对原措辞 −1.6 至 +0.2 个点；五个主模型在 H200 投票实验里改判 9.9% 至 21.0%，相对原顺序 −1.9 至 +0.1 个点。两段合计 18 对里 16 对少于原措辞。对话里一条一条问，这篇没测。</li>
-    <li><strong>标题的 11–22 是伤害和短答、划分 0 对划分 1。</strong>星级 2.9% 至 3.9% 过不了 G1。表 4 三个划分平均会差零点几个点。</li>
+    <li><strong>11–22 的结果来自伤害和短答、划分 0 对划分 1。</strong>星级 2.9% 至 3.9% 过不了 G1。表 4 三个划分平均会差零点几个点。</li>
     <li><strong>顺序和成员×格子的拆分靠五个指定格。</strong>这五个格只重排 24 个邻居里的 20 个，第一格更钝，论文做了重加权。事先定的成员份额把第一格权得过重。</li>
     <li><strong>潜在尺度是高斯阈值模型，假定每条的上下文方差相同。</strong>十五批里判定不全相同的条目，模型低估 1.8 个点（区间 1.4 至 2.2）。九次打乱留下的改判率，拟合投票实验后差在 1 个点以内；用主实验事先预测，一对会偏 −2.0 到 +2.2 个点。</li>
     <li><strong>附录 G 的闭源模型按条回答、共享上下文，不是一次 JSON，测不到判定通道。</strong>那组中文审核数据不公开，本篇不用它的数字。</li>
@@ -235,11 +243,13 @@
 
 <section id="src">
   <h2><span>7</span>出处</h2>
-  <p>数字来自预印本 HTML（<a href="https://arxiv.org/html/2610.40241">arxiv.org/html/2610.40241</a>，<a href="https://arxiv.org/pdf/2610.40241">pdf</a>，<a href="https://arxiv.org/abs/2610.40241">abs</a>，2026-10-29，未经同行评审）。论文摘要、第 4–5.6 节、第 6–7 节、表 2、3、4、16、17、18，附录 J。HTML 页眉写 arXiv:2610.40241v1 [cs.CL] 29 Oct 2026。本轮从 export.arxiv.org API 读到 published 2026-10-29T15:14:16Z。图 1 柱高按 14 像素 / 百分点画，作图参数是我的。图 2 框宽按文字排，不是按百分比精确比例。</p>
-  <p><a href="https://openai.com/news/">OpenAI 新闻页</a>本轮经 r.jina.ai 打开过，10 月 29 日有更新 Model Spec、检测前沿模型偏离对齐两条，未写入数字。<a href="https://www.anthropic.com/news">Anthropic 新闻页</a>本轮打开过，10 月 30 日页上仍挂 Opus 5.5（9-22）、AI for Science 扩展（10-28）、用药开发进展（10-27）、S-1（10-26），未写入数字。Hacker News 首页本轮打开过，未作为本篇数字来源。Product Hunt 当日页返回验证码，未读条目。GitHub 搜索本轮打开过，未作为本篇数字来源。X、Reddit 今日未覆盖：本机没有可用登录态。</p>
+  <p>2026 年 10 月 29 日，arXiv 收到 <a href="https://arxiv.org/abs/2610.40241">Judged in Company: In-Context Batching Makes LLM Verdicts Depend on Other Items</a>（arXiv:2610.40241v1，cs.CL，作者 Peng Xie、Amr Alanwar，单位署慕尼黑工业大学海尔布隆校区）。预印本，未经同行评审。复制包标在 <a href="https://github.com/PX-CPS/Judged_in_company">github.com/PX-CPS/Judged_in_company</a>，本文未检查运行产物。</p>
+  <p>数字来自预印本 HTML（<a href="https://arxiv.org/html/2610.40241">arxiv.org/html/2610.40241</a>，<a href="https://arxiv.org/pdf/2610.40241">pdf</a>，<a href="https://arxiv.org/abs/2610.40241">abs</a>，2026-10-29，未经同行评审）。论文摘要、第 4–5.6 节、第 6–7 节、表 2、3、4、16、17、18，附录 J。HTML 页眉写 arXiv:2610.40241v1 [cs.CL] 29 Oct 2026。export.arxiv.org API 的 published 时间为 2026-10-29T15:14:16Z。图 1 柱高按 14 像素 / 百分点画，作图参数是我的。图 2 框宽按文字排，不是按百分比精确比例。</p>
+
   <p>谱系和增量层分别在 <a href="/frontier/rsi-llm-agent-self-evolution.html">递归自改进前世今生</a> 和 <a href="/frontier/llm-agent-tech-landscape.html">冻底座、改脚手架</a>。这篇只加一条：同一 2,000 条换一批 25 条，伤害和短答改判 11% 至 22%。</p>
 </section>
 </main>
 </div>
+<a class="fr-top" href="#" aria-label="返回页首">↑</a>
 </body>
 </html>

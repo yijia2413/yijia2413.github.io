@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="zh-CN">
 <head>
   <meta charset="UTF-8">
@@ -41,42 +41,50 @@
     svg text { font-family:-apple-system,"PingFang SC","Noto Sans SC",sans-serif; }
     @media (max-width:860px) { .layout { grid-template-columns:minmax(0,1fr); } aside { position:static; } h1 { font-size:1.55rem; } section { padding:18px 16px; } }
   </style>
+  <link rel="stylesheet" href="assets/article.css">
+  <script src="assets/article.js" defer></script>
 </head>
-<body>
-<nav style="position:sticky;top:0;z-index:50;background:#0f172a;border-bottom:1px solid #1e293b;padding:10px 24px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;">
-  <a href="/frontier" style="color:#93c5fd;text-decoration:none;font-size:14px;margin-right:16px;">← Frontier</a>
-  <a href="/" style="color:#cbd5e1;text-decoration:none;font-size:14px;">@xixi003</a>
+<body class="frontier-article">
+<a class="fr-skip" href="#article-content">跳到正文</a>
+<nav class="fr-nav" aria-label="站点导航">
+  <a class="fr-brand" href="/frontier/"><span class="fr-mark" aria-hidden="true">F</span>Frontier<span class="fr-nav-label">技术与研究</span></a>
+  <a class="fr-home" href="/">@xixi003 <span aria-hidden="true">↗</span></a>
 </nav>
+<div class="fr-progress" aria-hidden="true"><div></div></div>
 
-<header>
+<header class="fr-hero">
   <div class="inner">
     <span class="badge">FRONTIER · 2026-10-13 · 评审位</span>
     <h1>评审团更一致了，和人的一致没有跟着涨</h1>
     <p>一篇 10 月 9 日的预印本测了一种不读人工标签修评分标准的做法：五个评审模型在哪些条款上判得不一样，就让改写模型重写哪些条款。SummEval 上，评审之间的 Krippendorff α 比原标准高 0.069（95% 区间 0.046 至 0.092），比改同样多随机条款的对照高 0.074；评审团和专家评分的 Kendall τ 差 −0.007（区间 −0.037 至 0.021）。HealthBench 和 USR 上，两项都没有达到预先写定的效果标准。</p>
   </div>
 </header>
-<div class="layout">
-<aside>
-  <p>目录</p>
-  <a href="#what">1 评审更一致了，跟人没对齐</a>
-  <a href="#how">2 做法：拆条款、找分歧、改前 k 条</a>
-  <a href="#summeval">3 SummEval：一致涨了，对人的一致没测出变化</a>
-  <a href="#control">4 改随机条款的那组，对人一致的点估计更高</a>
-  <a href="#null">5 另外两个数据集没达到预设标准</a>
-  <a href="#why">6 分歧能定位，定不了往哪边改</a>
-  <a href="#mixed">7 一致率里还混着什么</a>
-  <a href="#yours">8 改标准之前先看对人的一致</a>
-  <a href="#limit">9 这篇没测到的</a>
-  <a href="#src">10 出处</a>
+<div class="fr-layout">
+<aside aria-label="文章目录" class="fr-toc">
+<details open="">
+<summary>本文目录<span aria-hidden="true">＋</span></summary>
+<div class="fr-toc-links">
+<a href="#what">1 模型评审更一致，未必更接近专家</a>
+<a href="#how">2 做法：拆条款、找分歧、改前 k 条</a>
+<a href="#summeval">3 SummEval：一致涨了，对人的一致没测出变化</a>
+<a href="#control">4 改随机条款的那组，对人一致的点估计更高</a>
+<a href="#null">5 另外两个数据集没达到预设标准</a>
+<a href="#why">6 发现分歧无法确定正确的改写方向</a>
+<a href="#mixed">7 一致率里还混着什么</a>
+<a href="#yours">8 改标准之前先看对人的一致</a>
+<a href="#limit">9 这篇没测到的</a>
+<a href="#src">10 出处</a>
+</div>
+</details>
 </aside>
-<main>
+<main class="fr-content" id="article-content">
 <section id="what">
-  <h2><span>1</span>评审更一致了，跟人没对齐</h2>
-  <p>2026 年 10 月 9 日，arXiv 收到 <a href="https://arxiv.org/abs/2610.13303">Agreement Without Alignment: Label-Free Rubric Clarification Increases LLM-Judge Consensus but Not Agreement with Humans</a>（arXiv:2610.13303v1，cs.CL，作者 Sangdo Han、Moonsoo Kim，单位署 CEO Business School）。</p>
+  <h2><span>1</span>模型评审更一致，未必更接近专家</h2>
+  <p><a href="https://arxiv.org/abs/2610.13303">这项研究</a>尝试在不读取人工标签的情况下修改评分标准：先找出模型评审分歧最大的条款，再让另一个模型澄清。问题是，澄清后的标准是否也更符合人的判断。</p>
   <p>拿一份评分标准给开放式输出打分的评审模型，现在常常几个一起用，凑成评审团。几个评审打分不一样时，通常取平均。还有一种读法：评审分歧大的地方，是评分标准有不止一种理解的地方，可以找出来改清楚。照这个读法，可以只看评审自己的输出定位并改写有歧义的条款，不用再收人工标签。论文测的是这个做法。</p>
   <p>它问两件事。按评审分歧选条款来改，评审之间的一致会不会比改别的条款涨得多？涨出来的一致，会不会带到和人工标注的一致上？</p>
   <div class="note">
-    <p style="margin:0">这篇只论证一个判断。判断是我的，依据是论文在 SummEval 上的结果和作者在讨论节给的解释。评审之间的一致率只用评审自己的打分算，人工标签不参与。拿它当目标去改评分标准，SummEval 上评审之间的一致涨了，评审团和专家的一致没测出变化；另外两个数据集上两项都没达到预设的效果标准。作者的解释是，改写把有歧义的条款定成了某一种读法，这种读法未必是标注者的，这个解释没有被直接检验。评分标准改完以后，要另外拿一份改的时候没读过的人工标签来验。</p>
+    <p style="margin:0">我对 SummEval 结果的理解是，模型评审彼此同意，不能保证它们更接近专家。论文只用模型自己的评分计算一致率，再据此改写评分标准；评审内部的一致性提高了，与专家的一致性却未测出变化，另外两个数据集也没有达到预设效果标准。作者推测，改写可能只是消除了歧义，让评审统一采用某一种读法；这种读法未必符合标注者的判断，这个解释尚未直接检验。改完标准后，仍需用未参与改写的人工标签验证。</p>
   </div>
   <p>实验设置：</p>
   <ul>
@@ -180,7 +188,7 @@
   <h2><span>3</span>SummEval：一致涨了，对人的一致没测出变化</h2>
   <p>九个预先写定的主要比较如下。差值是各维度等权平均；区间是未校正的 95% 百分位区间；p 值经 Holm 校正。</p>
   <div class="tw">
-  <table>
+  <div class="fr-table" tabindex="0" role="region" aria-label="数据表格，可横向滚动"><table>
     <thead>
       <tr><th>数据集</th><th>比较</th><th>差值</th><th>95% 区间</th><th>Holm p</th></tr>
     </thead>
@@ -195,7 +203,7 @@
       <tr><td>USR</td><td>完整做法 − 原标准，对标注者 ρ</td><td>+0.005</td><td>[−0.011, 0.023]</td><td>1.000</td></tr>
       <tr><td>USR</td><td>完整做法 − 随机条款，评审间 α</td><td>+0.007</td><td>[−0.009, 0.023]</td><td>1.000</td></tr>
     </tbody>
-  </table>
+  </table></div>
   </div>
   <p>SummEval 上，评审间的 α 两个比较都过了门槛。比原标准高 0.069，比随机条款对照高 0.074，两个数几乎一样大：用同一个改写模型、同一条例子规则去改同样多的其他条款，带不来这部分涨幅。以「只拆条款」为共同起点来看，改分歧条款让 α 涨 0.090，改对照条款涨 0.016。最简单的解释是随便改几条、加上例子，一致都会涨。论文说这组对照和它对不上，并限定只说这个数据集。在 SummEval 上，开发集的评审分歧指到了评审读法不同的条款。</p>
   <p>同一批改动下，评审团和专家评分的 τ 差 −0.007，区间 −0.037 至 0.021。按预先写定的报告规则，论文把 SummEval 的主结果写成：一致上去了，评审没有离人工标注者更近。</p>
@@ -284,7 +292,7 @@
 </section>
 
 <section id="why">
-  <h2><span>6</span>分歧能定位，定不了往哪边改</h2>
+  <h2><span>6</span>发现分歧无法确定正确的改写方向</h2>
   <p>论文对第 3 节结果的解释是：不读标签的流程，不知道标注者对一条条款持哪一种读法。改写模型把一条有歧义的条款定成其中一种，评审团在这种读法上内部自洽，这种读法未必是标注者的。它引了 2026 年的另一篇预印本（Mukherjee 等，arXiv:2606.03043），按它的转述，那篇报告 LLM 评审可能收敛到人工标注者不看重的轴上。</p>
   <figure>
     <svg viewBox="0 0 920 350" width="100%" role="img" aria-label="示意图：一条有两种读法的条款。改写前三个评审按读法 A、两个评审和人工标注者按读法 B。改写后有两种情形：定成读法 A，五个评审都在 A，标注者在 B；定成读法 B，五个评审和标注者都在 B。两种情形下评审间一致相同">
@@ -356,15 +364,15 @@
 
 <section id="yours">
   <h2><span>8</span>改标准之前先看对人的一致</h2>
-  <p>论文评的是摘要、医疗对话、知识对话的打分。下表把它搬到 Agent 系统里的三个位置：第二列是同一个问题在你的系统里可能的样子，第三列是论文里对应的结果，第四列是可以加的检查。三个位置的划分、第二列和第四列都是我的外推，第 9 节写了它撑不起的部分。</p>
+  <p>论文评测了摘要、医疗对话和知识对话。下表是我对 Agent 系统的工程外推：第二列列出可能出现同类问题的位置，第三列对应论文结果，第四列给出可加的检查。这些位置和检查没有在论文中直接测试。</p>
   <div class="tw">
-  <table>
+  <div class="fr-table" tabindex="0" role="region" aria-label="数据表格，可横向滚动"><table>
     <thead>
       <tr><th>位置</th><th>同一个问题在你系统里的样子</th><th>论文里对应的结果</th><th>可以加的检查</th></tr>
     </thead>
     <tbody>
       <tr>
-        <td>运行位：放行、验收、质检位上的多评审</td>
+        <td>应用位置：放行、验收和质检中的模型评审</td>
         <td>拿评审之间的一致率当「评分标准改好了」或「评审可信」的验收数</td>
         <td>SummEval 上 α 从 0.577 到 0.646，τ 从 0.501 到 0.494（表 4）</td>
         <td>评审间一致和对人一致分两栏报。留一份只做验收的人工标注集，改评分标准的流程从头到尾不读它</td>
@@ -382,7 +390,7 @@
         <td>写回之前过一次验收用的人工标注集。记录里留下这条读法是谁定的、依据是什么</td>
       </tr>
     </tbody>
-  </table>
+  </table></div>
   </div>
   <p>逐条样本上「几票一致」和判得对不对的关系，论文没有测，这张表不涉及。</p>
   <p>另外三项检查：</p>
@@ -412,17 +420,19 @@
 
 <section id="src">
   <h2><span>10</span>出处</h2>
+  <p>2026 年 10 月 9 日，arXiv 收到 <a href="https://arxiv.org/abs/2610.13303">Agreement Without Alignment: Label-Free Rubric Clarification Increases LLM-Judge Consensus but Not Agreement with Humans</a>（arXiv:2610.13303v1，cs.CL，作者 Sangdo Han、Moonsoo Kim，单位署 CEO Business School）。</p>
   <ul>
     <li>论文：<a href="https://arxiv.org/abs/2610.13303">arXiv:2610.13303v1</a>，Agreement Without Alignment: Label-Free Rubric Clarification Increases LLM-Judge Consensus but Not Agreement with Humans，2026-10-09，cs.CL。本文数字的位置：第 3 节（做法、75 条、k 的取法）、第 4.1 节与表 1（数据集与切分）、第 4.2 节与表 2（评审）、第 4.3 节（六种条件）、第 4.4 节（预检与合成样本）、第 4.5、4.6 节（指标、合成分、检验、登记）、第 5.1 节（请求数、各改 23 条）、第 5.2 节与表 3、表 4（主要比较、各条件绝对值、次要比较）、第 5.3 节与表 5、表 6（同厂商与跨厂商、重复打分）、第 6、7 节（解释与限制）、附录 A（计划变更）、附录 B（条款 C31）、附录 C 与表 8（格式强制测试）、附录 E 与表 12（探索性配对比较）。</li>
     <li>论文引的 Mukherjee 等 <a href="https://arxiv.org/abs/2606.03043">arXiv:2606.03043</a>，我只转述了这篇论文对它的一句引用，没有读它的正文。</li>
     <li>下列各处是我加的，其余是论文内容：第 1 节灰底的判断段；第 7 节「会被记成一次一致」那一句；第 8 节表格里三个位置的划分、第二列和第四列，表后第一、三条检查的做法；图 3 里评审和标注者各在哪一边；本节最后一句对这篇的概括。</li>
-    <li>当日另外扫过的源：arXiv 接口 cs.AI、cs.CL、cs.LG 各取最新 1,200 条，去重后 2,974 条，提交时间最晚到 10 月 9 日；写稿时 arXiv 列表页最新一批仍是 10 月 12 日公告的那批。同批读过摘要没有写的有 2610.12822（多 Agent 编码系统里 reward hacking 的传播）、2610.13841（编码 Agent 从沙箱快照恢复）、2610.13105（不用逐步标注的失败归因）、2610.13356（编码 Agent 轨迹的验证器）、2610.13829（Minecraft 里自我改进的审计）、2610.13889（按工具可用性重排检索）。本文没有用它们的数字。</li>
+
     <li>OpenAI 博客 RSS 最新条目停在 10 月 9 日，是两篇客户案例。Anthropic 新闻页最近日期是 10 月 8 日。Hacker News 首页前 120 条。GitHub 上 claude-code、codex、langgraph、OpenHands、goose、pi-mono、opencode 的最近发布，只看了版本号和日期，以及 Trending 当日榜。Product Hunt feed。这些没有用于本文。</li>
-    <li>X 与 Reddit：今日未覆盖。本次运行没有登录态，Reddit 接口返回 403。</li>
+
   </ul>
   <p>同系列里，<a href="/frontier/rsi-llm-agent-self-evolution.html">递归自改进前世今生</a>把评估器在不在更新边界之外当作有界自精炼和开放自改进的分界，<a href="/frontier/llm-agent-tech-landscape.html">冻底座、改脚手架</a>说公开增量落在 harness 这一层；这篇里被改的评分标准是评估器的一部分，驱动改动的信号也出自评审自己，人工标签只在最后验收时用了一次。</p>
 </section>
 </main>
 </div>
+<a class="fr-top" href="#" aria-label="返回页首">↑</a>
 </body>
 </html>

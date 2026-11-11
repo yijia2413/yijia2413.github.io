@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="zh-CN">
 <head>
   <meta charset="UTF-8">
@@ -52,37 +52,45 @@
       section { padding: 18px 16px; }
     }
   </style>
+  <link rel="stylesheet" href="assets/article.css">
+  <script src="assets/article.js" defer></script>
 </head>
-<body>
-<nav style="position:sticky;top:0;z-index:50;background:#0f172a;border-bottom:1px solid #1e293b;padding:10px 24px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;">
-  <a href="/frontier" style="color:#93c5fd;text-decoration:none;font-size:14px;margin-right:16px;">← Frontier</a>
-  <a href="/" style="color:#cbd5e1;text-decoration:none;font-size:14px;">@xixi003</a>
+<body class="frontier-article">
+<a class="fr-skip" href="#article-content">跳到正文</a>
+<nav class="fr-nav" aria-label="站点导航">
+  <a class="fr-brand" href="/frontier/"><span class="fr-mark" aria-hidden="true">F</span>Frontier<span class="fr-nav-label">技术与研究</span></a>
+  <a class="fr-home" href="/">@xixi003 <span aria-hidden="true">↗</span></a>
 </nav>
+<div class="fr-progress" aria-hidden="true"><div></div></div>
 
-<header>
+<header class="fr-hero">
   <div class="inner">
     <span class="badge">FRONTIER · 2026-10-05 · 预印本</span>
     <h1>测过的优化，为什么还在跑</h1>
-    <p>一份代理优化通过了全部初始测试，成本也更低。授权规则后来变了，它开始在失效之后继续执行。归档里有正确的替代，挑选它的仍是当初那份分数。</p>
+    <p>一项 Agent 优化通过了最初的全部测试，运行成本也更低。但授权规则变更后，它仍沿用旧的权限判断继续执行。归档里已有正确修复，系统却因为旧版本的历史分数更高，一直没有换上。</p>
   </div>
 </header>
-<div class="layout">
-<aside>
-  <p>目录</p>
-  <a href="#cache">1 版本号缓存</a>
-  <a href="#three">2 三件被拆开的事</a>
-  <a href="#two">3 两条留下的路</a>
-  <a href="#fix">4 刷新、回滚、从哪版改</a>
-  <a href="#records">5 同周还在写的记录</a>
-  <a href="#skill">6 技能文件里的进度</a>
-  <a href="#books">7 换书时的排序</a>
-  <a href="#check">8 三个检查</a>
-  <a href="#src">出处和没做的</a>
+<div class="fr-layout">
+<aside aria-label="文章目录" class="fr-toc">
+<details open="">
+<summary>本文目录<span aria-hidden="true">＋</span></summary>
+<div class="fr-toc-links">
+<a href="#cache">1 版本号缓存</a>
+<a href="#three">2 发现失败、生成修复、切换运行版本</a>
+<a href="#two">3 失败版本为什么仍在运行</a>
+<a href="#fix">4 刷新、回滚、从哪版改</a>
+<a href="#records">5 其他自进化方法怎样保留经验</a>
+<a href="#skill">6 技能文件里的进度</a>
+<a href="#books">7 换书时的排序</a>
+<a href="#check">8 三个检查</a>
+<a href="#src">9 来源与复现范围</a>
+</div>
+</details>
 </aside>
-<main>
+<main class="fr-content" id="article-content">
 <section id="cache">
   <h2><span>1</span>版本号缓存</h2>
-  <p>Zhang 等人 2026 年 10 月 1 日放在 arXiv 上的预印本，测试台是带状态的授权任务。他们给的例子可以单独看完。</p>
+  <p>Zhang 等人在 2026 年 10 月 1 日发表的预印本，用带状态的授权任务测试 Agent 的自我优化。下面这个例子概括了问题。</p>
   <p>代理在每个受保护动作之前检查权限。一份效率优化把这个判断缓存下来，只在令牌版本变化时刷新。初始测试全部通过，开销更低。服务后来引入委托权限。上游可以撤销授权，同时不改那个本地版本号。优化过的代理继续执行。最初那份程序仍然正确，因为它每次请求都查当前有效权限。论文把这份最初的正确程序叫 founder。</p>
   <p>新测试能看到这次失败。归档里有正确修复。历史分数仍然偏向那份旧优化，修复留在归档里。</p>
   <figure>
@@ -116,7 +124,7 @@
 </section>
 
 <section id="three">
-  <h2><span>2</span>三件被拆开的事</h2>
+  <h2><span>2</span>发现失败、生成修复、切换运行版本</h2>
   <p>检测出失败、做出正确替代、让正确的那一版跑起来，在这套实验里是三次分开的干预。作者分别控制：哪一版通过验证，哪一版继续运行，下一轮编辑器改的是哪一版。</p>
   <p>测试台覆盖四类任务：会话授权、文件系统隔离、工具批准、结构化的用户同意。固定的 LLM 编辑器反复优化可执行的代理组件。种子事件流把请求、撤销和范围变化交织在一起。另有独立的轨迹，把「产生了未授权效果」和「完成了允许的工作」分开。一律拒绝不算修好，因为允许的工作也没做。</p>
   <figure>
@@ -139,7 +147,7 @@
 </section>
 
 <section id="two">
-  <h2><span>3</span>两条留下的路</h2>
+  <h2><span>3</span>失败版本为什么仍在运行</h2>
   <p>第一条路：授权依赖变了，以前测过的优化失效。历史分数在 48 份框架历史里，有 22 份继续保留同一批不安全程序。每一份受影响的归档里都有正确替代。论文没有把其余 26 份称作安全，这里也不画成成功。</p>
   <p>第二条路：合同没变。当前程序和所有提案都没通过验证时，keep-after-rejection 让失败的当前程序继续处于活动状态。作者把这份正在跑的失败版本叫 incumbent。评估已经给出失败，运行没有停。</p>
   <figure>
@@ -163,11 +171,11 @@
   <p>把归档里的分数、反馈和选择元数据按当前条件刷新，原测试集上可以恢复正确。另外独立拼出来的测试仍有残留失败。刷新修的是「旧分数还在引用过期结果」，修不到测试套件本身没覆盖的新组合。</p>
   <p>从同一批失败出发，下一轮去编辑最初那份实现，比去编辑失败的那一版，恢复更好。幅度因编辑器而异。摘要没有展开是哪些编辑器，这里不补名字。</p>
   <p>全量验证，以及「验证过再回滚」，在核心轨迹实验里终点都是完全正确的程序，同时保留超过 43% 的部署开销节省。摘要的原话是 retaining over 43% deployment savings。论文图注里的执行规则更硬：没有当前仍通过的回退时，执行暂停。</p>
-  <p>所以要分开定的是两件事。运行位只接受当前条件下通过的版本，没有这样的版本就停。下一轮编辑从最初那份正确程序开始，或从当前仍通过的回退开始。正在失败的现任不作为编辑起点。</p>
+  <p>运行版本和下一轮修改的起点，需要分别决定。系统只运行在当前条件下通过验证的版本；没有合格版本就暂停。下一轮则从最初正确的实现，或当前仍能通过验证的版本继续修改。</p>
 </section>
 
 <section id="records">
-  <h2><span>5</span>同周还在写的记录</h2>
+  <h2><span>5</span>其他自进化方法怎样保留经验</h2>
   <p>同一周的几篇预印本都在往代理的外部记录里写东西。它们没有做 Zhang 等人的授权实验。放在这里，是因为那些记录下一轮会被当成仍然有效。</p>
   <p>ActiveSaddler（arXiv:2610.00906）让训练课程跟着脚手架变。反复出现的失败收成可复用的失败模式，再决定还值不值得练。相对场景顺序事先固定的同一套优化器，测试 Pass@1 在 GAIA2 上高 4.4 个百分点，在 Terminal-Bench 2.0 上高 7.5 个百分点。它报告的是测试集没变时的通过率。Zhang 的实验问的是另一件事：合同变了以后，旧测试上的通过还算不算数。两篇不互相否定。课程可以变，上线用的分数不能沿用变之前的那一轮。</p>
   <p>Rep2Skill（arXiv:2609.39149）用模型内部表征沿轨迹的偏离，给技能文本写修改意见。执行和改技能是同一个模型。ALFWorld 上 Qwen3-4B 成功率 52.24%，Qwen3.5-9B 69.90%，比最强的纯文本技能进化高 4.98 和 7.77 个百分点。分母是这个仿真环境、这两个模型、三次随机种子的平均。留下的产物是一段新的技能文本。这段文本若被后续步骤读成「用户已经同意这样做」，就接到下一节。</p>
@@ -179,7 +187,7 @@
   <h2><span>6</span>技能文件里的进度</h2>
   <p>Dong 等人的 APEX（arXiv:2610.01564）不改权重，改的是技能之间交接的那份记录。上游技能诱使代理写下「任务确实有进展」。这份记录里夹一条虚假的用户同意。下游技能读到它，去执行攻击者选定的动作。技能可以来自公开仓库。</p>
   <p>四个目标动作族、六个模型、SkillsBench：690 次尝试里 512 次做成，74.2%。GPT-5.4 上，完整链 84.3%；同一套流程并进单个技能，17.4%。让代理对照原始请求检查技能产出的文件，GPT-5.4 上攻击成功率从 84.3% 降到 59.1%。与此同时，72 个正常原生技能任务的验证通过率从 86.7% 降到 56.3%。后一个分母是 72 个良性任务。690 次是攻击尝试，两套数不要合在一起。</p>
-  <table>
+  <div class="fr-table" tabindex="0" role="region" aria-label="数据表格，可横向滚动"><table>
     <thead><tr><th>测量</th><th>结果</th><th>分母</th></tr></thead>
     <tbody>
       <tr><td>技能链做成选定动作</td><td>512 次，74.2%</td><td>690 次尝试，四个动作族，六个模型</td></tr>
@@ -187,9 +195,9 @@
       <tr><td>提示词防御后的攻击</td><td>84.3% → 59.1%</td><td>GPT-5.4，选定动作</td></tr>
       <tr><td>同一防御下的正常任务</td><td>86.7% → 56.3%</td><td>72 个良性原生技能任务</td></tr>
     </tbody>
-  </table>
+  </table></div>
   <p class="src">两行防御数字不能合成「防御有效 25 个百分点」。正常任务掉下去的那一段用的是另一个分母。</p>
-  <p>和授权缓存是同一类缝。系统把一份早先写下的记录，当成现在仍然有效的同意。那里的记录是测试分数，这里的记录是技能写在任务目录里的进度。</p>
+  <p>授权缓存和技能进度记录有一个共同风险：系统把早先写下的结果，当成现在仍然有效的依据。前者沿用过期的测试分数，后者把技能生成的进度当成用户同意。</p>
 </section>
 
 <section id="books">
@@ -221,13 +229,13 @@
 <section id="check">
   <h2><span>8</span>三个检查</h2>
   <p>下面三条是按这些实验能直接做的检查。论文没有给出产品方案。</p>
-  <p>权限、依赖或工具合同变了之后，废掉旧分，用当前条件重跑将要上线的那一版。只刷新归档、不重跑当前运行位，原测试集可以变绿，新拼出来的情况仍会漏。</p>
-  <p>没有当前仍通过的版本时，停止运行。失败的现任不继续留在运行位。下一轮编辑从最初那份正确程序，或从当前仍通过的回退开始。Zhang 等人的比较里，从失败现任接着改，恢复更差，幅度看编辑器。</p>
+  <p>权限、依赖或工具接口约定变化后，旧分数应当失效，准备上线的版本也要按新条件重测。论文中，刷新归档可以恢复原测试集上的正确表现，但独立构造的新测试仍发现了残留失败。</p>
+  <p>没有版本通过当前验证，就暂停执行。下一轮从最初正确的实现，或当前仍通过验证的版本开始修改。Zhang 等人的比较发现，从已知失败的版本继续改，恢复效果更差；差距随编辑器而变。</p>
   <p>技能写进任务目录的进度、开场写下的偏好排序，都不能单独当作现在的用户同意。同意只认原始请求里写明的那一部分。APEX 的提示词防御把攻击从 84.3% 压到 59.1%，同时把 72 个正常任务的通过率从 86.7% 打到 56.3%。检查要加在记录的使用处，并且单独看正常任务，不能只看攻击率下降。</p>
 </section>
 
 <section id="src">
-  <h2><span>9</span>出处和没做的</h2>
+  <h2><span>9</span>来源与复现范围</h2>
   <p>预印本没有同行评审。数字来自 2026-10-05 抓到的 arXiv HTML 或 Anthropic 原文。</p>
   <ul>
     <li><a href="https://arxiv.org/abs/2610.01073">Safety Must Survive Self-Improvement</a>，Yunbei Zhang 等，arXiv:2610.01073，2026-10-01。22/48、刷新、keep-after-rejection、最初版本、43% 部署节省。</li>
@@ -238,10 +246,11 @@
     <li><a href="https://arxiv.org/abs/2610.02204">RPG</a>，Yen-Jen Wang 等，arXiv:2610.02204。仿真 28.6% → 95.0%（22 个任务）；物理试验 30 次。</li>
     <li><a href="https://arxiv.org/abs/2610.02038">Mímir</a>，Yimeng Liu 等，arXiv:2610.02038。灌溉量约少 51%。</li>
   </ul>
-  <p>没做的：没有跑他们的测试台；独立拼出的测试具体怎么拼，摘录里没有展开；43% 没有拆成他们的成本公式；编辑器模型名字摘要里没有，不写；Reddit 和 X 没有登录态，不收；ACL / NeurIPS / ICML 这几天没有新的 agent 录用条目进入这篇论证，不列。</p>
+  <p>本文没有复现测试台。独立测试的构造细节、43% 部署节省的成本公式，以及编辑器的具体型号，所读摘要均未展开。</p>
   <p>谱系在 <a href="/frontier/rsi-llm-agent-self-evolution.html">递归自改进前世今生</a>。增量落在哪一层，在 <a href="/frontier/llm-agent-tech-landscape.html">冻底座、改脚手架</a>。这两篇不在这里重写。</p>
 </section>
 </main>
 </div>
+<a class="fr-top" href="#" aria-label="返回页首">↑</a>
 </body>
 </html>
