@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>忙碌时丢掉的 Restore，CAGE 4 仍按一次执行扣分 · Frontier</title>
+  <style>
+    :root { --ink:#0f172a; --muted:#475569; --line:#e2e8f0; --bg:#f8fafc; --blue:#1d4ed8; --blue-bg:#eff6ff; --amber:#b45309; --green:#047857; --rose:#be123c; }
+    * { box-sizing: border-box; }
+    body { margin:0; font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Noto Sans SC",sans-serif; background:var(--bg); color:var(--ink); line-height:1.75; font-size:17px; }
+    header { background:#0f172a; color:#f8fafc; padding:36px 24px 28px; border-bottom:4px solid #2563eb; }
+    header .inner { max-width:1080px; margin:0 auto; }
+    .badge { display:inline-block; border:1px solid #93c5fd; color:#bfdbfe; border-radius:999px; padding:2px 12px; font-size:13px; }
+    h1 { font-size:2rem; line-height:1.3; margin:12px 0; }
+    header p { color:#cbd5e1; margin:0; max-width:760px; }
+    .layout { max-width:1080px; margin:28px auto 64px; padding:0 20px; display:grid; grid-template-columns:220px minmax(0,1fr); gap:28px; }
+    aside { position:sticky; top:52px; align-self:start; background:#fff; border:1px solid var(--line); border-radius:12px; padding:14px; }
+    aside p { font-size:12px; letter-spacing:.06em; color:var(--muted); margin:0 0 8px; }
+    aside a { display:block; color:var(--ink); text-decoration:none; font-size:14px; padding:6px 8px; border-radius:6px; }
+    aside a:hover { background:var(--blue-bg); color:var(--blue); }
+    h2 { font-size:1.35rem; margin:0 0 12px; }
+    h2 span { display:inline-block; background:var(--blue); color:#fff; border-radius:6px; font-size:13px; padding:2px 8px; margin-right:8px; }
+    h3 { font-size:1.08rem; margin:20px 0 10px; }
+    section { background:#fff; border:1px solid var(--line); border-radius:14px; padding:26px 28px; margin-bottom:22px; }
+    p { margin:0 0 14px; }
+    a { color:var(--blue); overflow-wrap:anywhere; }
+    code { background:#f1f5f9; border-radius:4px; padding:1px 5px; font-size:15px; overflow-wrap:anywhere; }
+    main { min-width:0; }
+    figure { margin:16px 0; background:#fff; border:1px solid var(--line); border-radius:12px; padding:10px; overflow-x:auto; }
+    figure svg { display:block; min-width:700px; }
+    figcaption { color:var(--muted); font-size:14px; margin-top:6px; }
+    .tw { overflow-x:auto; margin:0 0 14px; }
+    .tw table { min-width:620px; }
+    table { width:100%; border-collapse:collapse; font-size:15px; }
+    th, td { border:1px solid var(--line); padding:8px 10px; text-align:left; vertical-align:top; }
+    th { background:#f1f5f9; }
+    ul { margin:0 0 14px; padding-left:22px; }
+    ol { margin:0 0 14px; padding-left:22px; }
+    li { margin-bottom:6px; }
+    .note { background:#f1f5f9; border-left:4px solid var(--muted); padding:12px 16px; border-radius:0 8px 8px 0; font-size:16px; margin:0 0 14px; }
+    .quote { background:#fffbeb; border-left:4px solid var(--amber); padding:12px 16px; border-radius:0 8px 8px 0; font-size:15px; overflow-wrap:anywhere; margin:0 0 14px; }
+    svg text { font-family:-apple-system,"PingFang SC","Noto Sans SC",sans-serif; }
+    @media (max-width:860px) { .layout { grid-template-columns:minmax(0,1fr); } aside { position:static; } h1 { font-size:1.55rem; } section { padding:18px 16px; } }
+  </style>
+  <link rel="stylesheet" href="assets/article.css">
+  <script src="assets/article.js" defer></script>
+</head>
+<body class="frontier-article">
+<a class="fr-skip" href="#article-content">跳到正文</a>
+<nav class="fr-nav" aria-label="站点导航">
+  <a class="fr-brand" href="/frontier/"><span class="fr-mark" aria-hidden="true">F</span>Frontier<span class="fr-nav-label">技术与研究</span></a>
+  <a class="fr-home" href="/">@xixi003 <span aria-hidden="true">↗</span></a>
+</nav>
+<div class="fr-progress" aria-hidden="true"><div></div></div>
+
+<header class="fr-hero">
+  <div class="inner">
+    <span class="badge">FRONTIER · 2026-11-12 · Agent Runtime</span>
+    <h1>忙碌时丢掉的 Restore，CAGE 4 仍按一次执行扣分</h1>
+    <p>给正在执行动作的 Agent 再发一条 Restore，模拟器会丢掉这条指令，记录写成 Sleep，分数却仍扣 1 分。一篇预印本在钉死的容器里复现 CAGE Challenge 4 的两个参考防御方：关掉 KEEP 自带的忙碌检查，发布策略每局少 99.58 分；关掉 H-MARL Expert 的掩码，每局少 145.98 分。后者的已执行动作逐步不变，少的分数就是发给忙碌 Agent 的 Restore 计费。这是 CAGE 4 / CybORG 控制器上的观察，不能直接搬到别的模拟器。</p>
+  </div>
+</header>
+<div class="fr-layout">
+<aside aria-label="文章目录" class="fr-toc">
+<details open="">
+<summary>本文目录<span aria-hidden="true">＋</span></summary>
+<div class="fr-toc-links">
+<a href="#what">1 丢掉的 Restore 仍扣一分</a>
+<a href="#how">2 模拟器怎么丢掉指令</a>
+<a href="#check">3 关掉忙碌检查少多少分</a>
+<a href="#hold">4 等到空闲再发</a>
+<a href="#yours">5 你的运行位</a>
+<a href="#limit">6 这篇没测到的</a>
+<a href="#src">7 出处</a>
+</div>
+</details>
+</aside>
+<main class="fr-content" id="article-content">
+<section id="what">
+  <h2><span>1</span>丢掉的 Restore 仍扣一分</h2>
+  <p><a href="https://arxiv.org/abs/2611.14068">What a CAGE 4 Score Measures</a> 审计的是 CAGE Challenge 4：多智能体网络防御基准，排行榜按每局平均回报排名。蓝方动作带时长，Restore 占 5 步，Remove 占 3 步，Analyse 和 DeployDecoy 占 2 步。README 写 Agent「必须等当前动作完成，才会被提示再发下一条」。上一条还在跑，新指令既不排队也不报错，直接丢掉；记录把该步写成 Sleep。维护者把丢掉本身写成有意行为。Restore 是蓝方动作空间里唯一带费用的动作，调用方每交一条就扣 1 分，丢掉的也扣。论文审计的是后半句：丢掉之后仍计费。</p>
+  <p>两个带代码和检查点的参考防御方，KEEP 和 H-MARL Expert，都在自己的包装器里读忙碌标志。挑战文档里的观测表没有这个标志，七个官方包装器里三个向量包装器也不带它。官方评测脚本不写逐步回报，KEEP 那份副本默认不写记录。丢掉的指令在记录里是 Sleep，计费叠进一条总分，两边都看不见。</p>
+  <div class="note">
+    <p style="margin:0">作者在钉死的容器里复现：KEEP 均分 −191.34（4 个抽样种子，区间 −202.61 至 −180.07），排行榜 −193.68 落在区间内；H-MARL Expert 均分 −131.34（作者评测路径 4 个种子，区间 −140.61 至 −122.08），作者报告 −129.53、独立复跑 −132.63 都落在区间内。后面关掉检查、监督投递的对照，用的是同一套 100 局配对环境种子上的单次抽样臂，KEEP 对照均分 −187.32，H-MARL 对照 −136.43，不要和上面的复现均值混比。</p>
+  </div>
+</section>
+
+<section id="how">
+  <h2><span>2</span>模拟器怎么丢掉指令</h2>
+  <p>每一步，<code>SimulationController.step</code> 给每个 Agent 接口收一条指令。控制器只在该 Agent 没有进行中动作时收下并执行。没有 else 分支。合法性检查在这之前已经跑过，忙碌时发出的指令不会变成 InvalidAction。忙碌的 Agent 收到成功标志为 IN_PROGRESS 的观测，描述的是上一条动作；该步记录是 Sleep，看不出丢掉了什么。</p>
+  <p>计费在奖励计算器之后，对调用方交出的指令加动作成本。作者用 <code>tools_billing.py</code> 核过：四条在忙碌时发出的 Restore，经控制器和文档中的 <code>BlueFlatWrapper</code> 都各扣 1 分，已执行动作不变。两个未加监督的 KEEP 对局里，扣分恰好等于 Restore 条数。</p>
+  <figure>
+    <svg viewBox="0 0 920 470" width="100%" role="img" aria-label="流程图：忙碌时发出 Restore，记录写成 Sleep，分数仍扣 1 分">
+      <defs>
+        <marker id="ar1" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#475569"/></marker>
+      </defs>
+      <rect x="1" y="1" width="918" height="468" rx="10" fill="#fff" stroke="#e2e8f0"/>
+      <text x="24" y="32" font-size="16" font-weight="700" fill="#0f172a">忙碌时发出的 Restore：记录是 Sleep，分数仍扣 1 分</text>
+
+      <rect x="24" y="56" width="270" height="88" rx="8" fill="#eff6ff" stroke="#1d4ed8" stroke-width="2"/>
+      <text x="159" y="90" font-size="15" font-weight="700" fill="#0f172a" text-anchor="middle">调用方发出 Restore</text>
+      <text x="159" y="116" font-size="14" fill="#0f172a" text-anchor="middle">策略、监督器或包装器</text>
+
+      <line x1="294" y1="100" x2="338" y2="100" stroke="#475569" stroke-width="1.6" marker-end="url(#ar1)"/>
+
+      <rect x="346" y="56" width="250" height="88" rx="8" fill="#fff7ed" stroke="#b45309" stroke-width="2"/>
+      <text x="471" y="90" font-size="15" font-weight="700" fill="#0f172a" text-anchor="middle">Agent 仍在执行上一条</text>
+      <text x="471" y="116" font-size="14" fill="#0f172a" text-anchor="middle">Restore 本身要占 5 步</text>
+
+      <line x1="596" y1="100" x2="640" y2="100" stroke="#475569" stroke-width="1.6" marker-end="url(#ar1)"/>
+
+      <rect x="648" y="56" width="248" height="88" rx="8" fill="#fff1f2" stroke="#be123c" stroke-width="2"/>
+      <text x="772" y="90" font-size="15" font-weight="700" fill="#0f172a" text-anchor="middle">控制器丢掉这条指令</text>
+      <text x="772" y="116" font-size="14" fill="#0f172a" text-anchor="middle">不排队、不报错</text>
+
+      <line x1="772" y1="144" x2="772" y2="188" stroke="#475569" stroke-width="1.6" marker-end="url(#ar1)"/>
+      <line x1="471" y1="144" x2="471" y2="188" stroke="#475569" stroke-width="1.6" marker-end="url(#ar1)"/>
+
+      <rect x="346" y="196" width="250" height="88" rx="8" fill="#f8fafc" stroke="#475569" stroke-width="2"/>
+      <text x="471" y="230" font-size="15" font-weight="700" fill="#0f172a" text-anchor="middle">逐步记录写成 Sleep</text>
+      <text x="471" y="256" font-size="14" fill="#0f172a" text-anchor="middle">看不出丢掉了什么</text>
+
+      <rect x="648" y="196" width="248" height="88" rx="8" fill="#fff1f2" stroke="#be123c" stroke-width="2"/>
+      <text x="772" y="230" font-size="15" font-weight="700" fill="#0f172a" text-anchor="middle">仍按交出的 Restore 计费</text>
+      <text x="772" y="256" font-size="14" fill="#0f172a" text-anchor="middle">丢掉的也扣 1 分</text>
+
+      <rect x="24" y="316" width="872" height="122" rx="8" fill="#f8fafc" stroke="#cbd5e1"/>
+      <text x="40" y="348" font-size="15" font-weight="700" fill="#0f172a">文档观测不带忙碌标志</text>
+      <text x="40" y="374" font-size="14" fill="#334155">README 观测表没有 success 下标。BlueFlatWrapper、BlueEnterpriseWrapper、EnterpriseMAE 的向量里也没有。</text>
+      <text x="40" y="398" font-size="14" fill="#334155">KEEP 从 EnterpriseMAE 后面读控制器上次观测；H-MARL 走 BlueFixedActionWrapper 的子类，忙碌时只留 Sleep。</text>
+      <text x="40" y="422" font-size="14" fill="#334155">监督器注入的指令绕过策略自己的检查，Agent 忙碌就会被丢掉。</text>
+    </svg>
+    <figcaption>图 1. 丢掉与计费走两条路。机制来自论文第 4.1 节；四条忙碌 Restore 各扣 1 分来自同一节的 tools_billing.py。</figcaption>
+  </figure>
+</section>
+
+<section id="check">
+  <h2><span>3</span>关掉忙碌检查少多少分</h2>
+  <p>KEEP 忙碌时策略不返回动作，翻译层写成默认的 Monitor。H-MARL 的包装器在忙碌时把动作空间掩成只剩 Sleep。作者各用一个开关关掉这道检查：KEEP 的包装器把每个 Agent 报成空闲（KEEP_BUSY）；H-MARL 关掉掩码（HMARL_BUSY）。对照都在论文表 6 的发布设置上，100 局配对环境种子。</p>
+  <p>KEEP 关掉检查后均分 −286.90，开着是 −187.32，差 99.58 分（区间 82.74 至 115.41，开着的一侧在 92/100 局里更高，无平局）。交给控制器的 Restore 从每局 77.46 条升到 180.91 条，多 103.45 条；其中 102.58 条发给忙碌 Agent，全部丢掉并计费。计费差 103.45 分（区间 98.75 至 108.22）盖住这 99.58 分；扣掉计费后的其余差 −3.87（区间 −19.49 至 10.55），区间含 0。</p>
+  <p>H-MARL 关掉掩码后均分 −282.41，开着是 −136.43，差 145.98 分（区间 142.03 至 149.97）。忙碌 Agent-步每局 1307.73，其中 1289.00 步发出了 Sleep 以外的动作；145.98 条是 Restore，全部丢掉并计费。计费差就是这 145.98 分，其余差在 100/100 局里都是 0.00，已执行动作逐步相同。对这个策略，掩码的价值就是这笔计费。</p>
+  <figure>
+    <svg viewBox="0 0 920 480" width="100%" role="img" aria-label="柱状图：关掉忙碌检查后 KEEP 少 99.58 分、H-MARL 少 145.98 分，后者全部是计费">
+      <rect x="1" y="1" width="918" height="478" rx="10" fill="#fff" stroke="#e2e8f0"/>
+      <text x="24" y="32" font-size="16" font-weight="700" fill="#0f172a">关掉忙碌检查，少的分数里有多少是 Restore 计费</text>
+      <text x="24" y="56" font-size="14" fill="#475569">分母是表 6 发布设置上 100 局配对环境种子。柱高按 145.98 分 = 280 像素。</text>
+
+      <line x1="90" y1="90" x2="90" y2="370" stroke="#cbd5e1" stroke-width="1"/>
+      <line x1="90" y1="370" x2="880" y2="370" stroke="#cbd5e1" stroke-width="1"/>
+      <text x="82" y="94" font-size="14" fill="#475569" text-anchor="end">146</text>
+      <text x="82" y="232" font-size="14" fill="#475569" text-anchor="end">73</text>
+      <text x="82" y="374" font-size="14" fill="#475569" text-anchor="end">0</text>
+
+      <rect x="220" y="172" width="160" height="198" fill="#fff1f2" stroke="#be123c" stroke-width="2"/>
+      <text x="300" y="162" font-size="15" font-weight="700" fill="#be123c" text-anchor="middle">103.45</text>
+      <text x="300" y="392" font-size="14" fill="#0f172a" text-anchor="middle">KEEP</text>
+      <text x="300" y="412" font-size="14" fill="#475569" text-anchor="middle">总分差 99.58</text>
+      <text x="300" y="430" font-size="14" fill="#475569" text-anchor="middle">其余差 −3.87</text>
+
+      <rect x="520" y="90" width="180" height="280" fill="#fff1f2" stroke="#be123c" stroke-width="2"/>
+      <text x="610" y="80" font-size="15" font-weight="700" fill="#be123c" text-anchor="middle">145.98</text>
+      <text x="610" y="392" font-size="14" fill="#0f172a" text-anchor="middle">H-MARL Expert</text>
+      <text x="610" y="412" font-size="14" fill="#475569" text-anchor="middle">总分差 145.98</text>
+      <text x="610" y="430" font-size="14" fill="#475569" text-anchor="middle">其余差 0.00</text>
+
+      <rect x="140" y="444" width="14" height="14" fill="#fff1f2" stroke="#be123c" stroke-width="2"/>
+      <text x="160" y="456" font-size="14" fill="#0f172a">柱高是计费差。KEEP 其余差区间含 0，图上不另画负柱。</text>
+    </svg>
+    <figcaption>图 2. 表 6 发布设置。KEEP 的其余差区间含 0；H-MARL 的其余差每局都是 0，已执行动作 100/100 局逐步相同。柱高按计费差绘制。</figcaption>
+  </figure>
+  <p>KEEP 在另外 9 个对手上关掉检查，损失 81.79 至 155.05 分，计费占其中 60.4% 到 106.9%；9 个里有 8 个，其余差的区间含 0。唯一不含 0 的是 TargetA operational：其余差 15.23（区间 4.40 至 26.59），总分差 96.67。Wrecker 上其余差最大，61.44，区间 −16.15 至 138.78，仍含 0。</p>
+  <p>发布设置上两个参考防御方相差 50.89 分（|−187.32| − |−136.43|）。按记账拆开，Restore 计费差 40.3 分（77.46 − 37.20）；原文写这只说明分数记在哪一项，不说明为什么一个防御方 Restore 更多。关掉各自的检查之后，两个策略只差 4.49 分，H-MARL 仍领先。KEEP 对照臂均分绝对值 |−187.32| 里，Restore 计费 77.46 分占 41.4%（77.1 条跑完）；H-MARL 的 |−136.43| 里，37.20 分占 27.3%。README 的奖励表没有列出这项费用。</p>
+</section>
+
+<section id="hold">
+  <h2><span>4</span>等到空闲再发</h2>
+  <p>监督规则 O1 读真实状态，向拥有红方会话的主机所属 Agent 发 Restore，同一 Agent 两次干预至少隔 32 步。投递分两种：发出即送，不管忙不忙；或者只在空闲步询问规则，每条干预都落在空闲 Agent 上。下面表 4 的差和均分，分母是 100 局配对环境种子。</p>
+  <p>执行占比和忙碌占比来自同一条规则在 Wrecker 下的发出即送臂，不是库存对手。发出即送时，KEEP 上 60.5% 的干预能对上执行，H-MARL 上 35.8%；分母是规则发出的干预条数。空闲再发时分别是 99.0% 和 98.9%。发出即送臂里，KEEP 的 Agent 在 38.5% 的 Agent-步上忙碌，H-MARL 是 52.9%；分母是 Agent-步，含多步动作执行中的那些步。丢掉的指令还会启动规则的 32 步间隔，像监督者以为指令已经落地。</p>
+  <div class="tw">
+    <div class="fr-table" tabindex="0" role="region" aria-label="数据表格，可横向滚动"><table>
+      <thead>
+        <tr>
+          <th>防御方与对手</th>
+          <th>空闲减发出即送</th>
+          <th>95% 区间</th>
+          <th>空闲更高的局数</th>
+          <th>计费差</th>
+          <th>其余差</th>
+          <th>无监督均分</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td>KEEP，库存对手</td><td>25.3</td><td>[15.6, 35.2]</td><td>77/100</td><td>11.9</td><td>13.4 [4.0, 23.0]</td><td>−187.32</td></tr>
+        <tr><td>H-MARL，库存对手</td><td>27.6</td><td>[21.3, 33.8]</td><td>77/100</td><td>20.6</td><td>7.0 [1.1, 12.9]</td><td>−136.43</td></tr>
+        <tr><td>KEEP，Wrecker</td><td>172.7</td><td>[133.8, 212.2]</td><td>79/100</td><td>11.8</td><td>160.9 [122.3, 199.9]</td><td>−1115.65*</td></tr>
+        <tr><td>H-MARL，Wrecker</td><td>316.3</td><td>[241.5, 393.9]</td><td>83/100</td><td>20.9</td><td>295.3 [220.5, 372.9]</td><td>−842.76*</td></tr>
+      </tbody>
+    </table></div>
+  </div>
+  <p>表里的差来自论文表 4。库存对手上 KEEP 的 25.3 分里 11.9 是计费；H-MARL 的 27.6 里 20.6 是计费。H-MARL 库存上的其余差 7.0，论文写它和附录 A 里每局每 Agent 至多漏计一条仍在跑的 Restore 能达到的量差不多，扣掉这项遗漏后不再能和 0 分开。库存对手上 KEEP 的其余差 13.4 和这条 7.0，原文写它们过不了多重比较的族系校正。Wrecker 上其余差是大头：KEEP 160.9，H-MARL 295.3。作者没有把「丢掉的指令没做成的工作」和「丢掉之后规则沉默」拆开。带星号的无监督均分是该对照臂实际使用的那一次抽样：H-MARL 的 Wrecker 对照是六次抽样里最好的一次，比中心 −883.09 高 40.3 分；KEEP 的 Wrecker 对照比中心 −1143.49 高 27.84 分。空闲减发出即送的差在同一对照下不受影响。</p>
+  <p>同一条规则，发出即送时相对无监督 KEEP 低 12.8 分（区间 −27.1 至 1.3，35/100 局更高），相对 H-MARL 低 24.3 分（−33.5 至 −14.3，22/100）。空闲再发时相对 KEEP 高 12.5 分（0.1 至 25.7，57/100 加 2 平，符号检验 p=0.129），相对 H-MARL 高 3.3 分（−6.2 至 13.8，43/100 加 1 平，p=0.228）。发布设置上，H-MARL 这条规则从「发出即送是净损失」变成「空闲再发测不出净损失」。规则只发 Restore，每条扣 1 分；发出即送臂比无监督 KEEP 多付 36.9 分计费，比无监督 H-MARL 多付 46.0 分，空闲再发时分别多付 25.0 和 25.4。</p>
+</section>
+
+<section id="yours">
+  <h2><span>5</span>你的运行位</h2>
+  <p>往正在跑动作的 Agent 里塞指令，数的如果是发出去的条数，会把丢掉的也算进去。CAGE 4 的评测记录只留已执行动作，丢掉的写成 Sleep。收费如果按「调用方交出的指令」而不是「控制器收下的指令」，丢掉的 Restore 仍进总分。两边对不上时，作者建议先查有没有一条时长动作还没结束；原文没有测过这条排查路径。</p>
+  <p>官方观测不带忙碌标志时，包装器必须自己记住动作时长，或者去读原始字典。KEEP 和 H-MARL 都读了；按文档向量观测搭建的 Agent 没有这道检查，训练时还会把丢掉的指令对应的回报记到头上。作者点名这件事，没有另训一个只吃文档观测的 Agent 来定量。</p>
+  <p>单次均分还带着策略自己的抽样。库存对手上，KEEP 每局结果方差的 88.9%（区间 71.6% 至 99.8%）来自策略抽样；四次抽样里观察到的最大差是 14.9 分，原文写这不是分位数。KEEP 复现区间约 22.5 分宽。排行榜第一和第二差 4.65 分；原文写，若榜首条目带着和 KEEP 同类的抽样噪声（排行榜没有披露），这个间隔分不开两者。这些是分数怎么读的旁证，不是丢掉计费本身。</p>
+  <p>和已有几篇相邻：<a href="/frontier/2026-10-31-unverified-plan-halves-ter.html">计划能走通，轨迹仍可能有一步执行不了</a>；<a href="/frontier/2026-11-01-state-check-cuts-fpr.html">查实际状态比只看截图少误报</a>；<a href="/frontier/2026-10-14-reproduction-is-not-validation.html">复现了故障，仍不能确认修复有效</a>。这里多出来的是：丢掉的指令可以同时从记录里消失，又从计费里留下。</p>
+</section>
+
+<section id="limit">
+  <h2><span>6</span>这篇没测到的</h2>
+  <p>全部结果在 CAGE 4 上，作者不把它推广到没有 CybORG 这份控制器的模拟器。学出来的防御方只有这两个参考方。手写规则防御方是对照，不是方案。监督结果来自脚本规则，不是人。默认每个数字是环境种子 0 到 99 的 100 局配对，另有说明的除外。</p>
+  <p>丢掉在监督臂上按干预计，因为两个发布策略都读忙碌标志；策略自己的损失靠关掉包装器检查来测，这是包装器消融，不是「从一开始就没有检查」的 Agent。作者没有在文档向量观测上跑一个 Agent。KEEP 与 H-MARL 的抽样份额不可直接并排：两套 harness 给策略种子重种的随机源不同。</p>
+  <p>训练一节把 KEEP 从零训过，有无检查的四对种子在 100 步领先、200 步起落后；续训到 2000 更新的三颗种子，一颗落进发布复现区间，两颗低 27.4 到 125.4 分。那是训练配方的选择，本文的判断不靠它。</p>
+  <p>Wrecker 是作者按 Trident 规划器模式手写的冲击型对手，不是挑战官方对手。库存对手上监督的其余差，H-MARL 一侧扣掉漏计后不再能和 0 分开。写作时没有复跑作者的容器，数字从 HTML 全文抄。</p>
+</section>
+
+<section id="src">
+  <h2><span>7</span>出处</h2>
+  <p>2026 年 11 月 10 日，arXiv 收到 <a href="https://arxiv.org/abs/2611.14068">What a CAGE 4 Score Measures: An Audit of a Learned Cyber-Defense Benchmark, Its Reference Defenders, and the Tables Built on Them</a>（arXiv:2611.14068v1，cs.CR；作者 James Rice、Ji Hwan Park、Andres Kwasinski；单位署 Rochester Institute of Technology）。预印本，未经同行评审。许可是 arXiv.org perpetual non-exclusive license。</p>
+  <ul>
+    <li>预印本 abs：<a href="https://arxiv.org/abs/2611.14068">arXiv:2611.14068</a>。HTML 全文：<a href="https://arxiv.org/html/2611.14068v1">arxiv.org/html/2611.14068v1</a>。提交 2026-11-10。科目 cs.CR。</li>
+    <li>KEEP −191.34 / −193.68、H-MARL −131.34 / −129.53 / −132.63、区间宽度和排行榜 4.65 分，从第 2 节与表 2 抄。</li>
+    <li>动作时长、丢掉机制、四条忙碌 Restore 各扣 1 分、文档观测不带标志，从第 4.1 节抄。</li>
+    <li>KEEP 关掉检查 99.58、Restore 77.46 对 180.91、计费 103.45、其余 −3.87；H-MARL 145.98、逐步相同、1289.00 / 1307.73，从表 6 与第 6.1 节抄。对照均分 −187.32 与 −136.43 同表，不要和复现均值混用。</li>
+    <li>空闲减发出即送的 25.3 / 27.6 / 172.7 / 316.3 从表 4 抄。Wrecker 下发出即送的执行占比 60.5% / 35.8%、空闲再发 99.0% / 98.9%、忙碌 38.5% / 52.9%，从第 4.2 节抄；分母分别是规则发出的干预条数和 Agent-步。</li>
+    <li>88.9%、Restore 计费占 |−187.32| 的 41.4%、两参考方 50.89 分里记账归属 40.3 分，从第 5 节抄。</li>
+  </ul>
+  <p>提交日期和科目从同一份 HTML 页眉抄，写作时没有另开 abs 页核对。X / Reddit 今日未覆盖。Product Hunt 本轮 403。这些都没有进判断。</p>
+  <p><a href="/frontier/rsi-llm-agent-self-evolution.html">09-26 RSI</a> 是谱系，<a href="/frontier/llm-agent-tech-landscape.html">09-27 全景</a> 是增量在哪一层。本文写运行位上的一条缝：发给忙碌 Agent 的指令可以从执行记录里消失，仍按交出的 Restore 计费。</p>
+</section>
+</main>
+</div>
+<a class="fr-top" href="#" aria-label="返回页首">↑</a>
+</body>
+</html>

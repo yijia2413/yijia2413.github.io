@@ -1,5 +1,9 @@
 # 前沿技术栏目：独立 HTML 洞察索引。
 # 新增一篇：把 HTML 放到 /frontier/<slug>.html，再在这里加一条。
+- title: "忙碌时丢掉的 Restore，CAGE 4 仍按一次执行扣分"
+  date: "2026-11-12"
+  url: /frontier/2026-11-12-dropped-restore-still-billed.html
+  summary: "给正在执行动作的 Agent 再发一条 Restore，模拟器会丢掉这条指令，记录写成 Sleep，分数却仍扣 1 分。一篇预印本在钉死的容器里复现 CAGE Challenge 4 的两个参考防御方：关掉 KEEP 自带的忙碌检查，发布策略每局少 99.58 分；关掉 H-MARL Expert 的掩码，每局少 145.98 分。后者的已执行动作逐步不变，少的分数就是发给忙碌 Agent 的 Restore 计费。"
 - title: "AGENTS.md 写下的指令，Agent 遵守了多少"
   date: "2026-11-11"
   url: /frontier/2026-11-11-ends-above-eighty-six.html
