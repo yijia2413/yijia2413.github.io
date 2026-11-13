@@ -1,5 +1,9 @@
 # 前沿技术栏目：独立 HTML 洞察索引。
 # 新增一篇：把 HTML 放到 /frontier/<slug>.html，再在这里加一条。
+- title: "第一次过测之后，成功跑里中位还剩 35% 到 60% 的步"
+  date: "2026-11-13"
+  url: /frontier/2026-11-13-lag-after-first-correct.html
+  summary: "编码 Agent 第一次写出能过官方测试的补丁，往往还不会停。一篇预印本在 OpenHands 上对每一步的仓库补丁做离线评测：核心设置里，最终提交仍过测的那些跑，第一次过测之后的步占整条轨迹的中位比例，Qwen3-Coder 是 35% 和 37%，Laguna-XS.2 是 60% 和 54%。过测之后的步大半在跑测试、写检查、翻仓库。Agent 当时看不见这些官方测试。"
 - title: "忙碌时丢掉的 Restore，CAGE 4 仍按一次执行扣分"
   date: "2026-11-12"
   url: /frontier/2026-11-12-dropped-restore-still-billed.html

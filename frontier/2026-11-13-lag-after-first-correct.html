@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>第一次过测之后，成功跑里中位还剩 35% 到 60% 的步 · Frontier</title>
+  <style>
+    :root { --ink:#0f172a; --muted:#475569; --line:#e2e8f0; --bg:#f8fafc; --blue:#1d4ed8; --blue-bg:#eff6ff; --amber:#b45309; --green:#047857; --rose:#be123c; }
+    * { box-sizing: border-box; }
+    body { margin:0; font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Noto Sans SC",sans-serif; background:var(--bg); color:var(--ink); line-height:1.75; font-size:17px; }
+    header { background:#0f172a; color:#f8fafc; padding:36px 24px 28px; border-bottom:4px solid #2563eb; }
+    header .inner { max-width:1080px; margin:0 auto; }
+    .badge { display:inline-block; border:1px solid #93c5fd; color:#bfdbfe; border-radius:999px; padding:2px 12px; font-size:13px; }
+    h1 { font-size:2rem; line-height:1.3; margin:12px 0; }
+    header p { color:#cbd5e1; margin:0; max-width:760px; }
+    .layout { max-width:1080px; margin:28px auto 64px; padding:0 20px; display:grid; grid-template-columns:220px minmax(0,1fr); gap:28px; }
+    aside { position:sticky; top:52px; align-self:start; background:#fff; border:1px solid var(--line); border-radius:12px; padding:14px; }
+    aside p { font-size:12px; letter-spacing:.06em; color:var(--muted); margin:0 0 8px; }
+    aside a { display:block; color:var(--ink); text-decoration:none; font-size:14px; padding:6px 8px; border-radius:6px; }
+    aside a:hover { background:var(--blue-bg); color:var(--blue); }
+    h2 { font-size:1.35rem; margin:0 0 12px; }
+    h2 span { display:inline-block; background:var(--blue); color:#fff; border-radius:6px; font-size:13px; padding:2px 8px; margin-right:8px; }
+    h3 { font-size:1.08rem; margin:20px 0 10px; }
+    section { background:#fff; border:1px solid var(--line); border-radius:14px; padding:26px 28px; margin-bottom:22px; }
+    p { margin:0 0 14px; }
+    a { color:var(--blue); overflow-wrap:anywhere; }
+    code { background:#f1f5f9; border-radius:4px; padding:1px 5px; font-size:15px; overflow-wrap:anywhere; }
+    main { min-width:0; }
+    figure { margin:16px 0; background:#fff; border:1px solid var(--line); border-radius:12px; padding:10px; overflow-x:auto; }
+    figure svg { display:block; min-width:700px; }
+    figcaption { color:var(--muted); font-size:14px; margin-top:6px; }
+    .tw { overflow-x:auto; margin:0 0 14px; }
+    .tw table { min-width:620px; }
+    table { width:100%; border-collapse:collapse; font-size:15px; }
+    th, td { border:1px solid var(--line); padding:8px 10px; text-align:left; vertical-align:top; }
+    th { background:#f1f5f9; }
+    ul { margin:0 0 14px; padding-left:22px; }
+    ol { margin:0 0 14px; padding-left:22px; }
+    li { margin-bottom:6px; }
+    .note { background:#f1f5f9; border-left:4px solid var(--muted); padding:12px 16px; border-radius:0 8px 8px 0; font-size:16px; margin:0 0 14px; }
+    .quote { background:#fffbeb; border-left:4px solid var(--amber); padding:12px 16px; border-radius:0 8px 8px 0; font-size:15px; overflow-wrap:anywhere; margin:0 0 14px; }
+    svg text { font-family:-apple-system,"PingFang SC","Noto Sans SC",sans-serif; }
+    @media (max-width:860px) { .layout { grid-template-columns:minmax(0,1fr); } aside { position:static; } h1 { font-size:1.55rem; } section { padding:18px 16px; } }
+  </style>
+  <link rel="stylesheet" href="assets/article.css">
+  <script src="assets/article.js" defer></script>
+</head>
+<body class="frontier-article">
+<a class="fr-skip" href="#article-content">跳到正文</a>
+<nav class="fr-nav" aria-label="站点导航">
+  <a class="fr-brand" href="/frontier/"><span class="fr-mark" aria-hidden="true">F</span>Frontier<span class="fr-nav-label">技术与研究</span></a>
+  <a class="fr-home" href="/">@xixi003 <span aria-hidden="true">↗</span></a>
+</nav>
+<div class="fr-progress" aria-hidden="true"><div></div></div>
+
+<header class="fr-hero">
+  <div class="inner">
+    <span class="badge">FRONTIER · 2026-11-13 · Agent Runtime</span>
+    <h1>第一次过测之后，成功跑里中位还剩 35% 到 60% 的步</h1>
+    <p>编码 Agent 第一次写出能过官方测试的补丁，往往还不会停。一篇预印本在 OpenHands 上对每一步的仓库补丁做离线评测：核心设置里，最终提交仍过测的那些跑，第一次过测之后的步占整条轨迹的中位比例，Qwen3-Coder 是 35% 和 37%，Laguna-XS.2 是 60% 和 54%。过测之后的步大半在跑测试、写检查、翻仓库。Agent 当时看不见这些官方测试。稿件推断：线上不能照抄「第一次过测就交」。</p>
+  </div>
+</header>
+<div class="fr-layout">
+<aside aria-label="文章目录" class="fr-toc">
+<details open="">
+<summary>本文目录<span aria-hidden="true">＋</span></summary>
+<div class="fr-toc-links">
+<a href="#what">1 过测和停下差多少步</a>
+<a href="#how">2 怎么量第一次过测</a>
+<a href="#first">3 第一次改源码过不过</a>
+<a href="#after">4 过测之后在干什么</a>
+<a href="#yours">5 你的运行位</a>
+<a href="#limit">6 这篇没测到的</a>
+<a href="#src">7 出处</a>
+</div>
+</details>
+</aside>
+<main class="fr-content" id="article-content">
+<section id="what">
+  <h2><span>1</span>过测和停下差多少步</h2>
+  <p><a href="https://arxiv.org/abs/2611.14960">Termination Lag: Coding Agents Solve Early but Stop Late</a> 盯的是仓库级修 bug：给一条 issue 和一份仓库，Agent 查文件、改代码、跑命令，最后交补丁。SWE-bench 只看最终补丁过不过任务测试。原文设想的例子：两个 Agent 都在第 10 步写出同一份正确补丁，一个立刻交，一个再跑 40 步复测、看调用方、看 diff，分数一样。</p>
+  <p>作者把轨迹拆成两段。第一次过官方测试的步记为 <code>F</code>，Agent 自己停下的步记为 <code>S</code>。终止滞后 <code>TL = S − F</code>。归一化滞后 <code>NTL = (S − F) / S</code>，分母是该条轨迹的总步数。表 1 的 TTFCP、S、TL、NTL 都是成功跑上各自取的中位数：最终提交仍过测的那些轨迹。中位数不可相加，NTL 中位数也不能用表里的 TL 中位去除以 S 中位反推。Qwen Verified 一列是 30、48、16、35%，48 − 30 = 18，不是 16；16 / 48 约 33%，不是 35%。</p>
+  <div class="tw">
+    <div class="fr-table" tabindex="0" role="region" aria-label="数据表格，可横向滚动"><table>
+      <thead>
+        <tr>
+          <th>核心设置（OpenHands）</th>
+          <th>Qwen3-Coder · Verified</th>
+          <th>Qwen3-Coder · Multi</th>
+          <th>Laguna-XS.2 · Verified</th>
+          <th>Laguna-XS.2 · Multi</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td>最终过测率（分母是全部任务）</td><td>43.8%</td><td>22.3%</td><td>56.0%</td><td>48.0%</td></tr>
+        <tr><td>第一次过测步 F（中位）</td><td>30</td><td>34</td><td>38</td><td>50</td></tr>
+        <tr><td>自己停下的步 S（中位）</td><td>48</td><td>54</td><td>95</td><td>108</td></tr>
+        <tr><td>终止滞后 TL（中位）</td><td>16</td><td>18</td><td>57</td><td>56</td></tr>
+        <tr><td>NTL（中位）</td><td>35%</td><td>37%</td><td>60%</td><td>54%</td></tr>
+        <tr><td>从 F 到 S，输入上下文相对增长</td><td>+30%</td><td>+28%</td><td>+78%</td><td>+55%</td></tr>
+      </tbody>
+    </table></div>
+  </div>
+  <p>表里的过测率，分母按基准任务总数推得：SWE-bench Verified 500 条 Python 任务、Multilingual 300 条、九种语言；原文表 1 只写 Solved(%)。下面五行（F、S、TL、NTL、上下文增长）的分母换成成功跑。Qwen3-Coder 在 Verified 上，F 中位 30、S 中位 48、TL 中位 16、NTL 中位 35%。Laguna-XS.2 在 Verified 上 F 中位 38、S 中位 95、TL 中位 57、NTL 中位 60%。两个模型预算不同：Qwen 100 步 / 131K，Laguna 250 步 / 256K。本文不比较模型优劣。正文第 4.2 节另给闭源对照，图在附录：Claude Haiku 5.5 在 Verified 上 F 中位 9，TL 中位 10，NTL 中位 54%；GPT-6 Luna TL 中位 6，NTL 中位 36%。原文没报这两格的成功率和成功跑条数。换框架看过一次：同一套 Qwen3-Coder、Verified、500 条，OpenHands 过测 43.8%、NTL 中位 35%、滞后中位 16 步；mini-SWE-agent 过测 32.4%、NTL 中位 37%、滞后中位 12 步。成功集合不是同一批题，mini-SWE 只有 bash。跨框架只看是否都存在滞后，不比较大小。</p>
+  <figure>
+    <svg viewBox="0 0 920 430" width="100%" role="img" aria-label="三张卡片：Qwen3-Coder 在 Verified 成功跑上，F、TL、S、NTL 各自取中位，彼此不可相加">
+      <rect x="1" y="1" width="918" height="428" rx="10" fill="#fff" stroke="#e2e8f0"/>
+      <text x="24" y="32" font-size="16" font-weight="700" fill="#0f172a">Qwen3-Coder · Verified：四个中位数，彼此不可相加</text>
+      <text x="24" y="56" font-size="14" fill="#475569">分母是最终提交仍过测的轨迹。NTL 是逐条 (S−F)/S 再取中位，不是 16/48。</text>
+
+      <rect x="24" y="80" width="210" height="150" rx="8" fill="#ecfdf5" stroke="#047857" stroke-width="2"/>
+      <text x="129" y="118" font-size="14" fill="#047857" text-anchor="middle">第一次过测 F</text>
+      <text x="129" y="168" font-size="36" font-weight="700" fill="#0f172a" text-anchor="middle">30</text>
+      <text x="129" y="202" font-size="14" fill="#334155" text-anchor="middle">成功跑上的中位步</text>
+
+      <rect x="246" y="80" width="210" height="150" rx="8" fill="#fff7ed" stroke="#b45309" stroke-width="2"/>
+      <text x="351" y="118" font-size="14" fill="#b45309" text-anchor="middle">终止滞后 TL</text>
+      <text x="351" y="168" font-size="36" font-weight="700" fill="#0f172a" text-anchor="middle">16</text>
+      <text x="351" y="202" font-size="14" fill="#334155" text-anchor="middle">成功跑上的中位步</text>
+
+      <rect x="468" y="80" width="210" height="150" rx="8" fill="#fff1f2" stroke="#be123c" stroke-width="2"/>
+      <text x="573" y="118" font-size="14" fill="#be123c" text-anchor="middle">自己停下 S</text>
+      <text x="573" y="168" font-size="36" font-weight="700" fill="#0f172a" text-anchor="middle">48</text>
+      <text x="573" y="202" font-size="14" fill="#334155" text-anchor="middle">成功跑上的中位步</text>
+
+      <rect x="690" y="80" width="206" height="150" rx="8" fill="#eff6ff" stroke="#1d4ed8" stroke-width="2"/>
+      <text x="793" y="118" font-size="14" fill="#1d4ed8" text-anchor="middle">归一化滞后 NTL</text>
+      <text x="793" y="168" font-size="36" font-weight="700" fill="#0f172a" text-anchor="middle">35%</text>
+      <text x="793" y="202" font-size="14" fill="#334155" text-anchor="middle">逐条比值的中位</text>
+
+      <rect x="24" y="252" width="872" height="148" rx="8" fill="#f8fafc" stroke="#cbd5e1"/>
+      <text x="40" y="284" font-size="14" fill="#0f172a">48 − 30 = 18，不是 16。16 / 48 约 33%，不是 35%。各指标分别取中位，不要画成同一条跑。</text>
+      <text x="40" y="312" font-size="14" fill="#0f172a">作者另外写了一个神谕：每条成功跑在第一次过测处停，从未过测的跑不动。</text>
+      <text x="40" y="340" font-size="14" fill="#0f172a">成功跑上中位能去掉 35% / 37%（Qwen）和 60% / 54%（Laguna）的步，原来过测的任务仍过测。</text>
+      <text x="40" y="368" font-size="14" fill="#334155">神谕用了 Agent 运行时拿不到的官方测试，不能直接做成停止规则。</text>
+    </svg>
+    <figcaption>图 1. 表 1 的 Qwen3-Coder · Verified。四个数各自是成功跑上的中位数，不能加减。</figcaption>
+  </figure>
+</section>
+
+<section id="how">
+  <h2><span>2</span>怎么量第一次过测</h2>
+  <p>主框架是 OpenHands，五个模型都跑过。Qwen3-Coder-30B-A3B 和 Laguna-XS.2 走 vLLM，步数预算分别是 100 和 250，上下文窗口 131K 和 256K。Haiku 5.5 和 GPT-6 Luna 走 Anthropic / OpenAI 接口，预算 100 步。Seed-OSS-36B 另跑 SWE-bench Pro，预算 150 步。每条任务跑一次。Qwen 和 Laguna 的预算、窗口都不同，S 的上限也不同；图 2 把两者并排，只展示各自的 NTL，不比较模型优劣。</p>
+  <p>每一步——模型推理、选动作、工具执行——作者在 Agent 等下一轮模型回复时，用日志代理把当前仓库相对任务基线提交的 diff 存下来，补丁用临时 Git index 构造，不改 Agent 的工作仓库。评测在隔离容器里走官方手续，相同补丁只评一次。Agent 收不到这次评测的任何反馈。官方测试对它是隐藏的，它只能靠自己跑的检查来判断能不能停。</p>
+  <p>S 取 Agent 自己停下的那一步。碰到步数或上下文上限的成功跑，每个设置里有 1% 到 4%，按最后一步计。步数近似计算开销，原文没有把滞后换成 token 账单。</p>
+</section>
+
+<section id="first">
+  <h2><span>3</span>第一次改源码过不过</h2>
+  <p>第一次补丁定义为第一次改仓库源码之后记下的 diff。下面这张表的分母换成「到达过正确补丁的轨迹」，含后来又改坏、最终没交过的那些，和表 1 的成功跑不是同一批。</p>
+  <div class="tw">
+    <div class="fr-table" tabindex="0" role="region" aria-label="数据表格，可横向滚动"><table>
+      <thead>
+        <tr>
+          <th></th>
+          <th>Qwen · Verified</th>
+          <th>Qwen · Multi</th>
+          <th>Laguna · Verified</th>
+          <th>Laguna · Multi</th>
+          <th>GPT-6 Luna · Verified</th>
+          <th>Seed-OSS · Pro</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td>第一次改源码（中位步）</td><td>30</td><td>34</td><td>36</td><td>45</td><td>9</td><td>17</td></tr>
+        <tr><td>第一次过测（中位步）</td><td>30</td><td>34</td><td>38</td><td>51</td><td>9</td><td>26</td></tr>
+        <tr><td>第一次改源码就已经过测</td><td>82%</td><td>66%</td><td>70%</td><td>48%</td><td>80%</td><td>38%</td></tr>
+        <tr><td>到第一次过测的不同补丁数（均值）</td><td>1.3</td><td>1.7</td><td>1.9</td><td>2.8</td><td>1.7</td><td>3.6</td></tr>
+      </tbody>
+    </table></div>
+  </div>
+  <p>Qwen 在 Verified 上，到达过正确补丁的轨迹里 82% 第一次改源码就已经过测；六个设置各自在 38% 到 82% 之间。38% 这一端是 Seed-OSS 在 Pro 上，原文写它过测的任务很少，这一端样本小。Laguna 在 Multilingual 上，表 2 的第一次过测中位是 51，表 1 成功跑上的 TTFCP 是 50，分母不同，不要并成一个数。</p>
+</section>
+
+<section id="after">
+  <h2><span>4</span>过测之后在干什么</h2>
+  <p>成功跑上，作者按记录下来的工具和参数，把第一次过测之后的每一步分成五类。核验：跑仓库已有测试、另写测试、构建。探索：看文件、搜仓库、用 Git 看改动。再改源码：继续改实现。收尾：删临时文件、交最终回复。其余记成推理或其他。</p>
+  <figure>
+    <svg viewBox="0 0 920 500" width="100%" role="img" aria-label="柱状图：四个核心设置成功跑的 NTL 中位数，35%、37%、60%、54%">
+      <rect x="1" y="1" width="918" height="498" rx="10" fill="#fff" stroke="#e2e8f0"/>
+      <text x="24" y="32" font-size="16" font-weight="700" fill="#0f172a">成功跑里，第一次过测之后还占多少步</text>
+      <text x="24" y="56" font-size="14" fill="#475569">分母是表 1 成功跑的总步数，柱高是 NTL 中位数。60% = 280 像素。Qwen 预算 100 步，Laguna 250 步，不比较模型优劣。</text>
+
+      <line x1="80" y1="90" x2="80" y2="370" stroke="#cbd5e1" stroke-width="1"/>
+      <line x1="80" y1="370" x2="880" y2="370" stroke="#cbd5e1" stroke-width="1"/>
+      <text x="72" y="94" font-size="14" fill="#475569" text-anchor="end">60%</text>
+      <text x="72" y="232" font-size="14" fill="#475569" text-anchor="end">30%</text>
+      <text x="72" y="374" font-size="14" fill="#475569" text-anchor="end">0</text>
+
+      <rect x="140" y="207" width="120" height="163" fill="#eff6ff" stroke="#1d4ed8" stroke-width="2"/>
+      <text x="200" y="197" font-size="15" font-weight="700" fill="#1d4ed8" text-anchor="middle">35%</text>
+      <text x="200" y="396" font-size="14" fill="#0f172a" text-anchor="middle">Qwen</text>
+      <text x="200" y="416" font-size="14" fill="#475569" text-anchor="middle">Verified</text>
+      <text x="200" y="436" font-size="14" fill="#475569" text-anchor="middle">滞后 16 步</text>
+
+      <rect x="320" y="197" width="120" height="173" fill="#eff6ff" stroke="#1d4ed8" stroke-width="2"/>
+      <text x="380" y="187" font-size="15" font-weight="700" fill="#1d4ed8" text-anchor="middle">37%</text>
+      <text x="380" y="396" font-size="14" fill="#0f172a" text-anchor="middle">Qwen</text>
+      <text x="380" y="416" font-size="14" fill="#475569" text-anchor="middle">Multi</text>
+      <text x="380" y="436" font-size="14" fill="#475569" text-anchor="middle">滞后 18 步</text>
+
+      <rect x="500" y="90" width="120" height="280" fill="#fff7ed" stroke="#b45309" stroke-width="2"/>
+      <text x="560" y="80" font-size="15" font-weight="700" fill="#b45309" text-anchor="middle">60%</text>
+      <text x="560" y="396" font-size="14" fill="#0f172a" text-anchor="middle">Laguna</text>
+      <text x="560" y="416" font-size="14" fill="#475569" text-anchor="middle">Verified</text>
+      <text x="560" y="436" font-size="14" fill="#475569" text-anchor="middle">滞后 57 步</text>
+
+      <rect x="680" y="118" width="120" height="252" fill="#fff7ed" stroke="#b45309" stroke-width="2"/>
+      <text x="740" y="108" font-size="15" font-weight="700" fill="#b45309" text-anchor="middle">54%</text>
+      <text x="740" y="396" font-size="14" fill="#0f172a" text-anchor="middle">Laguna</text>
+      <text x="740" y="416" font-size="14" fill="#475569" text-anchor="middle">Multi</text>
+      <text x="740" y="436" font-size="14" fill="#475569" text-anchor="middle">滞后 56 步</text>
+
+      <rect x="140" y="464" width="14" height="14" fill="#eff6ff" stroke="#1d4ed8" stroke-width="2"/>
+      <text x="160" y="476" font-size="14" fill="#0f172a">柱高是 NTL 中位数，不是过测率，也不是核验步占比。两个模型预算不同。</text>
+    </svg>
+    <figcaption>图 2. 表 1 四个核心设置。Qwen 两根按 35/60×280 和 37/60×280 取整为 163 和 173 像素；Laguna Verified 按 60% 对齐 280 像素。</figcaption>
+  </figure>
+  <p>核验在每个评过的设置里都是最大一类，占终止滞后步的 48% 到 63%。探索另占 15% 到 29%。Qwen、Laguna、GPT-6 Luna 再改源码只占 2% 到 6%；Seed-OSS 在 Pro 上是 19%。这些百分比的分母是第一次过测之后的步，不是整条轨迹。原文未说明是把所有成功跑的步合并后算占比，还是逐条占比再取中位。</p>
+  <p>补丁本身的结局换了分母：到达过正确补丁的轨迹里，61% 到 96% 一直保持到结束。后来改坏又修好的，六个设置是 3% 到 31%；原文点名的三格是 Laguna Verified 11%、Multilingual 31%、Seed-OSS Pro 17%。后来改坏并且最终没交过的，六个设置里是 1% 到 8%。对这 1% 到 8%，停在第一次过测会保住官方过测；原文没有另报「若当时停下，总过测率会高多少」。</p>
+</section>
+
+<section id="yours">
+  <h2><span>5</span>你的运行位</h2>
+  <p>看最终过测率，看不出第一次过测之后还跑了多久。自己的日志如果逐步留了仓库 diff，可以事后用同一套隐藏测试回放，画出 F 和 S。这是诊断，不是线上停止器：论文的 F 用了 Agent 当时拿不到的官方测试。</p>
+  <p>过测之后的步大半在核验和翻仓库。稿件推断：运行位上如果只按「再改一次源码才算还在干活」来估成本，会把核验步漏掉。表 1 里从第一次过测到停下，模型输入上下文还相对涨了 28% 到 78%。</p>
+  <p>1% 到 8% 的到达过正确补丁的轨迹，后来改坏并交了错误补丁。稿件推断：继续跑有时会把已经过测的东西改掉。论文没给出一个只用 Agent 自己证据的停止规则，也没测「核验多少步才够」。</p>
+  <p>和已有几篇相邻：<a href="/frontier/2026-11-08-difficulty-beats-trajectory.html">失败预测里，题目难度对照比仿 Fail-Fast 的轨迹预测高</a>；<a href="/frontier/2026-10-31-unverified-plan-halves-ter.html">终局成功，整条轨迹仍可能有一步执行不了</a>；<a href="/frontier/2026-11-09-sonnet-extra-calls.html">过期测试命令让 Sonnet 多调用约两次工具</a>。这里多出来的是：最终过测的那些跑，中位仍有三分之一到一半以上的步发生在第一次过测之后。</p>
+</section>
+
+<section id="limit">
+  <h2><span>6</span>这篇没测到的</h2>
+  <p>三个基准、五个模型、两套框架，每条任务一次。作者写可能搬不到别的设置。步数类别靠工具和参数的规则，不是人工标注。Seed-OSS 在 Pro 上过测任务少，表 2、表 3 那一列样本小。SWE-bench Pro 的任务总数原文这一节没写。NTL 以最终过测为条件：Multilingual 上 Qwen 只有 22.3% 的任务进入统计。原文没报各格成功跑的条数，也没报 Haiku、Luna 的成功率和成功跑条数，附录中位数样本量不详。</p>
+  <p>神谕停在第一次过测，保住的是原来就过测的任务，没有声称能抬高总过测率。Agent 运行时看不见官方测试，核验步不一定多余。闭源模型只跑了 Verified；换框架只测了 Qwen3-Coder 加 mini-SWE-agent。</p>
+  <p>写作时没有复跑作者的容器，数字从 HTML 全文抄。</p>
+</section>
+
+<section id="src">
+  <h2><span>7</span>出处</h2>
+  <p>2026 年 11 月 11 日，arXiv 收到 <a href="https://arxiv.org/abs/2611.14960">Termination Lag: Coding Agents Solve Early but Stop Late</a>（arXiv:2611.14960v1，cs.AI；作者 Musa Cim、Burak Topcu、Mahmut Taylan Kandemir；单位署 The Pennsylvania State University）。arXiv 预印本。许可是 CC BY 4.0。</p>
+  <ul>
+    <li>预印本 abs：<a href="https://arxiv.org/abs/2611.14960">arXiv:2611.14960</a>。HTML 全文：<a href="https://arxiv.org/html/2611.14960v1">arxiv.org/html/2611.14960v1</a>。提交 2026-11-11。科目 cs.AI。</li>
+    <li>TTFCP / TL / NTL 定义、S 取自己停下的步，从第 3.6 节抄。</li>
+    <li>表 1 四个核心设置的 43.8 / 22.3 / 56.0 / 48.0、F 30 / 34 / 38 / 50、S 48 / 54 / 95 / 108、TL 16 / 18 / 57 / 56、NTL 35 / 37 / 60 / 54、上下文 +30 / +28 / +78 / +55，从表 1 抄。Verified 500 条、Multilingual 300 条，从第 3.4 节抄。</li>
+    <li>Haiku F 中位 9、TL 10、NTL 54%；Luna TL 6、NTL 36%；mini-SWE NTL 37%、过测 32.4% 对 OpenHands 43.8%，从第 4.2 节与表 4 抄。表 4 分母写明 500 条。</li>
+    <li>第一次改源码就过测 82 / 66 / 70 / 48 / 80 / 38，从表 2 抄；分母是到达过正确补丁的轨迹。摘要写成 successful runs，正文表 2 更严，本文跟表 2。</li>
+    <li>核验 48–63%、探索 15–29%、再改源码 2–6%（Seed-OSS Pro 19%），从表 3 上半抄，分母是终止滞后步。保持到结束 61–96%、改坏未恢复 1–8%，从表 3 下半与第 5 节抄，分母是到达过正确补丁的轨迹。</li>
+    <li>步数或上下文上限 1–4%、每条任务一次、Seed-OSS 样本小，从 Limitations 抄。</li>
+  </ul>
+  <p>提交日期和科目从同一份 HTML 页眉抄，写作时没有另开 abs 页核对。X / Reddit 今日未覆盖。Product Hunt 本轮 403。GitHub 匿名抓取一度 403。这些都没有进判断。</p>
+  <p><a href="/frontier/rsi-llm-agent-self-evolution.html">09-26 RSI</a> 是谱系，<a href="/frontier/llm-agent-tech-landscape.html">09-27 全景</a> 是增量在哪一层。本文写运行位上的一条缝：最终过测的轨迹，中位仍有 35% 到 60% 的步发生在第一次过测之后。</p>
+</section>
+</main>
+</div>
+<a class="fr-top" href="#" aria-label="返回页首">↑</a>
+</body>
+</html>
