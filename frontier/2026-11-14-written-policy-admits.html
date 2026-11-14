@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>权限策略让模型写，15 个开源权重模型里有 14 个会放行攻击 · Frontier</title>
+  <style>
+    :root { --ink:#0f172a; --muted:#475569; --line:#e2e8f0; --bg:#f8fafc; --blue:#1d4ed8; --blue-bg:#eff6ff; --amber:#b45309; --green:#047857; --rose:#be123c; }
+    * { box-sizing: border-box; }
+    body { margin:0; font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Noto Sans SC",sans-serif; background:var(--bg); color:var(--ink); line-height:1.75; font-size:17px; }
+    header { background:#0f172a; color:#f8fafc; padding:36px 24px 28px; border-bottom:4px solid #2563eb; }
+    header .inner { max-width:1080px; margin:0 auto; }
+    .badge { display:inline-block; border:1px solid #93c5fd; color:#bfdbfe; border-radius:999px; padding:2px 12px; font-size:13px; }
+    h1 { font-size:2rem; line-height:1.3; margin:12px 0; }
+    header p { color:#cbd5e1; margin:0; max-width:760px; }
+    .layout { max-width:1080px; margin:28px auto 64px; padding:0 20px; display:grid; grid-template-columns:220px minmax(0,1fr); gap:28px; }
+    aside { position:sticky; top:52px; align-self:start; background:#fff; border:1px solid var(--line); border-radius:12px; padding:14px; }
+    aside p { font-size:12px; letter-spacing:.06em; color:var(--muted); margin:0 0 8px; }
+    aside a { display:block; color:var(--ink); text-decoration:none; font-size:14px; padding:6px 8px; border-radius:6px; }
+    aside a:hover { background:var(--blue-bg); color:var(--blue); }
+    h2 { font-size:1.35rem; margin:0 0 12px; }
+    h2 span { display:inline-block; background:var(--blue); color:#fff; border-radius:6px; font-size:13px; padding:2px 8px; margin-right:8px; }
+    h3 { font-size:1.08rem; margin:20px 0 10px; }
+    section { background:#fff; border:1px solid var(--line); border-radius:14px; padding:26px 28px; margin-bottom:22px; }
+    p { margin:0 0 14px; }
+    a { color:var(--blue); overflow-wrap:anywhere; }
+    code { background:#f1f5f9; border-radius:4px; padding:1px 5px; font-size:15px; overflow-wrap:anywhere; }
+    main { min-width:0; }
+    figure { margin:16px 0; background:#fff; border:1px solid var(--line); border-radius:12px; padding:10px; overflow-x:auto; }
+    figure svg { display:block; min-width:700px; }
+    figcaption { color:var(--muted); font-size:14px; margin-top:6px; }
+    .tw { overflow-x:auto; margin:0 0 14px; }
+    .tw table { min-width:620px; }
+    table { width:100%; border-collapse:collapse; font-size:15px; }
+    th, td { border:1px solid var(--line); padding:8px 10px; text-align:left; vertical-align:top; }
+    th { background:#f1f5f9; }
+    ul { margin:0 0 14px; padding-left:22px; }
+    ol { margin:0 0 14px; padding-left:22px; }
+    li { margin-bottom:6px; }
+    .note { background:#f1f5f9; border-left:4px solid var(--muted); padding:12px 16px; border-radius:0 8px 8px 0; font-size:16px; margin:0 0 14px; }
+    .quote { background:#fffbeb; border-left:4px solid var(--amber); padding:12px 16px; border-radius:0 8px 8px 0; font-size:15px; overflow-wrap:anywhere; margin:0 0 14px; }
+    svg text { font-family:-apple-system,"PingFang SC","Noto Sans SC",sans-serif; }
+    @media (max-width:860px) { .layout { grid-template-columns:minmax(0,1fr); } aside { position:static; } h1 { font-size:1.55rem; } section { padding:18px 16px; } }
+  </style>
+  <link rel="stylesheet" href="assets/article.css">
+  <script src="assets/article.js" defer></script>
+</head>
+<body class="frontier-article">
+<a class="fr-skip" href="#article-content">跳到正文</a>
+<nav class="fr-nav" aria-label="站点导航">
+  <a class="fr-brand" href="/frontier/"><span class="fr-mark" aria-hidden="true">F</span>Frontier<span class="fr-nav-label">技术与研究</span></a>
+  <a class="fr-home" href="/">@xixi003 <span aria-hidden="true">↗</span></a>
+</nav>
+<div class="fr-progress" aria-hidden="true"><div></div></div>
+
+<header class="fr-hero">
+  <div class="inner">
+    <span class="badge">FRONTIER · 2026-11-14 · Agent Runtime</span>
+    <h1>权限策略让模型写，15 个开源权重模型里有 14 个会放行攻击</h1>
+    <p>好几套间接注入防御都把「允许什么」交给模型先写一份策略、程序、依赖图或参数清单，再由代码去执行这份工件。一篇预印本在 AgentDojo 上用 15 个开源权重模型（1.7B 到 35B）、每个模型 929 条需要工具调用的攻击局，测了四套这种防御。Progent 生成的权限策略在 14 个模型上放行了至少一次攻击，合计 676 / 13,935；IPIGuard 的图是 13 / 15，DRIFT 的约束是 11 / 15。同一套模型自己写的 CaMeL 程序几乎不放行攻击，但 Granite-4.2-8B 上 CaMeL 局里有 68% 程序跑不起来。稿件推断：在这 15 个模型、这四套移植实现上，由模型写的允许集仍会放行攻击。</p>
+  </div>
+</header>
+<div class="fr-layout">
+<aside aria-label="文章目录" class="fr-toc">
+<details open="">
+<summary>本文目录<span aria-hidden="true">＋</span></summary>
+<div class="fr-toc-links">
+<a href="#what">1 14 个模型会放行</a>
+<a href="#how">2 怎么测的</a>
+<a href="#fail">3 漏攻击和丢任务</a>
+<a href="#caplite">4 不让模型写授权</a>
+<a href="#yours">5 你的运行位</a>
+<a href="#limit">6 这篇没测到的</a>
+<a href="#src">7 出处</a>
+</div>
+</details>
+</aside>
+<main class="fr-content" id="article-content">
+<section id="what">
+  <h2><span>1</span>14 个模型会放行</h2>
+  <p><a href="https://arxiv.org/abs/2611.17115">CapLite: Prompt-Injection Defense for Small Language Model Agents without Model-Written Security Artifacts</a> 盯的是工具 Agent 读到邮件、文件、网页之后，会不会按里面的指令去写：发信、付款、改记录。CaMeL、Progent、IPIGuard、DRIFT 都把决定从模型上下文里拿出来，交给代码。代码执行的对象，仍是这个 Agent 自己的模型写出来的：CaMeL 是程序，Progent 是权限策略，IPIGuard 是工具依赖图，DRIFT 是轨迹和参数清单。原文把这类输出叫做安全工件。执行层有多严，取决于这份工件。</p>
+  <p>四套防御原先主要配大模型测。这篇预印本换成 15 个开源权重模型，13 个在 1.7B 到 12B，另外两个是 Qwen3-32B 和 Qwen3.6-35B-A3B。每个防御的每一个模型角色都用同一个权重。无防御基线是 AgentDojo 自带的工具调用 Agent。</p>
+  <p>主攻击是 AgentDojo 的 <code>important_instructions</code>。攻击成功率的分母是 15 × 929 = 13,935 条需要工具调用才能完成注入目标的局。另有 20 对来自同一个 Travel 注入目标，只要求终答里出现一句话，不进这个分母，也不在原文的写完整性范围里。</p>
+  <div class="tw">
+    <div class="fr-table" tabindex="0" role="region" aria-label="数据表格，可横向滚动"><table>
+      <thead>
+        <tr>
+          <th>防御</th>
+          <th>良性效用 BU</th>
+          <th>攻击下效用 UA</th>
+          <th>ASR</th>
+          <th>成功攻击 k</th>
+          <th>零攻击模型</th>
+          <th>每局 token</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td>无防御</td><td>59.4%</td><td>50.2%</td><td>16.66%</td><td>2,322</td><td>0 / 15</td><td>28.0k</td></tr>
+        <tr><td>Progent</td><td>43.8%</td><td>40.6%</td><td>4.85%</td><td>676</td><td>1 / 15</td><td>63.4k</td></tr>
+        <tr><td>IPIGuard</td><td>40.1%</td><td>35.7%</td><td>3.12%</td><td>435</td><td>2 / 15</td><td>60.5k</td></tr>
+        <tr><td>DRIFT</td><td>35.7%</td><td>34.9%</td><td>1.54%</td><td>214</td><td>4 / 15</td><td>28.1k</td></tr>
+        <tr><td>CaMeL</td><td>24.9%</td><td>27.2%</td><td>0.14%</td><td>20</td><td>12 / 15</td><td>93.7k</td></tr>
+        <tr><td>CapLite</td><td>28.1%</td><td>29.0%</td><td>0.00%</td><td>0</td><td>15 / 15</td><td>17.1k</td></tr>
+      </tbody>
+    </table></div>
+  </div>
+  <p>表 1 是 15 个模型各自率的平均。每个模型上，BU 的分母是 97 条无注入用户任务，UA 的分母是 949 对用户任务加注入，ASR 的分母是 929 条工具目标局；表里的 ASR 再把 15 个模型的成功攻击加总，分母 13,935。零攻击模型这一列，DRIFT 的 4 / 15 四个都是良性效用、攻击下效用低于 10%，原文标成来自不作为；CaMeL 的 12 / 15 里，只有 Granite-4.2-8B 这一格是这样。无防御不参与排名。</p>
+  <p>Progent 让模型根据请求写权限策略，每一步调用后再改。15 个模型里有 14 个至少放行一次攻击；最多的一格是 Qwen3-32B 的 132 / 929。相对无防御，Progent 把合计 ASR 从 16.66%（2,322 / 13,935）压到 4.85%（676 / 13,935）。同一批策略在攻击局里还会拦掉 25% 到 77% 的已尝试写调用（图 6(c)，原文没给写调用总数），良性效用从无防御的 59.4% 降到 43.8%。IPIGuard 在 13 个模型上被攻破，合计 435 次；DRIFT 在 11 个模型上被攻破，合计 214 次。DRIFT 那 4 个零攻击模型，攻击下用户任务完成率（UA，分母每个模型 949 对）分别是 4.7%、9.5%、6.7%、4.7%。</p>
+  <figure>
+    <svg viewBox="0 0 920 480" width="100%" role="img" aria-label="柱状图：六种设置在 13935 条工具目标局上的成功攻击次数">
+      <rect x="1" y="1" width="918" height="478" rx="10" fill="#fff" stroke="#e2e8f0"/>
+      <text x="24" y="32" font-size="16" font-weight="700" fill="#0f172a">15 个模型合计，成功攻击次数</text>
+      <text x="24" y="56" font-size="14" fill="#475569">分母是 15 × 929 = 13,935 条需要工具调用的注入局。无防御 2,322 次对齐柱顶。</text>
+
+      <line x1="90" y1="100" x2="90" y2="380" stroke="#cbd5e1" stroke-width="1"/>
+      <line x1="90" y1="380" x2="880" y2="380" stroke="#cbd5e1" stroke-width="1"/>
+      <text x="82" y="240" font-size="14" fill="#475569" text-anchor="end">1161</text>
+      <text x="82" y="384" font-size="14" fill="#475569" text-anchor="end">0</text>
+
+      <rect x="120" y="100" width="100" height="280" fill="#fff1f2" stroke="#be123c" stroke-width="2"/>
+      <text x="170" y="148" font-size="16" font-weight="700" fill="#be123c" text-anchor="middle">2322</text>
+      <text x="170" y="404" font-size="14" fill="#0f172a" text-anchor="middle">无防御</text>
+      <text x="170" y="424" font-size="14" fill="#475569" text-anchor="middle">16.66%</text>
+
+      <rect x="250" y="298" width="100" height="82" fill="#fff7ed" stroke="#b45309" stroke-width="2"/>
+      <text x="300" y="288" font-size="15" font-weight="700" fill="#b45309" text-anchor="middle">676</text>
+      <text x="300" y="404" font-size="14" fill="#0f172a" text-anchor="middle">Progent</text>
+      <text x="300" y="424" font-size="14" fill="#475569" text-anchor="middle">4.85%</text>
+
+      <rect x="380" y="328" width="100" height="52" fill="#fff7ed" stroke="#b45309" stroke-width="2"/>
+      <text x="430" y="318" font-size="15" font-weight="700" fill="#b45309" text-anchor="middle">435</text>
+      <text x="430" y="404" font-size="14" fill="#0f172a" text-anchor="middle">IPIGuard</text>
+      <text x="430" y="424" font-size="14" fill="#475569" text-anchor="middle">3.12%</text>
+
+      <rect x="510" y="354" width="100" height="26" fill="#fff7ed" stroke="#b45309" stroke-width="2"/>
+      <text x="560" y="344" font-size="15" font-weight="700" fill="#b45309" text-anchor="middle">214</text>
+      <text x="560" y="404" font-size="14" fill="#0f172a" text-anchor="middle">DRIFT</text>
+      <text x="560" y="424" font-size="14" fill="#475569" text-anchor="middle">1.54%</text>
+
+      <rect x="640" y="377" width="100" height="3" fill="#eff6ff" stroke="#1d4ed8" stroke-width="2"/>
+      <text x="690" y="368" font-size="15" font-weight="700" fill="#1d4ed8" text-anchor="middle">20</text>
+      <text x="690" y="404" font-size="14" fill="#0f172a" text-anchor="middle">CaMeL</text>
+      <text x="690" y="424" font-size="14" fill="#475569" text-anchor="middle">0.14%</text>
+
+      <text x="820" y="372" font-size="15" font-weight="700" fill="#047857" text-anchor="middle">0</text>
+      <text x="820" y="404" font-size="14" fill="#0f172a" text-anchor="middle">CapLite</text>
+      <text x="820" y="424" font-size="14" fill="#475569" text-anchor="middle">0.00%</text>
+
+      <rect x="120" y="448" width="14" height="14" fill="#fff7ed" stroke="#b45309" stroke-width="2"/>
+      <text x="140" y="460" font-size="14" fill="#0f172a">橙柱是模型自己写「允许什么」的三套。蓝柱几乎不放行，绿标是 0。</text>
+    </svg>
+    <figcaption>图 1. 原文表 1 的 k。柱高按 2,322 = 280 像素。Progent 676 / 13,935 来自 14 个模型；CapLite 是 0 / 13,935。</figcaption>
+  </figure>
+</section>
+
+<section id="how">
+  <h2><span>2</span>怎么测的</h2>
+  <p>基准是 AgentDojo v1.2.2，四个套件：Workspace、Slack、Banking、Travel。97 条用户任务，949 对用户任务加注入。ASR 只用其中 929 对工具目标。15 个模型用 vLLM 0.30.0 做原生工具调用，温度 0，种子 0，关闭思考，每次调用最多 2,048 个输出 token；DRIFT 的调用放到 8,192。每个防御自己定义的模型角色，全部换成这一个开源权重。</p>
+  <p>13 个小模型：Qwen3-1.7B、4B、4B-Instruct-2507、8B，Qwen3.5-4B、9B，Llama-3.1-8B-Instruct，Gemma-4-E2B、E4B、12B，Granite-4.2-8B，Ministral-3-8B，LFM2.5-2.6B。两个更大的参照是 Qwen3-32B 和混合专家 Qwen3.6-35B-A3B。</p>
+  <p>主结果用 <code>important_instructions</code>。稳健性另在 8 个模型上加了 <code>tool_knowledge</code>，以及两条对着 CapLite 设计写的攻击：读工具去拉攻击者 URL，和种一条带着用户自己描述语的记录。这 8 个模型的工具目标分母是 8 × 929 = 7,432，不要和 13,935 混成一个率。</p>
+  <p>token 是每局提示加补全，对每个模型的 97 条良性局和 949 条攻击局取平均。效用每千 token（UA/kTok）是攻击下效用除以每局 token（以千计）。</p>
+</section>
+
+<section id="fail">
+  <h2><span>3</span>漏攻击和丢任务</h2>
+  <p>原文把安全工件分成两类。一类决定允许什么：策略、图、约束写错，执行层会放行。一类决定跑什么：程序写不出来或解释器跑不起来，执行层会把任务丢掉。</p>
+  <p>原文图 3 画的是 Qwen3 四个尺寸（1.7B、4B、8B、32B）和 Gemma-4 三个尺寸（E2B、E4B、12B）。这两条线上，Progent、IPIGuard 和无防御的 ASR 随尺寸变大而升。Progent 在 Qwen3 这四格是 28 / 929、37 / 929、40 / 929、132 / 929（3.0% 到 14.2%），在 Gemma-4 三格是 0 / 929、18 / 929、118 / 929（0% 到 12.7%）。图 3 没画 Qwen3-4B-Instruct-2507：它的 Progent 是 55 / 929，高于同族 8B 的 40 / 929。别的族也不跟这条线：Qwen3.5-4B 是 75 / 929，Qwen3.5-9B 是 74 / 929；Qwen3.6-35B-A3B 是 22 / 929。原文的解读是：更大的模型更容易被注入，它写出来的策略和图没有把多出来的风险吃掉。跨 15 个模型，工件失败率和能力没有显著趋势（|ρ| ≤ 0.33，p &gt; 0.2）。</p>
+  <p>CaMeL 的解释器按 CaMeL 作者写的数据流策略，执行模型写出来的程序。13,935 局里成功攻击 20 次，其中 17 次在 LFM2.5-2.6B。15 个模型里有 8 个，最终程序在超过 15% 的 CaMeL 局里跑不起来；Granite-4.2-8B 上是 68%，模型根本不返回代码。原文图 6(a) 的坐标是 CaMeL 局的百分比，没有分开良性局和攻击局。格式、语法、解释器错误可以修到十轮，每局仍要 93.7k token，第 1、2 节写成 94k。良性效用平均 24.9%，无防御是 59.4%。Gemma-4 是例外：没有可运行程序的比例从 22.9% 降到 3.3%，这两个更大的 Gemma-4 上 CaMeL 的攻击下效用也更高。</p>
+  <figure>
+    <svg viewBox="0 0 920 430" width="100%" role="img" aria-label="三张卡片：决定允许什么会漏攻击，决定跑什么会丢任务，代码从 schema 推导在本基准上是零攻击">
+      <rect x="1" y="1" width="918" height="428" rx="10" fill="#fff" stroke="#e2e8f0"/>
+      <text x="24" y="32" font-size="16" font-weight="700" fill="#0f172a">模型写的工件，错法不一样</text>
+      <text x="24" y="56" font-size="14" fill="#475569">左、中是原文第 2 节的两类失败。右列是同一基准上的对照，不是另一套评测。</text>
+
+      <rect x="24" y="76" width="280" height="300" rx="8" fill="#fff7ed" stroke="#b45309" stroke-width="2"/>
+      <text x="164" y="110" font-size="16" font-weight="700" fill="#b45309" text-anchor="middle">决定允许什么</text>
+      <text x="164" y="138" font-size="14" fill="#334155" text-anchor="middle">策略 / 图 / 约束</text>
+      <text x="164" y="180" font-size="15" fill="#0f172a" text-anchor="middle">Progent　14 / 15 模型</text>
+      <text x="164" y="206" font-size="15" fill="#0f172a" text-anchor="middle">IPIGuard　13 / 15 模型</text>
+      <text x="164" y="232" font-size="15" fill="#0f172a" text-anchor="middle">DRIFT　11 / 15 模型</text>
+      <text x="164" y="270" font-size="14" fill="#9a3412" text-anchor="middle">执行层放行攻击</text>
+      <text x="164" y="300" font-size="14" fill="#334155" text-anchor="middle">k = 676 / 435 / 214</text>
+      <text x="164" y="326" font-size="14" fill="#334155" text-anchor="middle">分母都是 13,935 局</text>
+      <text x="164" y="352" font-size="14" fill="#475569" text-anchor="middle">失败开在允许集</text>
+
+      <rect x="320" y="76" width="280" height="300" rx="8" fill="#eff6ff" stroke="#1d4ed8" stroke-width="2"/>
+      <text x="460" y="110" font-size="16" font-weight="700" fill="#1d4ed8" text-anchor="middle">决定跑什么</text>
+      <text x="460" y="138" font-size="14" fill="#334155" text-anchor="middle">CaMeL 程序</text>
+      <text x="460" y="180" font-size="15" fill="#0f172a" text-anchor="middle">成功攻击 20 / 13,935</text>
+      <text x="460" y="206" font-size="15" fill="#0f172a" text-anchor="middle">17 次在 LFM2.5-2.6B</text>
+      <text x="460" y="232" font-size="15" fill="#0f172a" text-anchor="middle">8 / 15 模型 &gt;15% 跑不起来</text>
+      <text x="460" y="270" font-size="14" fill="#1e40af" text-anchor="middle">执行层丢掉任务</text>
+      <text x="460" y="300" font-size="14" fill="#334155" text-anchor="middle">Granite-4.2-8B：68%</text>
+      <text x="460" y="326" font-size="14" fill="#334155" text-anchor="middle">每局 93.7k token</text>
+      <text x="460" y="352" font-size="14" fill="#475569" text-anchor="middle">失败关在可运行程序</text>
+
+      <rect x="616" y="76" width="280" height="300" rx="8" fill="#ecfdf5" stroke="#047857" stroke-width="2"/>
+      <text x="756" y="110" font-size="16" font-weight="700" fill="#047857" text-anchor="middle">代码从 schema 推导</text>
+      <text x="756" y="138" font-size="14" fill="#334155" text-anchor="middle">CapLite 对照</text>
+      <text x="756" y="180" font-size="15" fill="#0f172a" text-anchor="middle">成功攻击 0 / 13,935</text>
+      <text x="756" y="206" font-size="15" fill="#0f172a" text-anchor="middle">审计 25,452 局无违规</text>
+      <text x="756" y="232" font-size="15" fill="#0f172a" text-anchor="middle">每局 17.1k token</text>
+      <text x="756" y="270" font-size="14" fill="#065f46" text-anchor="middle">写完整性按构造成立</text>
+      <text x="756" y="300" font-size="14" fill="#334155" text-anchor="middle">攻击下效用 29.0%</text>
+      <text x="756" y="326" font-size="14" fill="#334155" text-anchor="middle">无防御是 50.2%</text>
+      <text x="756" y="352" font-size="14" fill="#475569" text-anchor="middle">同一张表 1，不是新基准</text>
+    </svg>
+    <figcaption>图 2. 第 2 节的两类失败，加上表 1 的 CapLite 对照。零攻击模型数和 k 不要合成一个百分比。</figcaption>
+  </figure>
+</section>
+
+<section id="caplite">
+  <h2><span>4</span>不让模型写授权</h2>
+  <p>CapLite 把授权从模型手里拿开。策略由工具 schema 按固定规则推导：名字和文档字符串开头的动词决定只读还是写，写工具的参数默认是权威字段，除非 schema 标成自由文本、时间或枚举布尔。目的地一类字段，即便在只读工具里也当权威字段，因为去拉攻击者指定的 URL 本身就是效果。认不出的动词记成未分类，中介直接拒绝，原文写这会掉效用。附录 A 列出全部 74 个工具的分类，只覆盖 AgentDojo 这一套。</p>
+  <p>规划器只看见用户请求和工具文档，一次受限调用最多提交十个工具调用，写调用在读到任何工具结果之前锁定，后面不能加、删、改顺序。绑定器只在抽出的候选标识符里选，自己不写值。中介是确定性代码：每个已锁定的写，权威参数必须和请求里出现的值完全相等，请求的子串不算。用户只描述、没写出那个值时，CapLite 会问人。评测对这类确认一律答否，并把该局计失败。</p>
+  <p>原文给出两条按构造成立的性质。已执行的写调用是规划器锁定集合的前缀，顺序不变。每个已执行写的每个权威参数，都在请求的取值集合里，或经过用户确认。注入可以改读哪些、改时间参数、改终答，不能追加写、换写工具，也不能把收件人、账户、金额、渠道、对象或目的地改成用户没写过的值。自由文本参数由撰写器写，不受这条约束。轨迹审计在运行中的 Agent 之外，用记下的请求和工具注册表重推策略和取值集合，检查每一次已执行调用：25,452 局 CapLite 里没有违规。</p>
+  <p>表 1 上 CapLite 的攻击下效用 29.0%，CaMeL 27.2%，每局 token 17.1k，约为 CaMeL 93.7k 的 18%。相对无防御，攻击下效用低 21 个点（29.0% 对 50.2%）。15 个模型合计 1,455 条良性局（97 × 15），CapLite 失败 1,046 条。附录 D 按函数名、不按参数，用启发式把这 1,046 条各归一个主因：43% 记成锁定计划缺了任务需要的写，38% 记成该跑的写都跑了、或只读任务已经作答，任务仍失败。确认请求占失败的 8% 到 12%（附录 H，案例 3）。攻击局里 CapLite 至少执行一次写的比例是 24.4%，CaMeL 是 26.2%；原文没另写这两格的局数。</p>
+  <p>8 个稳健性模型上，表 2 的分母换成 7,432。<code>important_instructions</code> 上 CapLite 是 0 / 7,432，CaMeL 3 / 7,432；<code>tool_knowledge</code> 上是 0 / 7,432 对 1 / 7,432；读外泄 0 / 168；描述语碰撞 0 / 104。原文把 URL 攻击的失败归因于中介检查每次读的目的地，把描述语攻击的失败归因于标识符必须在请求里出现。这两条攻击没有对应的消融，消融只在 <code>important_instructions</code> 上做。</p>
+  <p>同一 8 个模型的消融，分母是 7,432，不要和 15 模型主表的 28.1% / 29.0% 并读。去掉中介：良性效用 31.2%，攻击下 29.6%，成功攻击 106，ASR 1.4%，八个模型上都有。规划器读过观察之后仍可追加写：53 次攻击，ASR 0.7%。绑定器改为自由写值、仍由中介检查：攻击仍是 0，良性效用掉 2.0 个点。去掉报告器，良性效用从 25.6% 到 12.5%，攻击下从 26.1% 到 11.0%。</p>
+</section>
+
+<section id="yours">
+  <h2><span>5</span>你的运行位</h2>
+  <p>自己的运行位如果按用户请求，让模型生成一份 Progent 式权限策略、CaMeL 式程序、IPIGuard 式依赖图或 DRIFT 式清单，再交给代码执行，这篇预印本测的就是这一层：在 15 个 1.7B–35B 开源权重模型上，按这四套移植实现，由模型写的允许集放行了攻击。IPIGuard 的图在读工具结果之前就定了，仍在 13 / 15 个模型上被攻破，所以成败不取决于「模型有没有读过工具结果」。</p>
+  <p>14 / 15 是「单次运行里至少一个成功攻击」的模型数，不是局数。局数是 Progent 676 / 13,935。温度 0、种子 0，每个配置一次。Progent 最小的两格是 Ministral-3-8B 的 5 / 929 和 LFM2.5-2.6B 的 8 / 929，没有区间。零攻击也要看效用：DRIFT 四个零攻击模型的 UA（分母每个模型 949 对）在 4.7% 到 9.5%。</p>
+  <p>CapLite 在这个基准上把写完整性收到 schema 和请求上的确定性检查。它不保证自由文本、不覆盖那 20 对只改终答的 Travel 注入，也不在用户没写出权威值时替你填。评测把确认当失败。消融去掉的是中介和写调用锁定，原文没有做「只把策略改成代码生成、其余不变」的对照。</p>
+  <p>和已有几篇相邻：<a href="/frontier/2026-10-11-option-labels-are-input.html">护栏的选项名也是输入</a>；<a href="/frontier/2026-11-04-conditional-wording-loses.html">同一条政策换个写法，遵守率就变了</a>；<a href="/frontier/2026-11-03-kept-rule-still-violates.html">压缩后规则还在，违规率仍高于完整历史</a>。这里多出来的是：在这 15 个模型上，执行层再严，模型写出来的允许集仍会放行攻击。</p>
+</section>
+
+<section id="limit">
+  <h2><span>6</span>这篇没测到的</h2>
+  <p>全部数字来自 AgentDojo 四个套件，这是原文 Limitations 写下的范围。CapLite 的攻击下效用比无防御低 21 个点；在 Gemma-4-E4B 和 Gemma-4-12B 上显著低于 CaMeL。用户没写出的权威值必须确认，评测答否。Travel 里 20 对只改终答的注入，原文标明在写完整性之外，CapLite 不防。温度 0、种子 0，每个配置一次。CapLite 的动词规则只覆盖这 74 个工具，未分类工具一律拒绝。附录 D 的失败归因按函数名、不按参数。</p>
+  <p>CaMeL、IPIGuard 用作者代码，只换模型接口。Progent 是在 AgentDojo 流水线里重现其语义，因为作者评测走 MCP；标题里的 14 / 15 来自这个重实现。DRIFT 另有解析器改动：有括号才去掉括号。AgentDojo 自带的工具过滤、spotlighting、重复用户提示和注入检测器只在 8 个模型上跑，放在附录 B，不进表 1。同一 8 个模型上，工具过滤是 226 / 7,432（ASR 3.04%，UA 31.2%，每局 11.1k token），表 2 的 Progent 是 466 / 7,432。没有复跑作者的容器，数字从 PDF 全文抄。</p>
+</section>
+
+<section id="src">
+  <h2><span>7</span>出处</h2>
+  <p>2026 年 11 月 12 日，arXiv 收到 <a href="https://arxiv.org/abs/2611.17115">CapLite: Prompt-Injection Defense for Small Language Model Agents without Model-Written Security Artifacts</a>（arXiv:2611.17115v1，cs.AI；作者 Zimo Xu、Wenzhuo Liu、Hideki Nakayama；单位署 The University of Tokyo 与 Institute of Automation, CAS）。arXiv 预印本。许可是 CC BY 4.0。</p>
+  <ul>
+    <li>预印本 abs：<a href="https://arxiv.org/abs/2611.17115">arXiv:2611.17115</a>。HTML 全文：<a href="https://arxiv.org/html/2611.17115v1">arxiv.org/html/2611.17115v1</a>。PDF：<a href="https://arxiv.org/pdf/2611.17115">arxiv.org/pdf/2611.17115</a>。提交 2026-11-12。科目 cs.AI。</li>
+    <li>14 / 15、13 / 15、11 / 15、CaMeL 最多 68% 程序跑不起来、CapLite 0 / 13,935、UA 29.0% 对 27.2%、17.1k 为 CaMeL 的 18%，从摘要与第 2 节抄。93.7k 从表 1 抄，第 1、2 节的 94k 并记。</li>
+    <li>表 1 的 BU / UA / ASR / k / 零攻击 / token，从原文表 1 抄。ASR 分母 15 × 929 = 13,935，从第 4 节与表注抄。</li>
+    <li>97 条用户任务、949 对、929 工具目标、20 对来自同一个 Travel 注入目标、AgentDojo v1.2.2、15 个模型名单、温度 0、种子 0，从第 4 节抄。</li>
+    <li>Qwen3-32B 上 Progent 132 / 929、策略拦写 25–77%（图 6(c)，攻击局里已尝试写调用的份额）、良性效用 59.4% → 43.8%、DRIFT 四格 UA 4.7 / 9.5 / 6.7 / 4.7，从第 2 节与表 5 抄。</li>
+    <li>CaMeL 20 / 13,935（17 次在 LFM2.5-2.6B）、8 / 15 模型超过 15% 跑不起来、Granite-4.2-8B 的 68%、Gemma-4 的 22.9% → 3.3%、|ρ| ≤ 0.33，从第 2 节抄。图 6(a) 坐标是 CaMeL 局百分比。</li>
+    <li>Progent 在 Qwen3 四格 28 / 37 / 40 / 132、Gemma-4 三格 0 / 18 / 118，从图 3、表 5 与第 2 节抄。Qwen3-4B-Instruct-2507 的 55 / 929、Qwen3.5 的 75 与 74、Qwen3.6-35B-A3B 的 22，从表 5 抄。</li>
+    <li>74 个工具、锁定写、请求取值、25,452 局审计，从第 3 节抄。</li>
+    <li>表 2 的 0 / 7,432、0 / 168、0 / 104，从表 2 抄。消融 106 / 53 / 0 和 25.6 / 26.1，从表 3 抄，分母 8 × 929 = 7,432。</li>
+    <li>良性失败 1,046 / 1,455，其中 43% / 38% 与确认 8–12%，从附录 D、表 9 与第 5.2 节抄。至少一次写 24.4% 对 26.2%、相对无防御低 21 个点，从第 5.2 节抄。</li>
+    <li>局限：一个基准、效用差距、确认、Travel 20 对，从 Limitations 抄。未分类工具拒绝、附录 D 按函数名，从第 3 节与附录 D 抄。Progent 重现语义、DRIFT 解析器，从附录 E 抄。工具过滤 226 / 7,432，从附录 B 表 8 抄。</li>
+  </ul>
+  <p>提交日期和科目从 PDF 页眉抄。OpenAI 新闻页本轮直接请求 403，未打开、未写入数字。Anthropic 新闻页打开了，条目未写入判断。Hacker News 热帖与「agent」新帖扫过，没有进判断。X / Reddit 今日未覆盖。Product Hunt 本轮 403。GitHub Trending 匿名页落到登录墙，未写入判断。</p>
+  <p><a href="/frontier/rsi-llm-agent-self-evolution.html">09-26 RSI</a> 是谱系，<a href="/frontier/llm-agent-tech-landscape.html">09-27 全景</a> 是增量在哪一层。本文写运行位上的一条缝：执行层再严，模型写出来的权限策略仍会在 14 / 15 个开源权重模型上放行攻击。</p>
+</section>
+</main>
+</div>
+<a class="fr-top" href="#" aria-label="返回页首">↑</a>
+</body>
+</html>

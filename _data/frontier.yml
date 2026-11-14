@@ -1,5 +1,9 @@
 # 前沿技术栏目：独立 HTML 洞察索引。
 # 新增一篇：把 HTML 放到 /frontier/<slug>.html，再在这里加一条。
+- title: "权限策略让模型写，15 个开源权重模型里有 14 个会放行攻击"
+  date: "2026-11-14"
+  url: /frontier/2026-11-14-written-policy-admits.html
+  summary: "几套间接注入防御都把「允许什么」交给模型先写一份策略、程序、依赖图或参数清单，再由代码去执行这份工件。一篇预印本在 AgentDojo 上用 15 个开源权重模型（1.7B 到 35B）测了四套这种防御。Progent 生成的权限策略在 14 个模型上放行了至少一次攻击，合计 676 / 13,935；IPIGuard 的图是 13 / 15，DRIFT 的约束是 11 / 15。同一套模型自己写的 CaMeL 程序几乎不放行攻击，但 Granite-4.2-8B 上 CaMeL 局里有 68% 程序跑不起来。"
 - title: "第一次过测之后，成功跑里中位还剩 35% 到 60% 的步"
   date: "2026-11-13"
   url: /frontier/2026-11-13-lag-after-first-correct.html
