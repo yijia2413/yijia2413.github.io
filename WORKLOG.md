@@ -1,5 +1,25 @@
 # 工作记录
 
+## 2026-11-15 23:56:28 +08:00｜Frontier 科技视觉改版
+
+状态：完成本地修改，未推送、未发布。
+
+入口改为墨蓝科技刊物风格，增加银白大标题、冰蓝点阵轨道图、文章网格和更新日期。48 条文章标题、摘要、日期与链接完整保留，继续从 `_data/frontier.yml` 生成。48 篇文章共用的导航和标题区同步采用深色视觉，正文保留浅色阅读区、原图表和目录交互。首页图形只运行 3 秒，支持减少动态效果与无 JavaScript 的静态降级。
+
+使用 `npx -y modern-web-guidance@latest install --agent codex -y` 安装 1.0.0 到项目 `.agents/skills/modern-web-guidance/`，本地副本加入忽略规则，`skills-lock.json` 记录来源与哈希。来源 GoogleChrome/modern-web-guidance，Apache-2.0，核对远端 HEAD 为 `4dd968349e54ca45a05dd5c818fb035c9054b022`；安装副本共 210 个 Markdown/JSON 文件，无可执行脚本。执行安装、查询时设置 `DISABLE_TELEMETRY=1`。采用 css-layout 与 motion 指南，未添加前端运行时依赖；可通过该 CLI uninstall 命令移除项目安装。
+
+验证：
+
+- PASS — 151 次 Chromium 渲染：首页 4 种宽度，目录内 49 个独立 HTML 各 3 种宽度；无全页横溢、缺图、目录断锚或脚本异常。48 篇收录文章之外另含 1 个历史 HTML。桌面和手机代表页截图已目检。
+- PASS — 键盘跳过链接与文章焦点、手机折叠目录、章节定位、阅读进度、返回顶部、减少动态效果、无 JavaScript 阅读、打印标题对比度。
+- PASS — Liquidjs 严格模板渲染、48 条索引内容与源 YAML 一致、内部文章路径、UTF-8、安装锁文件结构、两份 JavaScript 的 `node --check`、`git diff --check`。
+- PASS — 独立只读评审，无 Critical/Major；打印首篇标题颜色的 Minor 已修复并在浏览器复验。
+- FAIL（已有问题）— 原有模板测试 4 通过、1 失败：Papers 测试仍断言旧过滤语法，`papers.html` 本轮未修改。
+- NOT RUN — 完整 Jekyll 构建，环境未安装 Ruby/Jekyll；入口只完成 Liquid 严格渲染与浏览器验证。
+- PASS — 渲染后的栏目入口已更新到 Notion「04 预研与调研 → Frontier」，页面 `41928be7-1f6b-8141-8bf8-f2e7b0dad275`。
+
+Git 内容提交：`d28f1743cdf6c4e1ed61be2181558f321f6a4d3a`。
+
 ## 2026-11-12 01:10:55 +08:00｜Frontier 文章排版与文字优化
 
 状态：完成。
