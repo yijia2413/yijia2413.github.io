@@ -3,3 +3,6 @@ _site
 .DS_Store
 .jekyll-cache
 .worktrees/
+
+# Project-local guidance installed with npx; provenance is in skills-lock.json.
+.agents/skills/modern-web-guidance/

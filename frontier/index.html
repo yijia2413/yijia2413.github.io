@@ -1,20 +1,58 @@
 ---
-layout: page
+layout: null
 title : Frontier
 header : Frontier
 group : navigation
 order : 250
 permalink: /frontier/
 ---
-{% include JB/setup %}
-
-<h1>Frontier</h1>
-
-<ul class="bloglist">
-{% for item in site.data.frontier %}
-<li>
-  <a class="post-link" href="{{ item.url }}">{{ item.date }} {{ item.title }}</a>
-  {% if item.summary %}<div>{{ item.summary }}</div>{% endif %}
-</li>
-{% endfor %}
-</ul>
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Frontier：关于大模型、Agent 与工程实践的论文解读、技术观察和长文。">
+  <meta name="theme-color" content="#080f1c">
+  <title>Frontier · 技术与研究</title>
+  <link rel="stylesheet" href="assets/frontier.css">
+  <script src="assets/frontier.js" defer></script>
+</head>
+<body>
+  <a class="skip-link" href="#articles">跳到文章列表</a>
+  <header class="site-nav shell">
+    <a class="brand" href="/frontier/" aria-label="Frontier 首页"><span class="brand-mark" aria-hidden="true">F<span>↗</span></span>FRONTIER</a>
+    <nav aria-label="站点导航"><a href="#articles">全部文章 ↓</a><a href="/">@xixi003 ↗</a></nav>
+  </header>
+  <main>
+    <section class="hero shell" aria-labelledby="hero-title">
+      <div class="hero-copy">
+        <p class="eyebrow"><span class="signal-dot" aria-hidden="true"></span>AI / AGENTS / ENGINEERING</p>
+        <h1 id="hero-title">Frontier<span>大模型与 Agent<br><em>技术前沿。</em></span></h1>
+        <p class="hero-description">从论文到工程现场，追踪大模型与 Agent 的新进展。读方法，也读证据和边界。</p>
+        <a class="explore" href="#articles">探索文章 <span aria-hidden="true">↘</span></a>
+      </div>
+      <div class="hero-art" aria-hidden="true">
+        <div class="art-cross cross-top">+</div><div class="art-cross cross-bottom">+</div>
+        <div class="orbit-fallback"></div><canvas id="frontier-field"></canvas>
+        <span class="art-label label-top">THE NEXT FRONTIER</span>
+        <span class="art-label label-bottom">MODELS → SYSTEMS → REALITY</span>
+      </div>
+    </section>
+    <div class="edition shell"><span>技术与研究 <span class="edition-slash">/</span> 独立观察</span><span>{{ site.data.frontier | size }} 篇文章 <span class="edition-slash">/</span> 最近更新 {{ site.data.frontier.first.date }}</span></div>
+    <section class="archive shell" id="articles" aria-labelledby="archive-title">
+      <div class="archive-heading"><div><p class="eyebrow">THE READING ROOM</p><h2 id="archive-title">前沿阅读</h2></div><p>论文解读 · 工程实践 · 技术观察</p></div>
+      <div class="article-grid">
+      {% for item in site.data.frontier %}
+        <article class="story{% if forloop.first %} story-featured{% endif %}">
+          <div class="story-meta"><time datetime="{{ item.date }}">{{ item.date }}</time>{% if forloop.first %}<span class="latest">最新文章</span>{% endif %}<span class="story-arrow" aria-hidden="true">↗</span></div>
+          <h3><a href="{{ item.url | escape }}">{{ item.title | escape }}</a></h3>
+          {% if item.summary %}<p class="story-summary">{{ item.summary | escape }}</p>{% endif %}
+          <span class="story-read" aria-hidden="true">阅读全文 <span>→</span></span>
+        </article>
+      {% endfor %}
+      </div>
+    </section>
+  </main>
+  <footer class="site-footer shell"><a class="footer-wordmark" href="/frontier/">FRONTIER<span>↗</span></a><div><p>大模型 / Agent / 工程实践</p><a href="/">返回 @xixi003 的博客 ↗</a></div></footer>
+</body>
+</html>
