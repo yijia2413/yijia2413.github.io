@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>给下一道未知任务的记忆，该留路径和检查命令 · Frontier</title>
+  <style>
+    :root { --ink:#0f172a; --muted:#475569; --line:#e2e8f0; --bg:#f8fafc; --blue:#1d4ed8; --blue-bg:#eff6ff; --amber:#b45309; --green:#047857; --rose:#be123c; }
+    * { box-sizing: border-box; }
+    body { margin:0; font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Noto Sans SC",sans-serif; background:var(--bg); color:var(--ink); line-height:1.75; font-size:17px; }
+    header { background:#0f172a; color:#f8fafc; padding:36px 24px 28px; border-bottom:4px solid #2563eb; }
+    header .inner { max-width:1080px; margin:0 auto; }
+    .badge { display:inline-block; border:1px solid #93c5fd; color:#bfdbfe; border-radius:999px; padding:2px 12px; font-size:13px; }
+    h1 { font-size:2rem; line-height:1.3; margin:12px 0; }
+    header p { color:#cbd5e1; margin:0; max-width:760px; }
+    .layout { max-width:1080px; margin:28px auto 64px; padding:0 20px; display:grid; grid-template-columns:220px minmax(0,1fr); gap:28px; }
+    aside { position:sticky; top:52px; align-self:start; background:#fff; border:1px solid var(--line); border-radius:12px; padding:14px; }
+    aside p { font-size:12px; letter-spacing:.06em; color:var(--muted); margin:0 0 8px; }
+    aside a { display:block; color:var(--ink); text-decoration:none; font-size:14px; padding:6px 8px; border-radius:6px; }
+    aside a:hover { background:var(--blue-bg); color:var(--blue); }
+    h2 { font-size:1.35rem; margin:0 0 12px; }
+    h2 span { display:inline-block; background:var(--blue); color:#fff; border-radius:6px; font-size:13px; padding:2px 8px; margin-right:8px; }
+    h3 { font-size:1.08rem; margin:20px 0 10px; }
+    section { background:#fff; border:1px solid var(--line); border-radius:14px; padding:26px 28px; margin-bottom:22px; }
+    p { margin:0 0 14px; }
+    a { color:var(--blue); overflow-wrap:anywhere; }
+    code { background:#f1f5f9; border-radius:4px; padding:1px 5px; font-size:15px; overflow-wrap:anywhere; }
+    main { min-width:0; }
+    figure { margin:16px 0; background:#fff; border:1px solid var(--line); border-radius:12px; padding:10px; overflow-x:auto; }
+    figure svg { display:block; min-width:700px; }
+    figcaption { color:var(--muted); font-size:14px; margin-top:6px; }
+    .tw { overflow-x:auto; margin:0 0 14px; }
+    .tw table { min-width:620px; }
+    table { width:100%; border-collapse:collapse; font-size:15px; }
+    th, td { border:1px solid var(--line); padding:8px 10px; text-align:left; vertical-align:top; }
+    th { background:#f1f5f9; }
+    ul { margin:0 0 14px; padding-left:22px; }
+    ol { margin:0 0 14px; padding-left:22px; }
+    li { margin-bottom:6px; }
+    .note { background:#f1f5f9; border-left:4px solid var(--muted); padding:12px 16px; border-radius:0 8px 8px 0; font-size:16px; margin:0 0 14px; }
+    .quote { background:#fffbeb; border-left:4px solid var(--amber); padding:12px 16px; border-radius:0 8px 8px 0; font-size:15px; overflow-wrap:anywhere; margin:0 0 14px; }
+    svg text { font-family:-apple-system,"PingFang SC","Noto Sans SC",sans-serif; }
+    @media (max-width:860px) { .layout { grid-template-columns:minmax(0,1fr); } aside { position:static; } h1 { font-size:1.55rem; } section { padding:18px 16px; } }
+  </style>
+  <link rel="stylesheet" href="assets/article.css">
+  <script src="assets/article.js" defer></script>
+</head>
+<body class="frontier-article">
+<a class="fr-skip" href="#article-content">跳到正文</a>
+<nav class="fr-nav" aria-label="站点导航">
+  <a class="fr-brand" href="/frontier/"><span class="fr-mark" aria-hidden="true">F</span>Frontier<span class="fr-nav-label">技术与研究</span></a>
+  <a class="fr-home" href="/">@xixi003 <span aria-hidden="true">↗</span></a>
+</nav>
+<div class="fr-progress" aria-hidden="true"><div></div></div>
+
+<header class="fr-hero">
+  <div class="inner">
+    <span class="badge">FRONTIER · 2026-11-15 · Agent Runtime</span>
+    <h1>给下一道未知任务的记忆，该留路径和检查命令</h1>
+    <p>编码 Agent 连做同一仓库的下一道题时，上一道题该留下什么？一篇预印本在 Qwen3.8-27B-FP8、linked 边界上，把当前轨迹切成七段当记忆，分别拿掉一段，看下一道未知任务会多走几步。删掉命令或读过的仓库内容，中位会多 2 步和 1 步；删掉推理正文或 diff 正文，步数不增。按这个结果写成的记忆，在 ChainSWE 测试半、同一 27B 上，演员未训练时过测率 21.0% → 23.4%、步少 10%；再训练该模型后过测率 25.7%、步少 17%，含写记忆调用的总 token 少 11%。17% 里含训练本身让演员更省步的部分，原文没拆开。稿件推断：跨任务记忆该先留仓库位置和可执行检查。</p>
+  </div>
+</header>
+<div class="fr-layout">
+<aside aria-label="文章目录" class="fr-toc">
+<details open="">
+<summary>本文目录<span aria-hidden="true">＋</span></summary>
+<div class="fr-toc-links">
+<a href="#what">1 下一道题要锚点</a>
+<a href="#how">2 怎么量一段值多少</a>
+<a href="#six">3 六套模型上步数怎么变</a>
+<a href="#train">4 训练之后还少几步</a>
+<a href="#yours">5 你的运行位</a>
+<a href="#limit">6 这篇没测到的</a>
+<a href="#src">7 出处</a>
+</div>
+</details>
+</aside>
+<main class="fr-content" id="article-content">
+<section id="what">
+  <h2><span>1</span>下一道题要锚点</h2>
+  <p><a href="https://arxiv.org/abs/2611.17316">CoReMem: Cost-Internalizing Memory for Successive Coding Tasks with Prospective Valuation</a> 盯的是连续修仓库：一道题做完，工作树留给下一道，轨迹本身丢掉。下一道题是什么，写记忆的时候还不知道。作者把这种记忆叫 CoReMem，把该留下的东西叫锚点：仓库里的位置，以及能原样再跑的检查。</p>
+  <p>原文图 1 用 flake8-simplify 做示意，演员是训练后的。上一道题结束时写下 <code>WHERE</code> 和 <code>VERIFY</code>，下一道题在第 1 步和第 6 步用上它们，少做开头那一轮翻仓库。图注写明步数是示意，不是表 1 的实测。</p>
+  <p>摘要里的主结果对着 ChainSWE、Qwen3.8-27B-FP8：相对「同一套未训练的发出命令模型、不写记忆」，过测率 21.0% → 25.7%，步少 17%，含写记忆模块调用的 cache-aware 总 token 少 11%。原文把发出命令的模型叫 actor，下文写成演员模型。测试半是 48 条链、96 个任务边界，过测率的分母是这 96 道下一题。表 1 同一行：步从 35.1 到 29.2，总 token 从 32.2K 到 28.5K，写记忆那一侧 1.9K。括号里是会话中位数，正文比较用均值。17% 和 +4.7 个点把记忆内容和训练捆在一起：附录 E 里同一 27B 在没有记忆的 Verified 上，训练后也少 7% 步（28.3 → 26.2）。表 1 没有「不写记忆、训练后」这一行，原文正文也没报 21.0% → 25.7% 的区间。未训练演员加 ReasoningBank 的过测率是 25.2%（+20%），步只少 2%，总 token 高 110%；过测率和训练后 CoReMem 的 25.7% 接近，CoReMem 的差在步和 token。</p>
+  <div class="tw">
+    <div class="fr-table" tabindex="0" role="region" aria-label="数据表格，可横向滚动"><table>
+      <thead>
+        <tr>
+          <th>27B 测试半</th>
+          <th>过测率</th>
+          <th>步（均值 / 中位）</th>
+          <th>演员 token（K）</th>
+          <th>写记忆（K）</th>
+          <th>总 token（K）</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td>不写记忆</td><td>21.0%</td><td>35.1 / 26.0</td><td>32.2</td><td>—</td><td>32.2</td></tr>
+        <tr><td>CoReMem，演员未训练</td><td>23.4%（+11%）</td><td>31.8 / 22.4（−10%）</td><td>30.4</td><td>2.0</td><td>32.4（0%）</td></tr>
+        <tr><td>CoReMem，演员训练后</td><td>25.7%（+22%）</td><td>29.2 / 20.0（−17%）</td><td>26.6</td><td>1.9</td><td>28.5（−11%）</td></tr>
+      </tbody>
+    </table></div>
+  </div>
+  <p>括号里的百分数是相对「不写记忆」同一演员。23.4% 和 25.7% 不要和 11%、22% 混成一个倍数：后两个是相对变化，前两个是过测率。分母都是测试半 96 道下一题。</p>
+</section>
+
+<section id="how">
+  <h2><span>2</span>怎么量一段值多少</h2>
+  <p>一条轨迹按角色切成七段：演员自己的推理、发出的命令、读到的仓库内容、测试输出、留下的 diff、结局、草稿文件。估值在 Qwen3.8-27B-FP8、linked 边界上做：下一道题从上一道留下的树起步，整段轨迹当记忆跑一遍，再拿掉其中一段跑一遍。unlinked 边界和其他演员没有做分段删除。中位步差记成 ν，中位演员 token 差记成 κ。附录 I 写这些读数默认在 linked 边界上，除非另行说明。测试半 linked 是 54 / 96。命令段 56 / 27 条边界上删了会多走，BH 校正后 p* = .0070，中位多 2 步；读过的仓库内容 52 / 34，p* = .0302，中位多 1 步。两对数加起来都超过 54，原文没写这些计数来自哪个划分、几次重放。</p>
+  <p>表 8 的分数对是「这段帮了下一题 / 这段害了下一题」：帮了 = 删了会多走，害了 = 删了会少走。推理正文删了不多走步（34 / 45），还省 1.14K token（未校正 p = .023）。diff 正文同样不多走步（47 / 44），省 0.94K token（未校正 p = .021）。没检出步差不等于差为零，原文没给这两格的区间。测试命令带退出码，比贴全文输出中位少 1 步（53 / 30，p* = .045）；这格比的是缩短形式，不是整段删除。草稿路径里 38% 在 <code>/tmp</code> 下，原文写到下一条命令时已经没了，清单本身不省步（36 / 48）。27B 不写记忆的步是均值 35.1、中位 26.0，中位 +2 / +1 步对着这个量级。</p>
+  <figure>
+    <svg viewBox="0 0 920 520" width="100%" role="img" aria-label="六张卡片：删掉命令或多 2 步，删掉仓库内容或多 1 步，推理和 diff 正文不多走步">
+      <rect x="1" y="1" width="918" height="518" rx="10" fill="#fff" stroke="#e2e8f0"/>
+      <text x="24" y="32" font-size="16" font-weight="700" fill="#0f172a">删掉哪一段，下一道未知任务会多走几步</text>
+      <text x="24" y="56" font-size="14" fill="#475569">27B、linked 边界、中位步差。正数表示删了会多走。分数对是帮了/害了下一题；计数加总超过 54，原文未说明总体。</text>
+
+      <rect x="24" y="76" width="286" height="188" rx="8" fill="#ecfdf5" stroke="#047857" stroke-width="2"/>
+      <text x="167" y="108" font-size="15" font-weight="700" fill="#047857" text-anchor="middle">命令 · 留下</text>
+      <text x="167" y="156" font-size="32" font-weight="700" fill="#0f172a" text-anchor="middle">+2 步</text>
+      <text x="167" y="188" font-size="14" fill="#334155" text-anchor="middle">56 / 27，p* = .0070</text>
+      <text x="167" y="214" font-size="14" fill="#475569" text-anchor="middle">写成 VERIFY，带退出码</text>
+      <text x="167" y="240" font-size="14" fill="#475569" text-anchor="middle">失败的检查也留下</text>
+
+      <rect x="322" y="76" width="276" height="188" rx="8" fill="#ecfdf5" stroke="#047857" stroke-width="2"/>
+      <text x="460" y="108" font-size="15" font-weight="700" fill="#047857" text-anchor="middle">仓库内容 · 留下</text>
+      <text x="460" y="156" font-size="32" font-weight="700" fill="#0f172a" text-anchor="middle">+1 步</text>
+      <text x="460" y="188" font-size="14" fill="#334155" text-anchor="middle">52 / 34，p* = .0302</text>
+      <text x="460" y="214" font-size="14" fill="#475569" text-anchor="middle">写成 CONTEXT / WHERE</text>
+      <text x="460" y="240" font-size="14" fill="#475569" text-anchor="middle">路径和代码名</text>
+
+      <rect x="610" y="76" width="286" height="188" rx="8" fill="#eff6ff" stroke="#1d4ed8" stroke-width="2"/>
+      <text x="753" y="108" font-size="15" font-weight="700" fill="#1d4ed8" text-anchor="middle">测试输出 · 缩短</text>
+      <text x="753" y="156" font-size="32" font-weight="700" fill="#0f172a" text-anchor="middle">+1 步</text>
+      <text x="753" y="188" font-size="14" fill="#334155" text-anchor="middle">缩短形式，不是整段删除</text>
+      <text x="753" y="214" font-size="14" fill="#475569" text-anchor="middle">53 / 30，p* = .045</text>
+      <text x="753" y="240" font-size="14" fill="#475569" text-anchor="middle">留下 TESTS 命令和退出码</text>
+
+      <rect x="24" y="280" width="286" height="188" rx="8" fill="#fff1f2" stroke="#be123c" stroke-width="2"/>
+      <text x="167" y="312" font-size="15" font-weight="700" fill="#be123c" text-anchor="middle">推理正文 · 丢掉</text>
+      <text x="167" y="360" font-size="32" font-weight="700" fill="#0f172a" text-anchor="middle">0 步</text>
+      <text x="167" y="392" font-size="14" fill="#334155" text-anchor="middle">34 多走 / 45 少走</text>
+      <text x="167" y="418" font-size="14" fill="#475569" text-anchor="middle">省 1.14K token，p = .023</text>
+      <text x="167" y="444" font-size="14" fill="#475569" text-anchor="middle">模板不写理由</text>
+
+      <rect x="322" y="280" width="276" height="188" rx="8" fill="#fff1f2" stroke="#be123c" stroke-width="2"/>
+      <text x="460" y="312" font-size="15" font-weight="700" fill="#be123c" text-anchor="middle">diff 正文 · 丢掉</text>
+      <text x="460" y="360" font-size="32" font-weight="700" fill="#0f172a" text-anchor="middle">0 步</text>
+      <text x="460" y="392" font-size="14" fill="#334155" text-anchor="middle">47 多走 / 44 少走</text>
+      <text x="460" y="418" font-size="14" fill="#475569" text-anchor="middle">省 0.94K token</text>
+      <text x="460" y="444" font-size="14" fill="#475569" text-anchor="middle">只留 DID 的路径和符号</text>
+
+      <rect x="610" y="280" width="286" height="188" rx="8" fill="#fff7ed" stroke="#b45309" stroke-width="2"/>
+      <text x="753" y="312" font-size="15" font-weight="700" fill="#b45309" text-anchor="middle">草稿文件 · 丢掉</text>
+      <text x="753" y="360" font-size="32" font-weight="700" fill="#0f172a" text-anchor="middle">0 步</text>
+      <text x="753" y="392" font-size="14" fill="#334155" text-anchor="middle">36 多走 / 48 少走</text>
+      <text x="753" y="418" font-size="14" fill="#475569" text-anchor="middle">38% 路径在 /tmp，已消失</text>
+      <text x="753" y="444" font-size="14" fill="#475569" text-anchor="middle">VERIFY 禁止 cd 和 /tmp</text>
+    </svg>
+    <figcaption>图 1. 附录 I / 表 8。除「测试输出」外，分数对是帮了 / 害了下一题（删了多走 / 删了少走）。测试输出比的是退出码对全文。</figcaption>
+  </figure>
+  <p>拼起来的记忆，在 linked 边界上保住整段轨迹的中位步收益，2 步里的 2 步，体积是 1,056 对 17,320 字符，约 6%。比值区间 [0.50, 2.00]，下界恰为作者设的 0.50 保留门槛。作者把位置和检查叫锚点：带行号的路径、代码名、测试节点 id、命令里的非开关词。短于 6 个字符的、纯常见英文或 shell 词、以及 <code>setup.py</code> / <code>conftest.py</code> / <code>/tmp</code> 这类脚手架，匹配时丢掉。附录 L 把记忆限制在至多 10 行、合计 1,200 字符。匹配器是作者自己写的字符串规则，和训练里给「用了记忆」的门控是同一套（附录 K，式 6）。</p>
+  <p>表 2 在 27B 未训练演员、测试半上数下一道题实际用了多少锚点。一条锚点算「用了」，当它只出现在记忆里，并且出现在下一道题会话的某条消息中。每条记忆用上的锚点，CoReMem 未训练是 2.24 [1.67, 2.87]，MemOp 是 2.06 [1.59, 2.51]，区间重叠。每千字符用上的锚点，CoReMem 1.32 [1.00, 1.68]，MemOp 0.92 [0.72, 1.11]，ReasoningBank 0.19 [0.14, 0.24]，Mem0 0.14 [0.08, 0.21]。后一列奖励短记忆。括号是 48 条测试链上的 95% 区间。</p>
+</section>
+
+<section id="six">
+  <h2><span>3</span>六套模型上步数怎么变</h2>
+  <p>ChainSWE 一共 100 条链，按仓库切开、不看结果：训练半 52 条链、97 个边界；测试半 48 条链、96 个边界。同一仓库不会两边都出现。测试边界里，下一题的 gold / 测试补丁碰到的文件，和前面 gold 补丁改过的文件有重叠，记成 linked，54 个；其余 42 个 unlinked。主框架是 mini-swe-agent，窗口 98K。开源权重三套也做了训练：Qwen3.5-9B、Qwen3.8-27B-FP8、Gemma-4-31B；接口三套只跑未训练记忆：Claude Opus 5.5、GPT-5.6 Luna、DeepSeek-V4-Flash。27B 步数上限 100，其余 200；接口模型 200。</p>
+  <p>对照有：不写记忆、注入更早任务的最近一段全文、Mem0、MemOp、ReasoningBank。过测率是会话结束时隐藏测试在工作树上通过的下一题份额。一步是一次助手回合、一条命令。token 按 cache-aware 计，演员调用和写记忆模块调用分开，总 token 是两者之和。每一行是多次重放的均值：未训练 9B 12 次，27B 6 到 7 次，DeepSeek 6 次，Gemma 和 Luna 3 次，Opus 1 次。和「不写记忆」的差，用 48 条测试链上的配对 cluster bootstrap；原文把 95% 区间不含 0 叫显著。</p>
+  <div class="tw">
+    <div class="fr-table" tabindex="0" role="region" aria-label="数据表格，可横向滚动"><table>
+      <thead>
+        <tr>
+          <th>开源权重</th>
+          <th>不写记忆（过测 / 步 / 总 K）</th>
+          <th>训练后 CoReMem</th>
+          <th>过测</th>
+          <th>步</th>
+          <th>总 token</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td>Qwen3.5-9B</td><td>14.0% / 98.2 / 98.3</td><td>17.7% / 72.4 / 79.9</td><td>+27%</td><td>−26%</td><td>−19%</td></tr>
+        <tr><td>Qwen3.8-27B-FP8</td><td>21.0% / 35.1 / 32.2</td><td>25.7% / 29.2 / 28.5</td><td>+22%</td><td>−17%</td><td>−11%</td></tr>
+        <tr><td>Gemma-4-31B</td><td>11.5% / 29.9 / 32.4</td><td>14.2% / 28.5 / 29.3</td><td>+24%</td><td>−5%</td><td>−9%</td></tr>
+      </tbody>
+    </table></div>
+  </div>
+  <p>第 4.2 节写：训练后相对不写记忆，三套开源权重步都少，最多少 26%；总 token 少 9% 到 19%；过测率高 22% 到 27%；每千总 token 的过测率高 38% 到 46%，平均 41%。41% 是三个相对变化的平均，分母是各模型自己的「不写记忆」每千 token 过测率，不要和 21.0% → 25.7% 那 4.7 个百分点放进同一个倍数。</p>
+  <p>演员冻结、只换记忆时，六套模型步都少。原文写其中三套显著少 9% 到 13%；过测率五套升高，Opus 不变（38.5% 对 38.5%）；总 token 有五套落在 −7% 到 +5%。未训练 9B 的 CoReMem 总 token 是 111.7K，对不写记忆的 98.3K，高 14%，落在这五套外面。Mem0、MemOp、ReasoningBank 在它们跑过的六套里，有五套总 token 比 CoReMem 高。</p>
+  <figure>
+    <svg viewBox="0 0 920 450" width="100%" role="img" aria-label="三组柱：27B 过测率、步、总 token，不写记忆对训练后 CoReMem">
+      <rect x="1" y="1" width="918" height="448" rx="10" fill="#fff" stroke="#e2e8f0"/>
+      <text x="24" y="32" font-size="16" font-weight="700" fill="#0f172a">Qwen3.8-27B-FP8：不写记忆，对训练后的 CoReMem</text>
+      <text x="24" y="54" font-size="14" fill="#475569">测试半 48 条链、96 道下一题。过测按 25.7%=250 像素，步按 35.1=250 像素，token 按 32.2K=250 像素。</text>
+      <text x="24" y="74" font-size="14" fill="#475569">三组刻度不同，不能横比柱高。</text>
+
+      <text x="164" y="102" font-size="14" font-weight="700" fill="#0f172a" text-anchor="middle">过测率</text>
+      <rect x="88" y="180" width="70" height="204" fill="#f1f5f9" stroke="#64748b" stroke-width="2"/>
+      <text x="123" y="170" font-size="14" fill="#334155" text-anchor="middle">21.0%</text>
+      <rect x="168" y="134" width="70" height="250" fill="#ecfdf5" stroke="#047857" stroke-width="2"/>
+      <text x="203" y="124" font-size="14" fill="#047857" text-anchor="middle">25.7%</text>
+      <text x="123" y="404" font-size="14" fill="#475569" text-anchor="middle">无记忆</text>
+      <text x="203" y="404" font-size="14" fill="#475569" text-anchor="middle">CoReMem</text>
+
+      <text x="460" y="102" font-size="14" font-weight="700" fill="#0f172a" text-anchor="middle">步 / 题</text>
+      <rect x="384" y="134" width="70" height="250" fill="#fff1f2" stroke="#be123c" stroke-width="2"/>
+      <text x="419" y="124" font-size="14" fill="#be123c" text-anchor="middle">35.1</text>
+      <rect x="464" y="176" width="70" height="208" fill="#eff6ff" stroke="#1d4ed8" stroke-width="2"/>
+      <text x="499" y="166" font-size="14" fill="#1d4ed8" text-anchor="middle">29.2</text>
+      <text x="419" y="404" font-size="14" fill="#475569" text-anchor="middle">无记忆</text>
+      <text x="499" y="404" font-size="14" fill="#475569" text-anchor="middle">CoReMem</text>
+
+      <text x="756" y="102" font-size="14" font-weight="700" fill="#0f172a" text-anchor="middle">总 token（K）</text>
+      <rect x="680" y="134" width="70" height="250" fill="#fff7ed" stroke="#b45309" stroke-width="2"/>
+      <text x="715" y="124" font-size="14" fill="#b45309" text-anchor="middle">32.2</text>
+      <rect x="760" y="163" width="70" height="221" fill="#eff6ff" stroke="#1d4ed8" stroke-width="2"/>
+      <text x="795" y="153" font-size="14" fill="#1d4ed8" text-anchor="middle">28.5</text>
+      <text x="715" y="404" font-size="14" fill="#475569" text-anchor="middle">无记忆</text>
+      <text x="795" y="404" font-size="14" fill="#475569" text-anchor="middle">含写记忆</text>
+
+      <text x="24" y="432" font-size="14" fill="#334155">28.5K 已计入写记忆模块的 1.9K。步少 17%、token 少 11% 相对的是 35.1 和 32.2，不是中位数。</text>
+    </svg>
+    <figcaption>图 2. 表 1 的 27B 总体列。三组柱各自对齐自己的最大值，过测升高和步、token 降低不要读成同一根轴。</figcaption>
+  </figure>
+</section>
+
+<section id="train">
+  <h2><span>4</span>训练之后还少几步</h2>
+  <p>记忆写出来以后，演员还得决定什么时候按它做。训练组里混着带自己的记忆、不带记忆、带错仓库记忆的会话。成功的会话按 <code>W − 步数</code> 给奖，失败的只给一个小的结局项，于是步数打进成功里。带记忆和不带记忆的平均奖差，当作这条记忆对当前策略的价值。价值只加给门控标成「用了记忆里锚点」的那些步；每一步仍保留结局项。附录 C 写，去掉这笔价值、只留步数奖时，给 27B 一条错仓库记忆会多 2.1 步（区间 [+0.4, +3.9]）；加上之后是 +0.3（区间 [−1.2, +2.1]）。记忆对过测率的好处从 +1.7 个点变成 +2.3 个点。这两格的重放次数和主表不同，27B 完整方法是 6 / 6 / 3。</p>
+  <p>图 7 的 with-memory 臂重放次数和表 1 不同。只优化过测、不收步数时，27B 这一臂的步从 32.6 降到 30.4，9B 从 91.9 降到 75.5。再把成功里的步数算进奖励，降到 29.7 和 63.8。完整方法停在 29.2 和 72.4。9B 完整方法的步比「记忆加步数奖、不加价值项」高，原文没把 72.4 写成进一步下降。不要把 32.6 和表 1 未训练记忆的 31.8 并成一次下降。</p>
+  <p>相对「同一份记忆、未训练演员」，训练后再少 24% 步（9B：95.1 → 72.4）和 8% 步（27B：31.8 → 29.2）。这两格也含演员本身变省步的部分。Gemma 只做了 8 次更新，没有按预先规则选检查点。</p>
+  <p>附录 E 把同一套训练过的演员拿到没有记忆的 SWE-bench Verified 上，500 条、3 次重放。27B 过测 69.2% → 73.7%（+4.5 个点），步 28.3 → 26.2（少 7%）；9B 过测 49.1% → 55.5%（+6.4 个点），步少 22%。未训练行走的是零更新的 LoRA 路径，不是原生基座。换框架看过一次：测试半 96 道下一题里的 94 道，同一 27B 和同一份记忆进 OpenHands，两次重放均值，token 按 raw、含写记忆、不计前缀缓存，不能和表 1 比。不写记忆过测 10.6%、步 33.8；CoReMem 未训练 16.5%、步 38.6；训练后 21.3%、步 45.9。两种 CoReMem 步都高于不写记忆。每百万 token 过测率未训练 13.3、训练后 13.0，对不写记忆的 11.9。ReasoningBank 过测 21.8，高于训练后 CoReMem 的 21.3，步 48.0。不要和 mini-swe-agent 主表的 29.2 对 35.1 并读。</p>
+</section>
+
+<section id="yours">
+  <h2><span>5</span>你的运行位</h2>
+  <p>自己的运行位如果在同一仓库上连续派任务，并且会在上一道结束时写一笔跨任务记忆，这篇预印本测的就是写什么。分段估值只在 27B、linked 边界、把整段轨迹当记忆来做删除。按「下一道未知任务会少走几步」来留，该留的是路径、符号和可再跑的检查；推理、diff 正文、已经消失的 <code>/tmp</code> 草稿，在这套估值里不必留给下一道题。</p>
+  <p>标题里的 21.0% → 25.7% 是 Qwen3.8-27B-FP8 在 ChainSWE 测试半、mini-swe-agent 上，训练后的 CoReMem 对未训练、不写记忆。17% 步少含训练本身。三套开源权重都训练了；接口三套只跑了未训练记忆。Opus 过测率不变，步从 12.6 到 11.8。Mem0 / MemOp / ReasoningBank 在这六套演员模型上总 token 常常更高，原文没有据此写它们没有记忆效果。OpenHands 上两种 CoReMem 步都高于不写记忆，步数收益没有跟着框架走。</p>
+  <p>和已有几篇相邻：<a href="/frontier/2026-11-07-components-of-agent-memory.html">Agent 记忆由哪些部分组成</a> 讲写、整理、读这三截分工；<a href="/frontier/2026-11-13-lag-after-first-correct.html">第一次过测之后还剩 35% 到 60% 的步</a> 讲同一条轨迹里停晚了。这里多出来的是任务边界上的取舍：测试命令和退出码该留给下一道题，推理和 diff 正文不必留给下一道题。</p>
+</section>
+
+<section id="limit">
+  <h2><span>6</span>这篇没测到的</h2>
+  <p>主实验是 Python 仓库、mini-swe-agent。训练只覆盖三套开源权重。别的语言和更大演员，原文写还没测。步和 cache-aware token 当开销，没有墙钟时间和能耗。更长的仓库历史上记忆怎么累积、怎么刷新，原文标成后续工作。代码在匿名链接，本轮没有打开可复核的仓库。</p>
+  <p>表 1 的百分变化是对「同一演员、不写记忆」。linked 和 unlinked 不要合成一个过测率再去比步。OpenHands 和 SWE-bench Verified 是附录 E，分母分别是 94 道下一题和 500 条实例，和主表 96 道下一题不是同一盘。</p>
+  <p>Opus 只有 1 次重放。Gemma 和 Luna 3 次。9B 未训练记忆总 token 升高，训练后才降下来。错仓库记忆那两格来自附录 C 的消融重放，不是表 1。OpenHands 上未训练和训练后的 CoReMem 步都高于不写记忆，每百万 token 过测率训练后从 13.3 降到 13.0。</p>
+</section>
+
+<section id="src">
+  <h2><span>7</span>出处</h2>
+  <p>2026 年 11 月 12 日，arXiv 收到 <a href="https://arxiv.org/abs/2611.17316">CoReMem: Cost-Internalizing Memory for Successive Coding Tasks with Prospective Valuation</a>（arXiv:2611.17316v1，cs.AI；作者 Peiwen Li、Harshit Verma、Sophia Zhou、Haiwen Wang、Ngoc Bui、Heng Chang、Fei Fei、David van Dijk、Rex Ying；单位署 Yale University、Tsinghua University、Goodvision AI）。arXiv 预印本。许可是 CC BY 4.0。</p>
+  <ul>
+    <li>预印本 abs：<a href="https://arxiv.org/abs/2611.17316">arXiv:2611.17316</a>。HTML 全文：<a href="https://arxiv.org/html/2611.17316v1">arxiv.org/html/2611.17316v1</a>。PDF：<a href="https://arxiv.org/pdf/2611.17316">arxiv.org/pdf/2611.17316</a>。提交 2026-11-12。科目 cs.AI、cs.CL、cs.SE。</li>
+    <li>21.0% → 25.7%、步少 17%、总 token 少 11%，从摘要与表 1 的 27B 总体列抄。32.2K → 28.5K、写记忆 1.9K，从表 1 抄。</li>
+    <li>100 条链、训练 52 / 97、测试 48 / 96、linked 54、unlinked 42、六套演员、步数上限、重放次数，从附录 B 抄。</li>
+    <li>命令 +2 步（56 / 27）、仓库内容 +1 步（52 / 34）、推理 34 / 45、diff 47 / 44、测试退出码 53 / 30、草稿 36 / 48 与 38% /tmp，从附录 I / 表 8 抄。1,056 / 17,320 字符约 6%，从附录 I 抄。</li>
+    <li>表 2 的每条记忆 2.24 / 2.06 与每千字符 1.32 / 0.92 / 0.19 / 0.14，从表 2 抄，27B 未训练演员、测试半。1,200 字符上限从附录 L 抄，匹配器从附录 K 抄。</li>
+    <li>三套开源权重 +22% 到 +27% 过测、步少最多 26%、总 token 少 9% 到 19%、每千 token 过测率 +38% 到 +46% 平均 41%，从第 4.2 节与表 1 抄。</li>
+    <li>冻结记忆六套步都少、三套显著 9% 到 13%、Opus 过测不变、总 token 五套在 −7% 到 +5%，从第 4.2 节抄。接口三套的未训练记忆行，从表 3 抄。</li>
+    <li>错仓库记忆 +2.1 对 +0.3 步、过测好处 +1.7 对 +2.3 个点，从附录 C 与第 4.3 节抄。resolve-only 32.6 → 30.4、91.9 → 75.5，M1+M2 的 29.7 / 63.8，完整方法 29.2 / 72.4，从第 4.3 节抄。</li>
+    <li>Verified 500 条 69.2% → 73.7%、步 28.3 → 26.2，9B 49.1% → 55.5%，从附录 E 表 4 抄。OpenHands 94 道、两次均值：不写记忆 10.6% / 33.8 步，未训练 16.5% / 38.6，训练后 21.3% / 45.9，ReasoningBank 21.8% / 48.0，从表 6 抄。</li>
+    <li>局限：Python、mini-swe-agent、三套开源权重、无墙钟与能耗、更长历史，从 Limitations 抄。代码匿名链接，本轮未打开。</li>
+  </ul>
+  <p>提交日期和科目从 arXiv abs 抄。OpenAI 新闻页本轮直接请求 403，未打开、未写入判断。Anthropic 新闻页、Hacker News、GitHub 发布说明本轮未写入判断。X / Reddit 今日未覆盖。Product Hunt 本轮落到 Cloudflare 质询。周末 arXiv 按 submittedDate 没有筛到 11-13 之后的新条目，本篇取 11-12 批次里尚未写过的 ChainSWE 记忆估值。</p>
+  <p><a href="/frontier/rsi-llm-agent-self-evolution.html">09-26 RSI</a> 是谱系，<a href="/frontier/llm-agent-tech-landscape.html">09-27 全景</a> 是增量在哪一层。本文写运行位上的一条缝：跨任务记忆按下一道未知任务的步数来留，该留路径和检查命令。</p>
+</section>
+</main>
+</div>
+<a class="fr-top" href="#" aria-label="返回页首">↑</a>
+</body>
+</html>
