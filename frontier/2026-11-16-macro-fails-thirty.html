@@ -1,0 +1,296 @@
+﻿<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>原生看对的判分，宏抽象后 31.0% 站不住 · Frontier</title>
+  <style>
+    :root { --ink:#0f172a; --muted:#475569; --line:#e2e8f0; --bg:#f8fafc; --blue:#1d4ed8; --blue-bg:#eff6ff; --amber:#b45309; --green:#047857; --rose:#be123c; }
+    * { box-sizing: border-box; }
+    body { margin:0; font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Noto Sans SC",sans-serif; background:var(--bg); color:var(--ink); line-height:1.75; font-size:17px; }
+    header { background:#0f172a; color:#f8fafc; padding:36px 24px 28px; border-bottom:4px solid #2563eb; }
+    header .inner { max-width:1080px; margin:0 auto; }
+    .badge { display:inline-block; border:1px solid #93c5fd; color:#bfdbfe; border-radius:999px; padding:2px 12px; font-size:13px; }
+    h1 { font-size:2rem; line-height:1.3; margin:12px 0; }
+    header p { color:#cbd5e1; margin:0; max-width:760px; }
+    .layout { max-width:1080px; margin:28px auto 64px; padding:0 20px; display:grid; grid-template-columns:220px minmax(0,1fr); gap:28px; }
+    aside { position:sticky; top:52px; align-self:start; background:#fff; border:1px solid var(--line); border-radius:12px; padding:14px; }
+    aside p { font-size:12px; letter-spacing:.06em; color:var(--muted); margin:0 0 8px; }
+    aside a { display:block; color:var(--ink); text-decoration:none; font-size:14px; padding:6px 8px; border-radius:6px; }
+    aside a:hover { background:var(--blue-bg); color:var(--blue); }
+    h2 { font-size:1.35rem; margin:0 0 12px; }
+    h2 span { display:inline-block; background:var(--blue); color:#fff; border-radius:6px; font-size:13px; padding:2px 8px; margin-right:8px; }
+    h3 { font-size:1.08rem; margin:20px 0 10px; }
+    section { background:#fff; border:1px solid var(--line); border-radius:14px; padding:26px 28px; margin-bottom:22px; }
+    p { margin:0 0 14px; }
+    a { color:var(--blue); overflow-wrap:anywhere; }
+    code { background:#f1f5f9; border-radius:4px; padding:1px 5px; font-size:15px; overflow-wrap:anywhere; }
+    main { min-width:0; }
+    figure { margin:16px 0; background:#fff; border:1px solid var(--line); border-radius:12px; padding:10px; overflow-x:auto; }
+    figure svg { display:block; min-width:700px; }
+    figcaption { color:var(--muted); font-size:14px; margin-top:6px; }
+    .tw { overflow-x:auto; margin:0 0 14px; }
+    .tw table { min-width:620px; }
+    table { width:100%; border-collapse:collapse; font-size:15px; }
+    th, td { border:1px solid var(--line); padding:8px 10px; text-align:left; vertical-align:top; }
+    th { background:#f1f5f9; }
+    ul { margin:0 0 14px; padding-left:22px; }
+    ol { margin:0 0 14px; padding-left:22px; }
+    li { margin-bottom:6px; }
+    .note { background:#f1f5f9; border-left:4px solid var(--muted); padding:12px 16px; border-radius:0 8px 8px 0; font-size:16px; margin:0 0 14px; }
+    .quote { background:#fffbeb; border-left:4px solid var(--amber); padding:12px 16px; border-radius:0 8px 8px 0; font-size:15px; overflow-wrap:anywhere; margin:0 0 14px; }
+    svg text { font-family:-apple-system,"PingFang SC","Noto Sans SC",sans-serif; }
+    @media (max-width:860px) { .layout { grid-template-columns:minmax(0,1fr); } aside { position:static; } h1 { font-size:1.55rem; } section { padding:18px 16px; } }
+  </style>
+  <link rel="stylesheet" href="assets/article.css">
+  <script src="assets/article.js" defer></script>
+</head>
+<body class="frontier-article">
+<a class="fr-skip" href="#article-content">跳到正文</a>
+<nav class="fr-nav" aria-label="站点导航">
+  <a class="fr-brand" href="/frontier/"><span class="fr-mark" aria-hidden="true">F</span>Frontier<span class="fr-nav-label">技术与研究</span></a>
+  <a class="fr-home" href="/">@xixi003 <span aria-hidden="true">↗</span></a>
+</nav>
+<div class="fr-progress" aria-hidden="true"><div></div></div>
+
+<header class="fr-hero">
+  <div class="inner">
+    <span class="badge">FRONTIER · 2026-11-16 · Agent Evaluation</span>
+    <h1>原生看对的判分，宏抽象后 31.0% 站不住</h1>
+    <p>用模型给 Agent 轨迹打分时，线上往往先把工具合成宏、把一段交给子 Agent、或把早段历史压掉，再把剩下的给评审。一篇预印本把同一条冻住的轨迹做成原生、抽象、还原三套视图，任务、结局、金标、评审模型和评分标准都不变，只改评审看得见的证据。在原生视图上已经判对的那些条里，宏抽象后 31.0% 变成错判或没有可用结论，委派 30.9%，历史压缩 20.3%。分母是原生判对的条数，四个基准、七个骨干、四种协议按分子分母相加；同一宏抽象下，直接判 16.4%，再审一轮 49.3%，读者用的是其中一种协议。把对应出处还回去，这些失败里 85.5% 能回到正确结论；已经扛过抽象的条，还原后只有 5.2% 被改坏。原文没有按错判和没有结论拆开这 85.5%。</p>
+  </div>
+</header>
+<div class="fr-layout">
+<aside aria-label="文章目录" class="fr-toc">
+<details open="">
+<summary>本文目录<span aria-hidden="true">＋</span></summary>
+<div class="fr-toc-links">
+<a href="#what">1 同一条轨迹，换一层外壳</a>
+<a href="#how">2 三种边界怎么造</a>
+<a href="#vtfr">3 31.0、30.9、20.3</a>
+<a href="#proto">4 四种协议的两种掉法</a>
+<a href="#restore">5 把出处还回去</a>
+<a href="#yours">6 你的运行位</a>
+<a href="#limit">7 这篇没测到的</a>
+<a href="#src">8 出处</a>
+</div>
+</details>
+</aside>
+<main class="fr-content" id="article-content">
+<section id="what">
+  <h2><span>1</span>同一条轨迹，换一层外壳</h2>
+  <p><a href="https://arxiv.org/abs/2611.18471">Do Verifier Judgments Survive Abstraction? Measuring Verification Transport for LLM Agent Evaluation</a> 问的是：一条已经发生过的 Agent 轨迹，评审在完整记录上判对了，换成宏动作、委派边界或压缩历史之后，这个结论还在不在。作者把这件事叫 Verification Transport。失败有两种：给出了任务级结论但和金标不一致，或给不出可用结论。弃权算覆盖丢失，不算错判；两种分开报，加起来就是运输失败率 VTFR。</p>
+  <p>VTFR 只在原生视图已经判对的条上算。它不回答评审整体有多准，只回答：已经对的那些，换一层可见性之后还能否站住。原生准确率写成 C<sub>0</sub> OBA，是操作平衡准确率；多阶段协议用最后一轮任务结论。池化率按各格分子分母相加，不把各格百分比再平均一遍。</p>
+  <p>四个基准都是已经发生过的轨迹，评测前做成匹配的原生 / 抽象 / 还原视图，不再跑 Agent、不再调工具。AgentProcessBench 250 条，对着轨迹里指定的那一条消息、用该步金标，不把整条轨迹的标签加总。ATBench 758 条工具使用轨迹。PlanRewardBench 441 对两两比较；两条候选都够格就一起抽象，否则只改够格的那一条，偏好标签和左右顺序不变。AgentDojo 754 条。这些计数是满足匹配构造资格的实例，温度 0，结构化输出再映射到各基准的标签空间。</p>
+  <div class="tw">
+    <div class="fr-table" tabindex="0" role="region" aria-label="数据表格，可横向滚动"><table>
+      <thead>
+        <tr>
+          <th>基准</th>
+          <th>够格实例</th>
+          <th>评测对象</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td>AgentProcessBench</td><td>250</td><td>指定消息的步级对错</td></tr>
+        <tr><td>ATBench</td><td>758</td><td>原文写工具使用轨迹，金标形态未另写</td></tr>
+        <tr><td>PlanRewardBench</td><td>441</td><td>两条轨迹的两两偏好</td></tr>
+        <tr><td>AgentDojo</td><td>754</td><td>原文写交互 Agent 行为，金标形态未另写</td></tr>
+      </tbody>
+    </table></div>
+  </div>
+  <p>七个评审骨干：Gemini-3.7-Flash、Gemini-2.5-Flash、GPT-OSS-120B、GPT-OSS-20B、Gemma-4-31B、Gemma-4-26B-A4B、Llama-4-Maverick。四种协议共用同一骨干、同一评分标准和同一轨迹表示，只改证据怎么用：V-LLM 一遍直接判；V-EVIDENCE 先写看得见的证据够不够再下结论，拿不到当前视图没有的出处；V-AGENTIC 证据不够可以要出处，出处仍来自同一条冻住的轨迹；V-DELIBERATIVE 把对应的冻住 V-EVIDENCE 结论当第一阶段 D1，再做一轮证据审计 D2，D2 看不到额外出处。D2 在原生视图上就会改结论，若干模型–基准格上原生成绩明显低于冻住的 D1。</p>
+</section>
+
+<section id="how">
+  <h2><span>2</span>三种边界怎么造</h2>
+  <p>宏抽象挑一段至少含两对完整「工具调用 → 工具结果」的连续块，对外只露出一个宏边界，内部操作和中间观察藏起来。委派把至少一对完整工具执行放到委派边界后面，评审看见委派和返回结果，看不见内部轨迹；没有真的起一个工人 Agent，任务也不重跑。历史压缩把更早的证据换成压缩边界标记，近段仍可见，并且保留最后一对工具调用和结果。还原把同一条原始轨迹里对应的事件原样塞回去，不重写、不补造。</p>
+  <p>附录 B.3 写了四条有效性：三套视图对着同一任务和同一条冻住的源执行；构造阶段不重跑任何 Agent、子 Agent、工具或环境；每个边界留着指向源事件的精确链接；变换确定、不看标签。差出来的判分，作者把它记在评审看得见的证据上，不记在执行本身变了。</p>
+</section>
+
+<section id="vtfr">
+  <h2><span>3</span>31.0、30.9、20.3</h2>
+  <p>四个基准、七个骨干、四种协议加在一起，原生已经判对的那些条里：宏抽象 VTFR 31.0%，委派 30.9%，压缩 20.3%。宏和委派的差在点估计里只有 0.1，区间见附录 F 图 6，正文没抄上下界。四个基准各自汇总也是宏和委派更高：宏 25.5%–32.2%，委派 26.1%–32.9%，压缩 16.2%–24.7%。骨干之间幅度差得大，方向一样。原文没有说明三种边界的原生判对集合是否相同，并排比较时分母可能不是同一批条。表 1、表 2 是点估计。</p>
+  <p>表 4 把失败拆成错判和没有结论，分母仍是原生判对的那些条。宏：错判 13.4%，没有结论 17.7%。委派：13.2% 和 17.7%。压缩：12.2% 和 8.0%，总数更低，错判占比相对更高。</p>
+  <figure>
+    <svg viewBox="0 0 920 500" width="100%" role="img" aria-label="三根堆叠柱：宏抽象 31.0%，委派 30.9%，压缩 20.3%，下段错判上段没有结论">
+      <rect x="1" y="1" width="918" height="498" rx="10" fill="#fff" stroke="#e2e8f0"/>
+      <text x="24" y="32" font-size="16" font-weight="700" fill="#0f172a">原生判对的条里，换一层可见性之后掉多少</text>
+      <text x="24" y="56" font-size="14" fill="#475569">分母是 C0 已判对的条，四基准 × 七骨干 × 四协议按分子分母相加。柱高 1% = 9 像素，底边 y=400。</text>
+      <text x="24" y="76" font-size="14" fill="#475569">下段错判，上段没有可用结论。数字来自正文 RQ1 与表 4。</text>
+
+      <rect x="70" y="121" width="22" height="14" fill="#be123c" stroke="#9f1239"/>
+      <text x="100" y="133" font-size="14" fill="#334155">错判</text>
+      <rect x="170" y="121" width="22" height="14" fill="#b45309" stroke="#92400e"/>
+      <text x="200" y="133" font-size="14" fill="#334155">没有结论</text>
+
+      <line x1="80" y1="400" x2="860" y2="400" stroke="#94a3b8" stroke-width="1.5"/>
+      <text x="70" y="396" font-size="14" fill="#64748b" text-anchor="end">0</text>
+      <text x="70" y="256" font-size="14" fill="#64748b" text-anchor="end">16%</text>
+      <text x="70" y="121" font-size="14" fill="#64748b" text-anchor="end">31%</text>
+      <line x1="80" y1="256" x2="860" y2="256" stroke="#e2e8f0"/>
+      <line x1="80" y1="121" x2="860" y2="121" stroke="#e2e8f0"/>
+
+      <rect x="160" y="279" width="110" height="121" fill="#fff1f2" stroke="#be123c" stroke-width="2"/>
+      <text x="215" y="345" font-size="14" fill="#9f1239" text-anchor="middle">13.4%</text>
+      <rect x="160" y="121" width="110" height="158" fill="#fff7ed" stroke="#b45309" stroke-width="2"/>
+      <text x="215" y="210" font-size="14" fill="#9a3412" text-anchor="middle">17.7%</text>
+      <text x="215" y="108" font-size="16" font-weight="700" fill="#0f172a" text-anchor="middle">31.0%</text>
+      <text x="215" y="428" font-size="14" fill="#334155" text-anchor="middle">宏抽象</text>
+
+      <rect x="400" y="281" width="110" height="119" fill="#fff1f2" stroke="#be123c" stroke-width="2"/>
+      <text x="455" y="347" font-size="14" fill="#9f1239" text-anchor="middle">13.2%</text>
+      <rect x="400" y="122" width="110" height="159" fill="#fff7ed" stroke="#b45309" stroke-width="2"/>
+      <text x="455" y="211" font-size="14" fill="#9a3412" text-anchor="middle">17.7%</text>
+      <text x="455" y="109" font-size="16" font-weight="700" fill="#0f172a" text-anchor="middle">30.9%</text>
+      <text x="455" y="428" font-size="14" fill="#334155" text-anchor="middle">委派</text>
+
+      <rect x="640" y="290" width="110" height="110" fill="#fff1f2" stroke="#be123c" stroke-width="2"/>
+      <text x="695" y="350" font-size="14" fill="#9f1239" text-anchor="middle">12.2%</text>
+      <rect x="640" y="218" width="110" height="72" fill="#fff7ed" stroke="#b45309" stroke-width="2"/>
+      <text x="695" y="258" font-size="14" fill="#9a3412" text-anchor="middle">8.0%</text>
+      <text x="695" y="204" font-size="16" font-weight="700" fill="#0f172a" text-anchor="middle">20.3%</text>
+      <text x="695" y="428" font-size="14" fill="#334155" text-anchor="middle">历史压缩</text>
+
+      <text x="24" y="468" font-size="14" fill="#334155">13.4+17.7=31.1，对 RQ1 的 31.0 差 0.1；协议 15.8+0.7=16.5，对 16.4 同样差 0.1。正文和表 4 分开抄，不合成一个数。</text>
+    </svg>
+    <figcaption>图 1. RQ1 的池化 VTFR，拆分来自表 4。压缩柱比宏、委派矮一截，矮在没有结论这一截。</figcaption>
+  </figure>
+  <p>消融只在 AgentProcessBench 和 ATBench 上，模型只有 Gemini-2.5-Flash 和 GPT-OSS-120B。A25 / A50 / A75 藏掉选定执行块里大约 25%、50%、75% 的够格语义证据原子，剩下的顺序和结构不动。四个模型–基准组合上，A75 的 VTFR 都高于 A25：AgentProcessBench 上 Gemini 24.3% → 31.4%，GPT-OSS 21.5% → 29.6%；ATBench 上 17.7% → 21.1% 和 16.9% → 22.9%。A50 不是每一格都单调。失败量随藏掉的证据变多而升高，不只是因为出现了一个边界标记。</p>
+</section>
+
+<section id="proto">
+  <h2><span>4</span>四种协议的两种掉法</h2>
+  <p>四种协议的池化 VTFR 差一截。宏 / 委派 / 压缩：V-LLM 16.4%、17.3%、14.1%；V-AGENTIC 25.0%、23.6%、18.2%；V-EVIDENCE 34.5%、34.0%、18.7%；V-DELIBERATIVE 49.3%、50.2%、30.7%。附录 D 里 V-LLM 必须做强制二分类，不能弃权、不能要隐藏出处；V-EVIDENCE 和 V-DELIBERATIVE 可以弃权。失败形态跟着允许的输出走：直接判几乎总给出结论，错了也给；可以弃权的协议常常改成不给结论。V-AGENTIC 的提示也写了不要输出 ABSTAIN，宏抽象上仍有 7.5% 没有结论，原文没解释这一截怎么来的。</p>
+  <div class="tw">
+    <div class="fr-table" tabindex="0" role="region" aria-label="数据表格，可横向滚动"><table>
+      <thead>
+        <tr>
+          <th>协议</th>
+          <th>宏 VTFR</th>
+          <th>委派 VTFR</th>
+          <th>压缩 VTFR</th>
+          <th>宏：错判 / 没有结论</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td>V-LLM</td><td>16.4%</td><td>17.3%</td><td>14.1%</td><td>15.8% / 0.7%</td></tr>
+        <tr><td>V-AGENTIC</td><td>25.0%</td><td>23.6%</td><td>18.2%</td><td>17.5% / 7.5%</td></tr>
+        <tr><td>V-EVIDENCE</td><td>34.5%</td><td>34.0%</td><td>18.7%</td><td>10.6% / 24.0%</td></tr>
+        <tr><td>V-DELIBERATIVE</td><td>49.3%</td><td>50.2%</td><td>30.7%</td><td>9.4% / 39.9%</td></tr>
+      </tbody>
+    </table></div>
+  </div>
+  <p>表 4 里 V-LLM 的没有结论三格都低于 1%。V-EVIDENCE 在宏和委派上没有结论是 24.0% 和 23.6%。V-DELIBERATIVE 到 39.9% 和 41.0%。V-AGENTIC 夹在中间。跨协议不能直接比谁更可靠：VTFR 的分母是该协议自己原生判对的子集，各协议对着的条并不相同。</p>
+  <figure>
+    <svg viewBox="0 0 920 430" width="100%" role="img" aria-label="四张卡片：直接判几乎都给结论，要证据和再想一轮的协议大量弃权">
+      <rect x="1" y="1" width="918" height="428" rx="10" fill="#fff" stroke="#e2e8f0"/>
+      <text x="24" y="32" font-size="16" font-weight="700" fill="#0f172a">宏抽象下，四种协议怎么掉</text>
+      <text x="24" y="56" font-size="14" fill="#475569">错判 / 没有结论分母是原生判对的条；覆盖、PRR、FCR/FRR、HRR/BRR 另有分母。16.4 / 34.5 差 0.1 的，以表 4 两列为准。</text>
+
+      <rect x="24" y="76" width="210" height="300" rx="8" fill="#fff1f2" stroke="#be123c" stroke-width="2"/>
+      <text x="129" y="110" font-size="16" font-weight="700" fill="#be123c" text-anchor="middle">V-LLM</text>
+      <text x="129" y="136" font-size="14" fill="#334155" text-anchor="middle">一遍直接判</text>
+      <text x="129" y="180" font-size="28" font-weight="700" fill="#0f172a" text-anchor="middle">15.8%</text>
+      <text x="129" y="206" font-size="14" fill="#9f1239" text-anchor="middle">错判</text>
+      <text x="129" y="250" font-size="28" font-weight="700" fill="#0f172a" text-anchor="middle">0.7%</text>
+      <text x="129" y="276" font-size="14" fill="#9a3412" text-anchor="middle">没有结论</text>
+      <text x="129" y="330" font-size="14" fill="#475569" text-anchor="middle">提示禁止弃权</text>
+      <text x="129" y="354" font-size="14" fill="#475569" text-anchor="middle">强制二分类</text>
+
+      <rect x="250" y="76" width="210" height="300" rx="8" fill="#fff7ed" stroke="#b45309" stroke-width="2"/>
+      <text x="355" y="110" font-size="16" font-weight="700" fill="#b45309" text-anchor="middle">V-AGENTIC</text>
+      <text x="355" y="136" font-size="14" fill="#334155" text-anchor="middle">不够就要出处</text>
+      <text x="355" y="180" font-size="28" font-weight="700" fill="#0f172a" text-anchor="middle">17.5%</text>
+      <text x="355" y="206" font-size="14" fill="#9f1239" text-anchor="middle">错判</text>
+      <text x="355" y="250" font-size="28" font-weight="700" fill="#0f172a" text-anchor="middle">7.5%</text>
+      <text x="355" y="276" font-size="14" fill="#9a3412" text-anchor="middle">没有结论</text>
+      <text x="355" y="330" font-size="14" fill="#475569" text-anchor="middle">宏上要出处 43.3%</text>
+      <text x="355" y="354" font-size="14" fill="#475569" text-anchor="middle">三种边界合计 37.4%</text>
+
+      <rect x="476" y="76" width="210" height="300" rx="8" fill="#eff6ff" stroke="#1d4ed8" stroke-width="2"/>
+      <text x="581" y="110" font-size="16" font-weight="700" fill="#1d4ed8" text-anchor="middle">V-EVIDENCE</text>
+      <text x="581" y="136" font-size="14" fill="#334155" text-anchor="middle">先写证据够不够</text>
+      <text x="581" y="180" font-size="28" font-weight="700" fill="#0f172a" text-anchor="middle">10.6%</text>
+      <text x="581" y="206" font-size="14" fill="#9f1239" text-anchor="middle">错判</text>
+      <text x="581" y="250" font-size="28" font-weight="700" fill="#0f172a" text-anchor="middle">24.0%</text>
+      <text x="581" y="276" font-size="14" fill="#9a3412" text-anchor="middle">没有结论</text>
+      <text x="581" y="330" font-size="14" fill="#475569" text-anchor="middle">覆盖 97.0% → 80.4%</text>
+      <text x="581" y="354" font-size="14" fill="#475569" text-anchor="middle">三种边界池化覆盖</text>
+
+      <rect x="702" y="76" width="194" height="300" rx="8" fill="#f5f3ff" stroke="#6d28d9" stroke-width="2"/>
+      <text x="799" y="110" font-size="16" font-weight="700" fill="#6d28d9" text-anchor="middle">V-DELIBERATIVE</text>
+      <text x="799" y="136" font-size="14" fill="#334155" text-anchor="middle">D2 再审一遍</text>
+      <text x="799" y="180" font-size="28" font-weight="700" fill="#0f172a" text-anchor="middle">9.4%</text>
+      <text x="799" y="206" font-size="14" fill="#9f1239" text-anchor="middle">错判</text>
+      <text x="799" y="250" font-size="28" font-weight="700" fill="#0f172a" text-anchor="middle">39.9%</text>
+      <text x="799" y="276" font-size="14" fill="#9a3412" text-anchor="middle">没有结论</text>
+      <text x="799" y="330" font-size="14" fill="#475569" text-anchor="middle">覆盖 94.6% → 67.3%</text>
+      <text x="799" y="354" font-size="14" fill="#475569" text-anchor="middle">HRR 28.5%，BRR 8.7%</text>
+    </svg>
+    <figcaption>图 2. 表 4 宏抽象列，加上表 5 的覆盖和协议专有诊断。错判 / 没有结论分母是原生判对；覆盖、PRR、FCR/FRR、HRR/BRR 另有分母。</figcaption>
+  </figure>
+  <p>表 5 的覆盖、假放行、假拒绝是三种抽象池化后的率。覆盖分母是该观察条件下全部四基准上的条。PRR 分母是抽象条件下的全部实例，不是原生判对的那些条。假放行 FCR 和假拒绝 FRR 只在 ATBench 和 AgentDojo 上算。FCR 的分母是金标为负且原生判负的条，FRR 的分母是金标为正且原生判正的条，两格不能直接比。V-LLM 抽象后覆盖 98.7%，FCR 41.3%，这一截最高。V-AGENTIC 的 FRR 13.1% 最高，要出处的比例合计 37.4%，宏 43.3%、委派 44.5%、压缩 24.3%。V-DELIBERATIVE 的第二阶段修回 8.7% 一开始就不对或不可用的条（BRR），同时把 28.5% 一开始就对的条改坏（HRR）。多想一轮没有新出处，会改掉已经站得住的结论。</p>
+  <p>骨干和协议是一起变的。V-LLM 池化 VTFR 从 Gemini-3.7-Flash 的 10.1% 到 Llama-4-Maverick 的 22.0%。V-DELIBERATIVE 在 GPT-OSS-120B 上 57.9%，Gemma-4-31B 55.2%，Gemini-3.7-Flash 49.7%，Llama-4-Maverick 46.4%；同一协议在 Gemma-4-26B-A4B 上只有 14.5%。没有结论占失败的份额，Gemini-3.7-Flash 配 V-DELIBERATIVE 是 91.4%，Gemma-4-31B 是 83.5%，GPT-OSS-120B 和 Gemini-2.5-Flash 都是 76.3%。</p>
+</section>
+
+<section id="restore">
+  <h2><span>5</span>把出处还回去</h2>
+  <p>还原把该边界对应的原始事件还给评审。四个基准、七个骨干、四种协议加在一起，运输失败里 85.5% 回到正确结论；已经扛过抽象的条，还原后 5.2% 被改坏。宏：恢复 87.9%，劣化 5.3%。委派：86.9% 和 5.4%。压缩：恢复 79.8%，劣化 4.9%。压缩的还原条件写成把原始历史原样塞回去。摘要里 recovery is lower when provenance is lossy or unavailable 指的是 LossyR 消融，不是压缩这一格。原文没有按错判和没有结论拆开 85.5%。</p>
+  <div class="tw">
+    <div class="fr-table" tabindex="0" role="region" aria-label="数据表格，可横向滚动"><table>
+      <thead>
+        <tr>
+          <th>边界</th>
+          <th>VTFR</th>
+          <th>还原恢复 RRR</th>
+          <th>还原劣化 RDR</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td>宏抽象</td><td>31.0%</td><td>87.9%</td><td>5.3%</td></tr>
+        <tr><td>委派</td><td>30.9%</td><td>86.9%</td><td>5.4%</td></tr>
+        <tr><td>历史压缩</td><td>20.3%</td><td>79.8%</td><td>4.9%</td></tr>
+        <tr><td>三边界合计</td><td>—</td><td>85.5%</td><td>5.2%</td></tr>
+      </tbody>
+    </table></div>
+  </div>
+  <p>出处保真消融仍是那两个模型、两个基准。失败之后三种补法：Requery 用同一份抽象证据再问一遍；LossyR 还原有序的动作和工具名，去掉参数、观察和文本；ExactR 还原该边界的完整冻住处。恢复率 Requery &lt; LossyR &lt; ExactR。AgentProcessBench：Gemini 22.5% → 42.8% → 80.0%，GPT-OSS 24.6% → 34.0% → 82.5%。ATBench：Gemini 33.1% → 53.9% → 81.9%，GPT-OSS 30.2% → 47.2% → 73.6%。再评一次不够，缺参数的出处也不够，完整出处才把大多数失败拉回来。</p>
+</section>
+
+<section id="yours">
+  <h2><span>6</span>你的运行位</h2>
+  <p>自己的运行位如果先把工具收成宏、把一段交给子 Agent、或把早段历史压成摘要，再拿模型给这条轨迹打分、当奖励、当放行，这篇预印本测的就是评审看见的那一层。原生视图上的准确率不能带到抽象之后。31.0% 是四种协议混在一起的数；自己线上用的是其中一种。宏抽象下直接判 16.4%，再审一轮 49.3%。直接判的提示禁止弃权，失败形态是错判；可以弃权的协议失败形态常常是不给结论。选协议时看自己那一行，不要只看混合的 31.0%。</p>
+  <p>标题里的 31.0% 是宏抽象、四基准 × 七骨干 × 四协议、原生已经判对的那些条。委派 30.9%，压缩 20.3%。还原按原文能找回 85.5%。稿件推断：线上若拿不到精确出处，恢复率可能接近 LossyR 那一截，原文没有测压缩下的有损还原。</p>
+  <p>和已有几篇相邻：<a href="/frontier/2026-10-13-judge-consensus-not-alignment.html">评审团更一致了，和人的一致没有跟着涨</a> 讲的是改评分标准；<a href="/frontier/2026-10-30-batch-flips-eleven-twenty.html">同一批样本换一批，模型评审也会改判</a> 讲的是同批评审互相带动；<a href="/frontier/2026-11-03-kept-rule-still-violates.html">Hermes 压缩后规则还在，违规率仍高于完整历史</a> 讲的是执行方自己还在违规。后两篇的具体数字以各篇原文为准，本轮没有重开。这里多出来的是：执行没变，评审看见的外壳变了，已经对的判分也会掉。</p>
+</section>
+
+<section id="limit">
+  <h2><span>7</span>这篇没测到的</h2>
+  <p>三种边界是作者按冻住轨迹构造的，不是线上跑起来时自然长出来的宏、委派和压缩。还原假定原始出处还能塞回去。VTFR 以原生判对为条件，不刻画评审整体能力。四个基准、七个骨干、四种协议之外的领域和评审设计，原文标成可能不同。</p>
+  <p>稿件提醒，不是原文声明：表 1 里若干格的原生 C<sub>0</sub> OBA 在 40%–50%，例如 AgentProcessBench 上 Gemini-2.5-Flash 43.0、GPT-OSS-120B 48.0、GPT-OSS-20B 50.7。这些格里「原生判对」会混进碰巧对的条。原文没有同视图重判或无信息边界标记这类零对照。消融里 A25 已有 17%–24% 的 VTFR，原文没有把这一截从抽象本身拆开。31.0% 里有多少来自碰巧判对，原文没分开。</p>
+  <p>严重度和保真消融只有 Gemini-2.5-Flash 与 GPT-OSS-120B，基准只有 AgentProcessBench 和 ATBench。FCR / FRR 只有 ATBench 和 AgentDojo。表 1、表 2 是点估计，区间在附录 F 的图里，正文没有逐格抄出上下界。原文没有按失败类型拆 85.5% 的恢复率。论文声明代码在 <a href="https://github.com/Disha1001/Verification-Transport">github.com/Disha1001/Verification-Transport</a>，本轮打开该仓库返回 404，没有复核发布物。</p>
+</section>
+
+<section id="src">
+  <h2><span>8</span>出处</h2>
+  <p>2026 年 11 月 13 日，arXiv 收到 <a href="https://arxiv.org/abs/2611.18471">Do Verifier Judgments Survive Abstraction? Measuring Verification Transport for LLM Agent Evaluation</a>（arXiv:2611.18471v1，cs.CL；作者 Disha Sheshanarayana、Sai Linisha Reddy Goli，同等贡献；单位署 Manipal University Jaipur）。页眉工作坊名 Who Verifies the Agents? Toward Reliable Agent Development。arXiv 预印本。许可是 CC BY 4.0。</p>
+  <ul>
+    <li>预印本 abs：<a href="https://arxiv.org/abs/2611.18471">arXiv:2611.18471</a>。HTML 全文：<a href="https://arxiv.org/html/2611.18471v1">arxiv.org/html/2611.18471v1</a>。PDF：<a href="https://arxiv.org/pdf/2611.18471">arxiv.org/pdf/2611.18471</a>。提交 2026-11-13。科目 cs.CL、cs.AI。</li>
+    <li>31.0% / 30.9% / 20.3%、85.5%、5.2%，从摘要、引言和第 5.1 节 RQ1 / RQ3 抄。分母是原生判对的条，池化按分子分母相加，从第 4.2 节抄。</li>
+    <li>250 / 758 / 441 / 754、七个骨干、温度 0，从第 4.1、4.3 节抄。APB 步级金标、PRB 两两比较规则、压缩保留最后一对工具调用，从第 4.1 节抄。</li>
+    <li>四种协议定义从第 3.4 节抄。宏至少两对工具、委派至少一对、不重跑工人，从附录 B.1 / B.2 抄。四条有效性从附录 B.3 抄。</li>
+    <li>协议 VTFR 16.4 / 17.3 / 14.1、25.0 / 23.6 / 18.2、34.5 / 34.0 / 18.7、49.3 / 50.2 / 30.7，从第 5.1 节 RQ2 抄。错判和没有结论从表 4 抄。基准区间 25.5–32.2、26.1–32.9、16.2–24.7 从 RQ1 抄。</li>
+    <li>覆盖、FCR / FRR、PRR 37.4%（43.3 / 44.5 / 24.3）、BRR 8.7%、HRR 28.5%，从表 5 与附录 E.2 抄。FCR / FRR 只在 ATBench 和 AgentDojo。</li>
+    <li>骨干 × 协议的 10.1%–22.0%、57.9% / 55.2% / 49.7% / 46.4% / 14.5%，以及没有结论占比 91.4% / 83.5% / 76.3%，从附录 E.3 抄。</li>
+    <li>RRR / RDR 的三边界拆分 87.9 / 5.3、86.9 / 5.4、79.8 / 4.9，从 RQ3 抄。A25→A75 与 Requery / LossyR / ExactR，从第 5.2 节抄。</li>
+    <li>局限从附录 G 抄。代码链接从摘要抄，本轮仓库 404。V-LLM 禁止弃权从附录 D 抄。C<sub>0</sub> OBA 43.0 / 48.0 / 50.7 从表 1 的 AgentProcessBench 行抄，零对照缺失是稿件提醒。</li>
+  </ul>
+  <p>提交日期和科目从 arXiv abs 抄。OpenAI 新闻页本轮直接请求 403，未打开、未写入判断。Anthropic 新闻页与研究页打开了，11 月 13 日工程文 <a href="https://www.anthropic.com/research/building-strong-safety-evaluations">Building strong safety evaluations</a> 未写入判断。Hacker News 首页扫过，没有进判断。GitHub 用 gh 检索了近日更新的 agent 仓库，没有进判断；Trending 经 jina 匿名抓取 403。X / Reddit 今日未覆盖。Product Hunt 本轮落到 Cloudflare 质询。arXiv export API 按 submittedDate 取到的最近批次是 2026-11-13。</p>
+  <p><a href="/frontier/rsi-llm-agent-self-evolution.html">09-26 RSI</a> 是谱系，<a href="/frontier/llm-agent-tech-landscape.html">09-27 全景</a> 是增量在哪一层。本文写运行位上的一条缝：轨迹评审如果只在完整记录上测过准，宏、委派和压缩之后，已经对的判分仍会掉。</p>
+</section>
+</main>
+</div>
+<a class="fr-top" href="#" aria-label="返回页首">↑</a>
+</body>
+</html>
