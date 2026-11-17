@@ -1,5 +1,9 @@
 # 前沿技术栏目：独立 HTML 洞察索引。
 # 新增一篇：把 HTML 放到 /frontier/<slug>.html，再在这里加一条。
+- title: "同名抄描述加兼容 schema，五个模型 50 次都没自动绑到正主"
+  date: "2026-11-17"
+  url: /frontier/2026-11-17-same-name-misses-owner.html
+  summary: "MCP 客户端把多个 server 的工具摊在一起给模型选。一篇预印本在受控环境里接一台正主 server、一台攻击方 server。名字撞上、描述抄正主、schema 兼容时（C10），每个模型各 50 次：GPT-5.4、Qwen3.7 Max、DeepSeek V3 各 50/50 次选了攻击方；Claude Sonnet 5 是 3/50 选攻击方、47/50 去问人；Gemini 2.5 Pro 是 42/50 和 8/50。五个模型都没有一次自动选正主。同一套同名抄描述、schema 改成不兼容（C09），五个模型的攻击方选择率都是 0/50。"
 - title: "原生看对的判分，宏抽象后 31.0% 站不住"
   date: "2026-11-16"
   url: /frontier/2026-11-16-macro-fails-thirty.html
