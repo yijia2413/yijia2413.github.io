@@ -1,5 +1,9 @@
 # 前沿技术栏目：独立 HTML 洞察索引。
 # 新增一篇：把 HTML 放到 /frontier/<slug>.html，再在这里加一条。
+- title: "Fable 5 的 7 日合并率差 +1.4 个点，区间含 0"
+  date: "2026-11-18"
+  url: /frontier/2026-11-18-bench-not-merge-rate.html
+  summary: "2026 年 6 月 12 日，美国出口管制把 Claude Fable 5 停了 19 天。一篇预印本把这事当自然实验：同一批 GitHub 开发者、同一批仓库，能用的模型从 Fable 5 换成以 Opus 4.8 为主的低档。Fable 5 在 SWE-Bench Pro 上比 Opus 4.8 高 10.8 个点（80.0% 对 69.2%，厂商自报）。差分后，有 Fable 5 的两段相对停用段，7 日内合并的 PR 比例差 +1.4 个百分点，95% 区间 −1.4 到 +4.3，含 0。这是 PR 级：处理组 6,352 条、对照 34,013 条，来自 297 人和 8,908 人。五次自愿换新模型的合并估计是 −0.9 个百分点（−1.9 到 +0.2）。"
 - title: "同名抄描述加兼容 schema，五个模型 50 次都没自动绑到正主"
   date: "2026-11-17"
   url: /frontier/2026-11-17-same-name-misses-owner.html

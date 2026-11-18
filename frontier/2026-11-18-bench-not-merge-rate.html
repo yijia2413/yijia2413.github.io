@@ -1,0 +1,233 @@
+﻿<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Fable 5 的 7 日合并率差 +1.4 个点，区间含 0 · Frontier</title>
+  <style>
+    :root { --ink:#0f172a; --muted:#475569; --line:#e2e8f0; --bg:#f8fafc; --blue:#1d4ed8; --blue-bg:#eff6ff; --amber:#b45309; --green:#047857; --rose:#be123c; }
+    * { box-sizing: border-box; }
+    body { margin:0; font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Noto Sans SC",sans-serif; background:var(--bg); color:var(--ink); line-height:1.75; font-size:17px; }
+    header { background:#0f172a; color:#f8fafc; padding:36px 24px 28px; border-bottom:4px solid #2563eb; }
+    header .inner { max-width:1080px; margin:0 auto; }
+    .badge { display:inline-block; border:1px solid #93c5fd; color:#bfdbfe; border-radius:999px; padding:2px 12px; font-size:13px; }
+    h1 { font-size:2rem; line-height:1.3; margin:12px 0; }
+    header p { color:#cbd5e1; margin:0; max-width:760px; }
+    .layout { max-width:1080px; margin:28px auto 64px; padding:0 20px; display:grid; grid-template-columns:220px minmax(0,1fr); gap:28px; }
+    aside { position:sticky; top:52px; align-self:start; background:#fff; border:1px solid var(--line); border-radius:12px; padding:14px; }
+    aside p { font-size:12px; letter-spacing:.06em; color:var(--muted); margin:0 0 8px; }
+    aside a { display:block; color:var(--ink); text-decoration:none; font-size:14px; padding:6px 8px; border-radius:6px; }
+    aside a:hover { background:var(--blue-bg); color:var(--blue); }
+    h2 { font-size:1.35rem; margin:0 0 12px; }
+    h2 span { display:inline-block; background:var(--blue); color:#fff; border-radius:6px; font-size:13px; padding:2px 8px; margin-right:8px; }
+    h3 { font-size:1.08rem; margin:20px 0 10px; }
+    section { background:#fff; border:1px solid var(--line); border-radius:14px; padding:26px 28px; margin-bottom:22px; }
+    p { margin:0 0 14px; }
+    a { color:var(--blue); overflow-wrap:anywhere; }
+    code { background:#f1f5f9; border-radius:4px; padding:1px 5px; font-size:15px; overflow-wrap:anywhere; }
+    main { min-width:0; }
+    figure { margin:16px 0; background:#fff; border:1px solid var(--line); border-radius:12px; padding:10px; overflow-x:auto; }
+    figure svg { display:block; min-width:700px; }
+    figcaption { color:var(--muted); font-size:14px; margin-top:6px; }
+    .tw { overflow-x:auto; margin:0 0 14px; }
+    .tw table { min-width:620px; }
+    table { width:100%; border-collapse:collapse; font-size:15px; }
+    th, td { border:1px solid var(--line); padding:8px 10px; text-align:left; vertical-align:top; }
+    th { background:#f1f5f9; }
+    ul { margin:0 0 14px; padding-left:22px; }
+    ol { margin:0 0 14px; padding-left:22px; }
+    li { margin-bottom:6px; }
+    .note { background:#f1f5f9; border-left:4px solid var(--muted); padding:12px 16px; border-radius:0 8px 8px 0; font-size:16px; margin:0 0 14px; }
+    svg text { font-family:-apple-system,"PingFang SC","Noto Sans SC",sans-serif; }
+    @media (max-width:860px) { .layout { grid-template-columns:minmax(0,1fr); } aside { position:static; } h1 { font-size:1.55rem; } section { padding:18px 16px; } }
+  </style>
+  <link rel="stylesheet" href="assets/article.css">
+  <script src="assets/article.js" defer></script>
+</head>
+<body class="frontier-article">
+<a class="fr-skip" href="#article-content">跳到正文</a>
+<nav class="fr-nav" aria-label="站点导航">
+  <a class="fr-brand" href="/frontier/"><span class="fr-mark" aria-hidden="true">F</span>Frontier<span class="fr-nav-label">技术与研究</span></a>
+  <a class="fr-home" href="/">@xixi003 <span aria-hidden="true">↗</span></a>
+</nav>
+<div class="fr-progress" aria-hidden="true"><div></div></div>
+
+<header class="fr-hero">
+  <div class="inner">
+    <span class="badge">FRONTIER · 2026-11-18 · Agent 评测</span>
+    <h1>Fable 5 的 7 日合并率差 +1.4 个点，区间含 0</h1>
+    <p>2026 年 6 月 12 日，美国出口管制把 Claude Fable 5 停了 19 天。一篇预印本把这件事当成自然实验：同一批 GitHub 开发者、同一批仓库，能用的模型从 Fable 5 换成以 Opus 4.8 为主的低档。Fable 5 在 SWE-Bench Pro 上比 Opus 4.8 高 10.8 个点（80.0% 对 69.2%，厂商自报）。差分后，有 Fable 5 的两段相对停用段，7 日内合并的 PR 比例差 +1.4 个百分点，95% 区间 −1.4 到 +4.3，含 0。这是 PR 级线性概率：处理组 6,352 条、对照 34,013 条，来自 297 名处理组和 8,908 名一直用 Opus 4.8 的对照，开发者和日历日固定效应。五次自愿换新模型的合并估计是 −0.9 个百分点（−1.9 到 +0.2）。SWE-Bench Pro 的分和 7 日合并率不是同一套题目，不能拿 10.8 去除 1.4。</p>
+  </div>
+</header>
+<div class="fr-layout">
+<aside aria-label="文章目录" class="fr-toc">
+<details open="">
+<summary>本文目录<span aria-hidden="true">＋</span></summary>
+<div class="fr-toc-links">
+<a href="#what">1 基准分高 10.8 个点，合并率区间含 0</a>
+<a href="#how">2 19 天停用怎么切阶段</a>
+<a href="#main">3 主估计：+1.4，区间含 0</a>
+<a href="#upgrades">4 五次换型：−0.9，区间含 0</a>
+<a href="#merge">5 合并多半是作者自己点的</a>
+<a href="#yours">6 你的运行位</a>
+<a href="#limit">7 这篇没测到的</a>
+<a href="#src">8 出处</a>
+</div>
+</details>
+</aside>
+<main class="fr-content" id="article-content">
+<section id="what">
+  <h2><span>1</span>基准分高 10.8 个点，合并率区间含 0</h2>
+  <p>预印本 <a href="https://arxiv.org/abs/2611.23216">Higher-Scoring Coding Models Did Not Get More Work Done</a> 问的是：编码基准分更高的模型，会不会让同一批人把更多 PR 合进仓库。厂商发新模型时常报 SWE-Bench Pro 一类分数。论文写，这些分数常被当成「更能帮人把活干完」来引用，但公开仓库上的已解 issue、用原修复测试判过，和日常要有人愿意合进去的活不是同一套。</p>
+  <p>产出定义写在方法节：一条 PR 打开后 7 日内被 merge，记为成功；这个比例叫 7 日合并率。每人每周打开、且 7 日内合进去的 PR 条数是第二条主结果，只在换型分析里估。合并率在已有 agent PR 研究里用过，论文把它当成公开能拿到的「作者认为能留」信号，不把它当成代码质量。</p>
+  <p>标题钉在停用分析的主对比：有 Fable 5 的两段相对停用段，7 日合并率点估计 +1.4 个百分点。区间跨零，读成测不出超过约 4.3 个点的升，也不要读成精确为零。同一设计里的安慰剂（发布前对停用段）是 −2.6（−6.2，+1.1），绝对值比主估计大、方向相反，这套对比本身的噪声就有两三个点。摘要里的「11 点」是对 10.8 的约写；正文和附录用系统卡上的 80.0% 减 69.2%。</p>
+</section>
+
+<section id="how">
+  <h2><span>2</span>19 天停用怎么切阶段</h2>
+  <p>Fable 5 于 2026 年 6 月 9 日发布。Anthropic 在 6 月 12 日美东 17:21 收到停用指令，停到 7 月 1 日。论文按 PR 创建时间（UTC）切四段：P0 发布前（5 月 26 日到 6 月 9 日 18:00）、P1 能用（6 月 9 日 18:00 到 6 月 12 日 21:00）、P2 停用（6 月 15 日到 30 日）、P3 恢复后（7 月 2 日到 15 日）。刚停和刚恢复的日子去掉：6 月 12 日 21:00 到 6 月 15 日，以及 7 月 1 日。</p>
+  <p>处理组 297 人：P1 里至少开过一条点名 Fable 5 的 PR。对照 8,908 人：5 月 26 日到 7 月 15 日开过点名 Opus 4.8 的 PR，且样本里从没有点名 Fable 5。P0 到 P3，处理组 6,352 条 PR，对照 34,013 条。停用分析比较的是阶段，不是型号：处理组留下全部带 Claude 署名行的 PR。对照和换型分析才要求描述里点名恰好一个型号。8 天抽样、1,219 条 commit 已点名 Claude 且已合并的 PR 里，描述里也点名型号的只有 1.0%（95% 区间 0.6% 到 1.7%）。</p>
+  <p>停用期内，处理组点名 Fable 5 的 PR 从 P1 的 82.3% 掉到 P2 的 0.9%，74.6% 点名 Opus 4.8。P3 只有 26.9% 又点回 Fable 5。P1 的 82.3% 有一部分来自处理组定义本身（P1 至少一条点名 Fable 5），这个数用来看「换掉了」，不要读成采用率。停用段开过 PR 的 253 人里，只有 84 人开过带 Claude 署名行的 PR；P2 和 P3 都点名过型号的只有 52 人。这 84 人自己的 PR 里，带署名行的份额从发布三天的 16.5% 掉到停用段的 6.7%，恢复后 8.1%。停用估计大约只用了他们 7% 的 PR。P1 到 P3，点名型号的那些 PR 开在作者自己仓库里的份额，正文写在 69% 到 72%。对照一直停在 Opus 4.8。识别假设：没有这次停用，处理组的日际合并率会跟对照走同一条日历轨迹。</p>
+  <p>SWE-Bench Pro 的分来自 Anthropic 系统卡，不是这篇自己跑的：Fable 5 80.0%（Mythos 5 80.3%，论文写同一模型），Opus 4.8 69.2%，差 10.8 个点。附录按 731 道公开题、把两模型结果当独立，把 10.8 的 95% 区间粗算成约 6.4 到 15.2。这是基准分的不确定度，不要拿去和合并率的 −1.4 到 +4.3 比大小。</p>
+</section>
+
+<section id="main">
+  <h2><span>3</span>主估计：+1.4，区间含 0</h2>
+  <p>停用分析在 PR 级拟合线性概率：开发者固定效应加日历日固定效应，标准误按开发者聚类。参考段是 P2。主数字是反转对比 <code>(β1+β3)/2</code>：P1 和 P3 的平均，减去停用段。表 2：+1.4 个百分点（−1.4，+4.3）。安慰剂把发布前 P0 对停用段：−2.6（−6.2，+1.1）。</p>
+  <p>P1 只有约三天，而且恢复后很多人没有回到 Fable 5。相对停用段，P1 和 P3 点名 Fable 5 的份额平均高 54 个百分点。把反转对比 +1.4 除以 0.54，得到「每条用了 Fable 5 的 PR」+2.7（−2.6，+8.0）。这是工具变量式放大，依赖「有 Fable 5 只通过用到它的 PR 改变合并率」。只用 P1 是 +0.8（−4.6，+6.2），只用 P3 是 +8.5（−6.3，+23.4）。另一条是观察性：同一人点名 Fable 5 的 PR 对其他 PR，也是 +2.7（−0.7，+6.1），任务怎么分给型号由作者自己选。P2、P3 分别用 84 人和 52 人的开发者均值，得到 +3.5（−2.5，+9.7）和 −0.1（−6.9，+7.4），区间都宽。</p>
+  <figure>
+    <svg viewBox="0 0 920 420" width="100%" role="img" aria-label="左图处理组点名 Fable 5 的份额从 82.3% 掉到 0.9% 再回到 26.9%；右图 7 日合并率反转对比 1.4 个百分点，区间跨零">
+      <rect x="0" y="0" width="920" height="420" fill="#ffffff"/>
+      <text x="28" y="36" font-size="16" font-weight="700" fill="#0f172a">处理组换了模型，7 日合并率差的区间含 0</text>
+      <text x="28" y="60" font-size="14" fill="#475569">左：点名 Fable 5 的 PR 份额。右：有 Fable 5 相对停用段的百分点差，须是 95% 区间。</text>
+      <rect x="28" y="80" width="400" height="300" fill="#ffffff" stroke="#1d4ed8" stroke-width="2"/>
+      <text x="44" y="106" font-size="14" font-weight="700" fill="#1d4ed8">点名 Fable 5 的份额</text>
+      <text x="44" y="128" font-size="14" fill="#475569">处理组，分母是该段带 Claude 署名的 PR</text>
+      <rect x="90" y="300" width="70" height="41" fill="#1d4ed8"/>
+      <text x="125" y="292" font-size="14" font-weight="700" fill="#0f172a" text-anchor="middle">82.3%</text>
+      <text x="125" y="360" font-size="14" fill="#334155" text-anchor="middle">P1 能用</text>
+      <rect x="200" y="336" width="70" height="5" fill="#be123c"/>
+      <text x="235" y="328" font-size="14" font-weight="700" fill="#be123c" text-anchor="middle">0.9%</text>
+      <text x="235" y="360" font-size="14" fill="#334155" text-anchor="middle">P2 停用</text>
+      <rect x="310" y="328" width="70" height="13" fill="#b45309"/>
+      <text x="345" y="320" font-size="14" font-weight="700" fill="#b45309" text-anchor="middle">26.9%</text>
+      <text x="345" y="360" font-size="14" fill="#334155" text-anchor="middle">P3 恢复</text>
+      <line x1="70" y1="341" x2="400" y2="341" stroke="#94a3b8" stroke-width="1"/>
+      <rect x="492" y="80" width="400" height="300" fill="#ffffff" stroke="#047857" stroke-width="2"/>
+      <text x="508" y="106" font-size="14" font-weight="700" fill="#047857">7 日合并率，百分点</text>
+      <text x="508" y="128" font-size="14" fill="#475569">须是 95% 区间。点是点估计，单位百分点</text>
+      <line x1="690" y1="150" x2="690" y2="330" stroke="#334155" stroke-width="2"/>
+      <text x="690" y="348" font-size="14" fill="#334155" text-anchor="middle">0</text>
+      <line x1="662" y1="210" x2="776" y2="210" stroke="#1d4ed8" stroke-width="3"/>
+      <circle cx="718" cy="210" r="6" fill="#1d4ed8"/>
+      <text x="508" y="216" font-size="14" fill="#0f172a">反转对比 +1.4</text>
+      <text x="788" y="216" font-size="14" fill="#475569">−1.4 ~ +4.3</text>
+      <line x1="566" y1="270" x2="712" y2="270" stroke="#b45309" stroke-width="3"/>
+      <circle cx="638" cy="270" r="6" fill="#b45309"/>
+      <text x="508" y="276" font-size="14" fill="#0f172a">安慰剂 −2.6</text>
+      <text x="508" y="300" font-size="14" fill="#475569">P0 对 P2，−6.2 ~ +1.1</text>
+    </svg>
+    <figcaption>图 1。左：P1 82.3%、P2 0.9%、P3 26.9%。右：反转对比 +1.4（−1.4 到 +4.3），安慰剂 −2.6（−6.2 到 +1.1）。柱高表示份额，右图表示百分点差，两轴分开读。</figcaption>
+  </figure>
+  <p>表 S5 里换加权、加周趋势、用全部 PR（带不带型号都算）、换结果定义，点估计落在 −0.1 到 +3.7 个百分点。全部 PR 且每人等权这一格显著：+3.6（+0.1，+7.1）。附录 A 把每人等权写成「典型开发者」问题，停用分析是 +3.7（−5.5，+12.9），比按 PR 平均可能大几个点，但没有一种加权的点估计超过 4 个点。用全部 PR 且按条等权是 +0.5（−2.3，+3.3）。</p>
+</section>
+
+<section id="upgrades">
+  <h2><span>4</span>五次换型：−0.9，区间含 0</h2>
+  <p>第二条线是观察性换型。2026 年 2 月到 9 月，Opus / Sonnet 家里八次升级；主池五次（表 S2 事件 3、4、6、7、8），规则是升级前 7 天和后 7 天都有外部作者 PR、且至少 10 个换型的人。1,208 个开发者–升级对、15,442 条 PR；同一人出现在多次升级里会按次重复计。换型定义：升级前 7 天用旧型号、后 7 天用新型号。发布当天去掉。人自己选换不换，只能当关联。</p>
+  <p>五次按逆方差加权：7 日合并率 −0.9 个百分点（−1.9，+0.2）。同一开发者同一仓库：−1.2（−2.3，−0.02），这一格显著。六次是 −0.8（−1.9，+0.2），八次全池是 −0.4（−1.4，+0.6）。有 SWE-Bench Pro 双边分数的六次升级里，新型号高 5 到 18 个点；合并率变化没有一次显著，六个点估计里五个为负。这六次含未进主池的 Sonnet 4.6→5（+1.8，−0.6 到 +4.3），是六个里唯一为正的。5 到 18 是基准分差，−0.9 是合并率差，两套分母不要除。换型后，换型者开在自己仓库的份额从 64.3% 升到 74.5%，外部作者从 23.5% 降到 13.3%；按自有仓库和外部作者调整后，合并率变化仍是 −0.9（−2.0 到 +0.2）。</p>
+  <p>每周合进去的条数只在换型分析里估，因为停用分析对这个计数没有可靠对照（停用会改「点名型号」的份额）。六次升级上，换型组相对不换组：每周 7 日内合进去的 PR +2.4%（−4.9% 到 +10.2%），打开的 PR +2.7%（−6.7% 到 +13.0%），都来自 log(1+x)。上界超过一成，排除不了条数上的增长。停用期间，把名单上 302 名处理组（含该阶段没开 PR 的人）全算进去，每人每天打开的全部 PR（带不带 Claude 行）是发布前 4.8、停用中 5.0、恢复后 5.2。这组数没有可用对照，不能拿来做差分。</p>
+  <div class="tw">
+    <div class="fr-table" tabindex="0" role="region" aria-label="表 2 主结果，可横向滚动"><table>
+      <thead>
+        <tr>
+          <th>结果</th>
+          <th>停用分析</th>
+          <th>换型分析</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td>7 日内合并（百分点）</td><td>+1.4（−1.4，+4.3）</td><td>−0.9（−1.9，+0.2）</td></tr>
+        <tr><td>每周合进去的 PR（%）</td><td>未估</td><td>+2.4（−4.9，+10.2）；六次、相对不换组</td></tr>
+        <tr><td>1 小时内合并（百分点）</td><td>0.0（−5.8，+5.8）</td><td>+0.8（−2.1，+3.8）；六次、相对不换组</td></tr>
+        <tr><td>关闭未合并（百分点）</td><td>−0.5（−3.0，+2.1）</td><td>+0.5（−1.3，+2.3）；六次、相对不换组</td></tr>
+        <tr><td>30 日内 revert（百分点）</td><td>0.0（−0.4，+0.4）</td><td>太少：换前 16、换后 2</td></tr>
+        <tr><td>自动化检查失败（百分点）</td><td>—</td><td>+0.3（−1.4，+2.0）；有跑检查的 PR</td></tr>
+        <tr><td>安慰剂 / 同仓库</td><td>P0 对 P2：−2.6（−6.2，+1.1）</td><td>同人同仓库：−1.2（−2.3，−0.02）</td></tr>
+      </tbody>
+    </table></div>
+  </div>
+  <p>表注按论文表 2：停用侧 297 对 8,908；换型侧主池 1,208 个开发者–升级对。百分变化来自 log(1+x)。7 日合并 −0.9 是五次、同一人前后对比；标了「六次、相对不换组」的三行是另一种基准。附录 A 另有一套 1 小时合并口径，写成 0.0（−1.9，+1.8），表里取表 2。停用侧自动化检查失败没有对照，附录 A 用 2,019 条抽样补了一句：有 Fable 5 时测试和构建失败高 6.4 个百分点（+0.1 到 +12.8），各阶段失败率在 8% 到 40% 之间浮动，论文只当补充，主表不采信。</p>
+  <figure>
+    <svg viewBox="0 0 920 380" width="100%" role="img" aria-label="四条 7 日合并率估计的区间，三条跨零，同仓库换型整段为负">
+      <rect x="0" y="0" width="920" height="380" fill="#ffffff"/>
+      <text x="28" y="36" font-size="16" font-weight="700" fill="#0f172a">四条合并率估计，单位都是百分点</text>
+      <text x="28" y="58" font-size="14" fill="#475569">须是 95% 区间。点是点估计。最下一行是安慰剂，不是效应。</text>
+      <rect x="28" y="76" width="864" height="270" fill="#ffffff" stroke="#b45309" stroke-width="2"/>
+      <line x1="520" y1="96" x2="520" y2="320" stroke="#334155" stroke-width="2"/>
+      <text x="520" y="338" font-size="14" fill="#334155" text-anchor="middle">0</text>
+      <text x="440" y="338" font-size="14" fill="#64748b">−2</text>
+      <text x="600" y="338" font-size="14" fill="#64748b">+2</text>
+      <text x="680" y="338" font-size="14" fill="#64748b">+4</text>
+      <line x1="464" y1="130" x2="692" y2="130" stroke="#1d4ed8" stroke-width="4"/>
+      <circle cx="576" cy="130" r="7" fill="#1d4ed8"/>
+      <text x="44" y="136" font-size="14" fill="#0f172a">停用反转 +1.4</text>
+      <text x="708" y="136" font-size="14" fill="#475569">−1.4 ~ +4.3</text>
+      <line x1="444" y1="186" x2="528" y2="186" stroke="#047857" stroke-width="4"/>
+      <circle cx="484" cy="186" r="7" fill="#047857"/>
+      <text x="44" y="192" font-size="14" fill="#0f172a">五次换型 −0.9</text>
+      <text x="548" y="192" font-size="14" fill="#475569">−1.9 ~ +0.2</text>
+      <line x1="428" y1="242" x2="519" y2="242" stroke="#be123c" stroke-width="4"/>
+      <circle cx="472" cy="242" r="7" fill="#be123c"/>
+      <text x="44" y="248" font-size="14" fill="#0f172a">同人同仓库 −1.2</text>
+      <text x="548" y="248" font-size="14" fill="#475569">−2.3 ~ −0.02</text>
+      <line x1="272" y1="298" x2="564" y2="298" stroke="#b45309" stroke-width="4"/>
+      <circle cx="416" cy="298" r="7" fill="#b45309"/>
+      <text x="44" y="304" font-size="14" fill="#0f172a">安慰剂（非效应）−2.6</text>
+      <text x="580" y="304" font-size="14" fill="#475569">−6.2 ~ +1.1</text>
+    </svg>
+    <figcaption>图 2。上面三条是效应估计，最下一行是安慰剂（发布前对停用段），不是效应。每周条数的 +2.4% 是另一单位，不进这张图。同人同仓库这一条整段为负；另外两条效应区间含 0。</figcaption>
+  </figure>
+</section>
+
+<section id="merge">
+  <h2><span>5</span>合并多半是作者自己点的</h2>
+  <p>停用分析抽了 2,019 条 PR、194 人：处理组全部 1,019 条外部作者 PR，再加 1,000 条内部作者随机样本。外部作者被过采样，不是简单随机。论文写这 2,019 条里 95% 由作者自己合并，90% 没有任何其他账号的批准；没有另给已合并子集的分母。内部作者已合并 PR 里 97% 是自己合，外部作者 94%。各阶段、各次换型前后 7 天，打开到合并的中位时间都不到半小时，跟型号无关。同一人上，有 Fable 5 时合并耗时 +8.4%（−9.0% 到 +29.2%），换型后 +2.4%（−2.1% 到 +7.2%）。</p>
+  <p>六次升级前 7 天，换型的人 94.5% 的 PR 已在 7 日内合并，77.1% 在 1 小时内合并；1,262 名换型者里 83.8% 当周每一条都合进去了。1,262 是六次线，和主池 1,208 个开发者–升级对不是同一批计数。论文写：合并率已经贴顶，新型号只能在「前 7 天还有没合进去的人」身上抬。这些还有未合并 PR 的人里，换型组相对不换组是 −1.3 个百分点（−6.9，+4.3）。1 小时合并从约 75% 起步，表 2 里也没动。</p>
+  <p>讨论里给的机制是作者假设，这篇没有直接测任务难度：工程师多半把容易核、错了也不贵的活交给 Claude；Anthropic 一份 132 人调查写，超过一半的人只能把 0 到 20% 的活完全放手。附录 F 写，换型后 PR 描述长度、提到的文件数、新功能标题份额没有实质变化。这些句子不进标题。</p>
+</section>
+
+<section id="yours">
+  <h2><span>6</span>你的运行位</h2>
+  <p>标题里的判断钉在公开 GitHub、Claude Code 署名 PR、处理组 6,352 条对对照 34,013 条、7 日合并率的区间含 0。读完要看的是：自己选模型、给采购写「更强」、给运行位换默认型号时，手里那张 SWE-Bench Pro 表有没有同一条缝——分高了，7 日合并率可以测不出超过约 4.3 个点的升。</p>
+  <p>稿件推断，不是原文部署实验：如果编辑起点把「基准涨了 N 点」写成换模型的验收，而线上验收仍是作者自己合、中位不到半小时、合并率已经在 90% 以上，这篇测的就是那一层对不上。原文没测私有仓库、没测评审工时、没测「同一条难任务换模型会不会过」。合并只表示作者愿意留，论文写若差异主要出现在别人评审时，估计会偏小。</p>
+  <p>和已有几篇相邻：<a href="/frontier/2026-11-08-difficulty-beats-trajectory.html">编码 Agent 的失败预测，多少来自题目难度</a> 讲的是用公开轨迹预测失败；<a href="/frontier/2026-11-05-harness-spreads-eleven.html">固定模型换脚手架，Qwen 正确率差 11.5 个点</a> 讲的是同一模型换脚手架；<a href="/frontier/2026-10-12-cost-per-delivered-success.html">决策单价降了七成，账要按每个成功交付算</a> 讲的是成本分母。后几篇数字以各篇原文为准，本轮没有重开。这里多出来的是：同一批人被迫或自愿换更高分的型号，公开 PR 的 7 日合并率没有测出跟着抬。</p>
+</section>
+
+<section id="limit">
+  <h2><span>7</span>这篇没测到的</h2>
+  <p>停用分析处理组进主回归的，是带 Claude 署名行的公开 PR，不要求点名型号；对照和换型分析才要求描述里恰好一个型号。1.0% 的分母是 1,219 条 commit 已点名 Claude 且已合并的 PR（8 天抽样），区间 0.6% 到 1.7%。停用会改署名行份额。换型分析抽了 200 条已合并 PR：把搜索窗口收到打开前一日之后，138 条能在 commit 里找到型号，一致率换型前 96%、换型后 99%；这 138 条里，换型后还点名另一个型号的从 31% 升到 43%。一条 PR 的代码可能来自更早、另一个型号的会话；论文从主样本里去掉点名两个型号的 PR，并去掉切换后紧挨着的日子。错型号若在已合并和未合并之间分布不同，偏倚可正可负。</p>
+  <p>PR 体积和合并账号的接口不能批量拉，主分析只用「仓库是不是作者的」和关联类型；体积和谁点的合并只在 2,019 条样本上。恢复段叠了 6 月 30 日 Sonnet 5 发布、美国 7 月 4 日假期，以及订阅用户到 7 月 7 日 Fable 5 每周额度最多一半。停用 19 天，单条停用估计区间宽；五次换型合在一起后，总变化区间大约两侧各 1 个点。单次升级要检出 3 个百分点、80% 功效，大约需要 650 到 1,500 个换型的人，单次很少够。</p>
+  <p>换型分析是观察性。会自己换新工具的人可能更会用新工具，偏倚朝上；合并率仍没升。Opus 4.7 发布后合并率下降，论文提到 4 月 16 到 20 日 Claude Code 的质量问题，当时 Opus 4.6 和 4.7 都在。对照在停用期也用 Opus 4.8，处理组涌入可能拖慢 Opus；这一层进了日历日固定效应。停用同时换了速度和额度，估计的是「失去并拿回 Fable 5」的整包效果，不是基准分那 10.8 个点单独的因果。</p>
+  <p>表 1 的 P0 描述里，处理组「有 PR 的开发者」是 244，不是 297；297 是 P1 点过 Fable 5 的人，P0 不必人人都有 PR。P0 处理组 7 日合并率 92.7%，对照 91.5%，对照是 315 名抽样对照、30,630 条 PR，不是 8,908 人全样本。这是发布前全部 PR（点不点名型号都算）的水平，不是表 2 的差分。</p>
+</section>
+
+<section id="src">
+  <h2><span>8</span>出处</h2>
+  <p>2026 年 11 月 17 日，arXiv 收到 <a href="https://arxiv.org/abs/2611.23216">Higher-Scoring Coding Models Did Not Get More Work Done</a>（arXiv:2611.23216v1，cs.SE、cs.AI、cs.LG；作者 Yining Hua，单位署 Harvard University）。arXiv 预印本。许可 CC BY 4.0。复制包 <a href="https://github.com/ningkko/benchmarks-vs-merges">ningkko/benchmarks-vs-merges</a> 本轮请求返回 404，没有打开逐文件核对。</p>
+  <ul>
+    <li>预印本 abs：<a href="https://arxiv.org/abs/2611.23216">arXiv:2611.23216</a>。HTML 全文：<a href="https://arxiv.org/html/2611.23216v1">arxiv.org/html/2611.23216v1</a>。PDF：<a href="https://arxiv.org/pdf/2611.23216">arxiv.org/pdf/2611.23216</a>。提交 2026-11-17。</li>
+    <li>+1.4、−0.9、+2.4%、表 2 次要结果、安慰剂、同仓库，从表 2 与第 4.1–4.2 节抄。82.3% / 0.9% / 74.6% / 26.9% 从第 4 节抄。297、8,908、1,208、15,442、6,352、34,013 从表 S2 与第 3.3 节抄。</li>
+    <li>80.0%、69.2%、10.8、731 题粗算区间，从附录 A 抄。摘要「11 点」是约写。5 到 18 个点从第 4.2 节与图 3 题注抄，厂商自报，本轮未打开系统卡原页。</li>
+    <li>阶段 UTC、排除日、识别规则、1.0%（1,219 条，0.6%–1.7%），从第 3.2 节、表 S2、附录 B 抄。138 / 96%–99% / 43% 对 31% 从附录 B 抄。84 / 52 / 16.5% / 6.7% / 约 7% 从附录 F 与附录 B 抄。</li>
+    <li>2,019 / 95% / 90% / 中位不到半小时 / 94.5% / 77.1% / 83.8% 与 1,262，从第 4.3 节抄。132 人调查、0–20% 从第 5 节抄，是论文引用的另一项研究。</li>
+    <li>局限从第 5 节与附录 H 抄。停用声明链接论文给 <a href="https://www.anthropic.com/news/fable-mythos-access">Anthropic 6 月 12 日声明</a>；独立评审打开了该页，Jun 12、17:21 ET 对得上。「停到 7 月 1 日」声明页没有，仍按预印本抄。</li>
+  </ul>
+  <p>OpenAI 新闻今日扫到 GPT-6.2 Astra / Sol 产品页，未写入判断。Anthropic 新闻页最新产品条是 Fable 5.2，未写入判断。Hacker News 首页有二手「code review 瓶颈」转述，未采用。GitHub 搜索到的新仓库没有可核数字的发布说明。Product Hunt 本轮 403。X / Reddit 今日未覆盖。</p>
+  <p><a href="/frontier/rsi-llm-agent-self-evolution.html">09-26 RSI</a> 是谱系，<a href="/frontier/llm-agent-tech-landscape.html">09-27 全景</a> 是增量在哪一层。本文写运行位上的一条缝：换默认型号若只盯编码基准分，公开 PR 的 7 日合并率可以测不出跟着抬。</p>
+</section>
+</main>
+</div>
+<a class="fr-top" href="#" aria-label="返回页首">↑</a>
+</body>
+</html>
