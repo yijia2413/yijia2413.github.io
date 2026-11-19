@@ -1,0 +1,259 @@
+﻿<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>需求流水线之后，held-out 过测从 21.9% 到 33.3% · Frontier</title>
+  <style>
+    :root { --ink:#0f172a; --muted:#475569; --line:#e2e8f0; --bg:#f8fafc; --blue:#1d4ed8; --blue-bg:#eff6ff; --amber:#b45309; --green:#047857; --rose:#be123c; }
+    * { box-sizing: border-box; }
+    body { margin:0; font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Noto Sans SC",sans-serif; background:var(--bg); color:var(--ink); line-height:1.75; font-size:17px; }
+    header { background:#0f172a; color:#f8fafc; padding:36px 24px 28px; border-bottom:4px solid #2563eb; }
+    header .inner { max-width:1080px; margin:0 auto; }
+    .badge { display:inline-block; border:1px solid #93c5fd; color:#bfdbfe; border-radius:999px; padding:2px 12px; font-size:13px; }
+    h1 { font-size:2rem; line-height:1.3; margin:12px 0; }
+    header p { color:#cbd5e1; margin:0; max-width:760px; }
+    .layout { max-width:1080px; margin:28px auto 64px; padding:0 20px; display:grid; grid-template-columns:220px minmax(0,1fr); gap:28px; }
+    aside { position:sticky; top:52px; align-self:start; background:#fff; border:1px solid var(--line); border-radius:12px; padding:14px; }
+    aside p { font-size:12px; letter-spacing:.06em; color:var(--muted); margin:0 0 8px; }
+    aside a { display:block; color:var(--ink); text-decoration:none; font-size:14px; padding:6px 8px; border-radius:6px; }
+    aside a:hover { background:var(--blue-bg); color:var(--blue); }
+    h2 { font-size:1.35rem; margin:0 0 12px; }
+    h2 span { display:inline-block; background:var(--blue); color:#fff; border-radius:6px; font-size:13px; padding:2px 8px; margin-right:8px; }
+    h3 { font-size:1.08rem; margin:20px 0 10px; }
+    section { background:#fff; border:1px solid var(--line); border-radius:14px; padding:26px 28px; margin-bottom:22px; }
+    p { margin:0 0 14px; }
+    a { color:var(--blue); overflow-wrap:anywhere; }
+    code { background:#f1f5f9; border-radius:4px; padding:1px 5px; font-size:15px; overflow-wrap:anywhere; }
+    main { min-width:0; }
+    figure { margin:16px 0; background:#fff; border:1px solid var(--line); border-radius:12px; padding:10px; overflow-x:auto; }
+    figure svg { display:block; min-width:700px; }
+    figcaption { color:var(--muted); font-size:14px; margin-top:6px; }
+    .tw { overflow-x:auto; margin:0 0 14px; }
+    .tw table { min-width:620px; }
+    table { width:100%; border-collapse:collapse; font-size:15px; }
+    th, td { border:1px solid var(--line); padding:8px 10px; text-align:left; vertical-align:top; }
+    th { background:#f1f5f9; }
+    ul { margin:0 0 14px; padding-left:22px; }
+    ol { margin:0 0 14px; padding-left:22px; }
+    li { margin-bottom:6px; }
+    .note { background:#f1f5f9; border-left:4px solid var(--muted); padding:12px 16px; border-radius:0 8px 8px 0; font-size:16px; margin:0 0 14px; }
+    svg text { font-family:-apple-system,"PingFang SC","Noto Sans SC",sans-serif; }
+    @media (max-width:860px) { .layout { grid-template-columns:minmax(0,1fr); } aside { position:static; } h1 { font-size:1.55rem; } section { padding:18px 16px; } }
+  </style>
+  <link rel="stylesheet" href="assets/article.css">
+  <script src="assets/article.js" defer></script>
+</head>
+<body class="frontier-article">
+<a class="fr-skip" href="#article-content">跳到正文</a>
+<nav class="fr-nav" aria-label="站点导航">
+  <a class="fr-brand" href="/frontier/"><span class="fr-mark" aria-hidden="true">F</span>Frontier<span class="fr-nav-label">技术与研究</span></a>
+  <a class="fr-home" href="/">@xixi003 <span aria-hidden="true">↗</span></a>
+</nav>
+<div class="fr-progress" aria-hidden="true"><div></div></div>
+
+<header class="fr-hero">
+  <div class="inner">
+    <span class="badge">FRONTIER · 2026-11-19 · Agent Harness</span>
+    <h1>需求流水线之后，held-out 过测从 21.9% 到 33.3%</h1>
+    <p>一篇预印本固定基座模型，只改编码 Agent 的 harness。流水线是：模拟用户多轮提 issue，Triage / Architect / PM / Developers 写可复用改动，合入看 LLM 角色对模拟会话证据写下的需求是否过审。基准分留到进化之后评。原文没有「同一条流水线只换合入门槛」的对照。Harbor-index 38 道留出题、执行模型 GLM-5.3-Flash、评测带交互、三次运行平均：起始 Base Harness 的 pass@1 是 21.9%（±1.5），这条流水线产物 AHE-Beta 是 33.3%（±6.1）；执行 token 从每题 2.40M 到 1.42M，少 40.8%。同一套对照里，Claude Code 2.1.119 是 27.2%（±1.5），已发布的 AHE 是 23.7%，Meta-Harness 是 21.1%。</p>
+  </div>
+</header>
+<div class="fr-layout">
+<aside aria-label="文章目录" class="fr-toc">
+<details open="">
+<summary>本文目录<span aria-hidden="true">＋</span></summary>
+<div class="fr-toc-links">
+<a href="#what">1 过测 21.9% 到 33.3%，流水线一起换的</a>
+<a href="#loop">2 三步：issue、改 harness、角色过审后合</a>
+<a href="#main">3 38 道留出题上的主对比</a>
+<a href="#interact">4 评测关交互，单次不低于另外两套</a>
+<a href="#xfer">5 换模型不重进化；人评是另一套</a>
+<a href="#yours">6 你的运行位</a>
+<a href="#limit">7 这篇没测到的</a>
+<a href="#src">8 出处</a>
+</div>
+</details>
+</aside>
+<main class="fr-content" id="article-content">
+<section id="what">
+  <h2><span>1</span>过测 21.9% 到 33.3%，流水线一起换的</h2>
+  <p>预印本 <a href="https://arxiv.org/abs/2611.24924">Agentic Harness Engineering Beta: Requirement-Centered Evolution of Agent Harnesses</a> 固定基座模型，只改外围的提示、工具和中间件。作者把这套外围叫 harness。进化从一份 Base Harness 出发，最多 32 个种子、六轮；每一轮先让用户模拟器干活、提 issue，再由一组角色改仓库。方法写法是：PR 要过 admission 和 review，正文写合入步骤不查基准分。这是整条流水线的说明，不是「只换合入门槛」的对照。附录 E.1 写，这些机制是工程解释，没有把单项效应分开。</p>
+  <p>标题里的两个率来自主对比：38 道 Harbor-index 留出题，评测协议带交互，执行模型 GLM-5.3-Flash，三次运行的平均。pass@1 是每题一次尝试、事后审计过的通过比例。Base Harness 21.9%（±1.5），AHE-Beta 33.3%（±6.1）。token 是每题平均执行 token，单位百万，不含用户模拟：2.40 对 1.42。用户评分是模拟器在 1–4 分上的均值：2.59 对 3.04。人的 A/B 用 1–7 分，分母和刻度都不同，下一节分开写。</p>
+  <p>AHE-Beta 这个名字指 N=32 那条主配置。N=8、N=16 是另开的进化，种子更少。已发布的 AHE 是另一份冻住的 harness，表里过测也是 23.7%，和 N=8 关掉交互那条碰巧同数，不是同一件东西。</p>
+</section>
+
+<section id="loop">
+  <h2><span>2</span>三步：issue、改 harness、角色过审后合</h2>
+  <p>一轮里，用户模拟器只看见面向用户的回复和进度，看不见 harness 源码。人设库有 50 张卡，七个维度包括验收门槛、自主程度、会不会核结果。进化时每个种子配一张人设；评测时换成一张固定的评测人设。模拟器先用自己的话写下下一步打算，再从菜单里选动作，并记下打算和菜单对不上的地方。会话中途可以提 issue，结束打用户分。</p>
+  <p>Triage 一次看一条 issue，连同该会话的交互记录和当时的 harness 提交。它丢掉「这是这道题的事、不是 harness 的事」、站不住、或当前 harness 已经满足的条目，把剩下的改写成不带项目名、任务号和具体答案的需求。Architect 把同根因的需求合成一条机制级需求，至少引用两条。PM 每轮最多写三份产品需求，走会话评分和摘要，不经过 Architect。Developers 按共享接口排序，先写 RFC，再开 PR。</p>
+  <p>合入：PR 要过 admission 和 review。「已核需求」是 GLM-5.3 的 Triage、Architect、PM 对模拟会话证据的核对；证据来自 GLM-5.3-Flash 用户模拟器，进化会话里没跑过任务验证器。代码审查按 RFC 的验收条件做，图 1 写 Review and merge by the Developers，写代码和过审是同一类角色。原文未描述人工环节；没有写外部真值核验。附录从表 11 的冻结 Gitea 记录抄：N=32 的第 1 到 5 轮（第 6 轮只跑会话）共 131 条 issue，Triage 拒 36 条，写出 115 条需求，合成 22 条，另有 14 份 PRD，合进仓库 71 个 RFC。第 5 轮还有 4 条 issue 仍开放。正文写，没有一步去查基准分。</p>
+  <p>执行模型和用户模拟器都是 GLM-5.3-Flash。Triage、Architect、PM 是 GLM-5.3。Developers 跑 Claude Code CLI，经 Anthropic 兼容接口调 GLM-5.3。进化各配置各跑一轮。评测主对比三次，其余配置一次。</p>
+</section>
+
+<section id="main">
+  <h2><span>3</span>38 道留出题上的主对比</h2>
+  <p>38 道题按域：Coding 14、Optimization 12、Analysis 7、Tool Use 5。附录 C 列出题名。正文写，进化用过的任务实例不在这 38 道里。Claude Code 用官方 npm 的 2.1.119，同一执行模型 GLM-5.3-Flash，经 Anthropic 兼容接口跑原生 CLI。Meta-Harness 钉在上游 57fefdb，是为 Terminal-Bench 2.0 发布的 harness，适配到 Harbor 0.24，保留默认 temperature 0.7。AHE 钉在 182ea06，运行时 NexAU 28511d9。这三份都是别人发布的冻住产物，不能当成「分数门槛」的对照。Meta-Harness 原文写是为 Terminal-Bench 2.0 发布的；进化用了什么模型和预算，原文没写，上一句不据此推断。主协议是带交互的评测：模拟器在每条完整回复之后再说话，直到自己结束或任务时限到。</p>
+  <figure>
+    <svg viewBox="0 0 920 430" width="100%" role="img" aria-label="五套 harness 在 38 道留出题上的 pass@1，AHE-Beta 33.3%，Base 21.9%">
+      <rect x="0" y="0" width="920" height="430" fill="#ffffff"/>
+      <text x="28" y="36" font-size="16" font-weight="700" fill="#0f172a">38 道留出题、带交互、GLM-5.3-Flash，三次平均</text>
+      <text x="28" y="60" font-size="14" fill="#475569">柱高按 pass@1。纵轴 0 到 40%。灰字是表 10 的标准差。</text>
+      <rect x="28" y="78" width="864" height="318" fill="#ffffff" stroke="#1d4ed8" stroke-width="2"/>
+      <line x1="80" y1="360" x2="860" y2="360" stroke="#94a3b8" stroke-width="1"/>
+      <line x1="80" y1="220" x2="860" y2="220" stroke="#e2e8f0" stroke-width="1"/>
+      <line x1="80" y1="80" x2="860" y2="80" stroke="#e2e8f0" stroke-width="1"/>
+      <text x="70" y="365" font-size="14" fill="#64748b" text-anchor="end">0</text>
+      <text x="70" y="225" font-size="14" fill="#64748b" text-anchor="end">20%</text>
+      <text x="70" y="85" font-size="14" fill="#64748b" text-anchor="end">40%</text>
+      <rect x="120" y="207" width="88" height="153" fill="#64748b"/>
+      <text x="164" y="196" font-size="14" font-weight="700" fill="#0f172a" text-anchor="middle">21.9%</text>
+      <text x="164" y="382" font-size="14" fill="#334155" text-anchor="middle">Base</text>
+      <text x="164" y="400" font-size="14" fill="#64748b" text-anchor="middle">±1.5</text>
+      <rect x="250" y="170" width="88" height="190" fill="#b45309"/>
+      <text x="294" y="159" font-size="14" font-weight="700" fill="#0f172a" text-anchor="middle">27.2%</text>
+      <text x="294" y="382" font-size="14" fill="#334155" text-anchor="middle">Claude Code</text>
+      <text x="294" y="400" font-size="14" fill="#64748b" text-anchor="middle">±1.5</text>
+      <rect x="380" y="212" width="88" height="148" fill="#be123c"/>
+      <text x="424" y="201" font-size="14" font-weight="700" fill="#0f172a" text-anchor="middle">21.1%</text>
+      <text x="424" y="382" font-size="14" fill="#334155" text-anchor="middle">Meta-Harness</text>
+      <text x="424" y="400" font-size="14" fill="#64748b" text-anchor="middle">±5.3</text>
+      <rect x="510" y="194" width="88" height="166" fill="#7c3aed"/>
+      <text x="554" y="183" font-size="14" font-weight="700" fill="#0f172a" text-anchor="middle">23.7%</text>
+      <text x="554" y="382" font-size="14" fill="#334155" text-anchor="middle">AHE</text>
+      <text x="554" y="400" font-size="14" fill="#64748b" text-anchor="middle">±2.6</text>
+      <rect x="640" y="127" width="88" height="233" fill="#1d4ed8"/>
+      <text x="684" y="116" font-size="14" font-weight="700" fill="#1d4ed8" text-anchor="middle">33.3%</text>
+      <text x="684" y="382" font-size="14" fill="#334155" text-anchor="middle">AHE-Beta</text>
+      <text x="684" y="400" font-size="14" fill="#64748b" text-anchor="middle">±6.1</text>
+    </svg>
+    <figcaption>图 1。表 10 的 Overall pass@1。柱高 7 像素对应 1 个百分点，40% 顶到内框上沿。AHE 是已发布的冻住 harness，不是 AHE-Beta 的无交互消融。</figcaption>
+  </figure>
+  <p>按任务计，分母 38 道：AHE-Beta 的 pass@1 高于 Base 的有 12 道，低于的有 3 道，其余 23 道不变；用户评分更高的有 16 道，更低的 0 道，其余 22 道不变。按域，Tool Use 从 0.0% 到 26.7%（5 道），Optimization 从 19.4% 到 38.9%（12 道）。Coding 从 38.1% 到 40.5%，Analysis 从 9.5% 到 14.3%。用户评分上，Meta-Harness 1.69、AHE 2.53、Claude Code 2.46，都低于 Base 的 2.59；AHE-Beta 3.04。留出观测只在第 1、3、6 轮：pass@1 从 21.9% 走到 33.3%，用户评分从 2.59 走到 3.04。</p>
+  <div class="tw">
+    <table>
+      <thead>
+        <tr>
+          <th>Harness</th>
+          <th>pass@1</th>
+          <th>用户评分（1–4）</th>
+          <th>执行 token（百万/题）</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td>Base Harness</td><td>21.9% ±1.5</td><td>2.59 ±0.19</td><td>2.40 ±0.25</td></tr>
+        <tr><td>Claude Code 2.1.119</td><td>27.2% ±1.5</td><td>2.46 ±0.18</td><td>2.89 ±0.20</td></tr>
+        <tr><td>Meta-Harness</td><td>21.1% ±5.3</td><td>1.69 ±0.06</td><td>2.26 ±0.58</td></tr>
+        <tr><td>AHE（已发布）</td><td>23.7% ±2.6</td><td>2.53 ±0.16</td><td>2.07 ±0.18</td></tr>
+        <tr><td>AHE-Beta（N=32）</td><td>33.3% ±6.1</td><td>3.04 ±0.08</td><td>1.42 ±0.03</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p>表注：表 10，38 道题、带交互、三次平均。用户评分只平均有效分，每套 harness 每次运行最多丢掉 4 个评分请求失败的会话。</p>
+</section>
+
+<section id="interact">
+  <h2><span>4</span>评测关交互，单次不低于另外两套</h2>
+  <p>进化侧：N=8 的八个种子里六个带交互，held-out 过测 28.9%（11/38）、token 1.71M。同一套种子全部关掉交互（模拟器只看最终回复和只读工作区补丁再打分、提 issue）是 23.7%（9/38）、3.15M。差 2 道题，各跑一次。原文写开交互的 N=8 比关交互少 45.7% token，分母是 3.15M，（3.15−1.71）/3.15。关交互那条相对 1.71M 多 84.2%，两个百分比分母不同。评测侧这几行都带交互。表 2 是进化阶段开或关交互，不是合入门槛的消融。正文把差额写成：中途纠正和会话里才冒出来的需求，终局审查看不到。</p>
+  <p>评测侧再关交互：任务文本只发一次，没有模拟用户跟进，也就没有用户评分。表 3 这三行是单次运行，没有 Base，也没有 AHE。AHE-Beta 过测 26.3%（10/38）、token 1.55M；Claude Code 23.7%（9/38）、3.24M；Meta-Harness 13.2%、2.53M。差 2.6 个点是一道题。主对比里 AHE-Beta 带交互三次运行的标准差是 ±6.1。正文写优势不来自评测时用户帮忙；这一句限定在这三套、单次、差一道题。</p>
+  <p>过测和用户看见的东西对不齐。原文写 137 次过测会话里 34 次没有完整回复，用户评分落到下限 1：核验器读最终工作区，模拟器只看见 harness 报出来的内容。原文没写这 137 次由哪些 harness、哪几次运行构成，是跨配置合计，不是 AHE-Beta 主配置的率。其中 6 次来自 AHE-Beta（N=16），所以那条配置过测高于 Base，用户评分仍低于 Base。</p>
+  <p>附录 E.2：两边都解出的题上，token 相对 Base 仍少 53.6%，相对 Meta-Harness 少 37.4%，相对 Claude Code 少 41.6%，相对 AHE 少 29.7%。去掉贡献最大的 Doom 任务之后，相对 Base 仍少 30.6%。外部基线记录到的 token 大约 98% 是输入。</p>
+  <figure>
+    <svg viewBox="0 0 920 400" width="100%" role="img" aria-label="左图进化有无交互的过测；右图评测关掉交互后三套 harness 的过测">
+      <rect x="0" y="0" width="920" height="400" fill="#ffffff"/>
+      <text x="28" y="36" font-size="16" font-weight="700" fill="#0f172a">交互出现在进化里，还是只出现在评测里</text>
+      <text x="28" y="58" font-size="14" fill="#475569">左：表 2，评测都带交互。右：表 3 的「关掉交互」三行。</text>
+      <rect x="28" y="76" width="420" height="290" fill="#ffffff" stroke="#047857" stroke-width="2"/>
+      <text x="44" y="102" font-size="14" font-weight="700" fill="#047857">进化：N=8 开或关交互</text>
+      <text x="44" y="124" font-size="14" fill="#475569">held-out pass@1，评测带交互</text>
+      <rect x="90" y="272" width="70" height="66" fill="#64748b"/>
+      <text x="125" y="262" font-size="14" font-weight="700" fill="#0f172a" text-anchor="middle">21.9%</text>
+      <text x="125" y="356" font-size="14" fill="#334155" text-anchor="middle">Base</text>
+      <rect x="200" y="267" width="70" height="71" fill="#b45309"/>
+      <text x="235" y="257" font-size="14" font-weight="700" fill="#b45309" text-anchor="middle">23.7%</text>
+      <text x="235" y="356" font-size="14" fill="#334155" text-anchor="middle">关交互</text>
+      <rect x="310" y="251" width="70" height="87" fill="#1d4ed8"/>
+      <text x="345" y="241" font-size="14" font-weight="700" fill="#1d4ed8" text-anchor="middle">28.9%</text>
+      <text x="345" y="356" font-size="14" fill="#334155" text-anchor="middle">开交互</text>
+      <rect x="492" y="76" width="400" height="290" fill="#ffffff" stroke="#be123c" stroke-width="2"/>
+      <text x="508" y="102" font-size="14" font-weight="700" fill="#be123c">评测：关掉交互</text>
+      <text x="508" y="124" font-size="14" fill="#475569">任务只发一次，无用户跟进</text>
+      <rect x="540" y="267" width="70" height="71" fill="#b45309"/>
+      <text x="575" y="257" font-size="14" font-weight="700" fill="#0f172a" text-anchor="middle">23.7%</text>
+      <text x="575" y="356" font-size="14" fill="#334155" text-anchor="middle">Claude</text>
+      <rect x="650" y="298" width="70" height="40" fill="#be123c"/>
+      <text x="685" y="288" font-size="14" font-weight="700" fill="#be123c" text-anchor="middle">13.2%</text>
+      <text x="685" y="356" font-size="14" fill="#334155" text-anchor="middle">Meta</text>
+      <rect x="760" y="259" width="70" height="79" fill="#1d4ed8"/>
+      <text x="795" y="249" font-size="14" font-weight="700" fill="#1d4ed8" text-anchor="middle">26.3%</text>
+      <text x="795" y="356" font-size="14" fill="#334155" text-anchor="middle">AHE-Beta</text>
+    </svg>
+    <figcaption>图 2。左柱高按 3 像素对应 1 个百分点，从底边 338 起。右图同一比例。左图「关交互」是进化关掉；右图是评测关掉。右图三根柱都是单次运行，没有 Base 柱。两图分母都是 38 道题。左图棕色在这张图里表示关交互的 N=8，不是图 1 里的 Claude Code。</figcaption>
+  </figure>
+</section>
+
+<section id="xfer">
+  <h2><span>5</span>换模型不重进化；人评是另一套</h2>
+  <p>Flash 上进化出来的 harness 原样接到 GLM-5.3 和 DeepSeek-V4.1-Flash（2026-10-17 版），不再进化。附录 E 写主对比三次，其余配置一次；表 4 里只有 GLM-5.3-Flash 一行是三次平均，这两行是单次。pass@1：GLM-5.3 从 23.7%（9/38）到 39.5%（15/38），差 15.8 个百分点、6 道题；DeepSeek-V4.1-Flash 从 36.8%（14/38）到 42.1%（16/38），差 5.3、2 道题。用户评分：1.70 到 3.03（37 道有评分的配对），3.33 到 3.39（36 道）。token：GLM-5.3 从 1.91M 到 1.99M，这一格 AHE-Beta 并不更省；DeepSeek 从 3.80M 到 2.81M。pass@1 和 token 用满 38 道。</p>
+  <p>盲测 A/B 不是跨模型那两行。人评的是 GLM-5.3-Flash 上的 Base 对 AHE-Beta，默认推理设置，输出上限 65,536；主评测协议是 maximum reasoning effort。六项编码任务自选，两侧标成 A/B，A 在 48 对有效里有 24 对是 Base。每侧预算 30 分钟，T2 60 分钟，可延长。交了 50 对，去掉 2 对（一侧没收到用户消息；平局和文字理由打架）。48 对来自 25 个匿名标签。完成情况是自评，没有独立代码审查。有效对里 AHE-Beta 31、Base 7、平 9、两边都不要 1。Overall 均值（五个维度再平均）Base 5.39、AHE-Beta 6.01，刻度 1–7。过程可理解性 4.13 对 5.33。有用性和控制各缺 1 个评分。六对里 Base 一侧读到了上游补丁或等价修复，AHE-Beta 一侧审计确认没有；这六对里仍有五对选 AHE-Beta。去掉这六对：42 对有效里 26 对 6，另有 9 平、1 都不要。自评完成：AHE-Beta 41 侧，Base 34 侧。</p>
+  <div class="tw">
+    <table>
+      <thead>
+        <tr>
+          <th>任务</th>
+          <th>有效对</th>
+          <th>AHE-Beta</th>
+          <th>Base</th>
+          <th>平 / 都不要</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td>T1 Annotation（Matplotlib）</td><td>9</td><td>6</td><td>2</td><td>1 / 0</td></tr>
+        <tr><td>T2 Staged report（Django）</td><td>2</td><td>2</td><td>0</td><td>0 / 0</td></tr>
+        <tr><td>T3 Oversell（商店服务）</td><td>13</td><td>5</td><td>1</td><td>6 / 1</td></tr>
+        <tr><td>T4 Game feature</td><td>10</td><td>8</td><td>2</td><td>0 / 0</td></tr>
+        <tr><td>T5 Span selector（Matplotlib）</td><td>7</td><td>5</td><td>1</td><td>1 / 0</td></tr>
+        <tr><td>T6 Literal annotation（Sphinx）</td><td>7</td><td>5</td><td>1</td><td>1 / 0</td></tr>
+        <tr><td>全部有效对</td><td>48</td><td>31</td><td>7</td><td>9 / 1</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p>附录 G 举了合进去的行为，这些是第一次主运行里的轨迹。原文写 traces show each change at work，没有把单条改动对结果的效应分开；N=8 / 16 / 32 的差异也不分离用户数。停滞通知：连续四步只读且跨过至少 60 秒，或 120 秒没有编辑，就往下一次模型调用里塞 <code>[action-notice]</code>。留出 38 道里 33 道触发，25 道升级；29 道上的 59 次通知后面紧跟着编辑或新的工作区内容。Pillow filter 上 Base 在 1452 秒才改库源码，1800 秒限到了还没回复；AHE-Beta 151 秒收到通知，22 秒后写出基准脚本，926 秒交 2.0 倍加速且等价检查过。这条 Base 三次都没过。早落盘：AlgoTune 矩阵平方根要在 1800 秒内写出 <code>/app/solver.py</code>。第一次运行里 Base 代码全在 <code>/tmp</code>，文件没建出来；AHE-Beta 551 秒写出第一版。三次里 Base 只在一次、1260 秒才建文件，从未过测；AHE-Beta 在 1000 秒前建文件的两次都过了，这是 2 次观察。附录 G 还写 Base Harness relays no interim line，AHE-Beta 在过程可理解性上 5.33 对 4.13，这一差和中途进度行有关，不要读成过测能力差。</p>
+</section>
+
+<section id="yours">
+  <h2><span>6</span>你的运行位</h2>
+  <p>读完要看的是：自己改 harness、用 Agent 改 Agent 外围时，拿在手上的是一份 Base，还是跑过用户模拟加角色团队的产物。这篇在 38 道 Harbor-index 留出题上，过测从 21.9% ±1.5 到 33.3% ±6.1，token 从 2.40M 到 1.42M。同一执行模型上，这份产物点估计 33.3%，Claude Code 2.1.119 是 27.2% ±1.5；差 6.1 个点，跟 AHE-Beta 自己三次运行的标准差一样大。合入门槛没有独立消融。</p>
+  <p>稿件推断，不是原文部署实验：如果编辑起点把「这道 SWE 过了」写成合进默认脚手架的理由，而用户侧还在中途改口、要看见进度、要结果送到面前，这篇测到的是核验器和模拟器看不同一面。N=16 过测可以高于 Base，用户评分仍低于 Base，原文点名其中 6 次过测会话没有完整回复。137/34 是跨配置合计，原文没写分母构成，不拿来当 AHE-Beta 主配置的率。原文没测你仓库里的真实用户，人的 A/B 是六项自选编码任务、48 对有效、完成情况自评。</p>
+  <p>和已有几篇相邻：<a href="/frontier/2026-11-05-harness-spreads-eleven.html">固定模型换脚手架，Qwen 正确率差 11.5 个点</a> 讲的是同一模型换五套现成脚手架；<a href="/frontier/2026-11-11-ends-above-eighty-six.html">可核指令 86% 以上全跟或从不</a> 讲的是仓库指令落没落到提交上；<a href="/frontier/2026-11-04-conditional-wording-loses.html">条件写法相对规定和解释跟得少</a> 讲的是同一条政策换句式。后几篇数字以各篇原文为准，本轮没有重开。这里多出来的是：跑过用户模拟加角色团队的 harness，在这 38 道留出题上过测从 21.9% 走到 33.3%。</p>
+</section>
+
+<section id="limit">
+  <h2><span>7</span>这篇没测到的</h2>
+  <p>进化最多 32 个场景、六轮、一种模拟器模型、选定的人设，外加一场人的 A/B。局限节写，更宽的场景、更多模拟器模型和人设组合、继续迭代，对 harness 质量和算力的影响还没在更大尺度上评。主对比三次，进化本身各配置一轮。AHE-Beta 的 pass@1 标准差 ±6.1，宽于 Base 的 ±1.5。稿件推断：执行模型和用户模拟器都是 GLM-5.3-Flash，2.59 到 3.04 的用户评分不是独立于进化环境的指标；原文局限节没声明这一点。</p>
+  <p>N=16 过测可以高于 Base，用户评分仍低于 Base，因为过测会话里有没把回复送到用户眼前的。附录 E.3 写，失败会从早期执行挪到更后面的正确性、性能、抽取和副作用约束：Xarray 测试从 18 里过 8 到过 16，还剩两个网格边界；Pandas merge 从编译失败走到算对，速度门槛没过。剩下的失败分两类。第一类需要 harness 还没采到的核验证据；第二类是 Agent 说对了要求，脚手架给不出那份能力。</p>
+  <p>人的 A/B 任务自选，对计数不均（T2 只有 2 对，T3 有 13 对）。T3 13 对里平局 6、都不要 1，AHE-Beta 5、Base 1。完成是自评。六个 Base 读到上游补丁的对，方向仍偏向 AHE-Beta，但样本量小。进化 token 附录写成 N=32 已记录分量合计 1.92B，98% 是输入，Developers 约占 68%；覆盖不完整，不能拿去给各变体做全成本排名。</p>
+  <p>跨模型那两行没有再进化，也没有和「在新模型上重跑进化」对照。Analysis 域 7 道，AHE-Beta 过测 14.3% ±0.0，Base 9.5% ±16.5，这一格不要读成稳。Tool Use 5 道，26.7% ±11.5。</p>
+</section>
+
+<section id="src">
+  <h2><span>8</span>出处</h2>
+  <p>2026 年 11 月 18 日，arXiv 收到 <a href="https://arxiv.org/abs/2611.24924">Agentic Harness Engineering Beta</a>（arXiv:2611.24924v1，cs.SE、cs.AI；作者 Jiahang Lin、Jiahao Chen、Yiding Wang 等，单位署 Fudan University 等）。arXiv 预印本。论文页许可 CC BY-NC-SA 4.0。代码仓库 <a href="https://github.com/Curry09/AHE-Beta">Curry09/AHE-Beta</a> 本轮打开，README 徽章写 MIT，没有逐文件核对许可证正文。</p>
+  <ul>
+    <li>预印本 abs：<a href="https://arxiv.org/abs/2611.24924">arXiv:2611.24924</a>。HTML 全文：<a href="https://arxiv.org/html/2611.24924v1">arxiv.org/html/2611.24924v1</a>。PDF：<a href="https://arxiv.org/pdf/2611.24924">arxiv.org/pdf/2611.24924</a>。提交 2026-11-18。</li>
+    <li>21.9% / 33.3% / 2.59 / 3.04 / 2.40 / 1.42、27.2% / 23.7% / 21.1% 与 ±，从表 10 抄。40.8% 出现在摘要和结论，由表 10 的 2.40 和 1.42 可复算。12 道升、3 道降、16 道评分更高，从第 4.2 节抄。</li>
+    <li>38 道及四域计数、进化 N、六轮、评测协议、GLM-5.3-Flash / GLM-5.3 / DeepSeek-V4.1-Flash（2026-10-17），从第 4.1 节与附录 E 抄。Claude Code 2.1.119、Meta-Harness 57fefdb、AHE 182ea06 / NexAU 28511d9，从附录 E 抄。</li>
+    <li>表 2 的 23.7% / 28.9% / 3.15 / 1.71 与 45.7%，从表 2 抄。表 3 无交互三行、137 / 34 / 评分 1 / N=16 的 6 次，从第 4.3 节抄。53.6% 等到附录 E.2 抄。</li>
+    <li>15.8 / 5.3、表 4 的 39.5% / 42.1% / 1.70 / 3.03 / 3.33 / 3.39 / token 与 38 / 37 / 36，从表 4 抄。</li>
+    <li>31 / 48、5.39 / 6.01、4.13 / 5.33、50 对去掉 2、25 个标签、24/48 的 A 是 Base、41 侧对 34 侧、六对暴露里五对仍选 AHE-Beta，从表 1、表 14 与附录 F 抄。</li>
+    <li>131 / 36 / 115 / 22 / 14 / 71，从表 11 抄。停滞通知 33/38、25 道升级、59 次 / 29 道，以及 Pillow / solver.py 时间线，从附录 G.1 抄。</li>
+    <li>局限从 Limitations 与附录 E.3 抄。进化 1.92B token 从附录 E「Evolution cost」抄，覆盖不完整。</li>
+  </ul>
+  <p>OpenAI 新闻列表页扫到 Codex sandbox、Research acceleration、GPT-6.2 Astra / Sol 三条链，本轮直接请求这三页返回 403，未打开、未写入判断。Anthropic 新闻页最新产品条是 <a href="https://www.anthropic.com/claude-fable-and-mythos-5-2">Fable 5.2</a>，另有 <a href="https://www.anthropic.com/news/anthropic-prices-initial-public-offering">IPO 定价</a>，未写入判断。X / Reddit 今日未覆盖。Product Hunt 本轮 Cloudflare 质询。</p>
+  <p><a href="/frontier/rsi-llm-agent-self-evolution.html">09-26 RSI</a> 是谱系，<a href="/frontier/llm-agent-tech-landscape.html">09-27 全景</a> 是增量在哪一层。本文写运行位上的一条缝：跑过用户模拟加角色团队的 harness，在这 38 道留出题上过测从 21.9% 走到 33.3%。合入门槛本身没有独立对照。</p>
+</section>
+</main>
+</div>
+<a class="fr-top" href="#" aria-label="返回页首">↑</a>
+</body>
+</html>

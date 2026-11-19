@@ -1,5 +1,9 @@
 # 前沿技术栏目：独立 HTML 洞察索引。
 # 新增一篇：把 HTML 放到 /frontier/<slug>.html，再在这里加一条。
+- title: "需求流水线之后，held-out 过测从 21.9% 到 33.3%"
+  date: "2026-11-19"
+  url: /frontier/2026-11-19-pipeline-lifts-pass.html
+  summary: "一篇预印本固定基座模型，只改编码 Agent 的 harness。流水线是模拟用户多轮提 issue，Triage / Architect / PM / Developers 写可复用改动，合入看 LLM 角色对模拟会话证据写下的需求是否过审。原文没有只换合入门槛的对照。Harbor-index 38 道留出题、GLM-5.3-Flash、评测带交互、三次运行平均：pass@1 从 Base Harness 的 21.9%（±1.5）到 AHE-Beta 的 33.3%（±6.1），执行 token 从每题 2.40M 到 1.42M，少 40.8%。同一套对照里 Claude Code 2.1.119 是 27.2%（±1.5）。盲测 A/B 上真实用户在 48 对有效里 31 对更喜欢 AHE-Beta。"
 - title: "Fable 5 的 7 日合并率差 +1.4 个点，区间含 0"
   date: "2026-11-18"
   url: /frontier/2026-11-18-bench-not-merge-rate.html
