@@ -1,5 +1,9 @@
 # 前沿技术栏目：独立 HTML 洞察索引。
 # 新增一篇：把 HTML 放到 /frontier/<slug>.html，再在这里加一条。
+- title: "gpt-oss-120b 全量 199 条 51.2%，约 29 条 55.4%"
+  date: "2026-11-20"
+  url: /frontier/2026-11-20-selected-beats-full-set.html
+  summary: "一篇预印本给 AppWorld 的 ReAct 代码 Agent 塞自己挖出来的指南。gpt-oss-120b 在 168 道 test_normal 上，无记忆 TGC 39.9%；全量 199 条 51.2%；检索加高支持核约 29 条，两次运行平均 55.4%。约 29 条是四档里在 test 上最好的一档。同一套 ReAct 里 DeepSeek-V3.2 从 0 条的 79.8% 走到全量 191 条的 89.3%。每个模型自己挖课，原文没有把模型能力和课的质量分开测。"
 - title: "需求流水线之后，held-out 过测从 21.9% 到 33.3%"
   date: "2026-11-19"
   url: /frontier/2026-11-19-pipeline-lifts-pass.html

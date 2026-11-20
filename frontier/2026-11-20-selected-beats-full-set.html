@@ -1,0 +1,262 @@
+﻿<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>gpt-oss-120b 全量 199 条 51.2%，约 29 条 55.4% · Frontier</title>
+  <style>
+    :root { --ink:#0f172a; --muted:#475569; --line:#e2e8f0; --bg:#f8fafc; --blue:#1d4ed8; --blue-bg:#eff6ff; --amber:#b45309; --green:#047857; --rose:#be123c; }
+    * { box-sizing: border-box; }
+    body { margin:0; font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Noto Sans SC",sans-serif; background:var(--bg); color:var(--ink); line-height:1.75; font-size:17px; }
+    header { background:#0f172a; color:#f8fafc; padding:36px 24px 28px; border-bottom:4px solid #2563eb; }
+    header .inner { max-width:1080px; margin:0 auto; }
+    .badge { display:inline-block; border:1px solid #93c5fd; color:#bfdbfe; border-radius:999px; padding:2px 12px; font-size:13px; }
+    h1 { font-size:2rem; line-height:1.3; margin:12px 0; }
+    header p { color:#cbd5e1; margin:0; max-width:760px; }
+    .layout { max-width:1080px; margin:28px auto 64px; padding:0 20px; display:grid; grid-template-columns:220px minmax(0,1fr); gap:28px; }
+    aside { position:sticky; top:52px; align-self:start; background:#fff; border:1px solid var(--line); border-radius:12px; padding:14px; }
+    aside p { font-size:12px; letter-spacing:.06em; color:var(--muted); margin:0 0 8px; }
+    aside a { display:block; color:var(--ink); text-decoration:none; font-size:14px; padding:6px 8px; border-radius:6px; }
+    aside a:hover { background:var(--blue-bg); color:var(--blue); }
+    h2 { font-size:1.35rem; margin:0 0 12px; }
+    h2 span { display:inline-block; background:var(--blue); color:#fff; border-radius:6px; font-size:13px; padding:2px 8px; margin-right:8px; }
+    h3 { font-size:1.08rem; margin:20px 0 10px; }
+    section { background:#fff; border:1px solid var(--line); border-radius:14px; padding:26px 28px; margin-bottom:22px; }
+    p { margin:0 0 14px; }
+    a { color:var(--blue); overflow-wrap:anywhere; }
+    code { background:#f1f5f9; border-radius:4px; padding:1px 5px; font-size:15px; overflow-wrap:anywhere; }
+    main { min-width:0; }
+    figure { margin:16px 0; background:#fff; border:1px solid var(--line); border-radius:12px; padding:10px; overflow-x:auto; }
+    figure svg { display:block; min-width:700px; }
+    figcaption { color:var(--muted); font-size:14px; margin-top:6px; }
+    .tw { overflow-x:auto; margin:0 0 14px; }
+    .tw table { min-width:620px; }
+    table { width:100%; border-collapse:collapse; font-size:15px; }
+    th, td { border:1px solid var(--line); padding:8px 10px; text-align:left; vertical-align:top; }
+    th { background:#f1f5f9; }
+    ul { margin:0 0 14px; padding-left:22px; }
+    ol { margin:0 0 14px; padding-left:22px; }
+    li { margin-bottom:6px; }
+    .note { background:#f1f5f9; border-left:4px solid var(--muted); padding:12px 16px; border-radius:0 8px 8px 0; font-size:16px; margin:0 0 14px; }
+    svg text { font-family:-apple-system,"PingFang SC","Noto Sans SC",sans-serif; }
+    @media (max-width:860px) { .layout { grid-template-columns:minmax(0,1fr); } aside { position:static; } h1 { font-size:1.55rem; } section { padding:18px 16px; } }
+  </style>
+  <link rel="stylesheet" href="assets/article.css">
+  <script src="assets/article.js" defer></script>
+</head>
+<body class="frontier-article">
+<a class="fr-skip" href="#article-content">跳到正文</a>
+<nav class="fr-nav" aria-label="站点导航">
+  <a class="fr-brand" href="/frontier/"><span class="fr-mark" aria-hidden="true">F</span>Frontier<span class="fr-nav-label">技术与研究</span></a>
+  <a class="fr-home" href="/">@xixi003 <span aria-hidden="true">↗</span></a>
+</nav>
+<div class="fr-progress" aria-hidden="true"><div></div></div>
+
+<header class="fr-hero">
+  <div class="inner">
+    <span class="badge">FRONTIER · 2026-11-20 · Agent Memory</span>
+    <h1>gpt-oss-120b 全量 199 条 51.2%，约 29 条 55.4%</h1>
+    <p>一篇预印本给编码 Agent 塞自己挖出来的指南。AppWorld 的 test_normal 168 道题上，TGC 是整题评测检查全过的比例。gpt-oss-120b 无记忆 39.9%；把自己挖的 199 条全塞进去 51.2%；检索加高支持核约 29 条，两次运行平均 55.4%（56.0 和 54.8）。约 7 道题是原文的话；4.2 个点是稿件用 55.4 减 51.2 算的。全量是单次，检索是两次平均；约 29 条是四档里在 test_normal 上最好的一档，没有留出集。同一套 ReAct 里，DeepSeek-V3.2 从 0 条 79.8% 走到全量 191 条 89.3%。作者写：该注入多少是模型的属性。每个模型自己挖课，原文没有把模型能力和课的质量分开测。评测默认单次；作者把大约 5 道题以内的差当噪声。</p>
+  </div>
+</header>
+<div class="fr-layout">
+<aside aria-label="文章目录" class="fr-toc">
+<details open="">
+<summary>本文目录<span aria-hidden="true">＋</span></summary>
+<div class="fr-toc-links">
+<a href="#what">1 gpt-oss 全量 199 条低于约 29 条</a>
+<a href="#pipe">2 课从自己的轨迹挖</a>
+<a href="#dose">3 DeepSeek 加到 191 条还在涨</a>
+<a href="#tail">4 压缩、ACE、CUGA 是辅线</a>
+<a href="#yours">5 你的运行位</a>
+<a href="#limit">6 这篇没测到的</a>
+<a href="#src">7 出处</a>
+</div>
+</details>
+</aside>
+<main class="fr-content" id="article-content">
+<section id="what">
+  <h2><span>1</span>gpt-oss 全量 199 条低于约 29 条</h2>
+  <p>预印本 <a href="https://arxiv.org/abs/2611.26361">How Much Should an Agent Remember? Deployment Lessons from Self-Distilled Memory for LLM Agents</a> 把一条记忆流水线接到 AppWorld 的参考 ReAct 代码 Agent 上。每一步一次模型调用，写出 Python，环境回输出。TGC 是任务级：168 道 test_normal 里，评测检查全过的比例。SGC 更严：一个场景里所有任务变体都过，才算这个场景过。课只从 train/dev 挖。dev 已经拿去挖课，没有留出集选配置，各配置直接在 test_normal 上比。</p>
+  <p>标题里两个率都是 gpt-oss-120b、同一套 ReAct 脚手架。无记忆 39.9%。全量注入自己挖的 199 条，51.2%。检索配置大约 29 条：高支持核始终在，再按源任务相似度补 top-k，两次运行 TGC 56.0 和 54.8，平均 55.4%；SGC 取第一次的 37.5%。每题 token：无记忆 110K，全量 166K，检索 116K。作者写，检索和基线 token 差不多（116K 对 110K），全量大约贵一半。</p>
+  <p>24 条的支持≥3 核是 53.6%，比全量 51.2% 高 4 道题。作者写全量不优于这个 24 条核；4 道题低于他们说的约 5 道题噪声线。表 2 的「事先钉死」规则是一律注入全量：gpt-oss 仍从 39.9% 到 51.2%，+11.3 个点。检索约 29 条是这四档里在 test 上最好的一次，不是留出集挑出来的。DeepSeek-V3.2 按同一条全量规则走到 89.3%，+9.5 个点。</p>
+</section>
+
+<section id="pipe">
+  <h2><span>2</span>课从自己的轨迹挖</h2>
+  <p>Agent 先在 train/dev 上跑，成功失败都留。每条轨迹让同一个模型写 1 到 3 条祈使句，下次该怎么做。成败标签来自评测器，不来自模型自评。DeepSeek-V3.2：147 条 train/dev 轨迹，290 条生课，失败 62、成功 228。近重复会占满检索槽，所以再合成指南。合成按源任务嵌入聚类，簇内才合并，且只在「照这条做等于照那条做」时合并。每条指南记下合并了几条课，叫支持数；输出支持数之和等于生课条数。模型漏掉的课原样留下。DeepSeek 合成 191 条，其中 144 条支持数为 1。</p>
+  <p>交付可以全量静态注入，也可以检索：支持≥3 的核始终带上，再按源任务相似度加 top-k，已经在核里或互相重复的丢掉。按支持数卡阈值发生在选取时，不从仓库删。挖课、合成、跑 Agent 用同一个模型，没有单独的教师模型，也没有人工标。流水线在开源库 altk-evolve 里，接到 IBM 的 CUGA 和 watsonx Orchestrate。方法本身作者不当成这篇的贡献；写的是跨 40% 到 92% 基线 TGC 的模型，部署时踩到的事。</p>
+  <p>AppWorld 模拟九个应用，457 个 API，大约一百个模拟人，750 道题。全文主表用 test_normal 168 道；test_challenge 417 道只在点名处出现。八个模型打了基线，六个带着记忆跑。DeepSeek 五种配置，gpt-oss 四种，GPT-5.5 / GLM-5 / Gemma-4-31B 各两种，Claude Opus 4.6 一种。</p>
+</section>
+
+<section id="dose">
+  <h2><span>3</span>DeepSeek 加到 191 条还在涨</h2>
+  <p>DeepSeek-V3.2 的 TGC：0 条 79.8%，12 条 82.7%，19 条 83.9%，47 条 85.7%，全量 191 条 89.3%。相邻两档差两到四道题，作者写单独看落在噪声里；端点差 16 道题。SGC 从 64.3 到 80.4。难拆分（原文 hard split）TGC 60.4 → 72.9，SGC 41.7 → 58.3。GPT-5.5 基线已在 92.3%，全量 207 条到 95.2% / 89.3%；TGC 大约五道题，作者写在噪声地板上，SGC 增益更大。GLM-5 72 条全量仍是 87.5%，饱和。Gemma-4-31B 记忆跑在 164 道子集上，全量 87 条 64.6%，基线 63.4%；括号里写全部 168 道的基线是 62.5%。原文写 Gemma too weak to apply memory：整体几乎不动，过紧的核反而有害。它没有「全量对精选」对照，不能当 gpt-oss 那条曲线的第二个例子。</p>
+  <figure>
+    <svg viewBox="0 0 920 440" width="100%" role="img" aria-label="左图 DeepSeek 指南条数增加 TGC 上升；右图 gpt-oss 全量 199 条低于约 29 条">
+      <rect x="0" y="0" width="920" height="440" fill="#ffffff"/>
+      <text x="28" y="32" font-size="16" font-weight="700" fill="#0f172a">同一 168 道 test_normal 上，注入条数和 TGC</text>
+      <text x="28" y="54" font-size="14" fill="#475569">左纵轴 60%–95%；右纵轴 15%–60%。两图刻度不同，不要比柱高。</text>
+      <rect x="28" y="70" width="430" height="340" fill="#ffffff" stroke="#1d4ed8" stroke-width="2"/>
+      <text x="44" y="96" font-size="14" font-weight="700" fill="#1d4ed8">DeepSeek-V3.2</text>
+      <line x1="88" y1="360" x2="430" y2="360" stroke="#94a3b8" stroke-width="1"/>
+      <line x1="88" y1="220" x2="430" y2="220" stroke="#e2e8f0" stroke-width="1"/>
+      <line x1="88" y1="80" x2="430" y2="80" stroke="#e2e8f0" stroke-width="1"/>
+      <text x="80" y="365" font-size="14" fill="#64748b" text-anchor="end">60%</text>
+      <text x="80" y="225" font-size="14" fill="#64748b" text-anchor="end">77.5%</text>
+      <text x="80" y="85" font-size="14" fill="#64748b" text-anchor="end">95%</text>
+      <rect x="108" y="201" width="44" height="159" fill="#64748b"/>
+      <text x="130" y="190" font-size="14" font-weight="700" fill="#0f172a" text-anchor="middle">79.8</text>
+      <text x="130" y="382" font-size="14" fill="#334155" text-anchor="middle">0</text>
+      <rect x="168" y="178" width="44" height="182" fill="#64748b"/>
+      <text x="190" y="167" font-size="14" font-weight="700" fill="#0f172a" text-anchor="middle">82.7</text>
+      <text x="190" y="382" font-size="14" fill="#334155" text-anchor="middle">12</text>
+      <rect x="228" y="169" width="44" height="191" fill="#64748b"/>
+      <text x="250" y="158" font-size="14" font-weight="700" fill="#0f172a" text-anchor="middle">83.9</text>
+      <text x="250" y="382" font-size="14" fill="#334155" text-anchor="middle">19</text>
+      <rect x="288" y="154" width="44" height="206" fill="#7c3aed"/>
+      <text x="310" y="143" font-size="14" font-weight="700" fill="#7c3aed" text-anchor="middle">85.7</text>
+      <text x="310" y="382" font-size="14" fill="#334155" text-anchor="middle">47</text>
+      <rect x="348" y="126" width="44" height="234" fill="#1d4ed8"/>
+      <text x="370" y="115" font-size="14" font-weight="700" fill="#1d4ed8" text-anchor="middle">89.3</text>
+      <text x="370" y="382" font-size="14" fill="#334155" text-anchor="middle">191</text>
+      <text x="250" y="404" font-size="14" fill="#64748b" text-anchor="middle">注入条数</text>
+      <rect x="478" y="70" width="414" height="340" fill="#ffffff" stroke="#be123c" stroke-width="2"/>
+      <text x="494" y="96" font-size="14" font-weight="700" fill="#be123c">gpt-oss-120b</text>
+      <line x1="538" y1="360" x2="860" y2="360" stroke="#94a3b8" stroke-width="1"/>
+      <line x1="538" y1="225" x2="860" y2="225" stroke="#e2e8f0" stroke-width="1"/>
+      <line x1="538" y1="90" x2="860" y2="90" stroke="#e2e8f0" stroke-width="1"/>
+      <text x="530" y="365" font-size="14" fill="#64748b" text-anchor="end">15%</text>
+      <text x="530" y="230" font-size="14" fill="#64748b" text-anchor="end">37.5%</text>
+      <text x="530" y="95" font-size="14" fill="#64748b" text-anchor="end">60%</text>
+      <rect x="560" y="211" width="52" height="149" fill="#64748b"/>
+      <text x="586" y="200" font-size="14" font-weight="700" fill="#0f172a" text-anchor="middle">39.9</text>
+      <text x="586" y="382" font-size="14" fill="#334155" text-anchor="middle">0</text>
+      <rect x="632" y="128" width="52" height="232" fill="#b45309"/>
+      <text x="658" y="117" font-size="14" font-weight="700" fill="#b45309" text-anchor="middle">53.6</text>
+      <text x="658" y="382" font-size="14" fill="#334155" text-anchor="middle">24</text>
+      <rect x="704" y="118" width="52" height="242" fill="#047857"/>
+      <text x="730" y="107" font-size="14" font-weight="700" fill="#047857" text-anchor="middle">55.4</text>
+      <text x="730" y="382" font-size="14" fill="#334155" text-anchor="middle">≈29</text>
+      <rect x="776" y="143" width="52" height="217" fill="#be123c"/>
+      <text x="802" y="132" font-size="14" font-weight="700" fill="#be123c" text-anchor="middle">51.2</text>
+      <text x="802" y="382" font-size="14" fill="#334155" text-anchor="middle">199</text>
+      <text x="680" y="404" font-size="14" fill="#64748b" text-anchor="middle">注入条数</text>
+    </svg>
+    <figcaption>图 1。左：正文 Insight 1 的五档 TGC，柱高 8 像素对应 1 个百分点，60% 对齐底轴 y=360，95% 在 y=80。右：0 / 24 / ≈29 / 199 四档，柱高 6 像素对应 1 个百分点，15% 对齐底轴 y=360，60% 在 y=90。≈29 是两次平均。原文图 1 还标了 DeepSeek 的检索档（47 条高支持加每题 10 条）和 gpt-oss 的 60 条支持≥2；这两档正文没给单独 TGC，未画。</figcaption>
+  </figure>
+  <p>按难度拆同一批运行（表 1）。原文没给分档的题数或场景数。百分数能还原成整分数，是稿件反推：DeepSeek 中档 SGC 62.5 → 93.8 对得上 10/16 → 15/16，差 5 个场景；gpt-oss 难档 SGC 4.8 → 9.5 对得上 1/21 → 2/21。这些分档不作标题论据。gpt-oss 表 1 用的是两次检索里第一次（TGC 56.0）：易档 66.7 → 82.5，中档 35.4 → 56.2，难档 19.1 → 31.8。Opus 4.6 在 test_challenge 上难档 TGC 73.3 → 83.1。Opus 在 test_normal 上只跑了压缩的 12 条，94.6% / 94.6%，基线 90.5%，没有全量数字。</p>
+  <div class="tw">
+    <table>
+      <thead>
+        <tr>
+          <th>模型</th>
+          <th>无记忆 TGC</th>
+          <th>事先钉死：全量</th>
+          <th>test 上最好的一档</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td>GPT-5.5</td><td>92.3%</td><td>95.2%（207 条，+2.9）</td><td>95.2% / 89.3%</td></tr>
+        <tr><td>Opus 4.6</td><td>90.5%</td><td>未跑全量</td><td>压缩 12 条：94.6% / 94.6%（+4.1）</td></tr>
+        <tr><td>GLM-5</td><td>87.5%</td><td>87.5%（72 条，0.0）</td><td>87.5% / 80.4%</td></tr>
+        <tr><td>DeepSeek-V3.2</td><td>79.8%</td><td>89.3%（191 条，+9.5）</td><td>89.3% / 80.4%</td></tr>
+        <tr><td>Gemma-4-31B</td><td>63.4%（164 道）</td><td>64.6%（87 条，+1.2）</td><td>64.6% / 45.5%</td></tr>
+        <tr><td>gpt-oss-120b</td><td>39.9%</td><td>51.2%（199 条，+11.3）</td><td>检索 ≈29 条：55.4% / 37.5%（+15.5）</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p>表注：表 2，test_normal。TGC/SGC 两列是「最好一档」的两个率。gpt-oss 的 55.4% 是两次平均；SGC 取第一次。Gemma 记忆跑在 164 道子集。作者把一律全量这条规则事先钉死，避免用 test 挑配置；gpt-oss 的最好一档因此和这条规则不是同一格。</p>
+</section>
+
+<section id="tail">
+  <h2><span>4</span>压缩、ACE、CUGA 是辅线</h2>
+  <p>DeepSeek 上，第一版合成提示要一份短清单，得到 12 条，+2.9 个 TGC 点；全量 191 条 +9.5，两档差 11 道题。作者认为差在 144 条支持数为 1 的指南；原文没有单独去掉这 144 条的实验。上线后无损合成变成默认。一条高支持分页指南假定页上限 20，API 默认页长 5，基线已过的题回退；人手改写后难档 TGC 66.7 → 73.0。原文这一段没再写模型名；表 1 里 DeepSeek 难档无记忆 TGC 也是 66.7。作者写支持数量的是独立推导次数，不是正确性。</p>
+  <p>噪声。gpt-oss 同一检索配置两次 56.0 和 54.8。DeepSeek 相同配置之间，168 道里大约 32 道对调输赢，合计几乎不动。改进的题和回退的题，检索余弦均值 0.463 和 0.468。作者此后把大约 5 道题以内的差当噪声。和 ACE 的对比因此改口：gpt-oss 上相对 ACE 的「+1.2 TGC」收成准确率打平。原文还写 token 大约七分之一（116K 对 777K）；ACE 跑在 ACE-ReAct 上，本文跑在参考 ReAct 上，gpt-oss 没有 ACE-ReAct 无记忆基线可扣，这个倍数含脚手架差。</p>
+  <figure>
+    <svg viewBox="0 0 920 430" width="100%" role="img" aria-label="左图 DeepSeek 相对自身基线的 TGC；右图 gpt-oss 每题 token">
+      <rect x="0" y="0" width="920" height="430" fill="#ffffff"/>
+      <text x="28" y="32" font-size="16" font-weight="700" fill="#0f172a">DeepSeek 的 TGC 涨幅，和 gpt-oss 的每题 token</text>
+      <text x="28" y="54" font-size="14" fill="#475569">左纵轴 60%–95%；右纵轴 0K–800K。两图刻度不同。777K 是另一套脚手架，不要和 110K 比倍数。</text>
+      <rect x="28" y="70" width="430" height="330" fill="#ffffff" stroke="#047857" stroke-width="2"/>
+      <text x="44" y="96" font-size="14" font-weight="700" fill="#047857">DeepSeek TGC</text>
+      <line x1="88" y1="360" x2="430" y2="360" stroke="#94a3b8" stroke-width="1"/>
+      <line x1="88" y1="220" x2="430" y2="220" stroke="#e2e8f0" stroke-width="1"/>
+      <line x1="88" y1="120" x2="430" y2="120" stroke="#e2e8f0" stroke-width="1"/>
+      <text x="80" y="365" font-size="14" fill="#64748b" text-anchor="end">60%</text>
+      <text x="80" y="225" font-size="14" fill="#64748b" text-anchor="end">77.5%</text>
+      <text x="80" y="125" font-size="14" fill="#64748b" text-anchor="end">90%</text>
+      <rect x="100" y="264" width="48" height="96" fill="#94a3b8"/>
+      <text x="124" y="253" font-size="14" font-weight="700" fill="#0f172a" text-anchor="middle">72.0</text>
+      <text x="124" y="382" font-size="14" fill="#334155" text-anchor="middle">ACE无记忆</text>
+      <rect x="176" y="197" width="48" height="163" fill="#b45309"/>
+      <text x="200" y="186" font-size="14" font-weight="700" fill="#b45309" text-anchor="middle">80.4</text>
+      <text x="200" y="382" font-size="14" fill="#334155" text-anchor="middle">ACE+ACE</text>
+      <rect x="252" y="202" width="48" height="158" fill="#64748b"/>
+      <text x="276" y="191" font-size="14" font-weight="700" fill="#0f172a" text-anchor="middle">79.8</text>
+      <text x="276" y="382" font-size="14" fill="#334155" text-anchor="middle">本文无记忆</text>
+      <rect x="328" y="126" width="48" height="234" fill="#1d4ed8"/>
+      <text x="352" y="115" font-size="14" font-weight="700" fill="#1d4ed8" text-anchor="middle">89.3</text>
+      <text x="352" y="382" font-size="14" fill="#334155" text-anchor="middle">本文全量</text>
+      <rect x="478" y="70" width="414" height="330" fill="#ffffff" stroke="#b45309" stroke-width="2"/>
+      <text x="494" y="96" font-size="14" font-weight="700" fill="#b45309">gpt-oss 每题 token</text>
+      <line x1="538" y1="360" x2="860" y2="360" stroke="#94a3b8" stroke-width="1"/>
+      <line x1="538" y1="240" x2="860" y2="240" stroke="#e2e8f0" stroke-width="1"/>
+      <line x1="538" y1="120" x2="860" y2="120" stroke="#e2e8f0" stroke-width="1"/>
+      <text x="530" y="365" font-size="14" fill="#64748b" text-anchor="end">0K</text>
+      <text x="530" y="245" font-size="14" fill="#64748b" text-anchor="end">400K</text>
+      <text x="530" y="125" font-size="14" fill="#64748b" text-anchor="end">800K</text>
+      <rect x="560" y="327" width="52" height="33" fill="#64748b"/>
+      <text x="586" y="316" font-size="14" font-weight="700" fill="#0f172a" text-anchor="middle">110K</text>
+      <text x="586" y="382" font-size="14" fill="#334155" text-anchor="middle">无记忆</text>
+      <rect x="632" y="310" width="52" height="50" fill="#be123c"/>
+      <text x="658" y="299" font-size="14" font-weight="700" fill="#be123c" text-anchor="middle">166K</text>
+      <text x="658" y="382" font-size="14" fill="#334155" text-anchor="middle">全量199</text>
+      <rect x="704" y="325" width="52" height="35" fill="#047857"/>
+      <text x="730" y="314" font-size="14" font-weight="700" fill="#047857" text-anchor="middle">116K</text>
+      <text x="730" y="382" font-size="14" fill="#334155" text-anchor="middle">≈29条</text>
+      <rect x="776" y="127" width="52" height="233" fill="#b45309"/>
+      <text x="802" y="116" font-size="14" font-weight="700" fill="#b45309" text-anchor="middle">777K</text>
+      <text x="802" y="382" font-size="14" fill="#334155" text-anchor="middle">ACE全本</text>
+    </svg>
+    <figcaption>图 2。左：柱高 8 像素对应 1 个百分点，60% 对齐底轴 y=360，90% 在 y=120。ACE 无记忆基线 72.0%，本文 ReAct 无记忆 79.8%；相对自身基线，ACE +8.4，本文 +9.5。右：柱高 0.3 像素对应 1K。777K 来自 ACE-ReAct，110K / 166K / 116K 来自参考 ReAct，不能直接除。gpt-oss 上 ACE 全本 TGC 54.8%，本文检索 55.4%，本文全量 51.2%。</figcaption>
+  </figure>
+  <p>DeepSeek 上 ACE-ReAct 无记忆 72.0% / 57.1%、221K；加 ACE 的 106 条 80.4% / 73.3%、634K。本文 ReAct 无记忆 79.8% / 64.3%、148K；全量 191 条 89.3% / 80.4%、263K。相对自身基线，ACE +8.4 / +16.2，本文 +9.5 / +16.1。同一模型无记忆 token 已经是 221K 对 148K。全量 191 条比本文无记忆多 78% token；支持≥2 的 47 条多 27% token，TGC +5.9。步数 18.4 → 19.3。gpt-oss 上 ACE 全本 54.8% / 35.7%、777K；本文全量 51.2% / 32.1%、166K；检索 55.4% / 37.5%、116K。</p>
+  <p>CUGA 和 watsonx 是另一套脚手架，不支撑标题。修过写路径之后，GPT-4.1 在 AppWorld 168 道、三次平均：无损合成 TGC 71.03% → 72.42%（119.3 道变 121.7 道），SGC 54.76% → 58.93%（表注平均 30.7 个场景变 33.0），作者写大约两道题、低于噪声地板。τ-bench 零售 40 道测试、12 条支持≥3：均准确率 51.7% → 55.8%。GLM-5.3-Flash 自己挖 280 条课、164 条指南，每臂两次：无记忆 TGC 87.8，29 条 88.4，164 条 93.2。watsonx 给了一条费用报销的定性转移（13 步 18.53 秒对 10 步 11.35 秒），作者写时延不是受控估计。</p>
+</section>
+
+<section id="yours">
+  <h2><span>5</span>你的运行位</h2>
+  <p>读完要看的是：运行位、编辑起点、技能记录里，记忆是全量灌进上下文，还是按模型改剂量。这篇在 168 道 test_normal 上，gpt-oss-120b 全量 199 条 TGC 51.2%，大约 29 条 55.4%；DeepSeek-V3.2 全量 191 条从 79.8% 到 89.3%。事先钉死的全量规则让两个模型都不低于无记忆。gpt-oss 的最好一档是检索，全量低大约 7 道题；约 29 条是四档里在 test 上挑的，没有留出集。Gemma-4-31B 没有全量对精选对照，原文写它弱到用不上记忆，过紧的核反而有害。</p>
+  <p>稿件推断，不是原文部署实验：若默认是「课越多越好」，这篇在 gpt-oss-120b 上测到全量低于约 29 条。每个模型自己挖课，原文没有把「容量吃不下」和「课写得差」分开。压缩掉支持数为 1 的课，是作者对 DeepSeek 12 条对 191 条的解释，没有单独消融。支持数高的分页指南仍能把已经过的题打回去。产品化时出过两次错：整合按固定字段表重建元数据，丢掉支持数和生成方式标签；LLM 在一次合并里重复同一个下标，支持数被重复计数。后面的选取依赖这些字段还在。</p>
+  <p>和已有几篇相邻：<a href="/frontier/2026-11-15-keep-paths-and-checks.html">给下一道未知任务的记忆，该留路径和检查命令</a> 讲的是轨迹里哪一段该留下；<a href="/frontier/2026-11-07-components-of-agent-memory.html">Agent 记忆由哪些部分组成</a> 讲 Anthropic 的记录、整理、取回分工；<a href="/frontier/2026-11-05-harness-spreads-eleven.html">固定模型换脚手架</a> 讲脚手架本身。后几篇数字以各篇原文为准，本轮没有重开。这里多出来的是：gpt-oss-120b 上，全量 199 条低于大约 29 条。</p>
+</section>
+
+<section id="limit">
+  <h2><span>6</span>这篇没测到的</h2>
+  <p>主表默认单次运行。噪声节写 DeepSeek 相同配置之间大约 32 / 168 道对调，gpt-oss 两次差 1.2 个点。作者把大约 5 道题以内当噪声；DeepSeek 相邻剂量差两到四道题，单独一档不够立论，端点 16 道题才拿来写趋势。dev 用于挖课，配置是在 test_normal 上比出来的；表 2 因此并列「事先钉死的全量」和「test 上最好的一档」。gpt-oss 的 55.4% 是两次平均，51.2% 是单次，全量那一档没有重复运行。</p>
+  <p>六个带记忆的模型各自挖自己的课，不能把 DeepSeek 的 191 条接到 gpt-oss 上读。原文也没有交叉实验，所以「该注入多少是模型的属性」没有把能力和课的质量拆开。Opus 4.6 在 test_normal 上只跑了 12 条压缩集。Gemma 记忆跑在 164 道子集，没有全量对精选。ACE 对照在同一模型、同一拆分上重跑，但 DeepSeek 的无记忆基线差 7.8 个点，作者把头条分差收成脚手架。gpt-oss 的 ACE 行没有给出 ACE-ReAct 无记忆基线。难度分档的 SGC 原文没给场景数，稿件反推分母只有十几到二十个场景。</p>
+  <p>没有正确性或新近性信号，也没有自动降权。CUGA 的 GPT-4.1 数字低于噪声地板。GLM-5.3-Flash 的 164 条是第二条脚手架上的强模型曲线，29 条压缩集不涨。watsonx 那条是单次定性。失败会静默：温度 0 被 GPT-5 档接口拒绝、合成截断 JSON、写路径从未调用，日志仍像跑完。这些没有单独的对照实验。</p>
+</section>
+
+<section id="src">
+  <h2><span>7</span>出处</h2>
+  <p>2026 年 11 月 19 日，arXiv 收到 <a href="https://arxiv.org/abs/2611.26361">How Much Should an Agent Remember?</a>（arXiv:2611.26361v1，cs.AI；作者 K. R. Jayaram、Vatche Isahagian 等，单位署 IBM）。arXiv 预印本。页眉写 Copyright © 2027 AAAI。开源库 <a href="https://github.com/AgentToolkit/altk-evolve">AgentToolkit/altk-evolve</a> 本轮未打开逐文件核对。</p>
+  <ul>
+    <li>预印本 abs：<a href="https://arxiv.org/abs/2611.26361">arXiv:2611.26361</a>。HTML：<a href="https://arxiv.org/html/2611.26361v1">arxiv.org/html/2611.26361v1</a>。PDF：<a href="https://arxiv.org/pdf/2611.26361">arxiv.org/pdf/2611.26361</a>。提交 2026-11-19。</li>
+    <li>39.9% / 51.2% / 55.4%（56.0、54.8）/ 约 29 条 / 199 条，从摘要、Insight 1 与表 2、表 3 抄。24 条核 53.6%、110K / 166K / 116K，从 Insight 1 与表 3 抄。</li>
+    <li>DeepSeek 79.8 → 82.7 → 83.9 → 85.7 → 89.3、SGC 64.3 → 80.4、16 道题、191 条里 144 条支持 1、290 课 / 147 轨迹 / 62 失败 228 成功，从 Measurement Setting 与 Insight 1–2 抄。</li>
+    <li>表 1 难度三档、表 2 六模型、GPT-5.5 92.3 / 95.2 / 207、GLM-5 87.5 / 72、Gemma 63.4 / 64.6 / 164 道、Opus 90.5 与 12 条 94.6，从表 1、表 2 抄。challenge 上 Opus 73.3 → 83.1，从表 1 抄。</li>
+    <li>12 条 +2.9、全量 +9.5、难档 66.7 → 73.0、余弦 0.463 / 0.468、约 32 / 168、约 5 道题噪声，从 Insight 2、4、5 抄。</li>
+    <li>表 3 的 ACE 行 72.0 / 80.4 / 634K、79.8 / 89.3 / 263K、54.8 / 777K、+8.4 / +16.2 对 +9.5 / +16.1、+78% / +27% token、步 18.4 → 19.3，从 Insight 6 与 Cost 段抄。</li>
+    <li>CUGA 表 4、表 5、表 6 与 watsonx 13 步 / 18.53 秒、10 步 / 11.35 秒 / 约 39%，从 Deployment 节抄。</li>
+    <li>457 API、168 / 417 道、九个应用，从 Measurement Setting 抄。</li>
+  </ul>
+  <p>OpenAI 新闻列表页扫到 <a href="https://openai.com/index/how-openai-performance-factory-keeps-chatgpt-fast/">Performance Factory</a> 等条目，本轮直接打开该页返回 403，日期和并列条目未核对，未写入判断。Anthropic 打开的是 <a href="https://www.anthropic.com/claude-fable-and-mythos-5-2">Fable 5.2</a> 发布页（页上日期 Nov 9, 2026），不是新闻列表，「最新」未核，未写入判断。X / Reddit 今日未覆盖。Product Hunt 本轮 Cloudflare 质询。</p>
+  <p><a href="/frontier/rsi-llm-agent-self-evolution.html">09-26 RSI</a> 是谱系，<a href="/frontier/llm-agent-tech-landscape.html">09-27 全景</a> 是增量在哪一层。本文写运行位上的一条缝：gpt-oss-120b 上，全量 199 条低于大约 29 条。</p>
+</section>
+</main>
+</div>
+<a class="fr-top" href="#" aria-label="返回页首">↑</a>
+</body>
+</html>
