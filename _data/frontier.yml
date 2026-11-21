@@ -1,5 +1,9 @@
 # 前沿技术栏目：独立 HTML 洞察索引。
 # 新增一篇：把 HTML 放到 /frontier/<slug>.html，再在这里加一条。
+- title: "这批复现里，无攻击者伤害高于不信任指令"
+  date: "2026-11-21"
+  url: /frontier/2026-11-21-no-attacker-hurts-more.html
+  summary: "一篇预印本把公开报道的 Agent 事故离线重建，再配对照。比较的是两批复现：无攻击者 48 条、不信任指令 43 条。五个模型上无攻击者伤害率都更高：Claude Sonnet 4.6 是 26% 对 0/138。DeepSeek 只差 1 个点，原文没给检验。有攻击者 60 条整体并不更低。全表事故会话 18% 到 33%，对照至多 1%。"
 - title: "gpt-oss-120b 全量 199 条 51.2%，约 29 条 55.4%"
   date: "2026-11-20"
   url: /frontier/2026-11-20-selected-beats-full-set.html

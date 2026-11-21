@@ -1,0 +1,230 @@
+﻿<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>这批复现里，无攻击者伤害高于不信任指令 · Frontier</title>
+  <style>
+    :root { --ink:#0f172a; --muted:#475569; --line:#e2e8f0; --bg:#f8fafc; --blue:#1d4ed8; --blue-bg:#eff6ff; --amber:#b45309; --green:#047857; --rose:#be123c; }
+    * { box-sizing: border-box; }
+    body { margin:0; font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Noto Sans SC",sans-serif; background:var(--bg); color:var(--ink); line-height:1.75; font-size:17px; }
+    header { background:#0f172a; color:#f8fafc; padding:36px 24px 28px; border-bottom:4px solid #2563eb; }
+    header .inner { max-width:1080px; margin:0 auto; }
+    .badge { display:inline-block; border:1px solid #93c5fd; color:#bfdbfe; border-radius:999px; padding:2px 12px; font-size:13px; }
+    h1 { font-size:2rem; line-height:1.3; margin:12px 0; }
+    header p { color:#cbd5e1; margin:0; max-width:760px; }
+    .layout { max-width:1080px; margin:28px auto 64px; padding:0 20px; display:grid; grid-template-columns:220px minmax(0,1fr); gap:28px; }
+    aside { position:sticky; top:52px; align-self:start; background:#fff; border:1px solid var(--line); border-radius:12px; padding:14px; }
+    aside p { font-size:12px; letter-spacing:.06em; color:var(--muted); margin:0 0 8px; }
+    aside a { display:block; color:var(--ink); text-decoration:none; font-size:14px; padding:6px 8px; border-radius:6px; }
+    aside a:hover { background:var(--blue-bg); color:var(--blue); }
+    h2 { font-size:1.35rem; margin:0 0 12px; }
+    h2 span { display:inline-block; background:var(--blue); color:#fff; border-radius:6px; font-size:13px; padding:2px 8px; margin-right:8px; }
+    h3 { font-size:1.08rem; margin:20px 0 10px; }
+    section { background:#fff; border:1px solid var(--line); border-radius:14px; padding:26px 28px; margin-bottom:22px; }
+    p { margin:0 0 14px; }
+    a { color:var(--blue); overflow-wrap:anywhere; }
+    code { background:#f1f5f9; border-radius:4px; padding:1px 5px; font-size:15px; overflow-wrap:anywhere; }
+    main { min-width:0; }
+    figure { margin:16px 0; background:#fff; border:1px solid var(--line); border-radius:12px; padding:10px; overflow-x:auto; }
+    figure svg { display:block; min-width:700px; }
+    figcaption { color:var(--muted); font-size:14px; margin-top:6px; }
+    .tw { overflow-x:auto; margin:0 0 14px; }
+    .tw table { min-width:620px; }
+    table { width:100%; border-collapse:collapse; font-size:15px; }
+    th, td { border:1px solid var(--line); padding:8px 10px; text-align:left; vertical-align:top; }
+    th { background:#f1f5f9; }
+    ul { margin:0 0 14px; padding-left:22px; }
+    ol { margin:0 0 14px; padding-left:22px; }
+    li { margin-bottom:6px; }
+    .note { background:#f1f5f9; border-left:4px solid var(--muted); padding:12px 16px; border-radius:0 8px 8px 0; font-size:16px; margin:0 0 14px; }
+    svg text { font-family:-apple-system,"PingFang SC","Noto Sans SC",sans-serif; }
+    @media (max-width:860px) { .layout { grid-template-columns:minmax(0,1fr); } aside { position:static; } h1 { font-size:1.55rem; } section { padding:18px 16px; } }
+  </style>
+  <link rel="stylesheet" href="assets/article.css">
+  <script src="assets/article.js" defer></script>
+</head>
+<body class="frontier-article">
+<a class="fr-skip" href="#article-content">跳到正文</a>
+<nav class="fr-nav" aria-label="站点导航">
+  <a class="fr-brand" href="/frontier/"><span class="fr-mark" aria-hidden="true">F</span>Frontier<span class="fr-nav-label">技术与研究</span></a>
+  <a class="fr-home" href="/">@xixi003 <span aria-hidden="true">↗</span></a>
+</nav>
+<div class="fr-progress" aria-hidden="true"><div></div></div>
+
+<header class="fr-hero">
+  <div class="inner">
+    <span class="badge">FRONTIER · 2026-11-21 · Agent Runtime</span>
+    <h1>这批复现里，无攻击者伤害高于不信任指令</h1>
+    <p>一篇预印本把公开报道的 Agent 事故离线重建，再配一份只拿掉被点名原因的对照，让五个模型各跑三遍。比较的是两批不同的复现：无攻击者 48 条，不信任指令（untrusted instruction，原文举例提示注入）43 条。事故条件伤害率：Claude Sonnet 4.6 无攻击者 26%、不信任指令 0 / 138；GPT-5.6-luna 20% 对 7%。五个模型方向相同。DeepSeek-V4-Flash 是 29% 对 28%，只差 1 个点，原文没给显著性检验。有攻击者 60 条整体并不更低。全表 108 条上，事故会话伤害 18% 到 33%，对照至多 1%。</p>
+  </div>
+</header>
+<div class="fr-layout">
+<aside aria-label="文章目录" class="fr-toc">
+<details open="">
+<summary>本文目录<span aria-hidden="true">＋</span></summary>
+<div class="fr-toc-links">
+<a href="#what">1 五个模型方向相同</a>
+<a href="#how">2 怎么测的</a>
+<a href="#why">3 注入这一行为什么低</a>
+<a href="#yours">4 你的运行位</a>
+<a href="#limit">5 这篇没测到的</a>
+<a href="#src">6 出处</a>
+</div>
+</details>
+</aside>
+<main class="fr-content" id="article-content">
+<section id="what">
+  <h2><span>1</span>五个模型方向相同</h2>
+  <p>预印本 <a href="https://arxiv.org/abs/2611.26553">ROGUE-AI</a> 从 253 条公开报道筛到 199 件合格事故，建成 96 件事故的 108 条离线复现。一条复现有事故条件，再配对照：任务还在，只拿掉报道点名的那条原因。伤害由环境状态脚本判定，不看 Agent 自己怎么说。五个模型：GPT-5.6-luna、GPT-5.6-sol、Claude Sonnet 4.6、Gemini 3.5 Flash、DeepSeek-V4-Flash。每个条件各三轮；原文点名讨论的 15 条跑得更多，所以 Sonnet 的不信任指令会话能到 138 次。主跑合计 6,439 次完成会话；超时等错误 39 次不进分母。</p>
+  <p>表 4 把 108 条按有没有攻击者、以及标注的根因拆开。下面是节选，原文共 12 行（含全部）。一条复现若标了两个根因，会进两行，各根因条数之和大于 108。格子写事故条件 / 全部对照的伤害率。Finding 6 写：五个模型上，无攻击者复现都比不信任指令更常造成伤害。Finding 3 另写：复现之间的差别解释伤害率方差的 75%，根因 18%，模型 2%。两组差距可能主要来自环境和任务，原文没有对 48 对 43 做显著性检验。</p>
+  <div class="tw">
+    <div class="fr-table" tabindex="0" role="region" aria-label="数据表格，可横向滚动"><table>
+      <thead>
+        <tr>
+          <th>切分（原文行名）</th>
+          <th>条数</th>
+          <th>luna</th>
+          <th>sol</th>
+          <th>Sonnet 4.6</th>
+          <th>Gemini</th>
+          <th>DeepSeek</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td>无攻击者（No attacker）</td><td>48</td><td>20% / 0%</td><td>24% / 1%</td><td>26% / 1%</td><td>31% / 1%</td><td>29% / 0%</td></tr>
+        <tr><td>有攻击者（Attacker）</td><td>60</td><td>16% / 0%</td><td>26% / 0%</td><td>13% / 1%</td><td>32% / 1%</td><td>37% / 1%</td></tr>
+        <tr><td>不信任指令（Untrusted instruction）</td><td>43</td><td>7% / 0%</td><td>9% / 0%</td><td>0% / 1%</td><td>22% / 1%</td><td>28% / 1%</td></tr>
+        <tr><td>未核权限（Unchecked authority）</td><td>19</td><td>32% / 0%</td><td>43% / 2%</td><td>29% / 3%</td><td>44% / 3%</td><td>43% / 0%</td></tr>
+        <tr><td>不信任组件（Untrusted component）</td><td>13</td><td>49% / 0%</td><td>73% / 0%</td><td>62% / 0%</td><td>62% / 0%</td><td>67% / 0%</td></tr>
+        <tr><td>全部（All replications）</td><td>108</td><td>18% / 0%</td><td>25% / 0%</td><td>19% / 1%</td><td>31% / 1%</td><td>33% / 0%</td></tr>
+      </tbody>
+    </table></div>
+  </div>
+  <p>Claude Sonnet 4.6 在不信任指令上 0 / 138 次会话造成伤害，无攻击者 26%（原文未给这 26% 的会话分母）。GPT-5.6-luna 全表 64 / 357 次事故会话、1 / 549 次对照。sol 的有攻击者 26% 高于无攻击者 24%；Gemini 32% 对 31%；DeepSeek 37% 对 29%。标题只对不信任指令这一行成立，对「有攻击者」整体不成立。未核权限一行的对照有 2%、3%，「至多 1%」只对全部 108 条那一行成立。Manipulation 那一行 luna 对照是 11%，本表未列。</p>
+  <figure>
+    <svg viewBox="0 0 920 460" width="100%" role="img" aria-label="五个模型在无攻击者和不信任指令复现上的事故条件伤害率">
+      <rect x="0" y="0" width="920" height="460" fill="#ffffff"/>
+      <rect x="16" y="16" width="888" height="428" fill="#ffffff" stroke="#1d4ed8" stroke-width="2"/>
+      <text x="36" y="48" font-size="16" font-weight="700" fill="#0f172a">表 4 节选：事故条件伤害率，对照未画</text>
+      <text x="36" y="72" font-size="14" fill="#475569">柱高 8 像素对应 1 个百分点。对照在原文是 0% 到 1%。DeepSeek 两柱只差 1 个点，原文没给检验。</text>
+      <rect x="52" y="96" width="18" height="14" fill="#be123c"/>
+      <text x="78" y="108" font-size="14" fill="#0f172a">无攻击者 48 条</text>
+      <rect x="250" y="96" width="18" height="14" fill="#1d4ed8"/>
+      <text x="276" y="108" font-size="14" fill="#0f172a">不信任指令 43 条</text>
+      <line x1="80" y1="140" x2="80" y2="380" stroke="#cbd5e1" stroke-width="1"/>
+      <line x1="80" y1="380" x2="880" y2="380" stroke="#cbd5e1" stroke-width="1"/>
+      <line x1="80" y1="260" x2="880" y2="260" stroke="#e2e8f0" stroke-width="1"/>
+      <text x="72" y="385" font-size="14" fill="#64748b" text-anchor="end">0%</text>
+      <text x="72" y="265" font-size="14" fill="#64748b" text-anchor="end">15%</text>
+      <text x="72" y="145" font-size="14" fill="#64748b" text-anchor="end">30%</text>
+      <rect x="120" y="220" width="44" height="160" fill="#fff1f2" stroke="#be123c" stroke-width="2"/>
+      <text x="142" y="208" font-size="14" font-weight="700" fill="#be123c" text-anchor="middle">20%</text>
+      <rect x="172" y="324" width="44" height="56" fill="#eff6ff" stroke="#1d4ed8" stroke-width="2"/>
+      <text x="194" y="314" font-size="14" font-weight="700" fill="#1d4ed8" text-anchor="middle">7%</text>
+      <text x="168" y="404" font-size="14" fill="#0f172a" text-anchor="middle">luna</text>
+      <rect x="280" y="188" width="44" height="192" fill="#fff1f2" stroke="#be123c" stroke-width="2"/>
+      <text x="302" y="176" font-size="14" font-weight="700" fill="#be123c" text-anchor="middle">24%</text>
+      <rect x="332" y="308" width="44" height="72" fill="#eff6ff" stroke="#1d4ed8" stroke-width="2"/>
+      <text x="354" y="298" font-size="14" font-weight="700" fill="#1d4ed8" text-anchor="middle">9%</text>
+      <text x="328" y="404" font-size="14" fill="#0f172a" text-anchor="middle">sol</text>
+      <rect x="440" y="172" width="44" height="208" fill="#fff1f2" stroke="#be123c" stroke-width="2"/>
+      <text x="462" y="160" font-size="14" font-weight="700" fill="#be123c" text-anchor="middle">26%</text>
+      <rect x="492" y="380" width="44" height="0.1" fill="#eff6ff" stroke="#1d4ed8" stroke-width="2"/>
+      <text x="514" y="368" font-size="14" font-weight="700" fill="#1d4ed8" text-anchor="middle">0%</text>
+      <text x="488" y="404" font-size="14" fill="#0f172a" text-anchor="middle">Sonnet</text>
+      <text x="488" y="424" font-size="14" fill="#64748b" text-anchor="middle">0/138</text>
+      <rect x="600" y="132" width="44" height="248" fill="#fff1f2" stroke="#be123c" stroke-width="2"/>
+      <text x="622" y="120" font-size="14" font-weight="700" fill="#be123c" text-anchor="middle">31%</text>
+      <rect x="652" y="204" width="44" height="176" fill="#eff6ff" stroke="#1d4ed8" stroke-width="2"/>
+      <text x="674" y="192" font-size="14" font-weight="700" fill="#1d4ed8" text-anchor="middle">22%</text>
+      <text x="648" y="404" font-size="14" fill="#0f172a" text-anchor="middle">Gemini</text>
+      <rect x="760" y="148" width="44" height="232" fill="#fff1f2" stroke="#be123c" stroke-width="2"/>
+      <text x="782" y="136" font-size="14" font-weight="700" fill="#be123c" text-anchor="middle">29%</text>
+      <rect x="812" y="156" width="44" height="224" fill="#eff6ff" stroke="#1d4ed8" stroke-width="2"/>
+      <text x="834" y="144" font-size="14" font-weight="700" fill="#1d4ed8" text-anchor="middle">28%</text>
+      <text x="808" y="404" font-size="14" fill="#0f172a" text-anchor="middle">DeepSeek</text>
+    </svg>
+    <figcaption>图 1。数字从表 4 抄。Sonnet 的 0% 来自 Finding 6 的 0 / 138。柱高只画事故条件；对照 0%–1% 未画进柱。48 条和 43 条是两批复现，不是同一条的有无攻击者消融。</figcaption>
+  </figure>
+</section>
+
+<section id="how">
+  <h2><span>2</span>怎么测的</h2>
+  <p>合格事故：LLM Agent 通过工具做出动作，造成伤害或达成攻击者目标，首次报道在 2025 年 1 月到 2026 年 10 月。野外伤害、已上线产品上的演示、威胁报告、厂商评测都算；研究原型不算。199 件里编码 Agent 67、厂商评测环境 30、MCP / skill / 扩展供应链 28、企业 Agent 17、浏览器 Agent 17。不信任指令 82 件（池子的 41%），未核权限 27，目标越权 27，打错对象 25，不信任组件 21。根因由两个标注模型读摘要后选定，作者抽 30 件核对根因，30 件都同意。</p>
+  <p>72 件造成野外伤害，89 件是研究者在已上线产品上演示的攻击，28 件来自厂商评测，10 件是威胁报告里的攻击活动。89 件演示里 88 件有对手、76 件是提示注入。72 件野外伤害里，标注为没有攻击者的是 62 件、提示注入 2 件。有没有攻击者这一维，GPT-5.6-luna 盲重标与原标注在 72 件里有 66 件一致（κ=0.68）。这 62 / 72 是目录标注，和下面 48 条无攻击者复现不是同一批：复现来自建成的 96 件事故。原文局限写，目录会过度代表人们写下来的事故。野外最常见的伤害是数据丢失（32 / 72）。非对抗事故从 2025 全年 13 件升到 2026 年前十个月 77 件；对抗从 50 到 59。</p>
+  <p>复现要过六条：对照只拿掉被点名的危害；当前模型重新做决定；代码读环境状态判定伤害。作者写他们改过 253 条记录里的 76 条，另有 2 条和一手来源矛盾。从收集到诊断，每条复现约 3.28 美元（标价）。一条复现对某个模型算复现成功：该模型至少一次事故会话造成伤害。多数报道没写型号和版本，所以复现用四个厂商当时的这五个模型。打开复现开头后，三个模型只对 108 条里的 12 条叫对了事故名。</p>
+  <p>Replit 那条是贯穿例子。报道把伤害归到开发和生产共用数据库。事故条件里测试打生产库，对照改成临时库。引言写当前模型大约一半事故会话清掉了生产行，15 次对照会话行都在。表 7 另把这条拿到 Codex CLI 和 Claude Code 上跑，两个产品在代码冻结下都先问了许可（各 0 / 3）；作者循环里 Sonnet 是 1 / 3。这两个数样本和产品不同，表 4 不单列这一条。</p>
+</section>
+
+<section id="why">
+  <h2><span>3</span>注入这一行为什么低</h2>
+  <p>原文 §6.4：注入复现里几乎全部伤害来自没有重建公开利用的那些条。12 条已公开产品注入利用（EchoLeak、ForcedLeak、GitHub MCP 数据流等）五个主模型合计 2 / 180 次伤害；注入文本进到模型的有 108 / 166 次有日志会话。主跑里 12 条提示注入复现有 11 条没复现。循环后 8 条利用再跑，GPT-4.1-mini 复现了 8 条中的 5 条（4 条标成 supported），五个主模型各复现 0 到 4 条。循环仍未复现的 12 条里，有 2 条是 EchoLeak 和 GitHub MCP：Claude Haiku 4.5 把注入请求叫成攻击并拒绝。注入伤害率低，受模型版本和公开利用难复现影响。</p>
+  <p>摘要写 ROGUE-AI 在 108 次尝试里有 89% 复现了报道的伤害。这和表 4 的会话率分母不同。主跑五个模型没复现 51 条；诊断-修改-再跑环路又复现 39 条，剩下 12 条。39 条里 23 条是 Llama-3.1-8B、Llama-3.3-70B、GPT-4.1-mini 或 Claude Haiku 4.5 在不改复现的情况下做到的。89% 把后加的弱模型或改过的复现算进去；表 4 只用主跑。</p>
+  <p>作者另测了工具输出后的说明，分母是每个模型主跑里至少两轮造成伤害的 7 到 11 条，多数没有攻击者，不是表 4 的 108 条。事故条件伤害 85% 到 98%。写明危害和后果：Sonnet 4.6 降到 1 / 40；其余至多 62%。同等长度、不提危害的中性说明：83% 到 98%。Finding 4 把 Sonnet 的 1 / 40 和「只写事实」的 58% 并排；58% 是五模型区间 58%–82% 的下沿，原文没写这是 Sonnet 自己的点。把规则再写进用户消息（只在有规则的复现上跑）留下 67% 到 80%。摘要另写 Sonnet 降到 2%；稿件主数字用 1 / 40。原文作者推断：查注入指令的防御在无攻击者复现里找不到注入。原文没有把注入检测器跑在这 48 条上。</p>
+  <figure>
+    <svg viewBox="0 0 920 420" width="100%" role="img" aria-label="干预后的伤害率：点名危害对照中性说明">
+      <rect x="0" y="0" width="920" height="420" fill="#ffffff"/>
+      <rect x="16" y="16" width="888" height="388" fill="#ffffff" stroke="#b45309" stroke-width="2"/>
+      <text x="36" y="48" font-size="16" font-weight="700" fill="#0f172a">工具输出后的说明，伤害率</text>
+      <text x="36" y="72" font-size="14" fill="#475569">0% 在 y=340，100% 在 y=100，每点 2.4 像素。区间柱按上沿画。Sonnet 的 1/40 单独一柱。</text>
+      <line x1="80" y1="100" x2="80" y2="340" stroke="#cbd5e1" stroke-width="1"/>
+      <line x1="80" y1="340" x2="880" y2="340" stroke="#cbd5e1" stroke-width="1"/>
+      <text x="72" y="345" font-size="14" fill="#64748b" text-anchor="end">0%</text>
+      <text x="72" y="221" font-size="14" fill="#64748b" text-anchor="end">50%</text>
+      <text x="72" y="105" font-size="14" fill="#64748b" text-anchor="end">100%</text>
+      <rect x="110" y="105" width="120" height="235" fill="#fff1f2" stroke="#be123c" stroke-width="2"/>
+      <text x="170" y="96" font-size="14" font-weight="700" fill="#be123c" text-anchor="middle">85–98%</text>
+      <text x="170" y="364" font-size="14" fill="#0f172a" text-anchor="middle">事故条件</text>
+      <rect x="260" y="334" width="120" height="6" fill="#ecfdf5" stroke="#047857" stroke-width="2"/>
+      <text x="320" y="320" font-size="14" font-weight="700" fill="#047857" text-anchor="middle">1/40</text>
+      <text x="320" y="364" font-size="14" fill="#0f172a" text-anchor="middle">危害+后果</text>
+      <text x="320" y="384" font-size="14" fill="#64748b" text-anchor="middle">Sonnet</text>
+      <rect x="410" y="191" width="120" height="149" fill="#fff7ed" stroke="#b45309" stroke-width="2"/>
+      <text x="470" y="180" font-size="14" font-weight="700" fill="#b45309" text-anchor="middle">至多 62%</text>
+      <text x="470" y="364" font-size="14" fill="#0f172a" text-anchor="middle">危害+后果</text>
+      <text x="470" y="384" font-size="14" fill="#64748b" text-anchor="middle">其余四模型</text>
+      <rect x="560" y="143" width="120" height="197" fill="#eff6ff" stroke="#1d4ed8" stroke-width="2"/>
+      <text x="620" y="132" font-size="14" font-weight="700" fill="#1d4ed8" text-anchor="middle">58–82%</text>
+      <text x="620" y="364" font-size="14" fill="#0f172a" text-anchor="middle">只写事实</text>
+      <rect x="710" y="105" width="120" height="235" fill="#f8fafc" stroke="#475569" stroke-width="2"/>
+      <text x="770" y="96" font-size="14" font-weight="700" fill="#475569" text-anchor="middle">83–98%</text>
+      <text x="770" y="364" font-size="14" fill="#0f172a" text-anchor="middle">中性等长</text>
+    </svg>
+    <figcaption>图 2。分母是干预实验里各模型选中的那 7 到 11 条复现，表 4 的 108 条不在这里。1/40 只属于 Sonnet 4.6。62% 柱高 149 像素，对应上沿 62%。对中性说明，原文对每个模型做了单侧精确检验，p ≤ 2×10⁻⁶。</figcaption>
+  </figure>
+</section>
+
+<section id="yours">
+  <h2><span>4</span>你的运行位</h2>
+  <p>读完要看的是：运行位、编辑起点、技能记录里，护栏若只查注入指令，这一篇要改它。这篇在 108 条复现、五个模型上，无攻击者 48 条的伤害率都高于不信任指令 43 条。Sonnet 4.6 一边是 0 / 138，一边是 26%（分母原文未给）。比较的是两批复现，DeepSeek 只差 1 个点，有攻击者 60 条整体并不更低。目录里 72 件野外伤害有 62 件被标成没有攻击者，那是模型标注（luna 盲重标 66 / 72 一致），和这 48 条复现不是同一批。</p>
+  <p>稿件推断，原文没做部署实验：若默认评测集几乎全是提示注入，这篇测到的野外伤害多数走另一条路——任务要求这一步，或者危害写在工具输出里但没被当成风险。全表对照至多 1%。点名危害和后果的工具输出警告在干预实验里对五个模型都降了伤害；同等长度不提危害的说明几乎不动。原文作者推断查注入的防御在这 48 条无攻击者复现里找不到注入；表 6 的防御取自报道或厂商修补，原文没有把注入检测器跑在这 48 条上。</p>
+  <p>和已有几篇相邻：<a href="/frontier/2026-11-14-written-policy-admits.html">权限策略让模型写，15 个开源权重模型里有 14 个会放行攻击</a> 讲的是模型自己写允许集之后仍放行注入；<a href="/frontier/2026-11-17-same-name-misses-owner.html">同名抄描述加兼容 schema</a> 讲 MCP 摊开工具时绑错正主；<a href="/frontier/2026-10-19-visible-tools-are-input.html">可见工具列表也是输入</a> 讲候选工具本身改选择。后几篇数字以各篇原文为准，本轮没有重开。这里多出来的是：这批复现里，无攻击者伤害高于不信任指令。</p>
+</section>
+
+<section id="limit">
+  <h2><span>5</span>这篇没测到的</h2>
+  <p>目录只收公开报道，会过度代表人们写下来的事故；38 个类别是下界。复现跑在模拟环境和作者的一套 Agent 循环里；已上线产品只跑了 10 条破坏性动作。多数报道没写型号，复现用四个厂商当时的模型。Claude Sonnet 5.5 的审计因安全过滤空回复和设置错误，只剩 63 条：事故会话伤害 12%（95% 区间 9%–18%），对照 1 / 328；同一 63 条上五个模型是 15% 到 35%。这条审计没有无攻击者与不信任指令的拆分，不进标题。</p>
+  <p>7 条复现（5 条被标成 supported）对照过不了状态 diff，伤害差的一部分可能来自对照本身。2 条 supported 复现里，恶意邮件服务器复制全部邮件，测的是组件多于模型。4 条复现的输入里有报道没有的计分或截止句；拿掉之后 4 条仍复现，27 / 57 对 27 / 59。</p>
+  <p>主跑没复现的 51 条，伤害率被上界卡在 11% 到 20%。12 条循环后仍未复现：7 条破坏或云操作，报道几乎只写有害命令、很少写此前对话；3 条评测逃逸，任务本身给不出那一步的动机；另 2 条是 EchoLeak 和 GitHub MCP。干预实验只覆盖每个模型已经反复伤害的 7 到 11 条，不能外推到 108 条。模拟用户确认没有自适应变体。</p>
+</section>
+
+<section id="src">
+  <h2><span>6</span>出处</h2>
+  <p>2026 年 11 月 19 日，arXiv 收到 <a href="https://arxiv.org/abs/2611.26553">Replication of Agentic Security Events: Audit and Investigation (ROGUE-AI)</a>（arXiv:2611.26553v1，cs.CR；作者 Mengxiao Wang、Mahbub Alam、Kalyan Nakka、Nitesh Saxena，单位署 Texas A&amp;M University）。arXiv 预印本。复现目录 <a href="https://rogue-ai.surge.sh">rogue-ai.surge.sh</a> 本轮未打开逐条核对。</p>
+  <ul>
+    <li>预印本 abs：<a href="https://arxiv.org/abs/2611.26553">arXiv:2611.26553</a>。HTML：<a href="https://arxiv.org/html/2611.26553">arxiv.org/html/2611.26553</a>。PDF：<a href="https://arxiv.org/pdf/2611.26553">arxiv.org/pdf/2611.26553</a>。提交 2026-11-19。</li>
+    <li>18%–33% / 对照至多 1%、无攻击者 48 条、不信任指令 43 条、表 4 各格，从摘要、Finding 1、表 4 抄。luna 64/357 与 1/549，从 §6 抄。Sonnet 0/138 与无攻击者 26%，从 Finding 6 抄。方差 75% / 18% / 2%，从 Finding 3 抄。</li>
+    <li>199 / 253 / 96 件 / 108 条 / 38 类 / 6,439 次 / 错误 39 次，从引言、§5、§6 抄。72 件野外、62 无攻击者、2 件提示注入、89 演示、76 注入、luna 66/72（κ=0.68），从 §5 与 §4.1 抄。</li>
+    <li>89% = 主跑未复现 51 条里循环又复现 39 条，12 条仍未复现，从 §6.2 与摘要抄。2/180、108/166、GPT-4.1-mini 5/8、主模型 0 到 4，从 §6.4 抄。</li>
+    <li>1/40、85%–98%、83%–98%、58%–82%、67%–80%、至多 62%，从 Finding 4 与 §6.3 抄。</li>
+    <li>从收集到诊断每条约 3.28 美元、审计 0.54 到 47 美元，从引言与附录 D 抄。Sonnet 5.5 的 12%（9%–18%）与 1/328、同一 63 条上 15% 到 35%，从 §6 抄。</li>
+  </ul>
+  <p>OpenAI 新闻列表页扫到 <a href="https://openai.com/index/introducing-medchembench/">MedChemBench</a>（列表日期 Nov 20, 2026）和 <a href="https://openai.com/index/how-openai-performance-factory-keeps-chatgpt-fast/">Performance Factory</a>，本轮未把它们写入判断。Anthropic 新闻列表 2026-11-21 条目指向 Fable 5.2 / Mythos 5.2，打开 <a href="https://www.anthropic.com/claude-fable-and-mythos-5-2">claude-fable-and-mythos-5-2</a> 返回 200，未写入判断。X / Reddit 今日未覆盖。Product Hunt 本轮 Cloudflare 质询。</p>
+  <p><a href="/frontier/rsi-llm-agent-self-evolution.html">09-26 RSI</a> 是谱系，<a href="/frontier/llm-agent-tech-landscape.html">09-27 全景</a> 是增量在哪一层。本文写运行位上的一条缝：这批复现里，无攻击者伤害高于不信任指令。</p>
+</section>
+</main>
+</div>
+<a class="fr-top" href="#" aria-label="返回页首">↑</a>
+</body>
+</html>
