@@ -1,0 +1,255 @@
+﻿<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>总体 95.59% 时，完整谓词上的缺席只对 56.95% · Frontier</title>
+  <style>
+    :root { --ink:#0f172a; --muted:#475569; --line:#e2e8f0; --bg:#f8fafc; --blue:#1d4ed8; --blue-bg:#eff6ff; --amber:#b45309; --green:#047857; --rose:#be123c; }
+    * { box-sizing: border-box; }
+    body { margin:0; font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Noto Sans SC",sans-serif; background:var(--bg); color:var(--ink); line-height:1.75; font-size:17px; }
+    header { background:#0f172a; color:#f8fafc; padding:36px 24px 28px; border-bottom:4px solid #2563eb; }
+    header .inner { max-width:1080px; margin:0 auto; }
+    .badge { display:inline-block; border:1px solid #93c5fd; color:#bfdbfe; border-radius:999px; padding:2px 12px; font-size:13px; }
+    h1 { font-size:2rem; line-height:1.3; margin:12px 0; }
+    header p { color:#cbd5e1; margin:0; max-width:760px; }
+    .layout { max-width:1080px; margin:28px auto 64px; padding:0 20px; display:grid; grid-template-columns:220px minmax(0,1fr); gap:28px; }
+    aside { position:sticky; top:52px; align-self:start; background:#fff; border:1px solid var(--line); border-radius:12px; padding:14px; }
+    aside p { font-size:12px; letter-spacing:.06em; color:var(--muted); margin:0 0 8px; }
+    aside a { display:block; color:var(--ink); text-decoration:none; font-size:14px; padding:6px 8px; border-radius:6px; }
+    aside a:hover { background:var(--blue-bg); color:var(--blue); }
+    h2 { font-size:1.35rem; margin:0 0 12px; }
+    h2 span { display:inline-block; background:var(--blue); color:#fff; border-radius:6px; font-size:13px; padding:2px 8px; margin-right:8px; }
+    h3 { font-size:1.08rem; margin:20px 0 10px; }
+    section { background:#fff; border:1px solid var(--line); border-radius:14px; padding:26px 28px; margin-bottom:22px; }
+    p { margin:0 0 14px; }
+    a { color:var(--blue); overflow-wrap:anywhere; }
+    code { background:#f1f5f9; border-radius:4px; padding:1px 5px; font-size:15px; overflow-wrap:anywhere; }
+    main { min-width:0; }
+    figure { margin:16px 0; background:#fff; border:1px solid var(--line); border-radius:12px; padding:10px; overflow-x:auto; }
+    figure svg { display:block; min-width:700px; }
+    figcaption { color:var(--muted); font-size:14px; margin-top:6px; }
+    .tw { overflow-x:auto; margin:0 0 14px; }
+    .tw table { min-width:620px; }
+    table { width:100%; border-collapse:collapse; font-size:15px; }
+    th, td { border:1px solid var(--line); padding:8px 10px; text-align:left; vertical-align:top; }
+    th { background:#f1f5f9; }
+    ul { margin:0 0 14px; padding-left:22px; }
+    ol { margin:0 0 14px; padding-left:22px; }
+    li { margin-bottom:6px; }
+    .note { background:#f1f5f9; border-left:4px solid var(--muted); padding:12px 16px; border-radius:0 8px 8px 0; font-size:16px; margin:0 0 14px; }
+    svg text { font-family:-apple-system,"PingFang SC","Noto Sans SC",sans-serif; }
+    @media (max-width:860px) { .layout { grid-template-columns:minmax(0,1fr); } aside { position:static; } h1 { font-size:1.55rem; } section { padding:18px 16px; } }
+  </style>
+  <link rel="stylesheet" href="assets/article.css">
+  <script src="assets/article.js" defer></script>
+</head>
+<body class="frontier-article">
+<a class="fr-skip" href="#article-content">跳到正文</a>
+<nav class="fr-nav" aria-label="站点导航">
+  <a class="fr-brand" href="/frontier/"><span class="fr-mark" aria-hidden="true">F</span>Frontier<span class="fr-nav-label">技术与研究</span></a>
+  <a class="fr-home" href="/">@xixi003 <span aria-hidden="true">↗</span></a>
+</nav>
+<div class="fr-progress" aria-hidden="true"><div></div></div>
+
+<header class="fr-hero">
+  <div class="inner">
+    <span class="badge">FRONTIER · 2026-11-22 · Agent Runtime</span>
+    <h1>总体 95.59% 时，完整谓词上的缺席只对 56.95%</h1>
+    <p>一篇预印本把同一套事实和规则做成三种缺信息合约：缺的原子算未知（OWA）、算假（CWA）、只对声明完整的谓词算假（LCWA）。六个模型、温度 0、三次全量的均值。Mistral Medium 在 960 条上总体 95.59%（±0.37）；同一批 LCWA 里，被问谓词声明完整、缺席应记假时，闭域 56.95%（±2.17）。DeepSeek Pro 总体 93.61%（±0.21），金标会随合约变的 192 个场景上三个变体都对才算过，核心切换 77.43%（±0.30）。Llama Scout 总体 71.18%（±0.53）、核心切换 18.23%（±1.04）；Llama Maverick 两列几乎重合（99.86% 对 99.31%）。一直按一种合约读缺席的基线，总体 70.00%，核心切换 0%。</p>
+  </div>
+</header>
+<div class="fr-layout">
+<aside aria-label="文章目录" class="fr-toc">
+<details open="">
+<summary>本文目录<span aria-hidden="true">＋</span></summary>
+<div class="fr-toc-links">
+<a href="#what">1 闭域缺席把总体拉下来</a>
+<a href="#how">2 怎么测的</a>
+<a href="#act">3 问到动作上</a>
+<a href="#yours">4 你的运行位</a>
+<a href="#limit">5 这篇没测到的</a>
+<a href="#src">6 出处</a>
+</div>
+</details>
+</aside>
+<main class="fr-content" id="article-content">
+<section id="what">
+  <h2><span>1</span>闭域缺席把总体拉下来</h2>
+  <p>预印本 <a href="https://arxiv.org/abs/2611.26335">ClosureBench</a> 测的是：提示已经写明缺信息怎么读，模型会不会跟着改口。320 个基础场景各出 OWA、CWA、LCWA 三条，共 960 条。事实、规则、显式否定、目标原子不变，只换合约。其中 192 个核心对照场景，金标会随合约变；128 个控制场景金标三份相同（64 个目标可推出、64 个显式否定）。六个模型：DeepSeek V4 Flash、DeepSeek V4 Pro、Mistral Small 2603、Mistral Medium 3.5、Llama 4 Scout、Llama 4 Maverick。OpenAI 兼容接口，温度 0，三次全量，报均值 ± 样本标准差。答不出规定 JSON 记错。</p>
+  <p>总体准确率按 960 条计。切换准确率按 320 个场景计：三个变体都对才算过。核心切换把分母收到那 192 个。LCWA 闭域 / 开域是 LCWA 条上、被问谓词声明完整或仍开放时的条准确率；原文没写这两档各有多少条。表里的数是三次全量的均值。</p>
+  <div class="tw">
+    <div class="fr-table" tabindex="0" role="region" aria-label="数据表格，可横向滚动"><table>
+      <thead>
+        <tr>
+          <th>模型</th>
+          <th>总体（960 条）</th>
+          <th>切换（320 场景）</th>
+          <th>核心切换（192）</th>
+          <th>LCWA 闭域</th>
+          <th>LCWA 开域</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td>Mistral Small</td><td>80.38 ± 1.02</td><td>55.73 ± 2.43</td><td>27.60 ± 3.65</td><td>31.60 ± 4.34</td><td>31.25 ± 1.80</td></tr>
+        <tr><td>DeepSeek Flash</td><td>90.31 ± 0.47</td><td>81.25 ± 0.83</td><td>68.75 ± 1.38</td><td>49.65 ± 3.18</td><td>100.00 ± 0.00</td></tr>
+        <tr><td>DeepSeek Pro</td><td>93.61 ± 0.21</td><td>86.46 ± 0.18</td><td>77.43 ± 0.30</td><td>62.15 ± 1.20</td><td>100.00 ± 0.00</td></tr>
+        <tr><td>Mistral Medium</td><td>95.59 ± 0.37</td><td>87.08 ± 0.65</td><td>78.47 ± 1.09</td><td>56.95 ± 2.17</td><td>100.00 ± 0.00</td></tr>
+        <tr><td>Llama Scout</td><td>71.18 ± 0.53</td><td>50.73 ± 0.48</td><td>18.23 ± 1.04</td><td>4.51 ± 1.59</td><td>52.43 ± 3.01</td></tr>
+        <tr><td>Llama Maverick</td><td>99.86 ± 0.06</td><td>99.59 ± 0.18</td><td>99.31 ± 0.30</td><td>99.65 ± 0.60</td><td>100.00 ± 0.00</td></tr>
+      </tbody>
+    </table></div>
+  </div>
+  <p>摘要把六个模型的两端写成总体 71.18% 到 99.86%、核心切换 18.23% 到 99.31%，对应表里 Scout 和 Maverick 的均值。能隔开合约误读的是 LCWA 闭域：Medium 总体 95.59%，闭域 56.95%。原文写它常答 unknown，即使提示已写相关谓词完整、缺席应记假。DeepSeek Pro 总体 93.61%，核心切换 77.43%。Flash、Pro、Medium 在 LCWA 开域三次都是 100%，错在该关的时候没关。Small 和 Scout 两边都不稳：该关的没关，该开的有时关了。Maverick 几乎做完这套，两列几乎重合；作者拿它当正向对照，用来压低「题本身写糊了」的解释。在这批数据上，总体盖住切换对 Maverick 不成立。</p>
+  <p>核心切换是 192 个场景上三个变体的合取，机械上就会低于 960 条的逐条准确率；控制组 384 条金标不随合约变。Flash 总体对核心切换差 21.56 个点、Pro 差 16.18 个点，里面有一部分来自这种度量，不全是「被盖住」。一直按一种合约读缺席的基线，总体 70.00%，核心切换 0%：任何核心场景都没把三个变体同时答对。原文另写一条基线总体 90.00%、核心切换也是 0%，没说这条怎么做。控制组 384 条全对、核心 576 条里每个场景最多对两个变体，960 条上最多 80%，到不了 90%。这是稿件按原文定义算的上限；90.00% 这条不进标题。原文还报 OWA 条准确率 87.19% 到 100.00%、CWA 69.27% 到 99.69%，没进主表。这两组和切换不是同一分母，不拿来做倍数。</p>
+  <figure>
+    <svg viewBox="0 0 920 460" width="100%" role="img" aria-label="六个模型的总体准确率与核心切换准确率">
+      <rect x="0" y="0" width="920" height="460" fill="#ffffff"/>
+      <rect x="16" y="16" width="888" height="428" fill="#ffffff" stroke="#1d4ed8" stroke-width="2"/>
+      <text x="36" y="48" font-size="16" font-weight="700" fill="#0f172a">温度 0，三次全量均值：总体对核心切换</text>
+      <text x="36" y="72" font-size="14" fill="#475569">柱高 2.4 像素对应 1 个百分点。总体分母 960 条，核心切换分母 192 个场景。</text>
+      <rect x="52" y="96" width="18" height="14" fill="#1d4ed8"/>
+      <text x="78" y="108" font-size="14" fill="#0f172a">总体 960 条</text>
+      <rect x="250" y="96" width="18" height="14" fill="#be123c"/>
+      <text x="276" y="108" font-size="14" fill="#0f172a">核心切换 192 场景</text>
+      <line x1="80" y1="140" x2="80" y2="380" stroke="#cbd5e1" stroke-width="1"/>
+      <line x1="80" y1="380" x2="880" y2="380" stroke="#cbd5e1" stroke-width="1"/>
+      <line x1="80" y1="260" x2="880" y2="260" stroke="#e2e8f0" stroke-width="1"/>
+      <text x="72" y="385" font-size="14" fill="#64748b" text-anchor="end">0%</text>
+      <text x="72" y="265" font-size="14" fill="#64748b" text-anchor="end">50%</text>
+      <text x="72" y="145" font-size="14" fill="#64748b" text-anchor="end">100%</text>
+      <rect x="100" y="187" width="40" height="193" fill="#eff6ff" stroke="#1d4ed8" stroke-width="2"/>
+      <text x="120" y="175" font-size="14" font-weight="700" fill="#1d4ed8" text-anchor="middle">80.4</text>
+      <rect x="144" y="314" width="40" height="66" fill="#fff1f2" stroke="#be123c" stroke-width="2"/>
+      <text x="164" y="304" font-size="14" font-weight="700" fill="#be123c" text-anchor="middle">27.6</text>
+      <text x="142" y="404" font-size="14" fill="#0f172a" text-anchor="middle">Small</text>
+      <rect x="230" y="163" width="40" height="217" fill="#eff6ff" stroke="#1d4ed8" stroke-width="2"/>
+      <text x="250" y="151" font-size="14" font-weight="700" fill="#1d4ed8" text-anchor="middle">90.3</text>
+      <rect x="274" y="215" width="40" height="165" fill="#fff1f2" stroke="#be123c" stroke-width="2"/>
+      <text x="294" y="205" font-size="14" font-weight="700" fill="#be123c" text-anchor="middle">68.8</text>
+      <text x="272" y="404" font-size="14" fill="#0f172a" text-anchor="middle">Flash</text>
+      <rect x="360" y="155" width="40" height="225" fill="#eff6ff" stroke="#1d4ed8" stroke-width="2"/>
+      <text x="380" y="143" font-size="14" font-weight="700" fill="#1d4ed8" text-anchor="middle">93.6</text>
+      <rect x="404" y="194" width="40" height="186" fill="#fff1f2" stroke="#be123c" stroke-width="2"/>
+      <text x="424" y="184" font-size="14" font-weight="700" fill="#be123c" text-anchor="middle">77.4</text>
+      <text x="402" y="404" font-size="14" fill="#0f172a" text-anchor="middle">Pro</text>
+      <rect x="490" y="151" width="40" height="229" fill="#eff6ff" stroke="#1d4ed8" stroke-width="2"/>
+      <text x="510" y="139" font-size="14" font-weight="700" fill="#1d4ed8" text-anchor="middle">95.6</text>
+      <rect x="534" y="192" width="40" height="188" fill="#fff1f2" stroke="#be123c" stroke-width="2"/>
+      <text x="554" y="182" font-size="14" font-weight="700" fill="#be123c" text-anchor="middle">78.5</text>
+      <text x="532" y="404" font-size="14" fill="#0f172a" text-anchor="middle">Medium</text>
+      <rect x="620" y="209" width="40" height="171" fill="#eff6ff" stroke="#1d4ed8" stroke-width="2"/>
+      <text x="640" y="197" font-size="14" font-weight="700" fill="#1d4ed8" text-anchor="middle">71.2</text>
+      <rect x="664" y="336" width="40" height="44" fill="#fff1f2" stroke="#be123c" stroke-width="2"/>
+      <text x="684" y="326" font-size="14" font-weight="700" fill="#be123c" text-anchor="middle">18.2</text>
+      <text x="662" y="404" font-size="14" fill="#0f172a" text-anchor="middle">Scout</text>
+      <rect x="750" y="140" width="40" height="240" fill="#eff6ff" stroke="#1d4ed8" stroke-width="2"/>
+      <text x="770" y="128" font-size="14" font-weight="700" fill="#1d4ed8" text-anchor="middle">99.9</text>
+      <rect x="794" y="142" width="40" height="238" fill="#fff1f2" stroke="#be123c" stroke-width="2"/>
+      <text x="814" y="132" font-size="14" font-weight="700" fill="#be123c" text-anchor="middle">99.3</text>
+      <text x="792" y="404" font-size="14" fill="#0f172a" text-anchor="middle">Maverick</text>
+      <text x="792" y="424" font-size="14" fill="#64748b" text-anchor="middle">正向对照</text>
+    </svg>
+    <figcaption>图 1。数字从原文 §4.2 主表抄，柱高按四舍五入到 0.1 个百分点画。Maverick 两柱几乎叠在一起。Scout 与 Small 的两列差最大且相近（52.95 与 52.78 个点）；这是跨分母相减，不做倍数。</figcaption>
+  </figure>
+</section>
+
+<section id="how">
+  <h2><span>2</span>怎么测的</h2>
+  <p>一条实例有正事实、显式负事实、规则、目标原子，LCWA 再给完整谓词集合。验证器先正向把规则推到不动点。目标已推出则真；否则在显式否定里则假；否则按合约：OWA 为 unknown，CWA 为 false，LCWA 在被问谓词完整时为 false、否则 unknown。规则体没有否定。目标既可推出又被显式否定的条剔除。提示把当前合约和完整谓词写进文本，模型不用自己猜哪些谓词完整。</p>
+  <p>八个域各 120 条：云部署、财务控制、医院访问、图书馆服务、大学注册、采购审核、制造质量、机器人作业。模板生成后过结构、标签、完整性和提示一致性校验。附录 B 写验证报告：960 条、320 场景、每种合约 320 条，状态 PASS。附录 D 的贯穿例子：Service F 过了单元测试；规则是过测试且有部署批准才能上生产；目标是可不可以上生产。批准没写，规则点不着。OWA 金标 unknown；CWA 和 LCWA（<code>may_deploy</code> 完整）金标 false。常见错法是 LCWA 仍答 unknown。</p>
+  <p>温度 1 再跑三次全量，960 条。附录 E 只给均值，没有标准差。Small、Medium、Scout、Maverick 四个模型总体变动不到 1 个点。Flash 总体从 90.31 到 88.71（少 1.60），Pro 从 93.61 到 90.55（少 3.06）。核心切换：Flash 从 68.75 掉到 59.20，少 9.55；Pro 从 77.43 掉到 61.11，少 16.32。Scout 18.23 变成 18.58。Maverick 99.31 变成 97.92。温度 1 没有抹掉切换错误。主比较用温度 0。</p>
+</section>
+
+<section id="act">
+  <h2><span>3</span>问到动作上</h2>
+  <p>三条扩展仍用同一套符号标签。Ask/Act 把真改成批准、假改成拒绝、unknown 改成要更多信息，仍是 960 条。过度询问：金标是拒绝（闭合为假）的条里，模型改成要信息的比例；拒绝条数原文没给。Flash、Pro、Medium 都高于 20%；Scout 45.60%（±2.01）；Maverick 0 / 那些拒绝条。动作准确率可以仍高：Flash 93.09%，核心切换动作 77.43%。Scout 动作 71.63%，核心切换动作 12.33%。Flash 的核心切换动作 77.43 ± 0.30 与 §1 表里 Pro 的核心切换 77.43 ± 0.30 在原文里巧合相同，不拿这两个数互相比。</p>
+  <div class="tw">
+    <div class="fr-table" tabindex="0" role="region" aria-label="数据表格，可横向滚动"><table>
+      <thead>
+        <tr>
+          <th>模型</th>
+          <th>动作准确率</th>
+          <th>核心切换动作</th>
+          <th>过度询问</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td>Mistral Small</td><td>83.44 ± 0.55</td><td>32.81 ± 1.80</td><td>39.00 ± 0.72</td></tr>
+        <tr><td>DeepSeek Flash</td><td>93.09 ± 0.16</td><td>77.43 ± 0.30</td><td>21.07 ± 0.53</td></tr>
+        <tr><td>DeepSeek Pro</td><td>93.47 ± 0.16</td><td>80.73 ± 0.52</td><td>21.76 ± 0.53</td></tr>
+        <tr><td>Mistral Medium</td><td>92.98 ± 0.16</td><td>72.57 ± 0.79</td><td>23.38 ± 0.53</td></tr>
+        <tr><td>Llama Scout</td><td>71.63 ± 0.75</td><td>12.33 ± 1.59</td><td>45.60 ± 2.01</td></tr>
+        <tr><td>Llama Maverick</td><td>100.00 ± 0.00</td><td>100.00 ± 0.00</td><td>0.00 ± 0.00</td></tr>
+      </tbody>
+    </table></div>
+  </div>
+  <p>SourceScope 360 条，来自 120 个场景。完整准确率要求真值、来源、缺席处理三个字段都对。Mistral Medium 真值 91.58%（±0.16），完整 79.26%（±5.61）。Flash 泄漏 29.70%（±2.93）：开放源（open_absence）条上把缺席当成闭合；损失 4.72%（±0.00）：完整源（closed_absence）条上没把缺席关上。Pro 三次泄漏 0，完整源上的损失 14.47%（±1.44）。open_absence 与 closed_absence 的条数原文没给。</p>
+  <p>ClosureShift 100 段对话、300 轮，从核心对照场景按固定种子抽样，一半收窄后金标仍假，一半应回到 unknown；按原文「一半」是约 50 段。修订（该改口的更新轮）几乎都过。保持是金标不应改的更新轮上的条准确率。滞留失败是第 3 轮、收窄后仍覆盖目标、金标为 false 的那些对话上，模型改答 unknown 的比例。两个率分母不同，Scout 的 2.00 + 97.33 = 99.33，不当互补。难的是收窄后仍覆盖目标时把 false 留下：Scout 保持 2.00%（±2.00，约等于一段之差），滞留失败 97.33%（±3.06）；Small 保持 21.33%，失败 78.67%；Medium 保持 66.67%，失败 33.33%；Pro 保持 96.00%，失败 4.00%。Maverick 三段都是 100%。</p>
+  <figure>
+    <svg viewBox="0 0 920 420" width="100%" role="img" aria-label="Ask/Act 过度询问比例">
+      <rect x="0" y="0" width="920" height="420" fill="#ffffff"/>
+      <rect x="16" y="16" width="888" height="388" fill="#ffffff" stroke="#b45309" stroke-width="2"/>
+      <text x="36" y="48" font-size="16" font-weight="700" fill="#0f172a">Ask/Act：金标拒绝时改成要信息的比例</text>
+      <text x="36" y="72" font-size="14" fill="#475569">0% 在 y=340，50% 在 y=220，每点 2.4 像素。分母是闭合为假、金标 deny 的条，原文没写条数。</text>
+      <line x1="80" y1="100" x2="80" y2="340" stroke="#cbd5e1" stroke-width="1"/>
+      <line x1="80" y1="340" x2="880" y2="340" stroke="#cbd5e1" stroke-width="1"/>
+      <line x1="80" y1="220" x2="880" y2="220" stroke="#e2e8f0" stroke-width="1"/>
+      <text x="72" y="345" font-size="14" fill="#64748b" text-anchor="end">0%</text>
+      <text x="72" y="225" font-size="14" fill="#64748b" text-anchor="end">50%</text>
+      <text x="72" y="105" font-size="14" fill="#64748b" text-anchor="end">100%</text>
+      <rect x="110" y="246" width="90" height="94" fill="#fff7ed" stroke="#b45309" stroke-width="2"/>
+      <text x="155" y="234" font-size="14" font-weight="700" fill="#b45309" text-anchor="middle">39.0%</text>
+      <text x="155" y="364" font-size="14" fill="#0f172a" text-anchor="middle">Small</text>
+      <rect x="240" y="289" width="90" height="51" fill="#fff7ed" stroke="#b45309" stroke-width="2"/>
+      <text x="285" y="277" font-size="14" font-weight="700" fill="#b45309" text-anchor="middle">21.1%</text>
+      <text x="285" y="364" font-size="14" fill="#0f172a" text-anchor="middle">Flash</text>
+      <rect x="370" y="288" width="90" height="52" fill="#fff7ed" stroke="#b45309" stroke-width="2"/>
+      <text x="415" y="276" font-size="14" font-weight="700" fill="#b45309" text-anchor="middle">21.8%</text>
+      <text x="415" y="364" font-size="14" fill="#0f172a" text-anchor="middle">Pro</text>
+      <rect x="500" y="284" width="90" height="56" fill="#fff7ed" stroke="#b45309" stroke-width="2"/>
+      <text x="545" y="272" font-size="14" font-weight="700" fill="#b45309" text-anchor="middle">23.4%</text>
+      <text x="545" y="364" font-size="14" fill="#0f172a" text-anchor="middle">Medium</text>
+      <rect x="630" y="231" width="90" height="109" fill="#fff1f2" stroke="#be123c" stroke-width="2"/>
+      <text x="675" y="219" font-size="14" font-weight="700" fill="#be123c" text-anchor="middle">45.6%</text>
+      <text x="675" y="364" font-size="14" fill="#0f172a" text-anchor="middle">Scout</text>
+      <rect x="760" y="338" width="90" height="2" fill="#ecfdf5" stroke="#047857" stroke-width="2"/>
+      <text x="805" y="326" font-size="14" font-weight="700" fill="#047857" text-anchor="middle">0%</text>
+      <text x="805" y="364" font-size="14" fill="#0f172a" text-anchor="middle">Maverick</text>
+    </svg>
+    <figcaption>图 2。数字从原文 §4.3 Ask/Act 表的 Excessive ask 列抄。完整源已经能拒绝时，Flash / Pro / Medium 仍有两成以上去问。Maverick 的 0% 柱高画成 2 像素，避免看不见描边。</figcaption>
+  </figure>
+</section>
+
+<section id="yours">
+  <h2><span>4</span>你的运行位</h2>
+  <p>稿件推断，原文没测这些场景：运行位、编辑起点、技能记录里，缺字段是记未知还是记假，有没有写进提示，评测有没有按同一场景的三种读法一起过。原文只测提示里写明合约的符号题。Medium 总体 95.59% 时，LCWA 闭域 56.95%。DeepSeek Pro 总体 93.61% 时核心切换 77.43%。Scout 总体 71.18%、核心切换 18.23%。一直按一种合约读缺席的基线拿到 70.00% 总体、0% 核心切换。</p>
+  <p>稿件推断，原文没做线上 A/B：若评测把「记录里没写批准」的题和「规则推得出来」的题混在一个准确率里，这一层过不去。Ask/Act 上，该拒绝时 Flash / Pro / Medium 仍有两成以上去要信息。SourceScope 上真值对了，来源或缺席处理仍可能错。ClosureShift 上从开到关几乎都会改口，收窄后仍该假时，Scout 和 Small 会回到 unknown。</p>
+  <p>和已有几篇相邻：<a href="/frontier/2026-11-16-macro-fails-thirty.html">原生看对的判分，宏抽象后 31.0% 站不住</a>（31.0% 出自该篇，本轮未重核）讲视图换了判分会掉；<a href="/frontier/2026-11-04-conditional-wording-loses.html">同一条政策换个写法，Opus 的遵守率就变了</a> 讲句式；<a href="/frontier/2026-10-23-minitems-pads-lists.html">文档不够 k 条时，展示的 minItems 把超计抬高</a> 讲 schema 格子本身在补。后几篇数字以各篇原文为准。这里多出来的是：总体准确率会盖住缺信息合约上的闭域错误。</p>
+</section>
+
+<section id="limit">
+  <h2><span>5</span>这篇没测到的</h2>
+  <p>题是模板生成的，标签可审计，语言多样性受限。原文没测自然语言改写，也没有解析器加验证器的神经符号对照。原文量的是模型对提示里写明的合约的遵守。三条扩展改了动作、来源和多轮，不调工具，不进真实环境。作者写它们不能代替已上线系统的测试。</p>
+  <p>主表用全套，不用留出测试划分；作者说找失败模式需要全套，以后做选模型可以改用留出。公开之后要查训练泄漏。六个配置里没有 GPT、Claude、Gemini。Hosted API 在温度 0 仍不完全确定，三次跑的是跨次稳定性。LCWA 闭域 / 开域、过度询问的拒绝条、SourceScope 的 open_absence / closed_absence 条数，原文都没给，这几列只报了率。</p>
+</section>
+
+<section id="src">
+  <h2><span>6</span>出处</h2>
+  <p>2026 年 11 月 19 日，arXiv 页面标注 v1 日期 <a href="https://arxiv.org/abs/2611.26335">ClosureBench: A Benchmark for Reasoning under Closure Assumptions</a>（arXiv:2611.26335v1，cs.AI；Francesco Belardinelli，单位署 Imperial College London 与 University of Camerino；Flavio Corradini；通讯作者 Matteo Leonesi，邮箱 unicam.it）。arXiv 预印本。代码与数据 <a href="https://github.com/MatteoLeonesi/ClosureBench">github.com/MatteoLeonesi/ClosureBench</a> 仓库页标 NeSy 2026（Lisbon，1–4 September 2026），评审状态原文未说。本轮打开了仓库页，没有逐条核数据集文件。</p>
+  <ul>
+    <li>预印本 abs：<a href="https://arxiv.org/abs/2611.26335">arXiv:2611.26335</a>。HTML：<a href="https://arxiv.org/html/2611.26335">arxiv.org/html/2611.26335</a>。PDF：<a href="https://arxiv.org/pdf/2611.26335">arxiv.org/pdf/2611.26335</a>。v1 标注日期 2026-11-19。</li>
+    <li>960 / 320 / 192 / 128、总体 71.18%–99.86%、核心切换 18.23%–99.31%，从摘要与 §3.2、§4.2 抄。表内六个模型的均值和标准差，从原文 §4.2 主表抄。</li>
+    <li>DeepSeek Pro 93.61% / 77.43%、Medium LCWA 闭域 56.95%、开域三次 100%、固定一种合约基线 70.00% 且核心切换 0%，从 §4.2 与结论段抄。另一条 90.00% 基线原文未定义，稿件不用它当论据。OWA 87.19%–100.00%、CWA 69.27%–99.69%，同节，未进主表。</li>
+    <li>温度 1 的 9.55 与 16.32、Flash / Pro 总体变动、Scout 18.23→18.58、Maverick 99.31→97.92，从附录 E 表抄；该表无标准差。</li>
+    <li>Ask/Act 过度询问与动作列，从原文 §4.3 Ask/Act 表抄。SourceScope 360 条 / 120 场景、Medium 91.58% / 79.26%、Flash 泄漏 29.70% / 损失 4.72%、Pro 泄漏 0 / 损失 14.47%，从 §4.3 与 SourceScope 表抄。</li>
+    <li>ClosureShift 100 段 / 300 轮、保持与滞留失败，从 §4.1、§4.3 与 ClosureShift 表抄。附录 B 的 PASS，从附录 B 抄。</li>
+  </ul>
+  <p>OpenAI 新闻列表页扫到 <a href="https://openai.com/index/introducing-medchembench/">MedChemBench</a>（列表日期 Nov 20, 2026）和 <a href="https://openai.com/index/how-openai-performance-factory-keeps-chatgpt-fast/">Performance Factory</a>，本轮打开列表项返回 200，未写入判断。Anthropic 新闻列表条目指向 Fable 5.2 / Mythos 5.2，打开 <a href="https://www.anthropic.com/claude-fable-and-mythos-5-2">claude-fable-and-mythos-5-2</a> 返回 200，未写入判断。X / Reddit 今日未覆盖。Product Hunt 本轮 Cloudflare 质询。Hacker News 首页有 OpenRouter 推理供应商数据处理事件，未写入判断。GitHub 当天新仓库没有可写进判断的发布说明。</p>
+  <p><a href="/frontier/rsi-llm-agent-self-evolution.html">09-26 RSI</a> 是谱系，<a href="/frontier/llm-agent-tech-landscape.html">09-27 全景</a> 是增量在哪一层。本文写运行位上的一条缝：总体准确率会盖住缺信息合约上的闭域错误。</p>
+</section>
+</main>
+</div>
+<a class="fr-top" href="#" aria-label="返回页首">↑</a>
+</body>
+</html>

@@ -1,5 +1,9 @@
 # 前沿技术栏目：独立 HTML 洞察索引。
 # 新增一篇：把 HTML 放到 /frontier/<slug>.html，再在这里加一条。
+- title: "总体 95.59% 时，完整谓词上的缺席只对 56.95%"
+  date: "2026-11-22"
+  url: /frontier/2026-11-22-overall-hides-closed.html
+  summary: "一篇预印本把同一套事实和规则做成三种缺信息合约。Mistral Medium 在 960 条上总体 95.59%（±0.37）；LCWA 里被问谓词完整、缺席应记假时闭域 56.95%（±2.17）。DeepSeek Pro 总体 93.61%，192 个金标会变的场景上核心切换 77.43%。Llama Scout 总体 71.18%、核心切换 18.23%。一直按一种合约读缺席的基线总体 70.00%，核心切换 0%。"
 - title: "这批复现里，无攻击者伤害高于不信任指令"
   date: "2026-11-21"
   url: /frontier/2026-11-21-no-attacker-hurts-more.html
