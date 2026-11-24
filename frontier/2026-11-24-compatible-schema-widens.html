@@ -1,0 +1,227 @@
+﻿<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>兼容更新加了坐标，行为能确定的六家都不重批 · Frontier</title>
+  <style>
+    :root { --ink:#0f172a; --muted:#475569; --line:#e2e8f0; --bg:#f8fafc; --blue:#1d4ed8; --blue-bg:#eff6ff; --amber:#b45309; --green:#047857; --rose:#be123c; }
+    * { box-sizing: border-box; }
+    body { margin:0; font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Noto Sans SC",sans-serif; background:var(--bg); color:var(--ink); line-height:1.75; font-size:17px; }
+    header { background:#0f172a; color:#f8fafc; padding:36px 24px 28px; border-bottom:4px solid #2563eb; }
+    header .inner { max-width:1080px; margin:0 auto; }
+    .badge { display:inline-block; border:1px solid #93c5fd; color:#bfdbfe; border-radius:999px; padding:2px 12px; font-size:13px; }
+    h1 { font-size:2rem; line-height:1.3; margin:12px 0; }
+    header p { color:#cbd5e1; margin:0; max-width:760px; }
+    .layout { max-width:1080px; margin:28px auto 64px; padding:0 20px; display:grid; grid-template-columns:220px minmax(0,1fr); gap:28px; }
+    aside { position:sticky; top:52px; align-self:start; background:#fff; border:1px solid var(--line); border-radius:12px; padding:14px; }
+    aside p { font-size:12px; letter-spacing:.06em; color:var(--muted); margin:0 0 8px; }
+    aside a { display:block; color:var(--ink); text-decoration:none; font-size:14px; padding:6px 8px; border-radius:6px; }
+    aside a:hover { background:var(--blue-bg); color:var(--blue); }
+    h2 { font-size:1.35rem; margin:0 0 12px; }
+    h2 span { display:inline-block; background:var(--blue); color:#fff; border-radius:6px; font-size:13px; padding:2px 8px; margin-right:8px; }
+    h3 { font-size:1.08rem; margin:20px 0 10px; }
+    section { background:#fff; border:1px solid var(--line); border-radius:14px; padding:26px 28px; margin-bottom:22px; }
+    p { margin:0 0 14px; }
+    a { color:var(--blue); overflow-wrap:anywhere; }
+    code { background:#f1f5f9; border-radius:4px; padding:1px 5px; font-size:15px; overflow-wrap:anywhere; }
+    main { min-width:0; }
+    figure { margin:16px 0; background:#fff; border:1px solid var(--line); border-radius:12px; padding:10px; overflow-x:auto; }
+    figure svg { display:block; min-width:700px; }
+    figcaption { color:var(--muted); font-size:14px; margin-top:6px; }
+    .tw { overflow-x:auto; margin:0 0 14px; }
+    .tw table { min-width:620px; }
+    table { width:100%; border-collapse:collapse; font-size:15px; }
+    th, td { border:1px solid var(--line); padding:8px 10px; text-align:left; vertical-align:top; }
+    th { background:#f1f5f9; }
+    ul { margin:0 0 14px; padding-left:22px; }
+    ol { margin:0 0 14px; padding-left:22px; }
+    li { margin-bottom:6px; }
+    .note { background:#f1f5f9; border-left:4px solid var(--muted); padding:12px 16px; border-radius:0 8px 8px 0; font-size:16px; margin:0 0 14px; }
+    svg text { font-family:-apple-system,"PingFang SC","Noto Sans SC",sans-serif; }
+    @media (max-width:860px) { .layout { grid-template-columns:minmax(0,1fr); } aside { position:static; } h1 { font-size:1.55rem; } section { padding:18px 16px; } }
+  </style>
+  <link rel="stylesheet" href="assets/article.css">
+  <script src="assets/article.js" defer></script>
+</head>
+<body class="frontier-article">
+<a class="fr-skip" href="#article-content">跳到正文</a>
+<nav class="fr-nav" aria-label="站点导航">
+  <a class="fr-brand" href="/frontier/"><span class="fr-mark" aria-hidden="true">F</span>Frontier<span class="fr-nav-label">技术与研究</span></a>
+  <a class="fr-home" href="/">@xixi003 <span aria-hidden="true">↗</span></a>
+</nav>
+<div class="fr-progress" aria-hidden="true"><div></div></div>
+
+<header class="fr-hero">
+  <div class="inner">
+    <span class="badge">FRONTIER · 2026-11-24 · Agent Tools</span>
+    <h1>兼容更新加了坐标，行为能确定的六家都不重批</h1>
+    <p>一篇 ICAART 2027 录用稿、arXiv 预印本看 MCP 工具的输入 schema。旧调用仍合法，新参数已经进来。Desktop Commander 0.1.34 的 <code>execute_command</code> 只要 <code>command</code> 和 <code>timeout_ms</code>，关着别的字段；0.1.35 加上任意字符串 <code>shell</code>。作者抽了 39 个公开 MCP 服务器、604 个发行版。1,197 条工具 schema 变化里，580 条兼容；412 / 580 条加宽了某个坐标（无标签口径）。作者双人标注至少 76 条加了或加宽了带权限的参数。调查 8 家客户端和扫描器：4 家跑过，VS Code 只读源码，Claude Code 只读文档；这 6 家行为能确定的都不对加宽重批。Claude Desktop 和 Cursor 只看文档，标成无法判定。</p>
+  </div>
+</header>
+<div class="fr-layout">
+<aside aria-label="文章目录" class="fr-toc">
+<details open="">
+<summary>本文目录<span aria-hidden="true">＋</span></summary>
+<div class="fr-toc-links">
+<a href="#what">1 兼容还能加 shell</a>
+<a href="#pilot">2 580 条里 412 条加宽</a>
+<a href="#clients">3 行为能确定的六家</a>
+<a href="#yours">4 你的运行位</a>
+<a href="#limit">5 这篇没测到的</a>
+<a href="#src">6 出处</a>
+</div>
+</details>
+</aside>
+<main class="fr-content" id="article-content">
+<section id="what">
+  <h2><span>1</span>兼容还能加 shell</h2>
+  <p>预印本 <a href="https://arxiv.org/abs/2611.30750">SchemaCaps: When a Compatible Tool Update Silently Widens an AI Agent’s Authority</a> 看的是已经批过的工具，发行版换了输入 schema 之后，委托还在不在原来那条边界上。MCP 把工具写成名字、描述、参数 JSON Schema。用户批一次，Agent 按这个 schema 调。服务器是普通包，几天一个发行版，会话中途也能改工具列表。</p>
+  <p>兼容的定义：旧调用在新 schema 里仍合法，写作 <code>[[S]] ⊆ [[S′]]</code>。权限坐标是参数路径，再加上每个对象上「未声明字段」那一格。加宽指这些坐标上的有效值集合变大：新字段、枚举变宽、对象打开、新允许 null、默认值改掉。作者把 <code>shell</code>、<code>webhookUrl</code>、目标项目当成带权限的参数，因为取值决定在哪跑、数据去哪、对谁动手；<code>limit</code>、分页游标不算。没有名单时，每条未标路径都当带权限，这是无标签默认。</p>
+  <p>Desktop Commander 0.1.34 → 0.1.35：<code>execute_command</code> 在关着的对象上加上 <code>shell</code>，任意字符串。旧的 <code>command</code> 调用仍过。写给某一个解释器的策略，解释器改由 Agent 选之后就管不住。同一套回放里还有 Firecrawl 的 <code>webhookUrl</code>、GitLab 的 <code>target_project_id</code>、Sentry 的 <code>regionUrl</code>、Notion 打开的 <code>parent</code>。代理在抽出的工具列表上跑决策，没有起真实服务器：兼容规则 6/6 条静默重绑；原文写 pinning 和 SchemaCaps 6/6 条挂起，没有写 pinning 是钉整份定义还是只钉输入 schema，也没有写 SchemaCaps 用哪一档。</p>
+  <p>精确对照基准有 600 条合成变化，其中 330 条加宽。送审版规则对这 330 条里的 27 条静默重绑（关掉两处新检查来模拟），后来补了两处：关掉的对象上删掉必填或带默认的字段，以及在已有类型化 <code>additionalProperties</code> 之外再声明字段。修过之后，无标签模式在这份基准上 0 条加宽被静默重绑。第二个种子 333 条加宽里，修前 33 条、修后 0 条。这是作者自己的 15 个变异算子、有限关键字集合；第二个种子复用同一生成器。135 条旧 schema 把兄弟字段绑在一起的变化直接当未知去问，没有做包含检查。修过之后，试点的无标签计数不变，名字规则只多 1 次重批。这是合成基准，不是试点语料。</p>
+</section>
+
+<section id="pilot">
+  <h2><span>2</span>580 条里 412 条加宽</h2>
+  <p>试点用来证明兼容加宽在公开服务器上存在，并量几种规则各问几次。作者写明这不是生态发生率。协议 2026-09-29 15:25 UTC 哈希，语料抽出之前；没有交给第三方托管，顺序是作者自证。窗口是 2025 年 1 月到 2026 年 9 月的稳定发行版。层 A 官方参考服务器，层 B 下载量最高、能用空凭证答 <code>tools/list</code> 的 15 个第三方 npm stdio 服务器。每个包最多 20 个发行版。抽样 657 个发行版里 604 个答上（91.9%），39 个包，565 对相邻发行版。HTTP、只认证可答、PyPI 第三方服务器不在池里。</p>
+  <p>单位：发行版是一个包的一个公开版本；一对是同一包相邻两个发行版；一条变化是两版都有的同一工具、输入 schema 不同；兼容指旧调用仍合法。</p>
+  <div class="tw">
+    <div class="fr-table" tabindex="0" role="region" aria-label="试点表，可横向滚动"><table>
+      <thead>
+        <tr>
+          <th>层</th>
+          <th>对数</th>
+          <th>schema 变化</th>
+          <th>其中兼容</th>
+          <th>兼容且加宽（无标签）</th>
+          <th>名字规则标成核心</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td>A 官方</td><td>337</td><td>87</td><td>63</td><td>34</td><td>0</td></tr>
+        <tr><td>B 第三方</td><td>228</td><td>1,110</td><td>517</td><td>378</td><td>84</td></tr>
+        <tr><td>合计</td><td>565</td><td>1,197</td><td>580</td><td>412</td><td>84</td></tr>
+      </tbody>
+    </table></div>
+  </div>
+  <p>表 4 另给严格口径：用名字角色套定义 1，兼容且加宽 274 条。核心 84 条全在层 B，落在 6 个服务器、228 对里的 20 对。两个包占 62 条：一个移动自动化服务器给 37 个工具加了两条本地路径，一个错误跟踪服务器给 15 个工具加了区域端点。拿掉第一个剩 42，拿掉第二个剩 64，两个都拿掉剩 22。核心占 580 条兼容变化的 14.5%。按包有放回重抽 10,000 次，固定种子，区间 [3.5, 25.2]%；无标签加宽是 [56, 86]%。作者把它写成稳定性检查，不是总体估计。</p>
+  <p>带权限这一格靠人标。第一次按结构读权限，作废。按第 2 节标准，两名作者盲标 176 例参数：抽表时兼容变化里带询问理由的 44 个被标参数（最终分类器下是 50 个，另外 6 个没有核心理由），加上关着的祖先下新加、名字规则没标的 132 个，用来看漏标。第三人裁定 29 处分歧。原始一致率 84%（RESULTS.md 写 83.5%），分母 176 例，Cohen κ = 0.67。对照裁定标签，名字规则精确率 0.75、召回 0.60，单位是参数；召回是上限，漏标只在新加参数里抽。84、66、76 是变化条数。84 是名字规则的核心变化条数。裁定确认其中 66 条，另找出 10 条它漏的，合计至少 76。送审稿写成 73（66 + 7）。默认规则不用名字标签。</p>
+  <figure>
+    <svg viewBox="0 0 920 450" width="100%" role="img" aria-label="580 条兼容变化里加宽与带权限条数">
+      <rect x="0" y="0" width="920" height="450" fill="#ffffff"/>
+      <rect x="16" y="16" width="888" height="418" fill="#ffffff" stroke="#1d4ed8" stroke-width="2"/>
+      <text x="36" y="48" font-size="16" font-weight="700" fill="#0f172a">表 4：580 条兼容变化里，哪些加宽了</text>
+      <text x="36" y="72" font-size="14" fill="#475569">0 在 y=380，每条 0.45 像素。分母都是 580 条兼容变化。76 是裁定下界，84 是名字规则计数。</text>
+      <line x1="90" y1="120" x2="90" y2="380" stroke="#cbd5e1" stroke-width="1"/>
+      <line x1="90" y1="380" x2="880" y2="380" stroke="#cbd5e1" stroke-width="1"/>
+      <line x1="90" y1="245" x2="880" y2="245" stroke="#e2e8f0" stroke-width="1"/>
+      <text x="82" y="385" font-size="14" fill="#64748b" text-anchor="end">0</text>
+      <text x="82" y="250" font-size="14" fill="#64748b" text-anchor="end">300</text>
+      <text x="82" y="125" font-size="14" fill="#64748b" text-anchor="end">580</text>
+      <rect x="150" y="119" width="70" height="261" fill="#eff6ff" stroke="#1d4ed8" stroke-width="2"/>
+      <text x="185" y="110" font-size="14" font-weight="700" fill="#1d4ed8" text-anchor="middle">580</text>
+      <text x="185" y="408" font-size="14" fill="#0f172a" text-anchor="middle">兼容变化</text>
+      <rect x="320" y="195" width="70" height="185" fill="#fff7ed" stroke="#b45309" stroke-width="2"/>
+      <text x="355" y="183" font-size="14" font-weight="700" fill="#b45309" text-anchor="middle">412</text>
+      <text x="355" y="408" font-size="14" fill="#0f172a" text-anchor="middle">无标签加宽</text>
+      <rect x="490" y="257" width="70" height="123" fill="#fff1f2" stroke="#be123c" stroke-width="2"/>
+      <text x="525" y="245" font-size="14" font-weight="700" fill="#be123c" text-anchor="middle">274</text>
+      <text x="525" y="408" font-size="14" fill="#0f172a" text-anchor="middle">严格加宽</text>
+      <rect x="660" y="346" width="70" height="34" fill="#ecfdf5" stroke="#047857" stroke-width="2"/>
+      <text x="695" y="334" font-size="14" font-weight="700" fill="#047857" text-anchor="middle">76</text>
+      <text x="695" y="408" font-size="14" fill="#0f172a" text-anchor="middle">裁定≥76</text>
+      <text x="695" y="428" font-size="14" fill="#64748b" text-anchor="middle">名字规则 84</text>
+    </svg>
+    <figcaption>图 1。数字从原文表 4 和第 7 节抄。柱高按条数画，每条 0.45 像素。412、274、76 分母都是 580，不和 1,197 条全部变化比倍数。76 来自抽样标注，召回是上限。</figcaption>
+  </figure>
+  <p>已有工具上各规则要重批几次：钉死整份定义 2,004 次，其中 807 次只改了描述或标题；只钉输入 schema 1,197 次；兼容规则 617 次；无标签 SchemaCaps 645 次，比兼容多 28 次（+4.5%）；名字规则 413 次，漏标另算。907 个新加工具每条规则都当新权限，加上去：钉死整份 2,911，兼容 1,524，无标签 1,552，名字规则 1,320。原文没给只钉输入 schema 加上新工具后的总数。20 次检查答未知。作者写，645 次询问里有多少会被委托人觉得多余，这篇没测。</p>
+  <figure>
+    <svg viewBox="0 0 920 430" width="100%" role="img" aria-label="已有工具上四种规则的重批次数">
+      <rect x="0" y="0" width="920" height="430" fill="#ffffff"/>
+      <rect x="16" y="16" width="888" height="398" fill="#ffffff" stroke="#b45309" stroke-width="2"/>
+      <text x="36" y="48" font-size="16" font-weight="700" fill="#0f172a">已有工具上的重批次数</text>
+      <text x="36" y="72" font-size="14" fill="#475569">0 在 y=370，每 10 次 1.2 像素。不含 907 个新加工具。2,004 含描述钉死。</text>
+      <line x1="90" y1="110" x2="90" y2="370" stroke="#cbd5e1" stroke-width="1"/>
+      <line x1="90" y1="370" x2="880" y2="370" stroke="#cbd5e1" stroke-width="1"/>
+      <line x1="90" y1="250" x2="880" y2="250" stroke="#e2e8f0" stroke-width="1"/>
+      <text x="82" y="375" font-size="14" fill="#64748b" text-anchor="end">0</text>
+      <text x="82" y="255" font-size="14" fill="#64748b" text-anchor="end">1000</text>
+      <text x="82" y="135" font-size="14" fill="#64748b" text-anchor="end">2000</text>
+      <rect x="130" y="129" width="70" height="241" fill="#fff1f2" stroke="#be123c" stroke-width="2"/>
+      <text x="165" y="118" font-size="14" font-weight="700" fill="#be123c" text-anchor="middle">2004</text>
+      <text x="165" y="398" font-size="14" fill="#0f172a" text-anchor="middle">钉死整份</text>
+      <rect x="300" y="226" width="70" height="144" fill="#fff7ed" stroke="#b45309" stroke-width="2"/>
+      <text x="335" y="214" font-size="14" font-weight="700" fill="#b45309" text-anchor="middle">1197</text>
+      <text x="335" y="398" font-size="14" fill="#0f172a" text-anchor="middle">钉输入 schema</text>
+      <rect x="470" y="293" width="70" height="77" fill="#eff6ff" stroke="#1d4ed8" stroke-width="2"/>
+      <text x="505" y="281" font-size="14" font-weight="700" fill="#1d4ed8" text-anchor="middle">645</text>
+      <text x="505" y="398" font-size="14" fill="#0f172a" text-anchor="middle">SchemaCaps</text>
+      <text x="505" y="418" font-size="14" fill="#64748b" text-anchor="middle">无标签</text>
+      <rect x="640" y="296" width="70" height="74" fill="#ecfdf5" stroke="#047857" stroke-width="2"/>
+      <text x="675" y="284" font-size="14" font-weight="700" fill="#047857" text-anchor="middle">617</text>
+      <text x="675" y="398" font-size="14" fill="#0f172a" text-anchor="middle">兼容规则</text>
+    </svg>
+    <figcaption>图 2。数字从原文第 7 节抄。柱高按重批次数画。兼容规则 617 次不问那 412 条兼容加宽。无标签 SchemaCaps 645 次，按构造停掉这 412 条。</figcaption>
+  </figure>
+</section>
+
+<section id="clients">
+  <h2><span>3</span>行为能确定的六家</h2>
+  <p>表 5 调查日期 2026-09-30。漂移服务器在会话中途加宽 <code>read_file</code>：去掉沙箱限制、加上 <code>webhookUrl</code>、名字和描述不动，并发送 <code>list_changed</code>。客户端再拉列表，用只有新 schema 才收的值去调。跑过的 4 家用钉死版本；VS Code 只读源码，Claude Code 只读文档，这两家没有对漂移服务器发调用。</p>
+  <div class="tw">
+    <div class="fr-table" tabindex="0" role="region" aria-label="客户端表，可横向滚动"><table>
+      <thead>
+        <tr>
+          <th>产品</th>
+          <th>版本</th>
+          <th>证据</th>
+          <th>输入 schema 加宽时</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td>MCP TypeScript SDK</td><td>1.31.0</td><td>跑过 + 源码</td><td>静默用新定义；加宽调用发出</td></tr>
+        <tr><td>MCP Python SDK</td><td>2.2.0；1.27.0</td><td>跑过 + 源码</td><td>通知只走用户回调；加宽调用发出</td></tr>
+        <tr><td>Vercel AI SDK</td><td>ai 7.0.123，@ai-sdk/mcp 2.0.63</td><td>跑过 + 源码</td><td>默认静默；可选 detectToolDrift 报 changed</td></tr>
+        <tr><td>VS Code 代理模式</td><td>1.139.1</td><td>源码</td><td>工具 id 从名字来，批准跟着名字走</td></tr>
+        <tr><td>Claude Code</td><td>2.1.285</td><td>文档</td><td>列表变化会刷新；规则按工具名匹配</td></tr>
+        <tr><td>Claude Desktop</td><td>2.16120.0</td><td>文档</td><td>按工具批准；变化怎么处理文档没写</td></tr>
+        <tr><td>Cursor</td><td>3.22</td><td>文档</td><td>默认要批准；按名字白名单；变化文档没写</td></tr>
+        <tr><td>mcp-scan</td><td>0.4.2（钉死到 ≤0.4.5）</td><td>跑过 + 源码</td><td>只钉描述的 MD5；只改 schema 不加宽警告</td></tr>
+      </tbody>
+    </table></div>
+  </div>
+  <p>行为能确定的 6 家都不对加宽后的工具重批。另外两家闭源，文档也没写这种检查，原文标 not determinable。只读文档的归类可能和实际行为不同，这一条也套在 Claude Code 上。Vercel 的漂移检测是可选、报任意变化。mcp-scan 钉的是描述。作者写：部署客户端，就他们能确定的范围，不问「权限坐标有没有变大」这件事。</p>
+</section>
+
+<section id="yours">
+  <h2><span>4</span>你的运行位</h2>
+  <p>稿件推断，原文没测这些场景：工具批准如果绑在名字上，发行版加一个 <code>shell</code> 或 <code>webhookUrl</code>，旧批准还在。技能记录和编辑起点如果只存「这个工具已批」，对不上 schema 摘要。把输入 schema 的哈希写进批准记录，加宽就打断；代价接近钉输入 schema 的 1,197 次询问。只在兼容性上放行，会静默重绑试点里 412 / 580 条无标签加宽；其中人工确认带权限的至少 76 条，名字规则 84 条里有 62 条来自两个包，严格口径 274 条。无标签把未标路径都当权限，412 是上界，不是人工确认的权限提升比例。</p>
+  <p>无标签默认把未标路径当权限，询问次数靠近兼容规则（645 对 617），按构造拦住那 412 条。行为改了、schema 一字不差，原文表 3 该行所有规则（含 Accept-all）都 succeeds，共 6 列；原文写 defeats every rule。</p>
+  <p>11-17 那篇测的是两台 server 摊在一起、同名抄描述时模型绑到哪一家。这篇是已经批过的同一把工具，schema 自己长大。两条缝可以叠：先被同名工具骗走，再被正主的兼容更新加权限。09-26 的 RSI 谱系和 09-27 的增量分层不覆盖 schema 重绑。</p>
+</section>
+
+<section id="limit">
+  <h2><span>5</span>这篇没测到的</h2>
+  <ul>
+    <li>试点不是随机样本，加宽集中在少数服务器，不外推 HTTP 服务器或其他仓库。</li>
+    <li>标注人和裁定人都是作者，独立性不能外证。分类器有事后修正。</li>
+    <li>检查器用 jsonsubschema，失败当未知；对布尔相对枚举曾给出假 yes，作者改写成显式枚举，并加 60 次、2 秒的反例搜索。检查器经过测试和守卫，没有形式化验证。</li>
+    <li>演示规划器是脚本，服从注入、不跑 LLM。真实案例只在抽出的 schema 上重放，没有执行外部效果。</li>
+    <li>8 家里 4 家跑过，1 家只读源码，3 家只读文档。Claude Desktop 和 Cursor 标无法判定。只读文档的归类可能和实际行为不同。</li>
+    <li>同一 schema 背后的行为变化、配置出来的服务器默认值、输出 schema、描述注入，原文写在范围外。</li>
+    <li>Coq 证明的是定义 1、乘积条件和链上命题，共 117 行、无公理无 admit；逐步包含关系来自检查器。</li>
+  </ul>
+</section>
+
+<section id="src">
+  <h2><span>6</span>出处</h2>
+  <p>Ameur, Bouzefrane, Banerjee. SchemaCaps: When a Compatible Tool Update Silently Widens an AI Agent’s Authority. ICAART 2027 录用稿作者接受版，<a href="https://arxiv.org/abs/2611.30750">arXiv:2611.30750</a>，2026-11-23。代码与数据 <a href="https://github.com/yulliwasameur/schemacaps-artifact">schemacaps-artifact</a>，Zenodo <a href="https://doi.org/10.5281/zenodo.24233014">10.5281/zenodo.24233014</a>。文中数字从 PDF 全文的摘要、表 1–5、第 4、6–7、9 节抄。预印本写成预印本。</p>
+  <p>OpenAI 11-23 发 Shirudo，未进判断。Anthropic 新闻列表当日无新研究稿。Hacker News 首页、GitHub 当日新仓库未进判断。X / Reddit 今日未覆盖。Product Hunt 返回 Cloudflare 质询。</p>
+  <p><a href="/frontier/rsi-llm-agent-self-evolution.html">09-26 RSI</a> 是谱系，<a href="/frontier/llm-agent-tech-landscape.html">09-27 全景</a> 是增量在哪一层。本文写运行位上的一条缝：已经批过的同一把工具，兼容的 schema 更新仍可以把权限坐标加宽。和 <a href="/frontier/2026-11-17-same-name-misses-owner.html">11-17 同名抄描述</a> 管的是选哪一家；本篇管的是批过之后 schema 自己加宽。</p>
+</section>
+</main>
+</div>
+<a class="fr-top" href="#" aria-label="返回页首">↑</a>
+</body>
+</html>

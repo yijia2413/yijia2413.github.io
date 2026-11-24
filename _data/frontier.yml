@@ -1,5 +1,9 @@
 # 前沿技术栏目：独立 HTML 洞察索引。
 # 新增一篇：把 HTML 放到 /frontier/<slug>.html，再在这里加一条。
+- title: "兼容更新加了坐标，行为能确定的六家都不重批"
+  date: "2026-11-24"
+  url: /frontier/2026-11-24-compatible-schema-widens.html
+  summary: "一篇 ICAART 2027 录用稿、arXiv 预印本看已经批过的 MCP 工具换输入 schema。Desktop Commander 0.1.35 给 execute_command 加上任意字符串 shell，旧调用仍合法。39 个公开服务器、604 个发行版。1,197 条变化里 580 条兼容，412 / 580 加宽了某个坐标（无标签）；双人标注至少 76 条加了或加宽了带权限的参数。调查 8 家客户端和扫描器：4 家跑过，VS Code 读源码，Claude Code 读文档；这 6 家行为能确定的都不对加宽重批。"
 - title: "一条正确先例，Nemotron-3.5 安全率从 94.5% 掉到 47.1%"
   date: "2026-11-23"
   url: /frontier/2026-11-23-correct-precedent-halves.html
