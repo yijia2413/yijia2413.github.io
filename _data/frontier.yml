@@ -1,5 +1,9 @@
-# 前沿技术栏目：独立 HTML 洞察索引。
+﻿# 前沿技术栏目：独立 HTML 洞察索引。
 # 新增一篇：把 HTML 放到 /frontier/<slug>.html，再在这里加一条。
+- title: "Uber 怎样评测一个月 100 万次技能调用"
+  date: "2026-11-25"
+  url: /frontier/2026-11-25-uber-agent-skills.html
+  summary: "译文。原文 Uber Engineering，2026-11-23。共享技能市场一年从 1 个到 5,000 多个，一个月调用超过 100 万次。三档市场、aifx 一层安装、评测 5%/80%/15%、消融、Code Mode、agent 自己报 papercut。"
 - title: "兼容更新加了坐标，行为能确定的六家都不重批"
   date: "2026-11-24"
   url: /frontier/2026-11-24-compatible-schema-widens.html
