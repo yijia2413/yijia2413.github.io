@@ -1,5 +1,9 @@
 ﻿# 前沿技术栏目：独立 HTML 洞察索引。
 # 新增一篇：把 HTML 放到 /frontier/<slug>.html，再在这里加一条。
+- title: "SWE-bench Verified 上，过测补丁多出来的 61% 是测试"
+  date: "2026-11-26"
+  url: /frontier/2026-11-26-extra-lines-are-tests.html
+  summary: "一篇预印本把 Copilot CLI 上 18 个模型、7,660 条已过测轨迹拆成块。「多出来的编辑」是未打分的测试改动加任务测试口径下不需要的块。SWE-bench Verified 上按块计测试文件 61%、文档 13%、代码 21%；DeepSWE 上代码 58%、测试 26%。任务测试口径下代码块必要性 0.887 对开发者 0.864，18 家里 11 家更少；探针口径下 12 家更多、0 家少。"
 - title: "Uber 怎样评测一个月 100 万次技能调用"
   date: "2026-11-25"
   url: /frontier/2026-11-25-uber-agent-skills.html

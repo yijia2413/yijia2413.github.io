@@ -1,0 +1,260 @@
+﻿<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SWE-bench Verified 上，过测补丁多出来的 61% 是测试 · Frontier</title>
+  <style>
+    :root { --ink:#0f172a; --muted:#475569; --line:#e2e8f0; --bg:#f8fafc; --blue:#1d4ed8; --blue-bg:#eff6ff; --amber:#b45309; --green:#047857; --rose:#be123c; }
+    * { box-sizing: border-box; }
+    body { margin:0; font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Noto Sans SC",sans-serif; background:var(--bg); color:var(--ink); line-height:1.75; font-size:17px; }
+    header { background:#0f172a; color:#f8fafc; padding:36px 24px 28px; border-bottom:4px solid #2563eb; }
+    header .inner { max-width:1080px; margin:0 auto; }
+    .badge { display:inline-block; border:1px solid #93c5fd; color:#bfdbfe; border-radius:999px; padding:2px 12px; font-size:13px; }
+    h1 { font-size:2rem; line-height:1.3; margin:12px 0; }
+    header p { color:#cbd5e1; margin:0; max-width:760px; }
+    .layout { max-width:1080px; margin:28px auto 64px; padding:0 20px; display:grid; grid-template-columns:220px minmax(0,1fr); gap:28px; }
+    aside { position:sticky; top:52px; align-self:start; background:#fff; border:1px solid var(--line); border-radius:12px; padding:14px; }
+    aside p { font-size:12px; letter-spacing:.06em; color:var(--muted); margin:0 0 8px; }
+    aside a { display:block; color:var(--ink); text-decoration:none; font-size:14px; padding:6px 8px; border-radius:6px; }
+    aside a:hover { background:var(--blue-bg); color:var(--blue); }
+    h2 { font-size:1.35rem; margin:0 0 12px; }
+    h2 span { display:inline-block; background:var(--blue); color:#fff; border-radius:6px; font-size:13px; padding:2px 8px; margin-right:8px; }
+    h3 { font-size:1.08rem; margin:20px 0 10px; }
+    section { background:#fff; border:1px solid var(--line); border-radius:14px; padding:26px 28px; margin-bottom:22px; }
+    p { margin:0 0 14px; }
+    a { color:var(--blue); overflow-wrap:anywhere; }
+    code { background:#f1f5f9; border-radius:4px; padding:1px 5px; font-size:15px; overflow-wrap:anywhere; }
+    main { min-width:0; }
+    figure { margin:16px 0; background:#fff; border:1px solid var(--line); border-radius:12px; padding:10px; overflow-x:auto; }
+    figure svg { display:block; min-width:700px; }
+    figcaption { color:var(--muted); font-size:14px; margin-top:6px; }
+    .tw { overflow-x:auto; margin:0 0 14px; }
+    .tw table { min-width:620px; }
+    table { width:100%; border-collapse:collapse; font-size:15px; }
+    th, td { border:1px solid var(--line); padding:8px 10px; text-align:left; vertical-align:top; }
+    th { background:#f1f5f9; }
+    ul { margin:0 0 14px; padding-left:22px; }
+    ol { margin:0 0 14px; padding-left:22px; }
+    li { margin-bottom:6px; }
+    .note { background:#f1f5f9; border-left:4px solid var(--muted); padding:12px 16px; border-radius:0 8px 8px 0; font-size:16px; margin:0 0 14px; }
+    svg text { font-family:-apple-system,"PingFang SC","Noto Sans SC",sans-serif; }
+    @media (max-width:860px) { .layout { grid-template-columns:minmax(0,1fr); } aside { position:static; } h1 { font-size:1.55rem; } section { padding:18px 16px; } }
+  </style>
+  <link rel="stylesheet" href="assets/article.css">
+  <script src="assets/article.js" defer></script>
+</head>
+<body class="frontier-article">
+<a class="fr-skip" href="#article-content">跳到正文</a>
+<nav class="fr-nav" aria-label="站点导航">
+  <a class="fr-brand" href="/frontier/"><span class="fr-mark" aria-hidden="true">F</span>Frontier<span class="fr-nav-label">技术与研究</span></a>
+  <a class="fr-home" href="/">@xixi003 <span aria-hidden="true">↗</span></a>
+</nav>
+<div class="fr-progress" aria-hidden="true"><div></div></div>
+
+<header class="fr-hero">
+  <div class="inner">
+    <span class="badge">FRONTIER · 2026-11-26 · Agent Patches</span>
+    <h1>SWE-bench Verified 上，过测补丁多出来的 61% 是测试</h1>
+    <p>一篇预印本把 GitHub Copilot CLI 上 18 个模型、7,660 条已经过测的轨迹拆成块。「多出来的编辑」是未打分的测试文件改动，加上任务测试口径下不需要的块；测试改动没测过必要性。SWE-bench Verified 上中位模型改的行是开发者补丁的 2.33 倍。按块计，多出来的里测试文件 61%、文档 13%、代码 21%。DeepSWE 上同一口径代码 58%、测试 26%。代码块必要性均值 0.887，开发者同一批实例 0.864，都是任务测试口径；这一口径下 18 家里 11 家比开发者少。加上行为探针后，12 家比开发者多、0 家少。任务测试下平均 11% 的代码块不需要；探针跑过的 3,559 个里 89% 会改行为，其中 35.5% 和开发者补丁一致。</p>
+  </div>
+</header>
+<div class="fr-layout">
+<aside aria-label="文章目录" class="fr-toc">
+<details open="">
+<summary>本文目录<span aria-hidden="true">＋</span></summary>
+<div class="fr-toc-links">
+<a href="#what">1 行数多，不等于调试残留</a>
+<a href="#extra">2 多出来的是什么</a>
+<a href="#where">3 不需要的代码从哪一步来</a>
+<a href="#model">4 过测率带不走必要性</a>
+<a href="#prune">5 生成后再剪</a>
+<a href="#yours">6 你的运行位</a>
+<a href="#limit">7 这篇没测到的</a>
+<a href="#src">8 出处</a>
+</div>
+</details>
+</aside>
+<main class="fr-content" id="article-content">
+<section id="what">
+  <h2><span>1</span>行数多，不等于调试残留</h2>
+  <p>预印本 <a href="https://arxiv.org/abs/2611.34875">How Much Do Coding Agents Over-Edit, and Why?</a>（Goel、Steenhoek、Hu，Microsoft，2026-11-25）看的是已经过测的仓库级补丁。本篇只论一件事：SWE-bench Verified 上按块计，多出来的主体是测试文件。后面几节是这 61% 里剩下那 21% 代码块是什么、从哪来、事后能不能剪，不另立一个判断。作者写：补丁更大，常被读成改多了。行数说不出多出来的块要不要、是什么、从哪一步写进去。</p>
+  <p>方法叫 Delta Residue Attribution（DRA）。回放轨迹，把最终补丁切成可单独撤回的块（同一文件里相邻改动，中间最多隔一行未改行就合并；新建或删除的文件算一块），每块追到最后写过其中一行的那一步。撤回这一块，再跑任务测试：测试挂了算需要，仍过算不需要。SWE-bench 用 FAIL_TO_PASS 和 PASS_TO_PASS；DeepSWE 用任务自带测试。只分析已过测补丁。测试文件改动在 SWE-bench 评分里会被重置，作者单独记成未打分，和不需要的块合称「多出来的编辑」。主指标是代码块里需要的比例，写作 <code>NP_code</code>。</p>
+  <p>语料：GitHub Copilot CLI，18 个模型。SWE-bench Verified 500 道 Python 题，过测率 64.0% 到 89.4%；DeepSWE 113 道长程题（Go、TypeScript、Python、Rust、JavaScript）。主结果 6,728 条 SWE-bench Verified 补丁（30,265 块；482 个不同实例，114 个 18 家都有）和 932 条 DeepSWE 补丁（26,209 块）。开发者基线：SWE-bench Verified 470 个实例、1,317 个代码块；DeepSWE 103 道有开发者补丁且过测的题（4 份开发者补丁不过测，丢掉）。SWE-bench Verified 轨迹回放与提交补丁完全一致的占 96.7%。</p>
+  <p>按行数，SWE-bench Verified 上中位模型改的行是开发者补丁的 2.33 倍（模型间 0.94–5.10）。只看非测试文件，中位比值 1.09（0.79–2.03）。只看代码块，比值 0.86，按题中位 1.00。按必要性，任务测试口径下 Agent 代码块均值 0.887，同一批实例上开发者 0.864。开发者补丁在任务测试下也有 33% 的代码块（434 / 1,317）被标成不需要；行为探针加强后，开发者只剩 3% 不需要，Agent 均值从 0.887 到 0.925。作者把不需要份额写成对真实多余的上界，比较时两边用同一套测试。</p>
+</section>
+
+<section id="extra">
+  <h2><span>2</span>多出来的是什么</h2>
+  <p>SWE-bench Verified 上，按块计的多出来的编辑：测试文件 61%、代码 21%、文档 13%、注释或格式 5%。测试改动一律记入、没测过必要性；代码块只有被任务测试判成不需要的才记入。原文写评审可能欢迎其中不少测试。81.5% 的 Agent 补丁改了测试文件。DeepSWE 反过来：题是功能实现，每条补丁大约多六倍块；代码占多出来的 58%，测试 26%，文档 12%。行口径是另一个数：SWE-bench Verified 上 60% 的 Agent 改动行在测试文件里。</p>
+  <figure>
+    <svg viewBox="0 0 920 420" width="100%" role="img" aria-label="两套基准上多出来的编辑构成">
+      <rect x="0" y="0" width="920" height="420" fill="#ffffff"/>
+      <rect x="16" y="16" width="888" height="388" fill="#ffffff" stroke="#1d4ed8" stroke-width="2"/>
+      <text x="36" y="48" font-size="16" font-weight="700" fill="#0f172a">图 1　多出来的编辑构成（未打分的测试改动 + 不需要的块）</text>
+      <text x="36" y="72" font-size="14" fill="#475569">单位是块。占比来自 18 个模型的 6,728 / 932 条补丁。原文没给各类块数。任务测试口径。</text>
+      <rect x="80" y="120" width="488" height="56" fill="#1d4ed8"/>
+      <rect x="568" y="120" width="168" height="56" fill="#be123c"/>
+      <rect x="736" y="120" width="104" height="56" fill="#047857"/>
+      <rect x="840" y="120" width="40" height="56" fill="#b45309"/>
+      <text x="80" y="110" font-size="14" fill="#0f172a">SWE-bench Verified</text>
+      <text x="100" y="154" font-size="15" fill="#ffffff">测试 61%</text>
+      <text x="580" y="154" font-size="15" fill="#ffffff">代码 21%</text>
+      <text x="744" y="154" font-size="14" fill="#ffffff">文档 13%</text>
+      <rect x="80" y="230" width="208" height="56" fill="#1d4ed8"/>
+      <rect x="288" y="230" width="464" height="56" fill="#be123c"/>
+      <rect x="752" y="230" width="96" height="56" fill="#047857"/>
+      <text x="80" y="220" font-size="14" fill="#0f172a">DeepSWE</text>
+      <text x="100" y="264" font-size="15" fill="#ffffff">测试 26%</text>
+      <text x="420" y="264" font-size="15" fill="#ffffff">代码 58%</text>
+      <text x="760" y="264" font-size="14" fill="#ffffff">文档 12%</text>
+      <rect x="80" y="330" width="18" height="18" fill="#1d4ed8"/>
+      <text x="106" y="344" font-size="14" fill="#0f172a">测试文件</text>
+      <rect x="220" y="330" width="18" height="18" fill="#be123c"/>
+      <text x="246" y="344" font-size="14" fill="#0f172a">代码</text>
+      <rect x="320" y="330" width="18" height="18" fill="#047857"/>
+      <text x="346" y="344" font-size="14" fill="#0f172a">文档</text>
+      <rect x="420" y="330" width="18" height="18" fill="#b45309"/>
+      <text x="446" y="344" font-size="14" fill="#0f172a">注释或格式（SWE-bench 5%）</text>
+      <text x="36" y="384" font-size="14" fill="#475569">底行：按块计。DeepSWE 三条相加 96%，原文没给剩下 4%。行口径另见正文 60%。</text>
+    </svg>
+    <figcaption>图 1。构成来自原文图 3 与第 5.2 节。DeepSWE 的 12% 文档来自附录 D.2；26+58+12=96%，原文没写剩下 4% 的构成。测试改动未打分。</figcaption>
+  </figure>
+  <p>SWE-bench Verified 上 3,987 个不需要的代码块里，行为探针跑了 3,559 个：89%（3,151 / 3,559，95% Wilson 区间 [87, 90]）撤回后行为会变。原文表 7 把这 3,151 个拆开：1,263 个（35.5%）开发者补丁的行为和完整 Agent 补丁一致，探针口径下算需要；1,586 个（44.6%）和拿掉这块一致；133 个（3.7%）混合；169 个（4.7%）两者都不像；408 个（11.5%）探针上看不出差别。同一套探针下，开发者不需要的代码块 363 / 432（84%，[80, 87]）也会改行为。</p>
+  <p>作者在 271 道过有效性检查的 SWE-bench Verified 题上，用 mutmut 往打过补丁的代码里注入 1,962 个小人工缺陷。Agent 新加的测试杀掉 68.1%；同一批被改过的测试文件里原有回归测试 45.6%；任务测试 77.1%。Agent 测试对需要的代码里的缺陷杀掉 73.2%，对不需要的代码里 31.2%。任务测试漏掉的缺陷里，22.7%（102 个，占全部缺陷 5.2%）被 Agent 新加或加强的测试抓住。附录 D.2：5,439 条改了测试且有步骤来源的补丁里，52.0% 把全部留下的测试写在最后一次需要的代码改动之后；8.7% 看到测试先红后绿。</p>
+</section>
+
+<section id="where">
+  <h2><span>3</span>不需要的代码从哪一步来</h2>
+  <p>如果残留主要来自调试，它会在探索、复现、打探步骤写进去，后来没被撤回。调试角色在正文里是这三步，不含修订。块归到最后写过其中一行的那一步：先在调试步写、后在修复步改的，算修复。全体残留块里，调试步骤占比 0.257；4,898 个调试步骤残留块里 4,676 个是测试文件，Agent 在修之前当回归测试写的。代码残留里，只有 154 / 3,987（55 条补丁）来自调试步骤，代码调试份额 0.039。把修订也算进调试，代码调试份额升到 0.148，仍低于注册时的杀掉线 0.15。草稿脚本和调试打印几乎进不了过测补丁。</p>
+  <p>修复步骤写下 83% 的不需要代码，修订步骤 11%。修订时写下的代码不需要的比例，只比第一次修复略高（0.29 对 0.25）。DeepSWE 上，有精确来源的块里，代码调试份额 0.037；修复步骤贡献 72% 的不需要代码，修订 22%，不需要率 0.24 和 0.27。</p>
+  <div class="tw">
+    <div class="fr-table" tabindex="0" role="region" aria-label="按引入步骤角色拆开的代码块">
+      <table>
+        <thead>
+          <tr>
+            <th>引入角色</th>
+            <th>SWE-bench 需要</th>
+            <th>SWE-bench 不需要（占不需要代码）</th>
+            <th>不需要率</th>
+            <th>DeepSWE 不需要（占不需要代码）</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>修复</td><td>9,799</td><td>3,315（83%）</td><td>0.25</td><td>2,547（72%）</td></tr>
+          <tr><td>修订</td><td>1,074</td><td>438（11%）</td><td>0.29</td><td>796（22%）</td></tr>
+          <tr><td>打探</td><td>182</td><td>120（3%）</td><td>0.40</td><td>78（2%）</td></tr>
+          <tr><td>复现</td><td>76</td><td>33（1%）</td><td>0.30</td><td>52（1%）</td></tr>
+          <tr><td>清理</td><td>71</td><td>79（2%）</td><td>0.53</td><td>81（2%）</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <p>步骤角色先走两条规则，其余由 GPT-6.1 Sol 看议题、压缩历史、动作和叙述来标。主评审和第二评审 Opus 5.5、探针评审 GPT-6 Astra 都在被评估的 18 家里。第二评审在 10,000 个随机抽样步骤上，细角色一致 84.4%，调试对非调试 89.1%（κ=0.55）。没有人工抽查。最常见分歧是第二评审把「复现」标成「修复」（786 步）。主评审多标复现、少标修复，这个偏差会抬高调试份额；代码调试份额低，没有被这个偏差撑起来。</p>
+</section>
+
+<section id="model">
+  <h2><span>4</span>过测率带不走必要性</h2>
+  <p>SWE-bench Verified 上 18 个模型，过测率与 <code>NP_code</code> 的 Spearman 相关 −0.10（原始 p=0.69；按每个模型的实例自助，95% 区间 [−0.28, +0.05]）。过测率几乎一样时：Sonnet 5 80.6%、<code>NP_code</code> 0.922；Gemini 3.7 Flash 81.4%、0.789。后者每个任务留下的不需要代码块大约是前者的 3.6 倍（1.23 对 0.34）。</p>
+  <p>相对开发者，任务测试口径：11 家显著更少不需要代码（GPT-6 Astra 只是边缘，区间下界 0.002）；4 家看不出差别（Kimi K3、Claude Haiku 4.5、GPT-6 Sol、GPT-6.1 Sol），看不出差别不等于等价；3 家显著更多：Gemini 3.8 / 3.7 / 3.6 Flash。<code>NP_code</code> 分别是 0.765 [0.735, 0.793]、0.789 [0.759, 0.820]、0.791 [0.760, 0.820]，对开发者的差是 −0.095 [−0.129, −0.064]、−0.074 [−0.107, −0.042]、−0.076 [−0.111, −0.041]。加上行为探针后，12 家比开发者多、0 家少；差值从 +2.3 个百分点翻成 −4.5。</p>
+  <p>DeepSWE 上 Agent 均值 0.797，103 份开发者补丁 0.785；两家显著低于开发者，没有一家显著高于。过测率与 <code>NP_code</code> 负相关：Spearman −0.59（p=0.01，n=17，每家至少 10 道已评分题）；按题调整后 −0.52（p=0.03）。两套基准上模型名次中等相关（+0.59）。Gemini 3.7 和 3.8 Flash 两边都低。</p>
+  <p>作者主文用任务测试口径，并写明开发者基线。附录里配对了别的 harness 的最终补丁：Claude Code 三家在 SWE-bench Verified 上 0.926（同一批题 Copilot CLI 0.923）；DeepSWE 上 Codex CLI 六家 GPT 0.787（CLI 0.794）。这是最终补丁，没有把角色推广到 Copilot CLI 以外。</p>
+</section>
+
+<section id="prune">
+  <h2><span>5</span>生成后再剪</h2>
+  <p>部署时没有任务测试。作者在 SWE-bench Verified 上试了三种事后策略。清理实验用 6,724 条已过测补丁（主结果是 6,728）。</p>
+  <div class="tw">
+    <div class="fr-table" tabindex="0" role="region" aria-label="三种事后清理">
+      <table>
+        <thead>
+          <tr>
+            <th></th>
+            <th>第一次全绿就停</th>
+            <th>自己审 diff</th>
+            <th>DRA + 自己的测试</th>
+            <th>DRA + 自己的测试和仓库回归</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>补丁 / 代码块</td><td>3,031 / 7,419</td><td>6,345 / 13,729</td><td>2,495 / 5,060</td><td>2,495 / 5,060</td></tr>
+          <tr><td>丢掉的块</td><td>净 150（2.0%）</td><td>1,238（9.0%）</td><td>997（19.7%）</td><td>863（17.1%）</td></tr>
+          <tr><td>精确率 / 召回（探针口径）</td><td>—</td><td>65.7% / 35.5%</td><td>39.6% / 66.5%</td><td>46.3% / 67.3%</td></tr>
+          <tr><td>任务测试口径精确率 / 召回</td><td>—</td><td>78.5% / 28.8%</td><td>—</td><td>—</td></tr>
+          <tr><td><code>NP_code</code> 前 → 后</td><td>0.700 → 0.710</td><td>0.924 → 0.944</td><td>0.936 → 0.974</td><td>0.936 → 0.975</td></tr>
+          <tr><td>仍过测（口径见下）</td><td>97.3% 任务测试</td><td>98.2% 探针口径</td><td>86.6% 任务测试</td><td>89.1% 任务测试</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <p>6,728 条里 4,860 条在第一次改源码之后，对自己的测试跑到过全绿；其中 3,035 条（62%）之后还继续改。停在第一次全绿只覆盖全绿之后还继续改的补丁，所以这一列基线 <code>NP_code</code> 是 0.700，另外三列是 0.924–0.936。3,031 条打过分的补丁里 2,948 条（97.3%）任务测试仍过，代码块从 7,419 落到 7,269，<code>NP_code</code> 只从 0.700 到 0.710。仍过测且内容有变的 2,939 条里，事后改动碰到源码块的 208 条，只碰测试、文档或配置 1,472 条，cancel out 1,259 条（原文没写这 1,259 条里有没有源码改动）。不需要的代码多半在自己的测试第一次全绿时已经在补丁里。</p>
+  <p>自己审：17 / 18 家（没有 Kimi K3 的 Copilot CLI 审稿模型；Opus 5 由 Claude Opus 5.5 审，Opus 4.8 由 Claude Opus 4.6，GPT-5.6 Terra 由 GPT-6.1 Terra；跳过 4 个超长补丁），6,345 条补丁、13,729 个代码块；1,540 条至少丢掉一块。丢掉的代码块里 813 / 1,238 与探针口径下的不需要对齐，精确率 65.7%、召回 35.5%；任务测试口径下是 78.5% / 28.8%。丢掉会弄坏 1.8% 已过测补丁（探针口径下仍过 98.2%）。在探针口径的不需要块里，开发者补丁的行为像拿掉这块的，丢掉 40.5%；行为像完整补丁的，丢掉 14.7%；需要的块丢掉 2.6%。</p>
+  <p>DRA 剪枝只覆盖 2,495 / 6,724：3,777 条轨迹里抽不出独立测试选择器，450 条基线重复跑不过。2,495 条里 1,468 条只有一个代码块，清理从不撤最后一个代码块，所以这 1,468 条是空操作；可剪的是另外 1,027 条。精确率和召回对的是探针口径。用 Agent 自己的测试命令加上仓库已有 PASS_TO_PASS：召回 67.3%，精确率 46.3%，89.1% 仍过任务测试（分母含那 59% 不会被剪的补丁）。只用自己的测试：精确率 39.6%、召回 66.5%、86.6% 仍过。误删的多半是现有测试和 Agent 测试都没练到的行为。表 1 题注和附录表 21 把 DRA 列的「仍过」写成探针口径，5.5 节正文写成任务测试，原文自己不一致；这里跟 5.5 节正文。</p>
+  <figure>
+    <svg viewBox="0 0 920 430" width="100%" role="img" aria-label="自己审和测试剪枝的精确率与召回">
+      <rect x="0" y="0" width="920" height="430" fill="#ffffff"/>
+      <rect x="16" y="16" width="888" height="398" fill="#ffffff" stroke="#047857" stroke-width="2"/>
+      <text x="36" y="48" font-size="16" font-weight="700" fill="#0f172a">图 2　生成后再剪：精确率对召回</text>
+      <text x="36" y="72" font-size="14" fill="#475569">精确率、召回对探针口径。自己审 6,345 条。DRA 两列：2,495 条里 1,468 条空操作、1,027 条可剪。</text>
+      <line x1="90" y1="100" x2="90" y2="340" stroke="#cbd5e1" stroke-width="1"/>
+      <line x1="90" y1="340" x2="860" y2="340" stroke="#cbd5e1" stroke-width="1"/>
+      <line x1="90" y1="220" x2="860" y2="220" stroke="#e2e8f0" stroke-width="1"/>
+      <text x="82" y="344" font-size="14" fill="#64748b" text-anchor="end">0%</text>
+      <text x="82" y="224" font-size="14" fill="#64748b" text-anchor="end">50%</text>
+      <text x="82" y="108" font-size="14" fill="#64748b" text-anchor="end">100%</text>
+      <rect x="160" y="182" width="70" height="158" fill="#1d4ed8"/>
+      <rect x="250" y="255" width="70" height="85" fill="#be123c"/>
+      <text x="195" y="360" font-size="14" fill="#0f172a" text-anchor="middle">自己审</text>
+      <text x="195" y="176" font-size="14" fill="#1d4ed8" text-anchor="middle">65.7%</text>
+      <text x="285" y="249" font-size="14" fill="#be123c" text-anchor="middle">35.5%</text>
+      <rect x="430" y="245" width="70" height="95" fill="#1d4ed8"/>
+      <rect x="520" y="180" width="70" height="160" fill="#be123c"/>
+      <text x="510" y="360" font-size="14" fill="#0f172a" text-anchor="middle">DRA + 自己的测试</text>
+      <text x="465" y="239" font-size="14" fill="#1d4ed8" text-anchor="middle">39.6%</text>
+      <text x="555" y="174" font-size="14" fill="#be123c" text-anchor="middle">66.5%</text>
+      <rect x="680" y="229" width="70" height="111" fill="#1d4ed8"/>
+      <rect x="770" y="178" width="70" height="162" fill="#be123c"/>
+      <text x="760" y="360" font-size="14" fill="#0f172a" text-anchor="middle">再加仓库回归</text>
+      <text x="715" y="223" font-size="14" fill="#1d4ed8" text-anchor="middle">46.3%</text>
+      <text x="805" y="172" font-size="14" fill="#be123c" text-anchor="middle">67.3%</text>
+      <rect x="160" y="388" width="16" height="16" fill="#1d4ed8"/>
+      <text x="182" y="401" font-size="14" fill="#0f172a">精确率</text>
+      <rect x="280" y="388" width="16" height="16" fill="#be123c"/>
+      <text x="302" y="401" font-size="14" fill="#0f172a">召回（对探针口径下的不需要代码块）</text>
+    </svg>
+    <figcaption>图 2。数字来自原文表 1，精确率与召回是探针口径。柱高：0% 在 y=340，每 1 个百分点 2.4 像素。自己审更准、找到的少；测试剪枝找到大约三分之二，误删也更多。</figcaption>
+  </figure>
+</section>
+
+<section id="yours">
+  <h2><span>6</span>你的运行位</h2>
+  <p>看行数会把测试文件算进「改多了」。SWE-bench Verified 上 60% 的 Agent 改动行在测试文件里；全块 <code>NP</code> 均值 0.472，模型间从 GPT-6.1 Sol 的 0.273 到 Sonnet 5.5 的 0.848，跟着写了多少测试走。评审欢迎测试的话，这一列不该和代码残留加在一起。</p>
+  <p>代码残留主要写在构造和修订修复的时候，调试步骤几乎带不走（Explore / Reproduce / Probe，最后一步归属）。循环里清打印、清草稿，对过测补丁里剩下的不需要代码用处不大；作者没测循环中清理。生成后再剪，精确率和召回是探针口径：自己审 65.7% / 35.5%；能抽出独立测试命令的 2,495 条里可剪的是 1,027 条，用自己的测试加仓库回归，召回 67.3%、精确率 46.3%，任务测试仍过 89.1%（分母含 1,468 条空操作）。</p>
+  <p>过测率高的模型，代码不一定更干净。SWE-bench Verified 上相关接近 0；DeepSWE 上过测更高的模型留下更多不需要代码。作者建议基准在过测率旁边报 <code>NP_code</code>，并带同一套测试打过的开发者基线。</p>
+  <p>和 <a href="/frontier/2026-11-13-lag-after-first-correct.html">11-13 第一次过测之后还剩步</a> 管的是成功跑里中位还剩多少步；这篇管的是已经提交的补丁里，哪些代码块拿掉测试仍过。第一次全绿之后还继续改的那批里，碰到源码块的 208 条，只碰测试、文档或配置 1,472 条。和 11-13 是否同一条缝，是作者推断，计量单位不同。</p>
+</section>
+
+<section id="limit">
+  <h2><span>7</span>这篇没测到的</h2>
+  <ul>
+    <li>必要性跟着测试走。DeepSWE 上开发者基线已经是 0.785，不需要份额是上界。行为探针由 GPT-6.1 Sol 写；第二评审 Opus 5.5 在 388 个两边都判的块上，改行为的比例 81% 对 89%。</li>
+    <li>一次撤一块。成对才需要、一块里混了需要和不需要的行，会判错。</li>
+    <li>只看过测轨迹。失败轨迹里的改多了没测。</li>
+    <li>角色没有人工抽查。调试份额建立在 154 / 3,987 个代码残留块上。变异测试覆盖 271 题、1,962 个缺陷。</li>
+    <li>回放：SWE-bench Verified 3.3% 对不上（228 次回放不一致、6 次自检失败、5 个二进制补丁）。DeepSWE 33.4% 的补丁（311 / 932）至少有一块没有来源（占块 14.9%，占代码块 12.7%）。</li>
+    <li>主结果是 Copilot CLI。SWE-bench Verified 只有 Python，作者写可能被污染。人工是否同意「该删」只准备了协议，没有人标（附录 B.5）。</li>
+    <li>注册假设用全体块的调试份额（0.257，落在杀掉线 0.15 和支持线 0.40 之间）。事后改成代码块份额 0.039，才低于杀掉线。循环中的撤回-拒绝和最小改动提示没跑，因为目标是调试步骤留下的代码。</li>
+  </ul>
+</section>
+
+<section id="src">
+  <h2><span>8</span>出处</h2>
+  <p>Goel, Steenhoek, Hu. How Much Do Coding Agents Over-Edit, and Why? An Empirical Study of Unneeded Edits in Repository-Level Agent Patches. 预印本，<a href="https://arxiv.org/abs/2611.34875">arXiv:2611.34875</a>，2026-11-25。Microsoft。前两位作者标 Equal contribution。文中数字从 HTML 全文的摘要、第 3–6 节、表 1、表 7–13、附录 C–G 抄。预印本写成预印本。</p>
+  <p>OpenAI 新闻 11-24 发 GPT-6 蛋白质设计和 Astra 找行星，未进判断。Anthropic 新闻列表当日无新研究稿。Hacker News 首页、GitHub 当日新仓库未进判断。X / Reddit 今日未覆盖。Product Hunt 首页能打开，当天产品未进判断。</p>
+  <p><a href="/frontier/rsi-llm-agent-self-evolution.html">09-26 RSI</a> 是谱系，<a href="/frontier/llm-agent-tech-landscape.html">09-27 全景</a> 是增量在哪一层。本文写运行位上的一条缝：SWE-bench Verified 上，过测补丁按块计多出来的主体是测试文件；测试改动没测过必要性。</p>
+</section>
+</main>
+</div>
+<a class="fr-top" href="#" aria-label="返回页首">↑</a>
+</body>
+</html>
