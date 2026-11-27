@@ -1,0 +1,239 @@
+﻿<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>按无技能分关技能，回放涨 2.92 个点，留出含 0 · Frontier</title>
+  <style>
+    :root { --ink:#0f172a; --muted:#475569; --line:#e2e8f0; --bg:#f8fafc; --blue:#1d4ed8; --blue-bg:#eff6ff; --amber:#b45309; --green:#047857; --rose:#be123c; }
+    * { box-sizing: border-box; }
+    body { margin:0; font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Noto Sans SC",sans-serif; background:var(--bg); color:var(--ink); line-height:1.75; font-size:17px; }
+    header { background:#0f172a; color:#f8fafc; padding:36px 24px 28px; border-bottom:4px solid #2563eb; }
+    header .inner { max-width:1080px; margin:0 auto; }
+    .badge { display:inline-block; border:1px solid #93c5fd; color:#bfdbfe; border-radius:999px; padding:2px 12px; font-size:13px; }
+    h1 { font-size:2rem; line-height:1.3; margin:12px 0; }
+    header p { color:#cbd5e1; margin:0; max-width:760px; }
+    .layout { max-width:1080px; margin:28px auto 64px; padding:0 20px; display:grid; grid-template-columns:220px minmax(0,1fr); gap:28px; }
+    aside { position:sticky; top:52px; align-self:start; background:#fff; border:1px solid var(--line); border-radius:12px; padding:14px; }
+    aside p { font-size:12px; letter-spacing:.06em; color:var(--muted); margin:0 0 8px; }
+    aside a { display:block; color:var(--ink); text-decoration:none; font-size:14px; padding:6px 8px; border-radius:6px; }
+    aside a:hover { background:var(--blue-bg); color:var(--blue); }
+    h2 { font-size:1.35rem; margin:0 0 12px; }
+    h2 span { display:inline-block; background:var(--blue); color:#fff; border-radius:6px; font-size:13px; padding:2px 8px; margin-right:8px; }
+    h3 { font-size:1.08rem; margin:20px 0 10px; }
+    section { background:#fff; border:1px solid var(--line); border-radius:14px; padding:26px 28px; margin-bottom:22px; }
+    p { margin:0 0 14px; }
+    a { color:var(--blue); overflow-wrap:anywhere; }
+    code { background:#f1f5f9; border-radius:4px; padding:1px 5px; font-size:15px; overflow-wrap:anywhere; }
+    main { min-width:0; }
+    figure { margin:16px 0; background:#fff; border:1px solid var(--line); border-radius:12px; padding:10px; overflow-x:auto; }
+    figure svg { display:block; min-width:700px; }
+    figcaption { color:var(--muted); font-size:14px; margin-top:6px; }
+    .tw { overflow-x:auto; margin:0 0 14px; }
+    .tw table { min-width:620px; }
+    table { width:100%; border-collapse:collapse; font-size:15px; }
+    th, td { border:1px solid var(--line); padding:8px 10px; text-align:left; vertical-align:top; }
+    th { background:#f1f5f9; }
+    ul { margin:0 0 14px; padding-left:22px; }
+    ol { margin:0 0 14px; padding-left:22px; }
+    li { margin-bottom:6px; }
+    .note { background:#f1f5f9; border-left:4px solid var(--muted); padding:12px 16px; border-radius:0 8px 8px 0; font-size:16px; margin:0 0 14px; }
+    svg text { font-family:-apple-system,"PingFang SC","Noto Sans SC",sans-serif; }
+    @media (max-width:860px) { .layout { grid-template-columns:minmax(0,1fr); } aside { position:static; } h1 { font-size:1.55rem; } section { padding:18px 16px; } }
+  </style>
+  <link rel="stylesheet" href="assets/article.css">
+  <script src="assets/article.js" defer></script>
+</head>
+<body class="frontier-article">
+<a class="fr-skip" href="#article-content">跳到正文</a>
+<nav class="fr-nav" aria-label="站点导航">
+  <a class="fr-brand" href="/frontier/"><span class="fr-mark" aria-hidden="true">F</span>Frontier<span class="fr-nav-label">技术与研究</span></a>
+  <a class="fr-home" href="/">@xixi003 <span aria-hidden="true">↗</span></a>
+</nav>
+<div class="fr-progress" aria-hidden="true"><div></div></div>
+
+<header class="fr-hero">
+  <div class="inner">
+    <span class="badge">FRONTIER · 2026-11-27 · Agent Skills</span>
+    <h1>按无技能分关技能，回放涨 2.92 个点，留出含 0</h1>
+    <p>一篇预印本审计 SkillsBench 的公开跑次：7,554 条配对试验、1,421 个（配置，任务）格子。后续工作按任务增益关技能。无技能分低于 0.8 才加载，相对「总是加载」，同一日志回放 +2.92 个百分点（任务自助 95% 区间 +1.93 到 +4.02）；把条件标签打乱、技能效应清零后仍 +4.5；没用过的留出试验 +0.12（−0.67 到 +0.93）。17 个任务净增益为负，FDR 10% 下 0 个显著；169 / 1,421 个格子 Δ&lt;0，算术上 58% 的格子不可能出现下降。</p>
+  </div>
+</header>
+<div class="fr-layout">
+<aside aria-label="文章目录" class="fr-toc">
+<details open="">
+<summary>本文目录<span aria-hidden="true">＋</span></summary>
+<div class="fr-toc-links">
+<a href="#claim">1 关技能用的那一列</a>
+<a href="#noise">2 负格子从哪来</a>
+<a href="#gate">3 回放涨、留出含 0</a>
+<a href="#gap">4 审计留下的三道评分缝</a>
+<a href="#yours">5 你的运行位</a>
+<a href="#limit">6 这篇没测到的</a>
+<a href="#src">7 出处</a>
+</div>
+</details>
+</aside>
+<main class="fr-content" id="article-content">
+<section id="claim">
+  <h2><span>1</span>关技能用的那一列</h2>
+  <p>预印本 <a href="https://arxiv.org/abs/2611.33943">What Does Skill Lift Actually Measure?</a>（Zhang、Long，2026-11-25）审计 SkillsBench 的冻结快照。本篇只论一件事：用无技能分决定这次要不要加载技能，同一批日志里看起来涨了，没用过的留出试验区间含 0。后面几节是负格子从哪来、最大正增益里有没有评分缝，不另立判断。</p>
+  <p>SkillsBench 原文（Li 等，arXiv:2602.12670v4）在 87 道容器题、18 个「模型–框架」配置上，有无人工技能对照，任务等权过测率从 33.9% 到 50.5%，+16.6 个百分点，87 道里 13 道净下降。后来的工作按任务增益关技能、压包、检索、测覆盖、改内容。这篇审计的快照不是基准论文最后那一子集：两份公开导出合成 1,421 个配对格子。格子等权平均分：无技能 30.06%，有技能 48.75%；摘要写成全套平均增益 18.7。格子等权，不是任务等权。</p>
+  <p>一份是 2026-06-15 的早期清单 <code>paper_v1_manifest.json</code>：2,830 行，7 个配置，Claude Code、Codex、Gemini CLI；上游按模型、条件、任务名留最早三次有限分、未超时、还留日志的跑。一份是 2026-06-08 的榜单导出 <code>selected_trials.csv</code>：6,590 行、22 个配置，其中 19 个是 OpenHands。两份原始行 9,420；去掉无有限分 1,029、格子只有一侧 760、任务不在审计仓库 77，留下 7,554 条配对跑。分恰好 0 / 恰好 1 / 部分分：4,356 / 2,835 / 363。配置 28 个（第一批 7、第二批 21）。83 / 87 道题至少有一个配对格子。两边都三次的格子 907；至少一侧只有一次 219。</p>
+  <p>格子里 <code>r0</code>、<code>r1</code> 是无技能、有技能的平均分，<code>Δ = r1 − r0</code>。每个格子每侧最多三次。作者写：后续方法经常直接用观察到的任务增益做关停。</p>
+</section>
+
+<section id="noise">
+  <h2><span>2</span>负格子从哪来</h2>
+  <p>快照里 11.9% 的格子（169 / 1,421）<code>Δ&lt;0</code>，17 道题净增益为负。823 个格子无技能三次全挂（<code>r0 = 0</code>），算术上不可能下降。259 个格子无技能全过（<code>r0 = 1</code>），不可能正增益；有技能三次里挂一次，看起来就是掉 33 个百分点。能出现下降的只有基线为正的 598 个格子。摘要写算术上 58% 的格子不可能出现下降：823 / 1,421 ≈ 57.9%。</p>
+  <figure>
+    <svg viewBox="0 0 920 430" width="100%" role="img" aria-label="无技能分分层后增益符号分布">
+      <rect x="0" y="0" width="920" height="430" fill="#ffffff"/>
+      <rect x="16" y="16" width="888" height="398" fill="#ffffff" stroke="#1d4ed8" stroke-width="2"/>
+      <text x="36" y="48" font-size="16" font-weight="700" fill="#0f172a">图 1　增益符号跟着无技能分走</text>
+      <text x="36" y="72" font-size="14" fill="#475569">分母 1,421 个格子。柱高：0 格在 y=360，每格 0.28 像素。数字抄原文表 IV。</text>
+      <line x1="80" y1="360" x2="860" y2="360" stroke="#cbd5e1" stroke-width="1"/>
+      <text x="72" y="364" font-size="14" fill="#64748b" text-anchor="end">0</text>
+      <text x="72" y="248" font-size="14" fill="#64748b" text-anchor="end">400</text>
+      <text x="72" y="136" font-size="14" fill="#64748b" text-anchor="end">800</text>
+      <!-- r0=0: 823 total. Δ<0 0, =0 458, >0 365. stack from y=360 -->
+      <rect x="140" y="232" width="90" height="128" fill="#047857"/>
+      <rect x="140" y="130" width="90" height="102" fill="#1d4ed8"/>
+      <text x="185" y="378" font-size="14" fill="#0f172a" text-anchor="middle">r0 = 0</text>
+      <text x="185" y="396" font-size="14" fill="#475569" text-anchor="middle">823 格</text>
+      <text x="185" y="122" font-size="14" fill="#1d4ed8" text-anchor="middle">Δ&gt;0 365</text>
+      <text x="185" y="270" font-size="14" fill="#ffffff" text-anchor="middle">Δ=0 458</text>
+      <!-- mid: 339. neg 103, zero 54, pos 182 -->
+      <rect x="390" y="331" width="90" height="29" fill="#be123c"/>
+      <rect x="390" y="316" width="90" height="15" fill="#047857"/>
+      <rect x="390" y="265" width="90" height="51" fill="#1d4ed8"/>
+      <text x="435" y="378" font-size="14" fill="#0f172a" text-anchor="middle">0&lt;r0&lt;1</text>
+      <text x="435" y="396" font-size="14" fill="#475569" text-anchor="middle">339 格</text>
+      <text x="435" y="257" font-size="14" fill="#1d4ed8" text-anchor="middle">182</text>
+      <text x="540" y="322" font-size="14" fill="#047857">Δ=0 54</text>
+      <text x="540" y="340" font-size="14" fill="#be123c">Δ&lt;0 103</text>
+      <!-- r0=1: 259. neg 66, zero 193, pos 0 -->
+      <rect x="640" y="342" width="90" height="18" fill="#be123c"/>
+      <rect x="640" y="288" width="90" height="54" fill="#047857"/>
+      <text x="685" y="378" font-size="14" fill="#0f172a" text-anchor="middle">r0 = 1</text>
+      <text x="685" y="396" font-size="14" fill="#475569" text-anchor="middle">259 格</text>
+      <text x="685" y="280" font-size="14" fill="#047857" text-anchor="middle">Δ=0 193</text>
+      <text x="740" y="354" font-size="14" fill="#be123c">Δ&lt;0 66</text>
+      <rect x="140" y="88" width="16" height="16" fill="#1d4ed8"/>
+      <text x="162" y="101" font-size="14" fill="#0f172a">Δ&gt;0</text>
+      <rect x="230" y="88" width="16" height="16" fill="#047857"/>
+      <text x="252" y="101" font-size="14" fill="#0f172a">Δ=0</text>
+      <rect x="320" y="88" width="16" height="16" fill="#be123c"/>
+      <text x="342" y="101" font-size="14" fill="#0f172a">Δ&lt;0</text>
+    </svg>
+    <figcaption>图 1。无技能全挂的 823 格没有下降；无技能全过的 259 格没有正增益。169 个负格子全部落在基线为正的一侧。</figcaption>
+  </figure>
+  <p>格子内打乱条件标签、每侧次数固定，100,000 次置换加一校正，83 道可观察题做双侧蒙特卡洛 p，FDR 10%（Benjamini–Hochberg）。26 道显著，全是正增益。17 道净负里，校正前最小双侧 p 是 0.15（单侧 0.075）。最负的一道 <code>exam-block-sequencing</code>：11 格均值 −13.6 个百分点，3 个下降、1 个上升、7 个打平，p = 0.30。作者写：不显著不等于没有伤害。零技能效应下，置换期望 327.7 个负格子（中心 95% 范围 302–353）、332.5 个正格子；实际 169 个负、547 个正。作者写：许多有益技能加少数有害技能，总负格子也会低于 327.7，所以 169 低于期望不能证明技能无害。</p>
+  <p>至少每侧两次的 1,202 个格子，每次随机留出每侧一条。约 279 个决策集 <code>r0 ≥ 0.8</code> 的格子，决策试验均值 Δ = −16.1 个百分点，留出回到 −0.5（95% 区间 −4.0 到 +3.1）。约 123 个决策集 <code>Δ&lt;0</code> 的格子，决策试验 −56.2，留出 −9.9（−16.8 到 −2.7），26% 仍下降、18% 上升。作者写：表观损失格子平均不是纯噪声；−9.9 对 −56.2 不要直接读成真实伤害比例。</p>
+</section>
+
+<section id="gate">
+  <h2><span>3</span>回放涨、留出含 0</h2>
+  <p>基线门槛：只在 <code>r0 &lt; 0.8</code> 时加载技能。作者写这是对 Wang 等（arXiv:2610.32322）用独立探针、阈值 0.8 再加跨模型过滤的粗近似。对照是「总是加载技能」。三种评法：同一日志回放；格子内打乱标签再回放；至少每侧两次的 1,202 格里，决策试验做决定，留出试验记分。</p>
+  <div class="tw">
+    <table>
+      <thead>
+        <tr><th>策略</th><th>全表回放 1,421 格</th><th>打乱标签</th><th>决策集回放 1,202 格</th><th>留出试验 1,202 格</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>基线门槛 r0&lt;0.8</td><td>+2.92（+1.93，+4.02）；去掉 43% 负格</td><td>+4.5；去掉 36%</td><td>+3.7</td><td>+0.12（−0.67，+0.93）</td></tr>
+        <tr><td>随机森林，最大增益</td><td>+2.95（+1.95，+4.06）；59%</td><td>+6.5；82%</td><td>+4.0</td><td>−0.01（−0.85，+0.87）</td></tr>
+        <tr><td>随机森林，避险</td><td>+2.12（+1.03，+3.27）；85%</td><td>+5.7；94%</td><td>+3.7</td><td>−0.33（−1.26，+0.65）</td></tr>
+        <tr><td>随机森林，只用基线</td><td>+0.72（−0.97，+2.35）；94%</td><td>+5.5；94%</td><td>+2.6</td><td>−1.20（−2.47，+0.09）</td></tr>
+        <tr><td>两侧里选高分</td><td>+5.24（+3.92，+6.63）；100%</td><td>+9.7；100%</td><td>+5.8</td><td>−1.61（−3.01，−0.16）</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p>表抄原文表 V。增益单位是百分点，相对「总是加载」。去掉率是策略在 <code>Δ&lt;0</code> 格子里不加载的比例。打乱标签列是置换均值。决策集回放和留出试验同一批 1,202 格：决策试验做决定，留出试验记分；全表回放是 1,421 格。回放和留出的区间是 95% 任务自助；作者写这些区间反映既定策略下的任务抽样，不是独立重复实验。打乱标签的 95% 中心范围只画在原文图 2，表 V 没有数字。摘要把回放写成 2–3 个百分点、打乱后仍 4–7、留出无统计显著改善。作者写留出区间太宽，确认不了真实效应恰好是 0，也不排除用独立探针集训出门控。</p>
+  <figure>
+    <svg viewBox="0 0 920 430" width="100%" role="img" aria-label="基线门槛在三种评法下的增益">
+      <rect x="0" y="0" width="920" height="430" fill="#ffffff"/>
+      <rect x="16" y="16" width="888" height="398" fill="#ffffff" stroke="#b45309" stroke-width="2"/>
+      <text x="36" y="48" font-size="16" font-weight="700" fill="#0f172a">图 2　基线门槛相对「总是加载」</text>
+      <text x="36" y="70" font-size="14" fill="#475569">单位百分点。0 在 y=300。每 1 个百分点 22 像素。</text>
+      <text x="36" y="90" font-size="14" fill="#475569">误差杆：回放与留出来自表 V 的 95% 区间。打乱标签表里只有点估计，原文图 2 另有置换中心 95% 范围。</text>
+      <line x1="90" y1="300" x2="860" y2="300" stroke="#0f172a" stroke-width="1.5"/>
+      <text x="82" y="304" font-size="14" fill="#64748b" text-anchor="end">0</text>
+      <text x="82" y="194" font-size="14" fill="#64748b" text-anchor="end">+5</text>
+      <text x="82" y="348" font-size="14" fill="#64748b" text-anchor="end">−2</text>
+      <!-- replay 2.92 CI 1.93-4.02. y = 300 - v*22 -->
+      <rect x="180" y="236" width="80" height="64" fill="#1d4ed8"/>
+      <line x1="220" y1="258" x2="220" y2="212" stroke="#0f172a" stroke-width="2"/>
+      <line x1="212" y1="258" x2="228" y2="258" stroke="#0f172a" stroke-width="2"/>
+      <line x1="212" y1="212" x2="228" y2="212" stroke="#0f172a" stroke-width="2"/>
+      <text x="220" y="202" font-size="14" fill="#1d4ed8" text-anchor="middle">+2.92</text>
+      <text x="220" y="378" font-size="14" fill="#0f172a" text-anchor="middle">同一日志回放</text>
+      <!-- perm 4.5 -->
+      <rect x="420" y="201" width="80" height="99" fill="#b45309"/>
+      <text x="460" y="191" font-size="14" fill="#b45309" text-anchor="middle">+4.5</text>
+      <text x="460" y="378" font-size="14" fill="#0f172a" text-anchor="middle">打乱标签</text>
+      <!-- heldout 0.12 CI -0.67 to 0.93 -->
+      <rect x="660" y="297" width="80" height="3" fill="#047857"/>
+      <line x1="700" y1="315" x2="700" y2="280" stroke="#0f172a" stroke-width="2"/>
+      <line x1="692" y1="315" x2="708" y2="315" stroke="#0f172a" stroke-width="2"/>
+      <line x1="692" y1="280" x2="708" y2="280" stroke="#0f172a" stroke-width="2"/>
+      <text x="700" y="270" font-size="14" fill="#047857" text-anchor="middle">+0.12</text>
+      <text x="700" y="378" font-size="14" fill="#0f172a" text-anchor="middle">留出试验</text>
+      <text x="700" y="396" font-size="14" fill="#475569" text-anchor="middle">区间 −0.67 到 +0.93</text>
+    </svg>
+    <figcaption>图 2。技能效应清零后回放仍涨；留出试验的区间穿过 0。柱高按表 V 的点估计。</figcaption>
+  </figure>
+  <p><code>r0</code> 同时进门槛、进回放得分、又来自最多三次试验。作者写这是同一噪声项耦合。风险森林预测 <code>Δ&lt;0</code> 的 ROC-AUC，正文写 0.878，表 VI 格子折 17 特征是 0.879±0.005。只看指示量 <code>r0&gt;0</code> 已经是 0.829，因为它直接排除了不可能下降的 58% 零基线格子。限制在 <code>r0&gt;0</code> 后，指示量 AUC 0.500，17 特征森林在格子折上 0.646±0.015，任务折上 0.524±0.027。表 VI 森林行是 8 个随机种子的均值±标准差，作者写这反映拟合波动，不是抽样不确定度。</p>
+</section>
+
+<section id="gap">
+  <h2><span>4</span>审计留下的三道评分缝</h2>
+  <p>源码对照提示、参考解、评分脚本和技能包。审计留下三道「指令–评分缺口」：两道用官方评分器做了受控跑，一道只做源码审。作者写若干最大增益落在这类缺口上。先排除了两个候选：<code>weighted-gdp-calc</code> 的评分脚本会先跑 ssconvert，没有缓存也能读到计算值；<code>sec-financial-report</code> 的容差和四舍五入助手脚本不构成未声明单位。另外两道最高增益任务没审：<code>llm-prefix-cache-replay</code>（0 到 97.4%）和 <code>dapt-intrusion-detection</code>（7.7 到 78.8%）。</p>
+  <div class="tw">
+    <table>
+      <thead>
+        <tr><th>任务</th><th>格子</th><th>无 / 有技能</th><th>增益</th><th>缺口</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>earthquake-plate-calculation</td><td>24</td><td>4.9% / 77.1%</td><td>+72.2</td><td>距离容差 0.01 km；三种算法里只有 EPSG:4087 过全部断言。技能写了投影，题面没有。受控跑。</td></tr>
+        <tr><td>protein-expression-analysis</td><td>18</td><td>9.3% / 85.2%</td><td>+75.9</td><td>题面要写 Excel 公式，评分器用 data_only=True 读缓存。同一套 143 个公式格，无缓存过 3 / 6，有缓存过 6 / 6。受控跑。</td></tr>
+        <tr><td>flood-risk-analysis</td><td>21</td><td>1.6% / 77.8%</td><td>+76.2</td><td>题面没有洪水水位来源、日最大统计或阈值约定。源码审，没有受控跑。</td></tr>
+        <tr><td>三道合计</td><td>63</td><td>5.0% / 79.6%</td><td>+74.6</td><td>占配对格子 4%（63 / 1,421），没有负格子；描述性占累计增益 18%。去掉后格子等权均值从 18.7 到 16.1。作者写这不是因果份额，也不是任务等权。</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p>地震目录上球面大圆 3,552.98 km、Web Mercator 4,152.56 km、EPSG:4087 3,878.27 km 指向同一事件；只有 EPSG:4087 过全部八条断言，另外两个距离检查失败、得 0。作者写受控跑证明漏写的要求会改评分，没有量化观察到的技能增益有多少来自这条缝。</p>
+  <p>四道题旁有职位名目录，例如 <code>senior-data-engineer</code>：四个目录合计 53 个文件、约 584 KiB，其中九个文件写着 “TODO: Implement actual functionality”。四道占位题增益在 −6.5 到 +14.2 个百分点。上游从 190 条 OpenHands 轨迹抽出第一轮系统提示：184 条有技能试验里，155 条在 1 到 7 个任务技能前面列了 48 个内置技能（重建目录文本 15,449 字符，没有 token 数），任务技能只占目录条目 2%–13%；6 条无技能试验里 4 条也出现这 48 个。作者写：无技能条件里，内置技能出现在部分试验。榜单官方列上三个模型的原生 CLI 平均增益 20.9 个百分点，OpenHands 15.3；这是榜单三对，不是 1,421 格子快照。作者写三对不够把差额归因到目录稀释。</p>
+</section>
+
+<section id="yours">
+  <h2><span>5</span>你的运行位</h2>
+  <p>技能记录里如果用「这题无技能已经够高」做卸载，检查决策分和验收分是不是同一批最多三次的试验。这篇冻结快照、固定策略上，基线门槛相对总是加载：全表 1,421 格回放 +2.92 个百分点，同一批 1,202 格的决策集回放 +3.7，留出 +0.12（−0.67 到 +0.93）。打乱标签后全表回放仍 +4.5。作者把回放增益解释为 <code>r0</code> 同时进门槛和得分，均值回归会被吃进去。结论只覆盖固定策略和冻结快照；作者写不排除用独立探针集训出门控。</p>
+  <p>按任务 Δ 关技能，先看格子能不能为负：<code>r0 = 0</code> 的 823 格算术上 Δ 不能为负。169 个负格子、17 道净负题，在 83 道、FDR 10% 下没有一道显著为负。作者写每侧三次时，真实损失要超过约 24 个百分点才有 80% 检出力。作者建议：不要只用三次试验的格子差做退休决定。</p>
+  <p>看这快照的格子等权 +18.7 时，留下的三道评分缺口占格子 4%、描述性占累计增益 18%。题面没写、只有技能包写了的评分约定，会进这一列。SkillsBench 原文的 +16.6 是任务等权，上面的 18% 不算在那一列。</p>
+</section>
+
+<section id="limit">
+  <h2><span>6</span>这篇没测到的</h2>
+  <ul>
+    <li>冻结快照不是基准论文最后子集；11% 原始行没有有限分；第二份导出早于最终子集，四个仓库任务没有配对格子。</li>
+    <li>留出评分每格只用一对试验，并丢掉 219 个试验少的格子。门槛和森林超参是在能看见留出试验的阶段定的，作者写这会让留出结果偏乐观。</li>
+    <li>格子内置换假定试验可交换。超时：第二份导出有技能 8.99%（219 / 2,436），无技能 7.12%（168 / 2,358），比 1.26（任务自助 1.03–1.56）。作者没测交互步和计算步，不解释原因。</li>
+    <li>洪水那道缺口只有源码审。算法路径不同的三道（MIP、Python 距离回调、有限时域 MPC）作者写成策略差异，没有测这些路径是否更差。</li>
+    <li>维护者 2,333 条试验里 58 条标异常加载或无技能泄漏、7 条疑评分泄漏；33 条涉及快照外两个模型，其余对不上导出表。作者没有报本样本污染率。</li>
+    <li>结构标记是看见跑次之后编的。Wang 等的 0.8 来自独立探针，这篇门槛直接用格子里的 <code>r0</code>。</li>
+  </ul>
+</section>
+
+<section id="src">
+  <h2><span>7</span>出处</h2>
+  <p>Zhang, Long. What Does Skill Lift Actually Measure? A Source-Code-Level Audit and Noise-Aware Reanalysis of SkillsBench. 预印本，<a href="https://arxiv.org/abs/2611.33943">arXiv:2611.33943</a>，2026-11-25。Trine University / National University of Singapore。文中数字从 HTML 全文的摘要、第 I–V 节、表 I–VI、结论抄。预印本写成预印本。复分析仓库 <a href="https://github.com/rrrrr4788/skillsbench-lift-reanalysis">github.com/rrrrr4788/skillsbench-lift-reanalysis</a> 本轮只核到仓库存在，没有重跑脚本。</p>
+  <p>SkillsBench 原文 Li 等，<a href="https://arxiv.org/abs/2602.12670">arXiv:2602.12670</a> v4，独立评审抓取了 HTML 全文；任务等权 +16.6（33.9% 到 50.5%）和 13 / 87 净下降与原文一致。Wang 等 Beyond Gain，<a href="https://arxiv.org/abs/2610.32322">arXiv:2610.32322</a>，独立评审同样抓到全文，τ=0.8 在原文。写稿时这两篇只从本预印本转述，评审后按抓到的原文核对。</p>
+  <p>OpenAI 新闻 11-24 发 GPT-6 蛋白质设计和 Astra 找行星，未进判断。Anthropic 新闻列表仍是 Fable 5.2 / Mythos 5.2，未进判断。arXiv cs.AI / cs.CL / cs.LG 的 new 页仍停在 11-25 批次；11-26、11-27 提交窗口本轮 API 为 0。Hacker News 首页、GitHub 当日更新仓库未进判断。X / Reddit 今日未覆盖。Product Hunt 首页 Cloudflare，未打开。</p>
+  <p><a href="/frontier/rsi-llm-agent-self-evolution.html">09-26 RSI</a> 是谱系，<a href="/frontier/llm-agent-tech-landscape.html">09-27 全景</a> 是增量在哪一层。本文写运行位上的一条缝：用无技能分关技能时，回放增益和留出试验对不上。</p>
+</section>
+</main>
+</div>
+<a class="fr-top" href="#" aria-label="返回页首">↑</a>
+</body>
+</html>

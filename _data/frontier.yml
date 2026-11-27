@@ -1,5 +1,9 @@
 ﻿# 前沿技术栏目：独立 HTML 洞察索引。
 # 新增一篇：把 HTML 放到 /frontier/<slug>.html，再在这里加一条。
+- title: "按无技能分关技能，回放涨 2.92 个点，留出含 0"
+  date: "2026-11-27"
+  url: /frontier/2026-11-27-replay-gain-vanishes.html
+  summary: "一篇预印本审计 SkillsBench。7,554 条配对试验、1,421 个格子。无技能分低于 0.8 才加载，相对总是加载，同一日志回放 +2.92 个百分点（+1.93 到 +4.02）；打乱标签后仍 +4.5；留出试验 +0.12（−0.67 到 +0.93）。17 道题净增益为负，FDR 10% 下 0 个显著。169 / 1,421 个格子 Δ<0，算术上 58% 的格子不可能下降。"
 - title: "SWE-bench Verified 上，过测补丁多出来的 61% 是测试"
   date: "2026-11-26"
   url: /frontier/2026-11-26-extra-lines-are-tests.html
