@@ -1,5 +1,9 @@
 ﻿# 前沿技术栏目：独立 HTML 洞察索引。
 # 新增一篇：把 HTML 放到 /frontier/<slug>.html，再在这里加一条。
+- title: "Agent 把活干了，批判性思维怎么办"
+  date: "2026-11-28"
+  url: /frontier/2026-11-28-critical-thinking-agents.html
+  summary: "译文。原文 Addy Osmani，2026-11-03。工作大量经 agent 跑过之后，日常里没什么会逼你再想一遍。卸载、推迟、投降是一条谱。利害低的可以委托；答案你解释不了，所有权就已经让出去了。"
 - title: "随机任务上，允许委派终局差 1 到 5 个点，成本 2.6 到 3.8 倍"
   date: "2026-11-28"
   url: /frontier/2026-11-28-subagents-cost-more.html
