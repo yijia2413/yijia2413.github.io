@@ -1,0 +1,257 @@
+﻿<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>随机任务上，允许委派终局差 1 到 5 个点，成本 2.6 到 3.8 倍 · Frontier</title>
+  <style>
+    :root { --ink:#0f172a; --muted:#475569; --line:#e2e8f0; --bg:#f8fafc; --blue:#1d4ed8; --blue-bg:#eff6ff; --amber:#b45309; --green:#047857; --rose:#be123c; }
+    * { box-sizing: border-box; }
+    body { margin:0; font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Noto Sans SC",sans-serif; background:var(--bg); color:var(--ink); line-height:1.75; font-size:17px; }
+    header { background:#0f172a; color:#f8fafc; padding:36px 24px 28px; border-bottom:4px solid #2563eb; }
+    header .inner { max-width:1080px; margin:0 auto; }
+    .badge { display:inline-block; border:1px solid #93c5fd; color:#bfdbfe; border-radius:999px; padding:2px 12px; font-size:13px; }
+    h1 { font-size:2rem; line-height:1.3; margin:12px 0; }
+    header p { color:#cbd5e1; margin:0; max-width:760px; }
+    .layout { max-width:1080px; margin:28px auto 64px; padding:0 20px; display:grid; grid-template-columns:220px minmax(0,1fr); gap:28px; }
+    aside { position:sticky; top:52px; align-self:start; background:#fff; border:1px solid var(--line); border-radius:12px; padding:14px; }
+    aside p { font-size:12px; letter-spacing:.06em; color:var(--muted); margin:0 0 8px; }
+    aside a { display:block; color:var(--ink); text-decoration:none; font-size:14px; padding:6px 8px; border-radius:6px; }
+    aside a:hover { background:var(--blue-bg); color:var(--blue); }
+    h2 { font-size:1.35rem; margin:0 0 12px; }
+    h2 span { display:inline-block; background:var(--blue); color:#fff; border-radius:6px; font-size:13px; padding:2px 8px; margin-right:8px; }
+    h3 { font-size:1.08rem; margin:20px 0 10px; }
+    section { background:#fff; border:1px solid var(--line); border-radius:14px; padding:26px 28px; margin-bottom:22px; }
+    p { margin:0 0 14px; }
+    a { color:var(--blue); overflow-wrap:anywhere; }
+    code { background:#f1f5f9; border-radius:4px; padding:1px 5px; font-size:15px; overflow-wrap:anywhere; }
+    main { min-width:0; }
+    figure { margin:16px 0; background:#fff; border:1px solid var(--line); border-radius:12px; padding:10px; overflow-x:auto; }
+    figure svg { display:block; min-width:700px; }
+    figcaption { color:var(--muted); font-size:14px; margin-top:6px; }
+    .tw { overflow-x:auto; margin:0 0 14px; }
+    .tw table { min-width:620px; }
+    table { width:100%; border-collapse:collapse; font-size:15px; }
+    th, td { border:1px solid var(--line); padding:8px 10px; text-align:left; vertical-align:top; }
+    th { background:#f1f5f9; }
+    ul { margin:0 0 14px; padding-left:22px; }
+    ol { margin:0 0 14px; padding-left:22px; }
+    li { margin-bottom:6px; }
+    .note { background:#f1f5f9; border-left:4px solid var(--muted); padding:12px 16px; border-radius:0 8px 8px 0; font-size:16px; margin:0 0 14px; }
+    svg text { font-family:-apple-system,"PingFang SC","Noto Sans SC",sans-serif; }
+    @media (max-width:860px) { .layout { grid-template-columns:minmax(0,1fr); } aside { position:static; } h1 { font-size:1.55rem; } section { padding:18px 16px; } }
+  </style>
+  <link rel="stylesheet" href="assets/article.css">
+  <script src="assets/article.js" defer></script>
+</head>
+<body class="frontier-article">
+<a class="fr-skip" href="#article-content">跳到正文</a>
+<nav class="fr-nav" aria-label="站点导航">
+  <a class="fr-brand" href="/frontier/"><span class="fr-mark" aria-hidden="true">F</span>Frontier<span class="fr-nav-label">技术与研究</span></a>
+  <a class="fr-home" href="/">@xixi003 <span aria-hidden="true">↗</span></a>
+</nav>
+<div class="fr-progress" aria-hidden="true"><div></div></div>
+
+<header class="fr-hero">
+  <div class="inner">
+    <span class="badge">FRONTIER · 2026-11-28 · 编码 Agent</span>
+    <h1>随机任务上，允许委派终局差 1 到 5 个点，成本 2.6 到 3.8 倍</h1>
+    <p>一篇预印本在 NL2Repo 和 ProgramBench 各 30 道随机仓库构建题上，比较单独跑和允许委派。隐藏测试通过份额，同模型 Multi 终局差 1.2 到 4.7 个点；按 GPT-5.6 Sol 单价折的目录价 2.6 到 3.8 倍。等成本时单独跑不低于 Multi。ProgramBench 上表 3、表 4 是 GPT-5.6 第 2 轮（+1.2，3.2 倍）；两轮平均 +2.2，2.6 倍；第 1 轮 +3.1，2.0 倍。该轮 331 个子 Agent 里 7 个写过工作区文件。两次重复平均差约 7 个点，30 道里 10 道增益换符号。</p>
+  </div>
+</header>
+<div class="fr-layout">
+<aside aria-label="文章目录" class="fr-toc">
+<details open="">
+<summary>本文目录<span aria-hidden="true">＋</span></summary>
+<div class="fr-toc-links">
+<a href="#claim">1 打开子 Agent 的那一句</a>
+<a href="#random">2 随机 30 加 30 道上的终局</a>
+<a href="#budget">3 等时间能领先，等成本不领先</a>
+<a href="#hard">4 难任务上多出来的检查</a>
+<a href="#yours">5 你的运行位</a>
+<a href="#limit">6 这篇没测到的</a>
+<a href="#src">7 出处</a>
+</div>
+</details>
+</aside>
+<main class="fr-content" id="article-content">
+<section id="claim">
+  <h2><span>1</span>打开子 Agent 的那一句</h2>
+  <p>预印本 <a href="https://arxiv.org/abs/2611.33893">When Are Parallel Subagents Effective for Coding?</a>（Lyu、Yin、Zhang，2026-11-25）只论一件事：从两个基准各抽 30 道随机任务，自然停时，允许主 Agent 委派给 Codex 原生子 Agent，隐藏测试通过份额的终局差约 1 到 5 个百分点，按 GPT-5.6 Sol 单价折的目录价 2.6 到 3.8 倍；按同一美元预算读，单独跑不低于 Multi。NL2Repo 上同模型 Multi 的自助区间含 0。后面几节写难任务上多出来的检查、Claude Code 小规模复现，不另立判断。</p>
+  <p>仓库构建和修 issue 不同。作者写 SWE-bench 一类通常改几行，可并行的块少；NL2Repo 和 ProgramBench 要按规格重建整个程序。NL2Repo 给书面规格和用法示例。ProgramBench 另外给一份可执行参考程序，Agent 可以对同一输入比输出。分是活跃隐藏测试通过份额，不是官方 resolved：作者写难任务上 resolved 几乎全是 0。ProgramBench 的活跃测试是任务分片减去官方忽略表；NL2Repo 是整份隐藏套件。跑之前，作者的计分器和官方 ProgramBench 评测器在 30 道参考程序上一致。</p>
+  <p>主设置是 Codex。RQ1、RQ2 用 0.147，主 Agent 和 Sol 子 Agent 推理档 xhigh，Luna 子 Agent 用当时默认档。每条跑在 4 小时封顶内自然停，提示里没有截止日期。单独跑（Single）不启动子 Agent。并行（Multi）在题面后加一句许可：独立部分可以交给原生子 Agent，数量、切分、合并、核验由主 Agent 自己定，不强制委派。同一套子 Agent 用 Sol，弱一档用 Luna。作者写：每一个 Multi 跑都委派了，中位 7 到 10 个，随基准和变体变。目录价：Sol 每百万 token 输入 4 美元、缓存输入 0.4、输出 20；Luna 是 0.2、0.02、1.2。GPT-6 Sol 和 GPT-6.1 Sol 按 GPT-5.6 Sol 的单价计，跨代比的是 token 用量。</p>
+</section>
+
+<section id="random">
+  <h2><span>2</span>随机 30 加 30 道上的终局</h2>
+  <p>随机集固定抽签顺序，每个基准 10 易、10 中、10 难。NL2Repo 一道难任务 <code>pytorch-grad-cam</code> 的核验器跑不起来，换成下一道 <code>cookiecutter</code>。NL2Repo：Single 和弱子 Agent 每题 3 次，同模型子 Agent 每题 1 次。ProgramBench、GPT-5.6 Sol：每个设置每题 2 次，但下面表 3、表 4 的 ProgramBench 列只展示第 2 轮。分数是任务等权平均。原文附录 C：两轮平均，同模型 Multi 比两次 Single 高 2.2 个点，成本 2.6 倍，30 道里 22 正 8 负；第 1 轮单独是 +3.1 个点、2.0 倍；第 2 轮就是表里的 +1.2 个点、3.2 倍。第 1 轮 15 道题的子 Agent 推理档是 low，其余和第 2 轮是 xhigh。GPT-6、GPT-6.1 各一跑。</p>
+  <div class="tw">
+    <table>
+      <thead>
+        <tr><th>设置</th><th>NL2Repo 终局</th><th>NL2Repo 成本（美元）</th><th>ProgramBench 终局</th><th>ProgramBench 成本（美元）</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Single</td><td>67.7</td><td>3.02</td><td>76.2</td><td>5.69</td></tr>
+        <tr><td>Multi（弱子 Agent，Luna）</td><td>65.3</td><td>5.12</td><td>74.0</td><td>6.08</td></tr>
+        <tr><td>Multi（同模型子 Agent，Sol）</td><td>70.6</td><td>11.56</td><td>77.4</td><td>18.32</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p>表抄原文表 3，GPT-5.6 Sol，自然停；ProgramBench 列是第 2 轮。NL2Repo 同模型子 Agent 比 Single 高 2.9 个点，成本 11.56 / 3.02 ≈ 3.83 倍；弱子 Agent 低 2.4 个点，成本约 1.70 倍。ProgramBench 第 2 轮同模型高 1.2 个点，18.32 / 5.69 ≈ 3.22 倍；弱子 Agent 低 2.2 个点。作者因此在三代模型上只比 Single 和同模型 Multi，默认基准改成 ProgramBench。</p>
+  <div class="tw">
+    <table>
+      <thead>
+        <tr><th>模型</th><th>Single 终局</th><th>Multi 终局</th><th>差（点）</th><th>Single 成本</th><th>Multi 成本</th><th>倍数</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>GPT-5.6 Sol</td><td>76.2</td><td>77.4</td><td>+1.2</td><td>5.69</td><td>18.32</td><td>3.2</td></tr>
+        <tr><td>GPT-6 Sol</td><td>69.5</td><td>71.0</td><td>+1.5</td><td>1.77</td><td>5.52</td><td>3.1</td></tr>
+        <tr><td>GPT-6.1 Sol</td><td>79.5</td><td>84.2</td><td>+4.7</td><td>5.50</td><td>14.30</td><td>2.6</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p>表抄原文表 4，ProgramBench 30 道随机题。GPT-5.6 列与表 3 相同，是第 2 轮。1.2 到 4.7 个点是摘要「约 1 到 5」在表 4 三代上的区间；两轮平均的 +2.2 落在这个区间里，第 1 轮的 2.0 倍落在 2.6 到 3.8 之外。3.8 倍挂在表 3 的 NL2Repo，不是表 4。GPT-6.1 的均值 +4.7 里，<code>hush</code> 这一道贡献 2.5 个点（Single 13.0，Multi 87.7）；按题的中位差是 +1.5。附录 C 正文把 GPT-6.1 的均值差写成 4.9；稿件跟表 4 的 84.2 − 79.5。附录 C：GPT-6.1 每设置一跑，Multi 每题起 2 到 7 个子 Agent，GPT-5.6 是 4 到 20。</p>
+  <p>ProgramBench 随机题上，允许委派不等于并行写模块。附录 C：第 2 轮 30 条都委派，合计 331 个子 Agent；7 个写过任何工作区文件，2 个写了产品文件，都在 jsonschema。作者写这一轮子 Agent 只做探测，和 RQ2 难任务上一样。NL2Repo 上子 Agent 有没有写代码，原文没给，不往那边推。</p>
+  <figure>
+    <svg viewBox="0 0 920 440" width="100%" role="img" aria-label="三代模型在 ProgramBench 随机题上的终局分">
+      <rect x="0" y="0" width="920" height="440" fill="#ffffff"/>
+      <rect x="16" y="16" width="888" height="408" fill="#ffffff" stroke="#1d4ed8" stroke-width="2"/>
+      <text x="36" y="48" font-size="16" font-weight="700" fill="#0f172a">图 1　ProgramBench 30 道随机题，终局隐藏测试份额</text>
+      <text x="36" y="72" font-size="14" fill="#475569">数字抄表 4。GPT-5.6 是第 2 轮。纵轴从 65 起：65 在 y=360，每 1 个点 11.2 像素。柱顶写原文百分数。</text>
+      <line x1="90" y1="360" x2="860" y2="360" stroke="#cbd5e1" stroke-width="1"/>
+      <line x1="90" y1="304" x2="860" y2="304" stroke="#e2e8f0" stroke-width="1"/>
+      <line x1="90" y1="248" x2="860" y2="248" stroke="#e2e8f0" stroke-width="1"/>
+      <line x1="90" y1="192" x2="860" y2="192" stroke="#e2e8f0" stroke-width="1"/>
+      <line x1="90" y1="136" x2="860" y2="136" stroke="#e2e8f0" stroke-width="1"/>
+      <text x="82" y="364" font-size="14" fill="#64748b" text-anchor="end">65</text>
+      <text x="82" y="308" font-size="14" fill="#64748b" text-anchor="end">70</text>
+      <text x="82" y="252" font-size="14" fill="#64748b" text-anchor="end">75</text>
+      <text x="82" y="196" font-size="14" fill="#64748b" text-anchor="end">80</text>
+      <text x="82" y="140" font-size="14" fill="#64748b" text-anchor="end">85</text>
+      <!-- GPT-5.6 Single 76.2 -> 360-(11.2)*11.2=234.56 -->
+      <rect x="130" y="235" width="70" height="125" fill="#1d4ed8"/>
+      <text x="165" y="225" font-size="14" fill="#1d4ed8" text-anchor="middle">76.2</text>
+      <!-- Multi 77.4 -> 221.12 -->
+      <rect x="210" y="221" width="70" height="139" fill="#b45309"/>
+      <text x="245" y="211" font-size="14" fill="#b45309" text-anchor="middle">77.4</text>
+      <text x="205" y="388" font-size="14" fill="#0f172a" text-anchor="middle">GPT-5.6 Sol</text>
+      <!-- GPT-6 Single 69.5 -> 309.6 -->
+      <rect x="390" y="310" width="70" height="50" fill="#1d4ed8"/>
+      <text x="425" y="300" font-size="14" fill="#1d4ed8" text-anchor="middle">69.5</text>
+      <!-- 71.0 -> 292.8 -->
+      <rect x="470" y="293" width="70" height="67" fill="#b45309"/>
+      <text x="505" y="283" font-size="14" fill="#b45309" text-anchor="middle">71.0</text>
+      <text x="465" y="388" font-size="14" fill="#0f172a" text-anchor="middle">GPT-6 Sol</text>
+      <!-- 79.5 -> 197.6 -->
+      <rect x="650" y="198" width="70" height="162" fill="#1d4ed8"/>
+      <text x="685" y="188" font-size="14" fill="#1d4ed8" text-anchor="middle">79.5</text>
+      <!-- 84.2 -> 144.96 -->
+      <rect x="730" y="145" width="70" height="215" fill="#b45309"/>
+      <text x="765" y="135" font-size="14" fill="#b45309" text-anchor="middle">84.2</text>
+      <text x="725" y="388" font-size="14" fill="#0f172a" text-anchor="middle">GPT-6.1 Sol</text>
+      <rect x="130" y="412" width="16" height="16" fill="#1d4ed8"/>
+      <text x="152" y="425" font-size="14" fill="#0f172a">Single</text>
+      <rect x="250" y="412" width="16" height="16" fill="#b45309"/>
+      <text x="272" y="425" font-size="14" fill="#0f172a">Multi（同模型子 Agent）</text>
+    </svg>
+    <figcaption>图 1。表 4 的三代终局。GPT-5.6 是第 2 轮。GPT-6.1 的 4.7 个点里，hush 一道占 2.5；中位差 +1.5。纵轴从 65 起，1 到 5 个点看起来比从 0 起大。</figcaption>
+  </figure>
+  <p>NL2Repo 上，按题配对、自助 95% 区间：同模型 Multi 相对 Single 是 +2.9（−3.3 到 +8.4），成本 3.83 倍（3.26 到 4.46）；弱子 Agent 是 −2.4（−5.5 到 +0.4），成本 1.70 倍（1.50 到 1.94）。主 Agent 自己在弱子 Agent 设置里已经是 Single 成本的 1.6 倍，同模型设置里 1.3 倍。Luna 子 Agent 只占该设置总成本的 3%，Sol 子 Agent 占 67%。</p>
+  <p>Claude Code 2.1.283、effort high、Opus 5.5：每个基准 10 道随机题，每格一跑。ProgramBench 上 Multi 平均 95.5 对 Single 90.7，+4.7 个点，成本 3.1 倍。4 到 13 个子 Agent 出现在 delta、solar、jsonschema、lightningcss；其中三道 Multi 高 12.6 到 18.6 个点，成本 2.6 到 5.2 倍，jsonschema 两边都高于 99。另外六道最多起两个子 Agent，两边差在 2 个点以内。NL2Repo 上每次都委派，Multi 没有更高：Single / 同模型 Multi / Haiku 4.5 子 Agent 平均 94.4、90.5、88.0，成本 0.9 到 1.4 倍。差额来自一道题，两个并行跑都漏了测试会 import 的助手代码；其余九道三个平均在 94.0、94.5、93.4。作者写：一格一跑，只在差额明显超过第 3 节的重复波动时才当结果读。Grok 4.6 和 MiniMax-M3 没有随机题上的自然停对照。</p>
+</section>
+
+<section id="budget">
+  <h2><span>3</span>等时间能领先，等成本不领先</h2>
+  <p>工作区每 5 分钟存一份，每份都计分。某时刻的分是当时最后一份快照；终局是最后一份。时间是 Agent 工作时间。成本把主 Agent 和子 Agent 的每次请求按目录价加总。某美元预算上的分，是累计成本刚超过该预算之前最后一份快照。</p>
+  <p>NL2Repo 的隐藏测试按模块分开查。作者写：子 Agent 并行写出的模块可以早过测试。表 3：5 分钟时同模型 Multi 47.2、Single 16.9；20 分钟 70.1 对 64.6。原文没报 NL2Repo 上有多少子 Agent 写了文件。ProgramBench 的测试跑整程序，要等主 Agent 写出把模块接起来的那个文件。这个文件的中位出现时间，Multi 11.6 分钟，Single 9.0 分钟。ProgramBench 上 20 分钟时，GPT-5.6 第 2 轮 Multi 68.9，Single 69.4，并不领先。该轮子 Agent 基本不写代码，见第 2 节。</p>
+  <p>按成本读，同模型 Multi 要花到大约 Single 平均成本的四倍，才追上；弱子 Agent 几乎全程落后。附录 C：NL2Repo 上约 1 到 5 美元每个预算 Single 都高；低于 0.9 美元时弱子 Agent 略领先。ProgramBench 上弱子 Agent 每个预算都低，5 美元之后大约低 2 个点；2 美元时 36.2 对 62.6。同模型 Multi 在每个预算上到约 23 美元都落后。表 3 里 2 美元、3 美元两行，同模型 Multi 在 ProgramBench 上是 0.0 和 0.0；原文表里只有这两个 0.0，没有写原因。作者写：等成本时，两个基准上 Multi 都不领先 Single。</p>
+  <figure>
+    <svg viewBox="0 0 920 460" width="100%" role="img" aria-label="终局增益对成本倍数">
+      <rect x="0" y="0" width="920" height="460" fill="#ffffff"/>
+      <rect x="16" y="16" width="888" height="428" fill="#ffffff" stroke="#b45309" stroke-width="2"/>
+      <text x="36" y="48" font-size="16" font-weight="700" fill="#0f172a">图 2　终局差对目录价倍数</text>
+      <text x="36" y="72" font-size="14" fill="#475569">横轴：Multi 平均成本 / Single 平均成本。纵轴：终局百分点差。0 差在 y=250，每 1 个点 18 像素；1 倍在 x=120，每 1 倍 160 像素。</text>
+      <text x="36" y="94" font-size="14" fill="#475569">点来自表 3 和表 4。GPT-5.6 的 PB 点是第 2 轮；GPT-6 / 6.1 各一跑，按 5.6 单价比 token。NL 同模型每题 1 跑，弱子 Agent 与 Single 每题 3 跑。</text>
+      <line x1="120" y1="250" x2="860" y2="250" stroke="#0f172a" stroke-width="1.5"/>
+      <line x1="120" y1="110" x2="120" y2="400" stroke="#cbd5e1" stroke-width="1"/>
+      <text x="110" y="254" font-size="14" fill="#64748b" text-anchor="end">0</text>
+      <text x="110" y="164" font-size="14" fill="#64748b" text-anchor="end">+5</text>
+      <text x="110" y="344" font-size="14" fill="#64748b" text-anchor="end">−5</text>
+      <text x="120" y="424" font-size="14" fill="#64748b" text-anchor="middle">1×</text>
+      <text x="280" y="424" font-size="14" fill="#64748b" text-anchor="middle">2×</text>
+      <text x="440" y="424" font-size="14" fill="#64748b" text-anchor="middle">3×</text>
+      <text x="600" y="424" font-size="14" fill="#64748b" text-anchor="middle">4×</text>
+      <!-- NL weaker 1.70, -2.4 -> x=120+0.70*160=232, y=250+2.4*18=293.2 -->
+      <circle cx="232" cy="293" r="8" fill="#be123c"/>
+      <text x="246" y="298" font-size="14" fill="#be123c">NL 弱 −2.4 / 1.7×</text>
+      <!-- PB weaker 1.07, -2.2 -> x=131, y=290 -->
+      <circle cx="131" cy="290" r="8" fill="#be123c"/>
+      <text x="146" y="318" font-size="14" fill="#be123c">PB 弱 −2.2 / 1.1×</text>
+      <!-- PB 5.6 same 3.22, +1.2 -> x=475, y=228 -->
+      <circle cx="475" cy="228" r="8" fill="#1d4ed8"/>
+      <text x="490" y="224" font-size="14" fill="#1d4ed8">PB 5.6 +1.2 / 3.2×</text>
+      <!-- PB 6 3.12 +1.5 -> x=459, y=223 -->
+      <circle cx="459" cy="223" r="8" fill="#047857"/>
+      <text x="360" y="200" font-size="14" fill="#047857">PB 6 +1.5 / 3.1×</text>
+      <!-- PB 6.1 2.60 +4.7 -> x=376, y=165 -->
+      <circle cx="376" cy="165" r="8" fill="#b45309"/>
+      <text x="250" y="160" font-size="14" fill="#b45309">PB 6.1 +4.7 / 2.6×</text>
+      <!-- NL same 3.83 +2.9 -> x=120+2.83*160=572.8, y=198 -->
+      <circle cx="573" cy="198" r="8" fill="#7c3aed"/>
+      <text x="500" y="175" font-size="14" fill="#7c3aed">NL 同模型 +2.9 / 3.8×</text>
+    </svg>
+    <figcaption>图 2。同模型点：表 4 三代和第 2 轮 NL2Repo。弱子 Agent 靠近 1 倍，终局为负。NL 同模型画在 3.83 倍。GPT-6 / 6.1 的倍数是按 5.6 单价折的 token。</figcaption>
+  </figure>
+  <p>同一设置两次跑，平均绝对差大于设置之间的平均差。GPT-5.6 Sol、ProgramBench 30 道：Single 两次平均差 7.1 个点，中位 2.6；同模型 Multi 6.5 个点。30 道里 10 道，两次对比的增益换了符号。附录 C 举例：quinn 两轮是 +1.0 和 +28.4，ripsecrets 是 +2.6 和 −15.7。作者写因此不把任何单题增益当结果报。Finding 1 原文：随机任务上，子 Agent 用数倍成本换终局小幅提高；等成本时单独跑打平或更好。ProgramBench 上难任务的中位增益大于易和中。</p>
+  <p>ProgramBench 10 道难任务的中位增益，三代是 +2.0、+5.6、+8.4；20 道易和中是 +1.7、+0.6、+1.0。这是图 3 注的中位数，上面的单题警告仍然适用。NL2Repo 反过来：难任务中位 +1.1，其余 +3.3。作者写可能因为 NL2Repo 没有参考程序，子 Agent 多出来的检查靠这一份。</p>
+</section>
+
+<section id="hard">
+  <h2><span>4</span>难任务上多出来的检查</h2>
+  <p>这一节是辅线，解释 ProgramBench 难任务上那几分从哪来，不改第 2 节的判断。RQ2 用 16 道 ProgramBench-Hard，含 RQ1 的难任务。自检用两条轨迹量：自然停之前的分钟数，以及同一输入上对参考程序和自己程序各跑一次的命令数（差测）。差测先按跑平均，再按题取中位。</p>
+  <div class="tw">
+    <table>
+      <thead>
+        <tr><th>模型</th><th>Single 分（中位）</th><th>Multi 相对差</th><th>Probe 相对差</th><th>Single 分钟</th><th>Multi 时间</th><th>Probe 时间</th><th>成本：Multi / Probe</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>GPT-5.6 Sol</td><td>56.4（54.6）</td><td>+8.8（+4.9）</td><td>+6.7（+1.3）</td><td>32</td><td>+30%</td><td>+55%</td><td>+275% / +50%</td></tr>
+        <tr><td>GPT-6 Sol</td><td>55.5（57.2）</td><td>+6.0（+6.7）</td><td>+0.8（+2.5）</td><td>19</td><td>+54%</td><td>+14%</td><td>+291% / +5%</td></tr>
+        <tr><td>GPT-6.1 Sol</td><td>73.5（75.2）</td><td>+2.8（+3.1）</td><td>−1.5（−0.8）</td><td>67</td><td>−11%</td><td>−16%</td><td>+176% / −9%</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p>表抄原文表 5。分是隐藏测试份额，差是百分点。时间和成本：Single 列是均值，Multi 和 Probe 是相对 Single 的百分变化，分母是两边都计分的题。GPT-5.6 的 Probe 在 16 道里计了 15 道（缺 delta），所以 +6.7 和 Multi 的 +8.8 不是同一题集。GPT-6 的 Multi 计了 15 道。难任务上 Single 基线是三次平均，Multi 和 Probe 各两次。GPT-5.6 上按题中位，Probe +1.3、Multi +4.9。附录 D 写 gomplate 第一轮停在 Single 一半分数，去掉这道后 Probe 那一格是 +8.4。Finding 2 原文：有参考程序时，一句让 GPT-5.6 Sol 的单独跑先探接口，用一小部分成本收回大部分增益。这是作者的结论。GPT-6.1 上单独跑已经更长，Probe 均值 −1.5。atlas 这一道：GPT-5.6 的 Single 47%，Multi 77%，Probe 75%；GPT-6.1 的 Single 88%，子 Agent 再加 2 个点。作者手读 GPT-5.6 在 7 道题上的全部 17 条 Single 跑，每一条都是一次检查刚过就停。skeema 上自己的测试没连数据库；gittype 上把错误流并进标准输出再比。Probe 句同时改变了检查和运行时长。</p>
+  <p>RQ3 把自然停拿掉。Single-Extended 接到最多 20 小时；Multi-Extended 提示里写 token 和 API 成本完全不计，最多 4 小时，delta 上最长一条 8.5 小时。作者写：等时间 Multi 领先；等成本时除非改坏耦合代码，否则晚些时候才超过 Single。清空对话的新会话起步更快；delta 上 GPT-6.1 的新会话链终局也明显更高。剩下的差距和模块划分有关：Single 几乎写在一个文件里时，等成本 Multi 仍明显更高。这三道是选的，不是抽的。Multi-Extended 另外要求按模块切、每块自测；delta 上给单独跑同一句、不起子 Agent，这句话最多解释 4 小时领先的四分之一，另外两道没有这个对照。作者把 delta 上「等成本 Multi-Extended 明显高于 Single」写成案例，因为每设置一跑。表 7 上 GPT-5.6 扩展跑的终局成本，delta 是 Single-Extended 260 美元对 Multi-Extended 1,201 美元。</p>
+</section>
+
+<section id="yours">
+  <h2><span>5</span>你的运行位</h2>
+  <p>Codex 或 Claude Code 里用一句话允许委派，账单按目录价走，不管程序有没有变好。这篇在随机仓库构建题上：同模型 Multi 终局差 1.2 到 4.7 个点，按 5.6 单价折的目录价 2.6 到 3.8 倍；弱一档子 Agent 两边都低于单独跑。ProgramBench 表列是第 2 轮；两轮平均 +2.2、2.6 倍。该轮 331 个子 Agent 里 7 个写过工作区。等墙钟，NL2Repo 上 Multi 可以早亮；等美元，单独跑打平或更好。GPT-5.6 在 ProgramBench 上两次重复平均差 7.1 个点，大于设置之间的平均差，30 道里 10 道增益换符号。NL2Repo 同模型差 +2.9，自助区间 −3.3 到 +8.4。默认打开之前，先看验收是墙钟还是美元，以及同一题再跑一次会不会把那 1 到 5 个点吃掉。</p>
+  <p>难任务、旁边有一份可执行参考时，Finding 2 把 GPT-5.6 上「探一句收回大部分增益」写成作者结论。表 5 里这一格均值 +6.7（15 道，缺 delta）对 Multi 的 +8.8（16 道）；按题中位是 +1.3 对 +4.9。成本上 Multi 比 Single 多约 275%，Probe 多约 50%，比的是整个设置的总成本。GPT-6.1 的单独跑已经更长，同一句均值不再加分。没有参考程序的 NL2Repo 上，难任务的中位增益并不更大。运行位如果已经强制长跑、强制自测、强制按文件拆模块，这篇没有估计再加委派还能剩多少。</p>
+  <p>技能记录里如果把「开子 Agent」写成默认加速，对一下这篇 Finding 1 的分母：两个基准各 30 道随机题，自然停，隐藏测试份额，按 5.6 单价的目录价。Claude 的 +4.7 挂在 Opus 5.5、每基准 10 道、一格一跑，不要和 Codex 表 4 的第 2 轮放进同一个倍数。</p>
+</section>
+
+<section id="limit">
+  <h2><span>6</span>这篇没测到的</h2>
+  <ul>
+    <li>多数对比每设置 1 到 3 跑。ProgramBench 上两次重复平均差约 7 个点。Claude 复现每格一跑。</li>
+    <li>RQ2 的探一句同时拉长时间和成本。RQ3 的并行扩展设置还要求按模块切和自测；模块到分数的边是观察，图 1 没有估计边的大小。</li>
+    <li>RQ3 的题是选的，作者写只认机制、不估计有多常见。自检度量靠参考程序，多数项目没有。</li>
+    <li>只覆盖闭源模型、三个产品、整程序任务、单次运行里花掉的计算。推理档按跑类型钉死，没有扫描。</li>
+    <li>差测是否覆盖了某功能，靠命令文本的固定规则。42 条跑和 294 份快照重计过分；附录 B 列出挂起测试、分页器、覆盖参考程序路径等缺陷。</li>
+    <li>Grok 4.6、MiniMax-M3 在 Claude Code 的同一句许可下，delta 和 solar 上一次都没委派。dsh 上探一句没有把 GPT-5.6 的分抬起来。这些不进第 2 节的判断。</li>
+  </ul>
+</section>
+
+<section id="src">
+  <h2><span>7</span>出处</h2>
+  <p>Lyu, Yin, Zhang. When Are Parallel Subagents Effective for Coding? An Empirical Study on Repository Construction. 预印本，<a href="https://arxiv.org/abs/2611.33893">arXiv:2611.33893</a>，Submitted 25 Nov 2026，HTML 页眉 v1。University of Illinois Urbana-Champaign。文中数字从 HTML 全文的摘要、第 2–6 节、表 1–5、Finding 1–3、附录 A–C、威胁部分抄。预印本写成预印本。代码仓 <a href="https://github.com/cogito233/subagent-study">github.com/cogito233/subagent-study</a> 本轮只核到仓库存在，没有重跑。</p>
+  <p>OpenAI 新闻页打开了：11-24 的 GPT-6 蛋白质设计和 Astra 找行星未进判断。Anthropic 新闻列表打开了，最近条目仍是 Fable 5.2 / Mythos 5.2 和 IPO 相关，未进判断。arXiv cs.AI / cs.CL / cs.LG 的 new 页仍写 Wednesday 25 November 2026；export API 按 submittedDate 查 2026-11-26 到 11-28 返回 0 条；按提交时间排序的最近 40 条，最早一条发布时间是 2026-11-25。Hacker News 首页打开了，Convex 技能把应用点子送到远端、Fleetlayer 等多 Agent 条目未进判断。GitHub 搜索到当日有更新的仓库，没有采用发布说明。GitHub Trending 页返回 200，未把当日仓库写进判断。X / Reddit 今日未覆盖。Product Hunt 首页 Cloudflare，未打开。</p>
+  <p><a href="/frontier/rsi-llm-agent-self-evolution.html">09-26 RSI</a> 是谱系，<a href="/frontier/llm-agent-tech-landscape.html">09-27 全景</a> 是增量在哪一层。本文写运行位上的一条缝：一句话允许委派之后，随机仓库构建题上多出来的分，按美元计并不领先单独跑。</p>
+</section>
+</main>
+</div>
+<a class="fr-top" href="#" aria-label="返回页首">↑</a>
+</body>
+</html>

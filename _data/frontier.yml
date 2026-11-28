@@ -1,5 +1,9 @@
 ﻿# 前沿技术栏目：独立 HTML 洞察索引。
 # 新增一篇：把 HTML 放到 /frontier/<slug>.html，再在这里加一条。
+- title: "随机任务上，允许委派终局差 1 到 5 个点，成本 2.6 到 3.8 倍"
+  date: "2026-11-28"
+  url: /frontier/2026-11-28-subagents-cost-more.html
+  summary: "一篇预印本在 NL2Repo 和 ProgramBench 各 30 道随机仓库构建题上，比较单独跑和允许委派。隐藏测试通过份额，同模型 Multi 终局差 1.2 到 4.7 个点；按 GPT-5.6 Sol 单价折的目录价 2.6 到 3.8 倍。等成本时单独跑不低于 Multi。ProgramBench 表 3、表 4 是 GPT-5.6 第 2 轮（+1.2，3.2 倍）；两轮平均 +2.2，2.6 倍；第 1 轮 +3.1，2.0 倍。该轮 331 个子 Agent 里 7 个写过工作区文件。两次重复平均差约 7 个点，30 道里 10 道增益换符号。"
 - title: "按无技能分关技能，回放涨 2.92 个点，留出含 0"
   date: "2026-11-27"
   url: /frontier/2026-11-27-replay-gain-vanishes.html
